@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "title": "Pulsar - Create pages to document your project",
+    "description": "Create modern documentation for your application using Pulsar. You will generate custom static documentation pages with Pulsar and can use them wherever you want."
+  },
+  "home": {
+    "title": "Pulsar - Home"
+  },
+  "editor": {
+    "title": "Pulsar - Editing a documentation"
+  }
+}

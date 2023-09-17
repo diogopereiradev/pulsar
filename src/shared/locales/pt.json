@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "title": "Pulsar - Crie páginas para documentar seu projeto",
+    "description": "Crie documentações modernas para a sua aplicação usando o Pulsar. Você gerará páginas estáticas de documentações customizadas pelo Pulsar e poderá usar onde quiser."
+  },
+  "home": {
+    "title": "Pulsar - Inicio"
+  },
+  "editor": {
+    "title": "Pulsar - Editando uma documentação"
+  }
+}
