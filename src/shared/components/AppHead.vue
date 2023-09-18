@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  const { localeProperties } = useI18n();
+  const { locale } = useI18n();
   
   useHead({
     htmlAttrs: {
-      lang: localeProperties.value.iso
+      lang: locale
     }
   });
 </script>

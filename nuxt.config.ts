@@ -1,24 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { 
-    enabled: true,
-    timeline: {
-      enabled: true
-    }
-  },
-  srcDir: 'src',
-  dir: { public: '../public' },
-  build: { transpile: ['primevue'] },
-  postcss: {
-    plugins: {
-      autoprefixer: {},
-      tailwindcss: {}
-    }
-  },
+  modules: ['@nuxtjs/i18n'],
   plugins: ['./plugins/primevue.ts'],
-  css: ['~/shared/assets/globals.css'],
   i18n: {
     defaultLocale: 'en',
+    compilation: {
+      jit: false
+    },
     locales: [
       {
         code: 'en',
@@ -34,7 +22,17 @@ export default defineNuxtConfig({
       }
     ]
   },
-  modules: [
-    '@nuxtjs/i18n'
-  ]
+  devtools: { 
+    enabled: true
+  },
+  srcDir: 'src',
+  dir: { public: '../public' },
+  build: { transpile: ['primevue'] },
+  postcss: {
+    plugins: {
+      autoprefixer: {},
+      tailwindcss: {}
+    }
+  },
+  css: ['~/shared/assets/globals.css']
 });
