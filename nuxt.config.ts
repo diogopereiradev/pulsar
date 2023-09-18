@@ -17,25 +17,24 @@ export default defineNuxtConfig({
   },
   plugins: ['./plugins/primevue.ts'],
   css: ['~/shared/assets/globals.css'],
-  modules: [
-    [
-      '@nuxtjs/i18n',
+  i18n: {
+    defaultLocale: 'en',
+    locales: [
       {
-        vueI18n: './i18n.config.ts',
-        defaultLocale: 'en',
-        locales: [
-          {
-            code: 'en',
-            name: 'English',
-            file: './shared/locales/en.json'
-          },
-          {
-            code: 'pt',
-            name: 'Português',
-            file: './shared/locales/pt.json'
-          },
-        ]
+        code: 'en',
+        iso: 'en-US',
+        name: 'English',
+        file: './shared/locales/en.json'
+      },
+      {
+        code: 'pt',
+        iso: 'pt-BR',
+        name: 'Português',
+        file: './shared/locales/pt.json'
       }
     ]
+  },
+  modules: [
+    '@nuxtjs/i18n'
   ]
 });
