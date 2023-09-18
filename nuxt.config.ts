@@ -1,7 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  plugins: [
+    './plugins/fontawesome.ts',
+    './plugins/primevue.ts'
+  ],
+  build: {
+    transpile: [
+      '@fortawesome/vue-fontawesome',
+      '@fortawesome/fontawesome-svg-core',
+      '@fortawesome/free-solid-svg-icons',
+      'primevue'
+    ]
+  },
   modules: ['@nuxtjs/i18n'],
-  plugins: ['./plugins/primevue.ts'],
   i18n: {
     defaultLocale: 'en',
     compilation: {
@@ -27,12 +38,11 @@ export default defineNuxtConfig({
   },
   srcDir: 'src',
   dir: { public: '../public' },
-  build: { transpile: ['primevue'] },
   postcss: {
     plugins: {
       autoprefixer: {},
       tailwindcss: {}
     }
   },
-  css: ['~/shared/assets/globals.css']
+  css: ['~/shared/assets/globals.css', '@fortawesome/fontawesome-svg-core/styles.css']
 });

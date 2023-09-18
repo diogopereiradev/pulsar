@@ -4,9 +4,11 @@ export default {
     "./src/components/**/*.{js,vue,ts}",
     "./src/layouts/**/*.vue",
     "./src/pages/**/*.vue",
+    "./src/shared/**/*.vue",
     "./plugins/**/*.{js,ts}",
     "./nuxt.config.{js,ts}",
-    "./src/app.vue"
+    "./src/app.vue",
+    "./node_modules/primevue/**/*.{vue,js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {
@@ -19,7 +21,16 @@ export default {
         sm: '320px'
       },
       colors: {
-        background: '#030014'
+        background: '#0f111b',
+        primary: '#7665d7',
+        secondary: '#1a1d2e'
+      },
+      textColor: {
+        primary: '#d3d3d3',
+        secondary: '#7665d7'
+      },
+      fontFamily: {
+        default: ['Roboto', 'Inter', 'open-sans', 'sans-serif']
       }
     }
   },

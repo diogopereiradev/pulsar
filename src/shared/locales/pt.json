@@ -6,7 +6,7 @@
   "home": {
     "title": "Pulsar - Inicio"
   },
-  "editor": {
-    "title": "Pulsar - Editando uma documentação"
+  "documentations": {
+    "title": "Pulsar - Suas documentações"
   }
 }
