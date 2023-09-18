@@ -18,7 +18,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav class="w-full flex justify-between gap-[20px] items-center backdrop-blur-lg px-[30px] md:px-[50px] py-[40px]">
+  <nav class="relative w-full flex justify-between gap-[50px] items-center backdrop-blur-lg px-[30px] md:px-[50px] py-[40px] z-[99]">
     <AppIcon class="min-w-[40px]" size="40" color="#d3d3d3"/>
     <Dropdown 
       class="max-w-[215px]"

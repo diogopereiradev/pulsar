@@ -1,4 +1,5 @@
 import { defineNuxtPlugin } from "#app";
+import Button from "primevue/button";
 import PrimeVue from "primevue/config";
 import { usePassThrough } from "primevue/passthrough";
 import Tailwind from "primevue/passthrough/tailwind";
@@ -23,6 +24,15 @@ const StylesWithTailwind = usePassThrough(
           hover:text-primary/80
         `
       })
+    },
+    toolbar: {
+      root: '!bg-secondary/60 !backdrop-blur-lg border-0 px-[35px] shadow'
+    },
+    inputtext: {
+      root: 'h-[40px] !bg-secondary/10 !border-1 !border-primary/30 focus:!border-primary/50 focus:!shadow-none duration-300'
+    },
+    button: {
+      root: 'justify-center items-center bg-secondary/10 hover:bg-primary/80 !p-0 !border-1 !border-primary/30 focus:!shadow-none'
     }
   } as typeof Tailwind,
   {
@@ -37,4 +47,5 @@ export default defineNuxtPlugin((nuxtApp) => {
     ripple: true,
     pt: StylesWithTailwind
   });
+  nuxtApp.vueApp.component('Button', Button);
 });

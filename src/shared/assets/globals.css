@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  * {
+    @apply !font-default;
+  }
+
   body {
     @apply bg-background;
   }

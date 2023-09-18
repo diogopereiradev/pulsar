@@ -6,5 +6,7 @@ import Navbar from '~/shared/components/Navbar.vue';
 <template>
   <AppHead />
   <Navbar />
-  <slot />
+  <div class="max-w-[2120px] mx-auto">
+    <slot />
+  </div>
 </template>
