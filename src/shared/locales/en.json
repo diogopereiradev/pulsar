@@ -7,6 +7,14 @@
     "title": "Pulsar - Home"
   },
   "documentations": {
-    "title": "Pulsar - Your documentations"
+    "title": "Pulsar - Your documentations",
+    "toolbar-search-placeholder": "Search for documentations",
+    "new-doc-modal-title": "Create new documentation",
+    "new-doc-modal-title-input-label": "Title",
+    "new-doc-modal-title-input-placeholder": "Documentation Title",
+    "new-doc-modal-description-input-label": "Description",
+    "new-doc-modal-description-input-placeholder": "Type here the documentation description",
+    "new-doc-modal-indexestable-input-label": "Indexes Table",
+    "new-doc-modal-colors-area-title": "Colors"
   }
 }

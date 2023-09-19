@@ -7,6 +7,9 @@ export type IDocumentation = {
   description: string,
   pages: IDocumentationPage[],
   colors: IDocumentationColorPalette,
+  features: {
+    indexesTable: boolean
+  },
   createdAt: number
 };
 
@@ -24,6 +27,9 @@ export type IDocumentationColorPalette = {
   primary: string,
   secondary: string,
   highlight: string
+  navbarTitle: string,
+  text: string,
+  divider: string
 }
 
 export class Documentation {

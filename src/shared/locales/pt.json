@@ -7,6 +7,14 @@
     "title": "Pulsar - Inicio"
   },
   "documentations": {
-    "title": "Pulsar - Suas documentações"
+    "title": "Pulsar - Suas documentações",
+    "toolbar-search-placeholder": "Pesquisar documentações",
+    "new-doc-modal-title": "Criar nova documentação",
+    "new-doc-modal-title-input-label": "Titulo",
+    "new-doc-modal-title-input-placeholder": "Titulo da documentação",
+    "new-doc-modal-description-input-label": "Descrição",
+    "new-doc-modal-description-input-placeholder": "Digite aqui a descrição da documentação",
+    "new-doc-modal-indexestable-input-label": "Tabela de Indíces",
+    "new-doc-modal-colors-area-title": "Cores"
   }
 }
