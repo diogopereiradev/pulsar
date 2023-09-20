@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   },
   modules: ['@nuxtjs/i18n'],
   i18n: {
+    vueI18n: './i18n.config.ts',
     defaultLocale: 'en',
     compilation: {
       jit: false
@@ -23,13 +24,13 @@ export default defineNuxtConfig({
         code: 'en',
         iso: 'en-US',
         name: 'English',
-        file: './shared/locales/en.json'
+        file: 'shared/locales/en.json'
       },
       {
         code: 'pt',
         iso: 'pt-BR',
         name: 'Português',
-        file: './shared/locales/pt.json'
+        file: 'shared/locales/pt.json'
       }
     ]
   },

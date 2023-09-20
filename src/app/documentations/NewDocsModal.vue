@@ -6,7 +6,9 @@ import ScrollPanel from 'primevue/scrollpanel';
 import InputSwitch from 'primevue/inputswitch';
 import ColorPicker from 'primevue/colorpicker';
 import DocPrototype from './DocPrototype.vue';
+import { useDocumentations } from '~/shared/states/documentationsState';
 
+const docs = useDocumentations();
 const isOpen = useState('newdocsmodal-open-state', () => false);
 const formData = ref<Omit<IDocumentation, 'id' | 'createdAt' | 'pages'>>({
   title: '',
@@ -30,14 +32,22 @@ const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
 }
 
 const handleDocCreate = async () => {
-  const result = await Documentation.create({
+  const payload = {
     id: Math.round(Math.random() * (1000 - 1) + 1),
     pages: [],
     createdAt: Date.now(),
     ...JSON.parse(JSON.stringify(formData.value))
-  });
+  };
+  const result = await Documentation.create(payload);
+
   if(result === 1) {
     isOpen.value = !isOpen.value;
+    docs.value.data = [
+      ...docs.value.data,
+      payload
+    ];
+    formData.value.title = '';
+    formData.value.description = '';
   } else {
     alert('Error on creating a new documentation!');
   }
@@ -74,7 +84,7 @@ const handleDocCreate = async () => {
             <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-description-input-label') }}</label>
             <TextArea
               v-model="formData.description"
-              class="!border-secondary/60 contrast-200"
+              class="!border-secondary/60 contrast-200 max-h-[74px]"
               :placeholder="$t('documentations.new-doc-modal-description-input-placeholder')"
               required
             />
