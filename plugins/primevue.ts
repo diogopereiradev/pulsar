@@ -49,6 +49,12 @@ const StylesWithTailwind = usePassThrough(
       input: 'w-[80px] !shadow-none hover:!border-primary/80',
       panel: '!z-[9999]',
       hueHandle: ''
+    },
+    paginator: {
+      root: '!bg-secondary/60 !backdrop-blur-lg border-0 px-[35px] shadow',
+      pageButton: ({ props, state, context }) => ({
+        class: `${context.active? '!bg-primary' : '!bg-transparent'} !shadow-none`
+      })
     }
   } as typeof Tailwind,
   {

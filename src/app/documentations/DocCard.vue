@@ -5,7 +5,7 @@ defineProps<IDocumentation>();
 </script>
 
 <template>
-  <div class="grow w-[370px] min-h-[300px] bg-secondary/70 backdrop-blur-lg rounded-[7px] cursor-pointer">
+  <div class="grow w-[370px] min-h-[300px] bg-secondary/80 backdrop-blur-lg rounded-[7px] cursor-pointer">
     <div class="flex justify-center pt-[20px] w-full h-[140px] bg-secondary/20 backdrop-contrast-[1.40] rounded-t-[7px] overflow-hidden">
       <DocPrototype
         :colors="colors"
