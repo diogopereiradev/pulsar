@@ -35,9 +35,6 @@ function searchClear() {
     </template>
     <template #end>
       <div class="flex items-center gap-[10px] w-full">
-        <Button class="w-[45px] min-h-[45px] !bg-secondary">
-          <font-awesome-icon icon="fa-solid fa-filter" class="text-primary/80" />
-        </Button>
         <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[45px] min-h-[45px] !bg-primary">
           <font-awesome-icon icon="fa-solid fa-plus" class="text-[20px]" />
         </Button>

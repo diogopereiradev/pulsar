@@ -38,6 +38,8 @@ const StylesWithTailwind = usePassThrough(
       root: 'w-full max-h-[130px] rounded-[5px] !bg-secondary/10 placeholder:text-primary/30 !border-1 !border-primary/30 focus:!border-primary/50 focus:!shadow-none duration-300'
     },
     scrollpanel: {
+      root: '!w-full',
+      wrapper: 'w-auto',
       barY: 'ml-[40px] !bg-secondary/30 contrast-200'
     },
     inputswitch: {
@@ -46,7 +48,7 @@ const StylesWithTailwind = usePassThrough(
       })
     },
     colorpicker: {
-      input: 'w-[80px] !shadow-none hover:!border-primary/80',
+      input: 'w-full !shadow-none hover:!border-primary/80',
       panel: '!z-[9999]',
       hueHandle: ''
     },

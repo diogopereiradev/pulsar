@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Documentation, IDocumentation } from '~/shared/storage/models/Documentation';
+import Tailwind from "primevue/passthrough/tailwind";
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import ScrollPanel from 'primevue/scrollpanel';
@@ -7,6 +8,7 @@ import InputSwitch from 'primevue/inputswitch';
 import ColorPicker from 'primevue/colorpicker';
 import DocPrototype from './DocPrototype.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
+import { usePassThrough } from 'primevue/passthrough';
 
 const docs = useDocumentations();
 const formData = ref<Omit<IDocumentation, 'id' | 'createdAt' | 'pages'>>({
@@ -51,23 +53,53 @@ const handleDocCreate = async () => {
     alert('Error on creating a new documentation!');
   }
 };
+
+// Array to dinamically generate "color pickers" of the modal
+const colors = [
+  generateColor('Background', 'background'),
+  generateColor('Primary', 'primary'),
+  generateColor('Secondary', 'secondary'),
+  generateColor('Highlight', 'highlight'),
+  generateColor('Text', 'text'),
+  generateColor('Navbar Title', 'navbarTitle'),
+  generateColor('Divider', 'divider')
+];
+
+type ColorName = 'primary' | 'secondary' | 'background' | 'highlight' | 'text' | 'navbarTitle' | 'divider'
+
+function generateColor(title: string, colorName: ColorName) {
+  return {
+    title,
+    colorName
+  };
+}
 </script>
 
 <template>
-  <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex max-lg:flex-col min-w-full lg:min-w-[400px] h-full lg:h-[400px] bg-secondary lg:rounded-[10px] max-lg:overflow-scroll z-[91]`">
+  <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex max-xl:flex-col min-w-full xl:min-w-[400px] h-full xl:h-[460px] bg-secondary xl:rounded-[10px] max-xl:overflow-scroll z-[91]`">
     <!--Doc prototype-->
-    <div class="flex justify-center items-center w-full lg:w-[350px] max-lg:py-[30px] bg-[#10111f] h-full rounded-l-[10px]">
+    <div class="flex justify-center items-center w-full xl:w-[400px] max-xl:py-[30px] bg-[#10111f] h-full rounded-l-[10px]">
       <DocPrototype
         :colors="formData.colors"
         :features="formData.features"
       />
     </div>
     <!--Form-->
-    <div class="w-full lg:w-[400px] p-[40px]">
+    <div class="w-full xl:w-[450px] p-[40px]">
       <h2 class="text-primary/80 text-[20px] font-[500]">{{ $t('documentations.new-doc-modal-title') }}</h2>
       <hr class="w-full h-[1px] bg-divider border-none mt-[20px]" />
-      <ScrollPanel class="relative h-[310px]">
-        <form @submit.prevent="handleDocCreate()" class="relative w-full h-full flex flex-col pb-[710px]">
+      <ScrollPanel 
+        class="relative w-full h-[calc(100%-10px)]"
+        :pt="
+          usePassThrough(Tailwind, { 
+            scrollpanel: { 
+              barY: 'max-xl:hidden ml-[40px] !bg-secondary/30 contrast-200' 
+            } 
+          }, 
+          { mergeProps: true, mergeSections: true }
+        )"
+      >
+        <form @submit.prevent="handleDocCreate()" class="relative w-full h-full flex flex-col">
           <!--Title input-->
           <div class="w-full flex flex-col gap-[8px] mt-[20px]">
             <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-title-input-label') }}</label>
@@ -96,67 +128,23 @@ const handleDocCreate = async () => {
           <!--Colors-->
           <div class="w-full flex flex-col gap-[8px] mt-[30px]">
             <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-colors-area-title') }}</label>
-            <div class="flex flex-wrap gap-[25px] justify-between mt-[10px]">
-              <div class="flex flex-col gap-[8px]">
-                <label class="text-sm text-primary/40 font-[500]">Background</label>
+            <div class="flex flex-wrap gap-[25px] mt-[10px]">
+              <div
+                v-for="color of colors"
+                :key="color.title"
+                class="w-[calc(50%-25px)] sm:max-w-[105px] flex flex-col gap-[8px]"
+              >
+                <label class="text-sm text-primary/40 font-[500]">{{ color.title }}</label>
                 <ColorPicker 
-                  :model-value="formData.colors.background" 
-                  @update:model-value="(val: string) => onColorChange('background', val)" 
-                  format="hex" 
-                />
-              </div>
-              <div class="flex flex-col gap-[8px]">
-                <label class="text-sm text-primary/40 font-[500]">Primary</label>
-                <ColorPicker
-                  :model-value="formData.colors.primary" 
-                  @update:model-value="(val: string) => onColorChange('primary', val)" 
-                  format="hex" 
-                />
-              </div>
-              <div class="flex flex-col gap-[8px]">
-                <label class="text-sm text-primary/40 font-[500]">Secondary</label>
-                <ColorPicker
-                  :model-value="formData.colors.secondary" 
-                  @update:model-value="(val: string) => onColorChange('secondary', val)" 
-                  format="hex" 
-                />
-              </div>
-              <div class="flex flex-col gap-[8px]">
-                <label class="text-sm text-primary/40 font-[500]">Navbar Title</label>
-                <ColorPicker
-                  :model-value="formData.colors.navbarTitle" 
-                  @update:model-value="(val: string) => onColorChange('navbarTitle', val)" 
-                  format="hex" 
-                />
-              </div>
-              <div class="flex flex-col gap-[8px]">
-                <label class="text-sm text-primary/40 font-[500]">Text</label>
-                <ColorPicker
-                  :model-value="formData.colors.text" 
-                  @update:model-value="(val: string) => onColorChange('text', val)" 
-                  format="hex" 
-                />
-              </div>
-              <div class="flex flex-col gap-[8px]">
-                <label class="text-sm text-primary/40 font-[500]">Highlight</label>
-                <ColorPicker
-                  :model-value="formData.colors.highlight" 
-                  @update:model-value="(val: string) => onColorChange('highlight', val)" 
-                  format="hex" 
-                />
-              </div>
-              <div class="flex flex-col gap-[8px]">
-                <label class="text-sm text-primary/40 font-[500]">Divider</label>
-                <ColorPicker
-                  :model-value="formData.colors.divider" 
-                  @update:model-value="(val: string) => onColorChange('divider', val)" 
+                  :model-value="formData.colors[color.colorName]" 
+                  @update:model-value="(val: string) => onColorChange(color.colorName, val)" 
                   format="hex" 
                 />
               </div>
             </div>
           </div>
           <!--Cancel and submit buttons-->
-          <div class="flex gap-[10px] mt-[50px] self-end">
+          <div class="flex flex-wrap gap-[10px] mt-[50px] xl:pb-[40px] self-end">
             <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-[40px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">Cancelar</Button>
             <Button type="submit" class="w-[140px] !h-[40px] !bg-primary hover:!bg-primary/50">Criar</Button>
           </div>
