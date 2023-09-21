@@ -51,7 +51,7 @@ const StylesWithTailwind = usePassThrough(
       hueHandle: ''
     },
     paginator: {
-      root: '!bg-secondary/60 !backdrop-blur-lg border-0 px-[35px] shadow',
+      root: '!bg-transparent !backdrop-blur-lg border-0 px-[35px] shadow-none',
       pageButton: ({ props, state, context }) => ({
         class: `${context.active? '!bg-primary' : '!bg-transparent'} !shadow-none`
       })

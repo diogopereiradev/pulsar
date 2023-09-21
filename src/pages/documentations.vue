@@ -3,18 +3,6 @@ import MouseLight from '~/shared/components/MouseLight.vue';
 import DocsToolbar from '~/app/documentations/DocsToolbar.vue';
 import NewDocsModal from '~/app/documentations/NewDocsModal.vue';
 import DocsList from '~/app/documentations/DocsList.vue';
-import { Documentation } from '~/shared/storage/models/Documentation';
-import { useDocumentations } from '~/shared/states/documentationsState';
-
-const docs = useDocumentations();
-
-onMounted(async () => {
-  const initialDocs = await Documentation.getAll();
-  
-  if(initialDocs) {
-    docs.value.data = initialDocs;
-  }
-});
 </script>
 
 <template>

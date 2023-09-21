@@ -9,7 +9,6 @@ import DocPrototype from './DocPrototype.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
 
 const docs = useDocumentations();
-const isOpen = useState('newdocsmodal-open-state', () => false);
 const formData = ref<Omit<IDocumentation, 'id' | 'createdAt' | 'pages'>>({
   title: '',
   description: '',
@@ -41,7 +40,7 @@ const handleDocCreate = async () => {
   const result = await Documentation.create(payload);
 
   if(result === 1) {
-    isOpen.value = !isOpen.value;
+    docs.value.newDocsModalIsOpen = !docs.value.newDocsModalIsOpen;
     docs.value.data = [
       ...docs.value.data,
       payload
@@ -55,7 +54,7 @@ const handleDocCreate = async () => {
 </script>
 
 <template>
-  <div :class="`${isOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex max-lg:flex-col min-w-full lg:min-w-[400px] h-full lg:h-[400px] bg-secondary lg:rounded-[10px] max-lg:overflow-scroll z-[91]`">
+  <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex max-lg:flex-col min-w-full lg:min-w-[400px] h-full lg:h-[400px] bg-secondary lg:rounded-[10px] max-lg:overflow-scroll z-[91]`">
     <!--Doc prototype-->
     <div class="flex justify-center items-center w-full lg:w-[350px] max-lg:py-[30px] bg-[#10111f] h-full rounded-l-[10px]">
       <DocPrototype
@@ -158,7 +157,7 @@ const handleDocCreate = async () => {
           </div>
           <!--Cancel and submit buttons-->
           <div class="flex gap-[10px] mt-[50px] self-end">
-            <Button @click="isOpen = !isOpen" class="w-[140px] !h-[40px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">Cancelar</Button>
+            <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-[40px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">Cancelar</Button>
             <Button type="submit" class="w-[140px] !h-[40px] !bg-primary hover:!bg-primary/50">Criar</Button>
           </div>
         </form>
@@ -166,7 +165,7 @@ const handleDocCreate = async () => {
     </div>
   </div>
   <div 
-    @click="isOpen = !isOpen"
-    :class="`fixed left-0 top-0 w-screen h-screen bg-[#00000090] z-[90] duration-300 ${isOpen? 'opacity-1' : 'opacity-0 pointer-events-none'}`"
+    @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen"
+    :class="`fixed left-0 top-0 w-screen h-screen bg-[#00000090] z-[90] duration-300 ${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'}`"
   ></div>
 </template>

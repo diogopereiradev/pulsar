@@ -3,14 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faMagnifyingGlass,
   faPlus,
-  faFilter
+  faFilter,
+  faClose
 } from "@fortawesome/free-solid-svg-icons";
 
 config.autoAddCss = false;
 library.add(...[
   faMagnifyingGlass,
   faPlus,
-  faFilter
+  faFilter,
+  faClose
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {
