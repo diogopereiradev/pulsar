@@ -76,7 +76,7 @@ function generateColor(title: string, colorName: ColorName) {
 </script>
 
 <template>
-  <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex max-xl:flex-col min-w-full xl:min-w-[400px] h-full xl:h-[460px] bg-secondary xl:rounded-[10px] max-xl:overflow-scroll z-[91]`">
+  <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex max-xl:flex-col min-w-full xl:min-w-[400px] h-full xl:h-[450px] bg-secondary xl:rounded-[10px] max-xl:overflow-scroll z-[91]`">
     <!--Doc prototype-->
     <div class="flex justify-center items-center w-full xl:w-[400px] max-xl:py-[30px] bg-[#10111f] h-full rounded-l-[10px]">
       <DocPrototype
