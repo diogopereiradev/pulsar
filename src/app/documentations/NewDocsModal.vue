@@ -9,6 +9,7 @@ import ColorPicker from 'primevue/colorpicker';
 import DocPrototype from './DocPrototype.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
 import { usePassThrough } from 'primevue/passthrough';
+import { Status } from '~/@types/status';
 
 const docs = useDocumentations();
 const formData = ref<Omit<IDocumentation, 'id' | 'createdAt' | 'pages'>>({
@@ -41,7 +42,7 @@ const handleDocCreate = async () => {
   };
   const result = await Documentation.create(payload);
 
-  if(result === 1) {
+  if(result === Status.OK) {
     docs.value.newDocsModalIsOpen = !docs.value.newDocsModalIsOpen;
     docs.value.data = [
       ...docs.value.data,
@@ -145,8 +146,12 @@ function generateColor(title: string, colorName: ColorName) {
           </div>
           <!--Cancel and submit buttons-->
           <div class="flex flex-wrap gap-[10px] mt-[50px] xl:pb-[40px] self-end">
-            <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-[40px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">Cancelar</Button>
-            <Button type="submit" class="w-[140px] !h-[40px] !bg-primary hover:!bg-primary/50">Criar</Button>
+            <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-[40px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">
+              {{ $t('documentations.new-doc-modal-cancel-button-message') }}
+            </Button>
+            <Button type="submit" class="w-[140px] !h-[40px] !bg-primary hover:!bg-primary/50">
+              {{ $t('documentations.new-doc-modal-create-button-message') }}
+            </Button>
           </div>
         </form>
       </ScrollPanel>

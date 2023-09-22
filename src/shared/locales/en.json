@@ -16,7 +16,18 @@
     "new-doc-modal-description-input-placeholder": "Type here the documentation description",
     "new-doc-modal-indexestable-input-label": "Indexes Table",
     "new-doc-modal-colors-area-title": "Colors",
+    "new-doc-modal-cancel-button-message": "Cancel",
+    "new-doc-modal-create-button-message": "Create",
     "documentations-list-title": "Your documentations",
-    "documentations-list-empty-message": "No documentations"
+    "documentations-list-empty-message": "No documentations",
+    "documentations-list-item-contextmenu-edit-message": "Edit",
+    "documentations-list-item-contextmenu-delete-message": "Delete",
+    "edit-doc-modal-title": "Edit Documentation",
+    "edit-doc-modal-cancel-button-message": "Cancel",
+    "edit-doc-modal-save-button-message": "Save",
+    "delete-doc-dialog-title": "Do you want to delete the documentation?",
+    "delete-doc-dialog-message": "After deleting this documentation, you won't be able to recover your data. Think better before taking this action.",
+    "delete-doc-dialog-confirm-button-message": "Delete",
+    "delete-doc-dialog-cancel-button-message": "Close"
   }
 }

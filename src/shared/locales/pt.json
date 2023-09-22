@@ -16,7 +16,18 @@
     "new-doc-modal-description-input-placeholder": "Digite aqui a descrição da documentação",
     "new-doc-modal-indexestable-input-label": "Tabela de Indíces",
     "new-doc-modal-colors-area-title": "Cores",
+    "new-doc-modal-cancel-button-message": "Cancelar",
+    "new-doc-modal-create-button-message": "Criar",
     "documentations-list-title": "Suas documentações",
-    "documentations-list-empty-message": "Nenhuma documentação"
+    "documentations-list-empty-message": "Nenhuma documentação",
+    "documentations-list-item-contextmenu-edit-message": "Editar",
+    "documentations-list-item-contextmenu-delete-message": "Deletar",
+    "edit-doc-modal-title": "Editar Documentação",
+    "edit-doc-modal-cancel-button-message": "Cancelar",
+    "edit-doc-modal-save-button-message": "Salvar",
+    "delete-doc-dialog-title": "Deseja deletar essa documentação?",
+    "delete-doc-dialog-message": "Após deletar essa documentação você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
+    "delete-doc-dialog-confirm-button-message": "Deletar",
+    "delete-doc-dialog-cancel-button-message": "Fechar"
   }
 }

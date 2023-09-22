@@ -1,6 +1,7 @@
 import { defineNuxtPlugin } from "#app";
 import Button from "primevue/button";
 import PrimeVue from "primevue/config";
+import ConfirmationService from 'primevue/confirmationservice';
 import { usePassThrough } from "primevue/passthrough";
 import Tailwind from "primevue/passthrough/tailwind";
 
@@ -57,6 +58,10 @@ const StylesWithTailwind = usePassThrough(
       pageButton: ({ props, state, context }) => ({
         class: `${context.active? '!bg-primary' : '!bg-transparent'} !shadow-none`
       })
+    },
+    contextmenu: {
+      root: '!bg-secondary',
+      menuitem: '!font-[500] [&_span]:text-primary/80 duration-300'
     }
   } as typeof Tailwind,
   {
@@ -71,5 +76,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     ripple: true,
     pt: StylesWithTailwind
   });
+  nuxtApp.vueApp.use(ConfirmationService);
   nuxtApp.vueApp.component('Button', Button);
 });

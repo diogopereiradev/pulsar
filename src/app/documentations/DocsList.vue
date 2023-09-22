@@ -52,7 +52,7 @@ onMounted(async () => {
         flex-wrap
     `">
       <DocCard
-        :class="docs.currentPageData.length <= 2 && 'grow-0 max-xl:grow'"
+        :class="docs.currentPageData.length <= 2 && '!grow-0 max-xl:!grow'"
         v-for="doc in docs.currentPageData"
         :key="doc.id"
         :data="doc"
