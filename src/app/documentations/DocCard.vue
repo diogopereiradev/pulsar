@@ -85,7 +85,7 @@ function deleteConfirmDialog() {
     </NuxtLinkLocale>
     <!--Doc ContextMenu-->
     <div class="opacity-0 group-hover:opacity-100 duration-300 absolute right-[30px] top-[30px]">
-      <Button @click="contextMenuRef.show($event)" class="min-w-[40px] min-h-[40px] bg-primary text-[23px] rounded-[6px]" aria-haspopup="true">
+      <Button @click="contextMenuRef.show($event)" class="min-w-[40px] min-h-[40px] !bg-primary text-[23px] rounded-[6px]" aria-haspopup="true">
         <font-awesome-icon icon="fa-solid fa-ellipsis" />
       </Button>
       <ContextMenu ref="contextMenuRef" :model="contextMenuItems" />
