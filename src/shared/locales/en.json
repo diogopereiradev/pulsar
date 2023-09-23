@@ -3,6 +3,11 @@
     "title": "Pulsar - Create pages to document your project",
     "description": "Create modern documentation for your application using Pulsar. You will generate custom static documentation pages with Pulsar and can use them wherever you want."
   },
+  "loading": {
+    "message-1": "1...2...3...Little sheep, why is it taking so long?",
+    "message-2": "Your page is loading, please wait a moment.",
+    "message-3": "It seems like Clovis is taking a little while."
+  },
   "home": {
     "title": "Pulsar - Home"
   },
@@ -29,5 +34,19 @@
     "delete-doc-dialog-message": "After deleting this documentation, you won't be able to recover your data. Think better before taking this action.",
     "delete-doc-dialog-confirm-button-message": "Delete",
     "delete-doc-dialog-cancel-button-message": "Close"
+  },
+  "editor": {
+    "title": "Pulsar - Editing",
+    "error-notfound-message": "The documentation informed not exists!",
+    "error-notfound-button-label": "Back to Documentations",
+    "controls-menu-save-button-aria-label": "Save",
+    "controls-menu-back-to-docs-button-message": "Back",
+    "controls-menu-basic-infos-title": "Basic informations",
+    "controls-menu-title-input-label": "Title",
+    "controls-menu-title-input-placeholder": "Documentation Title",
+    "controls-menu-description-input-label": "Description",
+    "controls-menu-description-input-placeholder": "Type here the documentation description",
+    "controls-menu-indexestable-input-label": "Indexes Table",
+    "controls-menu-colors-area-title": "Colors"
   }
 }

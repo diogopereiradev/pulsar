@@ -3,6 +3,11 @@
     "title": "Pulsar - Crie páginas para documentar seu projeto",
     "description": "Crie documentações modernas para a sua aplicação usando o Pulsar. Você gerará páginas estáticas de documentações customizadas pelo Pulsar e poderá usar onde quiser."
   },
+  "loading": {
+    "message-1": "Birll, vamo carregar isso aqui!!!",
+    "message-2": "Sua página está carregando, aguarde um pouco.",
+    "message-3": "Parece que o Clovis está demorando um pouco."
+  },
   "home": {
     "title": "Pulsar - Inicio"
   },
@@ -29,5 +34,19 @@
     "delete-doc-dialog-message": "Após deletar essa documentação você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
     "delete-doc-dialog-confirm-button-message": "Deletar",
     "delete-doc-dialog-cancel-button-message": "Fechar"
+  },
+  "editor": {
+    "title": "Pulsar - Editando",
+    "error-notfound-message": "A documentação informada não existe!",
+    "error-notfound-button-label": "Voltar para Documentações",
+    "controls-menu-save-button-aria-label": "Salvar",
+    "controls-menu-back-to-docs-button-message": "Voltar",
+    "controls-menu-basic-infos-title": "Informações básicas",
+    "controls-menu-title-input-label": "Titulo",
+    "controls-menu-title-input-placeholder": "Titulo da documentação",
+    "controls-menu-description-input-label": "Descrição",
+    "controls-menu-description-input-placeholder": "Digite aqui a descrição da documentação",
+    "controls-menu-indexestable-input-label": "Tabela de Indíces",
+    "controls-menu-colors-area-title": "Cores"
   }
 }

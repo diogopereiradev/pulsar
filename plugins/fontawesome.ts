@@ -7,7 +7,10 @@ import {
   faClose,
   faEllipsis,
   faPenToSquare,
-  faTrash
+  faTrash,
+  faFloppyDisk,
+  faCircleNotch,
+  faArrowLeftLong
 } from "@fortawesome/free-solid-svg-icons";
 
 config.autoAddCss = false;
@@ -18,7 +21,10 @@ library.add(...[
   faClose,
   faEllipsis,
   faPenToSquare,
-  faTrash
+  faTrash,
+  faFloppyDisk,
+  faCircleNotch,
+  faArrowLeftLong
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {
