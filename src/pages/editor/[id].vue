@@ -31,8 +31,11 @@ onBeforeMount(async () => {
     <Title>{{ `${$t('editor.title')} ${params.id}` }}</Title>
   </Head>
   <!--Page content-->
-  <div v-if="docExists && pageIsLoaded">
+  <div class="flex max-2xl:flex-col" v-if="docExists && pageIsLoaded">
     <ControlsMenu />
+    <div class="w-full h-screen flex justify-center items-center">
+      <p class="text-[18px] text-primary/40 font-[500]">Loading content...</p>
+    </div>
   </div>
   <!--Loading and Error components-->
   <Loading v-if="!pageIsLoaded" />

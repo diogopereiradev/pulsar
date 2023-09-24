@@ -1,30 +1,21 @@
 import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import {
-  faMagnifyingGlass,
-  faPlus,
-  faFilter,
-  faClose,
-  faEllipsis,
-  faPenToSquare,
-  faTrash,
-  faFloppyDisk,
-  faCircleNotch,
-  faArrowLeftLong
-} from "@fortawesome/free-solid-svg-icons";
+import * as SolidIcons from "@fortawesome/free-solid-svg-icons";
 
 config.autoAddCss = false;
 library.add(...[
-  faMagnifyingGlass,
-  faPlus,
-  faFilter,
-  faClose,
-  faEllipsis,
-  faPenToSquare,
-  faTrash,
-  faFloppyDisk,
-  faCircleNotch,
-  faArrowLeftLong
+  SolidIcons.faMagnifyingGlass,
+  SolidIcons.faPlus,
+  SolidIcons.faFilter,
+  SolidIcons.faClose,
+  SolidIcons.faEllipsis,
+  SolidIcons.faPenToSquare,
+  SolidIcons.faTrash,
+  SolidIcons.faFloppyDisk,
+  SolidIcons.faCircleNotch,
+  SolidIcons.faArrowLeftLong,
+  SolidIcons.faEye,
+  SolidIcons.faBars
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

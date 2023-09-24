@@ -40,6 +40,7 @@
     "error-notfound-message": "The documentation informed not exists!",
     "error-notfound-button-label": "Back to Documentations",
     "controls-menu-save-button-aria-label": "Save",
+    "controls-menu-previewmode-button-aria-label": "Preview Mode",
     "controls-menu-back-to-docs-button-message": "Back",
     "controls-menu-basic-infos-title": "Basic informations",
     "controls-menu-title-input-label": "Title",

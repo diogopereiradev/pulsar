@@ -4,6 +4,13 @@ export default defineNuxtConfig({
     './plugins/fontawesome.ts',
     './plugins/primevue.ts'
   ],
+  nitro: {
+    compressPublicAssets: true,
+    minify: true
+  },
+  routeRules: {
+    '/**': { prerender: true }
+  },
   build: {
     transpile: [
       '@fortawesome/vue-fontawesome',
@@ -36,7 +43,7 @@ export default defineNuxtConfig({
   },
   devtools: { 
     enabled: true
-  },
+  },  
   srcDir: 'src',
   dir: { public: '../public' },
   postcss: {
@@ -45,5 +52,10 @@ export default defineNuxtConfig({
       tailwindcss: {}
     }
   },
-  css: ['~/shared/assets/globals.css', '@fortawesome/fontawesome-svg-core/styles.css']
+  css: ['~/shared/assets/globals.css', '@fortawesome/fontawesome-svg-core/styles.css'],
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 1000
+    }
+  }
 });
