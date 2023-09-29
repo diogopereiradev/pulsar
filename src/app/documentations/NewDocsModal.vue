@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Documentation, IDocumentation } from '~/shared/storage/models/Documentation';
+import { Documentation, IDocumentation, documentationDataEmptyObj } from '~/shared/storage/models/Documentation';
 import Tailwind from "primevue/passthrough/tailwind";
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
@@ -12,22 +12,8 @@ import { usePassThrough } from 'primevue/passthrough';
 import { Status } from '~/@types/status';
 
 const docs = useDocumentations();
-const formData = ref<Omit<IDocumentation, 'id' | 'createdAt' | 'pages'>>({
-  title: '',
-  description: '',
-  colors: {
-    background: '#151829',
-    primary: '#7665d7',
-    secondary: '#1a1d2e',
-    highlight: '#7665d733',
-    text: '#d3d3d3',
-    navbarTitle: '#d3d3d3',
-    divider: '#2b304a'
-  },
-  features: {
-    indexesTable: true
-  }
-});
+const { id, createdAt, pages, ...formInitialData } = documentationDataEmptyObj;
+const formData = ref<Omit<IDocumentation, 'id' | 'createdAt' | 'pages'>>(formInitialData);
 
 const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
   formData.value.colors[type] = `#${val}`;

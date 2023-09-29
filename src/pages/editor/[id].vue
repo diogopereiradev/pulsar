@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import ConfirmDialog from 'primevue/confirmdialog';
 import ControlsMenu from '~/app/editor/ControlsMenu.vue';
+import DocEditor from '~/app/editor/DocEditor.vue';
 import Error from '~/shared/components/Error.vue';
 import Loading from '~/shared/components/Loading.vue';
 import { Documentation } from '~/shared/storage/models/Documentation';
@@ -30,12 +32,16 @@ onBeforeMount(async () => {
   <Head>
     <Title>{{ `${$t('editor.title')} ${params.id}` }}</Title>
   </Head>
+  <ConfirmDialog :pt="{
+    root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-[5px]',
+    header: 'text-primary !bg-secondary rounded-t-[5px] flex justify-between items-center py-[20px] px-[30px]',
+    content: 'text-primary !bg-secondary py-[10px] px-[30px]',
+    footer: 'text-primary !bg-secondary rounded-b-[5px] flex justify-end py-[25px] px-[25px]'
+  }"/>
   <!--Page content-->
   <div class="flex max-2xl:flex-col" v-if="docExists && pageIsLoaded">
     <ControlsMenu />
-    <div class="w-full h-screen flex justify-center items-center">
-      <p class="text-[18px] text-primary/40 font-[500]">Loading content...</p>
-    </div>
+    <DocEditor />
   </div>
   <!--Loading and Error components-->
   <Loading v-if="!pageIsLoaded" />

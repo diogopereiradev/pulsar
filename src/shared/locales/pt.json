@@ -48,6 +48,17 @@
     "controls-menu-description-input-label": "Descrição",
     "controls-menu-description-input-placeholder": "Digite aqui a descrição da documentação",
     "controls-menu-indexestable-input-label": "Tabela de Indíces",
-    "controls-menu-colors-area-title": "Cores"
+    "controls-menu-colors-area-title": "Cores",
+    "controls-menu-texts-area-title": "Textos",
+    "controls-menu-texts-navigation-title": "Titulo da navegação",
+    "controls-menu-navigation-title-input-placeholder": "Titulo do menu de navegação",
+    "controls-menu-texts-navigation-sub-title": "Sub titulo de navegação",
+    "controls-menu-navigatio-sub-title-input-placeholder": "Sub titulo para a navegação",
+    "doc-editor-new-category-button-message": "Nova Categoria",
+    "doc-editor-new-page-button-message": "Nova Página",
+    "delete-category-dialog-title": "Deseja deletar essa categoria?",
+    "delete-category-dialog-message": "Após deletar essa categoria você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
+    "delete-category-dialog-confirm-button-message": "Deletar",
+    "delete-category-dialog-cancel-button-message": "Fechar"
   }
 }

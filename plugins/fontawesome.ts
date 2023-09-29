@@ -15,7 +15,8 @@ library.add(...[
   SolidIcons.faCircleNotch,
   SolidIcons.faArrowLeftLong,
   SolidIcons.faEye,
-  SolidIcons.faBars
+  SolidIcons.faBars,
+  SolidIcons.faMap
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

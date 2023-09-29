@@ -2,7 +2,8 @@
 export default defineNuxtConfig({
   plugins: [
     './plugins/fontawesome.ts',
-    './plugins/primevue.ts'
+    './plugins/primevue.ts',
+    './plugins/directives.ts'
   ],
   nitro: {
     compressPublicAssets: true,

@@ -1,20 +1,6 @@
 <script setup lang="ts">
-type Props = {
-  colors: {
-    primary: string,
-    secondary: string,
-    background: string,
-    divider: string,
-    highlight: string,
-    navbarTitle: string,
-    text: string
-  },
-  features: {
-    indexesTable: boolean
-  }
-};
-
-defineProps<Props>();
+import { IDocumentation } from '~/shared/storage/models/Documentation';
+defineProps<Pick<IDocumentation, 'colors' | 'features'>>();
 </script>
 
 <template>

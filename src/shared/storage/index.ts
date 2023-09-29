@@ -1,7 +1,7 @@
 import { Status } from "~/@types/status";
 
 const DATABASE_NAME = 'pulsar';
-const DATABASE_VERSION = 1;
+const DATABASE_VERSION = 4;
 
 export async function dbConnect(callback: (db: IDBDatabase) => void): Promise<Status> {
   return new Promise((resolve, reject) => {
@@ -29,7 +29,10 @@ export function dbUpgradeNeeded() {
 
     documentationsStore.createIndex('id', 'id', { unique: true });
     documentationsStore.createIndex('title', 'title', { unique: false });
+    documentationsStore.createIndex('navigationTitle', 'navigationTitle', { unique: false });
+    documentationsStore.createIndex('navigationSubTitle', 'navigationSubTitle', { unique: false });
     documentationsStore.createIndex('description', 'description', { unique: false });
+    documentationsStore.createIndex('categories', 'categories', { unique: false });
     documentationsStore.createIndex('pages', 'pages', { unique: false });
     documentationsStore.createIndex('colors', 'colors', { unique: false });
     documentationsStore.createIndex('createdAt', 'createdAt', { unique: false });

@@ -4,13 +4,21 @@ import { dbConnect } from "..";
 export type IDocumentation = {
   id: number,
   title: string,
+  navigationTitle: string,
+  navigationSubTitle: string,
   description: string,
+  categories: IDocumentationCategory[],
   pages: IDocumentationPage[],
   colors: IDocumentationColorPalette,
   features: {
     indexesTable: boolean
   },
   createdAt: number
+};
+
+export type IDocumentationCategory = {
+  id: number,
+  label: string
 };
 
 export type IDocumentationPage = {
@@ -31,6 +39,29 @@ export type IDocumentationColorPalette = {
   text: string,
   divider: string
 }
+
+export const documentationDataEmptyObj: IDocumentation = {
+  id: 0,
+  title: '',
+  navigationTitle: '',
+  navigationSubTitle: '',
+  description: '',
+  categories: [],
+  pages: [],
+  colors: {
+    background: '#151829',
+    primary: '#7665d7',
+    secondary: '#1a1d2e',
+    highlight: '#7665d733',
+    text: '#d3d3d3',
+    navbarTitle: '#d3d3d3',
+    divider: '#2b304a'
+  },
+  features: {
+    indexesTable: true
+  },
+  createdAt: 0
+};
 
 export class Documentation {
   static TABLE_NAME: string = 'documentations';
