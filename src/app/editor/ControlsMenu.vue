@@ -40,12 +40,20 @@ async function handleSave() {
   }
 }
 
-// Check if editor.value.doc has been modified. If the data has been changed, the user can save the data
-watch(() => editor.value.doc, async (_, oldData) => {
-  if(!oldData?.id) return;
+function startAutoSave() {
+  setInterval(() => {
+    if(!editor.value.controlsMenu.isSaved && !editor.value.controlsMenu.isSaving && editor.value.doc.features.autoSave) {
+      handleSave();
+    }
+  }, 2000);
+}
+
+// Check if editor.value.doc or currentSelectedPage has been modified. If the data has been changed, the user can save the data
+watch(() => editor.value.doc, async (_, oldDocData) => {
+  if(!oldDocData.id) return;
   const docInfos = await Documentation.get(docId);
 
-  if(lodash.isEqual(oldData, docInfos)) {
+  if(lodash.isEqual(oldDocData, docInfos)) {
     editor.value.controlsMenu.isSaved = true;
   } else {
     editor.value.controlsMenu.isSaved = false;
@@ -62,6 +70,9 @@ onBeforeMount(async () => {
     isOpen.value = window.innerWidth >= 1180;
   });
   isOpen.value = window.innerWidth >= 1180;
+
+  // Start auto save
+  startAutoSave();
 });
 </script>
 
@@ -84,18 +95,19 @@ onBeforeMount(async () => {
         max-2xl:fixed
         max-2xl:left-0
         max-2xl:top-0
-        min-w-[330px]
-        max-w-[330px]
-        max-md:max-w-[330px]
+        min-w-[280px]
+        max-w-[280px]
+        max-md:max-w-[280px]
         max-md:min-w-[0px]
         bg-secondary
-        h-screen z-[92]
+        h-screen
+        z-[201]
       `"
       :pt="
         usePassThrough(Tailwind, { 
           scrollpanel: { 
             barY: '!bg-secondary/30 contrast-200' 
-          } 
+          }
         }, 
         { mergeProps: true, mergeSections: true }
       )"
@@ -143,6 +155,11 @@ onBeforeMount(async () => {
         <hr class="w-full h-[2px] bg-divider/60 border-none my-[30px]" />
         <!--Controls-->
         <div class="flex flex-col pt-[5px] pb-[20px]">
+          <!--Indexes table-->
+          <div class="w-full flex justify-between gap-[8px] mb-[40px]">
+            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-autosave-input-label') }}</label>
+            <InputSwitch v-model="editor.doc.features.autoSave"/>
+          </div>
           <h2 class="text-[18px] text-primary/80 font-[500]">{{ $t('editor.controls-menu-basic-infos-title') }}</h2>
           <!--Title input-->
           <div class="w-full flex flex-col gap-[8px] mt-[20px]">
@@ -214,7 +231,7 @@ onBeforeMount(async () => {
     <!--Menu mobile backdrop-->
     <div 
       @click="isOpen = false"
-      :class="`2xl:hidden ${!isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060]`"
+      :class="`2xl:hidden ${!isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] z-[200]`"
     ></div>
   </div>
 </template>

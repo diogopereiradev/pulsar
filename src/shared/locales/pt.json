@@ -40,6 +40,7 @@
     "error-notfound-message": "A documentação informada não existe!",
     "error-notfound-button-label": "Voltar para Documentações",
     "controls-menu-save-button-aria-label": "Salvar",
+    "controls-menu-autosave-input-label": "Salvar Automático",
     "controls-menu-previewmode-button-aria-label": "Modo de Prévia",
     "controls-menu-back-to-docs-button-message": "Voltar",
     "controls-menu-basic-infos-title": "Informações básicas",
@@ -59,6 +60,10 @@
     "delete-category-dialog-title": "Deseja deletar essa categoria?",
     "delete-category-dialog-message": "Após deletar essa categoria você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
     "delete-category-dialog-confirm-button-message": "Deletar",
-    "delete-category-dialog-cancel-button-message": "Fechar"
+    "delete-category-dialog-cancel-button-message": "Fechar",
+    "delete-page-dialog-title": "Deseja deletar essa página?",
+    "delete-page-dialog-message": "Após deletar essa página você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
+    "delete-page-dialog-confirm-button-message": "Deletar",
+    "delete-page-dialog-cancel-button-message": "Fechar"
   }
 }

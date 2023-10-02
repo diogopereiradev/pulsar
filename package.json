@@ -32,6 +32,7 @@
     "nuxt": "^3.7.3",
     "postcss": "^8.4.29",
     "prettier": "^3.0.3",
+    "sass": "^1.68.0",
     "tailwindcss": "^3.3.3"
   },
   "dependencies": {
@@ -39,8 +40,22 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@nuxtjs/i18n": "8.0.0-rc.4",
+    "@tiptap/extension-bold": "^2.1.11",
+    "@tiptap/extension-code-block-lowlight": "^2.1.11",
+    "@tiptap/extension-document": "^2.1.11",
+    "@tiptap/extension-heading": "^2.1.11",
+    "@tiptap/extension-horizontal-rule": "^2.1.11",
+    "@tiptap/extension-link": "^2.1.11",
+    "@tiptap/extension-paragraph": "^2.1.11",
+    "@tiptap/extension-placeholder": "^2.1.11",
+    "@tiptap/pm": "^2.1.11",
+    "@tiptap/starter-kit": "^2.1.11",
+    "@tiptap/vue-3": "^2.1.11",
+    "highlight.js": "^11.8.0",
     "lodash": "^4.17.21",
+    "lowlight": "^3.0.0",
     "primevue": "^3.34.1",
+    "tiptap-markdown": "^0.8.2",
     "vue-i18n": "^9.4.1"
   }
 }

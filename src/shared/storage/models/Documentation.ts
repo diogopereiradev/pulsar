@@ -11,6 +11,7 @@ export type IDocumentation = {
   pages: IDocumentationPage[],
   colors: IDocumentationColorPalette,
   features: {
+    autoSave: boolean,
     indexesTable: boolean
   },
   createdAt: number
@@ -23,6 +24,7 @@ export type IDocumentationCategory = {
 
 export type IDocumentationPage = {
   id: number,
+  categoryId: number,
   title: string,
   content: string,
   children: Omit<IDocumentationPage, 'children'>[],
@@ -58,6 +60,7 @@ export const documentationDataEmptyObj: IDocumentation = {
     divider: '#2b304a'
   },
   features: {
+    autoSave: true,
     indexesTable: true
   },
   createdAt: 0
