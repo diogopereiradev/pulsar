@@ -100,6 +100,7 @@ onBeforeMount(async () => {
         max-md:max-w-[280px]
         max-md:min-w-[0px]
         bg-secondary
+        2xl:bg-secondary/50
         h-screen
         z-[201]
       `"

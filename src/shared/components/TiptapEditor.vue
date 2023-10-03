@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useEditor, Editor, EditorEvents, EditorContent } from '@tiptap/vue-3';
+import { useEditor, BubbleMenu, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
 import Placeholder from '@tiptap/extension-placeholder';
 import Link from '@tiptap/extension-link';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import BubbleMenuExtension from '@tiptap/extension-bubble-menu';
 import { createLowlight } from 'lowlight';
 import { IDocumentationColorPalette } from '../storage/models/Documentation';
 
@@ -59,32 +60,6 @@ lowlight.register({ haskell });
 lowlight.register({ dart });
 lowlight.register({ fortran });
 
-// Set a new link if the text match with regex
-function handleTypedLinks(props: EditorEvents['selectionUpdate']) {
-  const text = props.editor.getText();
-  const textArray = text.split(' ');
-  const lastWord = textArray[textArray.length - 1];
-  const linkValidationRegex = /\b(?:https?:\/\/)[a-zA-Z]+\.[a-zA-Z]+\b/;
-  const selectionStart = text.length - lastWord.length;
-  const selectionEnd = text.length;
-  const initialCursorPosition = props.editor.state.selection.anchor;
-
-  // Validate if last word typed is a link
-  if(linkValidationRegex.test(lastWord) && props.transaction.docChanged) {
-    props.editor.commands.setTextSelection({ from: selectionStart, to: selectionEnd + 3 })
-    props.editor.commands.setLink({
-      target: '_blank',
-      href: lastWord,
-      rel: 'noreferrer'
-    });
-    props.editor.commands.setTextSelection(initialCursorPosition);
-  } else if(props.transaction.docChanged) {
-    props.editor.commands.setTextSelection({ from: selectionStart, to: selectionEnd + 3 })
-    props.editor.commands.unsetLink();
-    props.editor.commands.setTextSelection(initialCursorPosition);
-  }
-}
-
 const editor = useEditor({
   content: JSON.parse(JSON.stringify(props.content)),
   extensions: [
@@ -105,7 +80,7 @@ const editor = useEditor({
         if (node.type.name === 'heading') {
           return `Your H${node.attrs.level} is empty`;
         }
-        return 'Write something ...';
+        return 'Write using markdown ...';
       }
     }),
     Markdown.configure({
@@ -128,16 +103,32 @@ const editor = useEditor({
     }),
     CodeBlockLowlight.configure({
       lowlight
-    })
+    }),
+    BubbleMenuExtension
   ],
   onUpdate: () => {
     emit('update:modelValue', editor.value?.getHTML());
-  },
-  onSelectionUpdate: (props) => {
-    handleTypedLinks(props);
   }
 });
 
+function handleToolbarToggleLink() {
+  if(!editor.value?.isActive('link')) {
+    const url = window.prompt('URL:');
+    if(url) {
+      editor.value?.chain()
+        .focus()
+        .setLink({ href: url })
+        .unsetBold()
+        .unsetItalic()
+        .unsetStrike()
+        .run();
+    }
+  } else {
+    editor.value?.chain().focus().unsetLink().run();
+  }
+}
+
+// Set editor content on props.content was changed
 watch(() => props.content, (value) => {
   if(!editor) return;
   if(editor.value?.getHTML() === props.content) return;
@@ -152,7 +143,81 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <EditorContent class="w-full min-h-[50px]" :editor="editor" />
+  <div>
+    <!--Selection Toolbar-->
+    <bubble-menu
+      class="flex gap-[10px] items-center px-[7px] h-[40px] rounded-[5px]"
+      :style="{ backgroundColor: props.colors.secondary }"
+      :editor="editor"
+      :tippy-options="{ duration: 100 }"
+      v-if="editor"
+    >
+      <!--Bold button-->
+      <Button 
+        @click="editor.chain().focus().toggleBold().run()"
+        class="min-w-[35px] max-h-[30px] duration-300 rounded-[5px] border-none"
+        :style="{ 
+          color: editor.isActive('bold')? props.colors.highlight : props.colors.text,
+          backgroundColor: editor.isActive('bold')? props.colors.primary : 'transparent'
+        }"
+        :disabled="editor.isActive('link') || editor.isActive('codeBlock')"
+      >
+        <font-awesome-icon icon="fa-solid fa-bold"></font-awesome-icon>
+      </Button>
+      <!--Italic button-->
+      <Button 
+        @click="editor.chain().focus().toggleItalic().run()"
+        class="min-w-[35px] max-h-[30px] duration-300 rounded-[5px] border-none"
+        :style="{ 
+          color: editor.isActive('italic')? props.colors.highlight : props.colors.text,
+          backgroundColor: editor.isActive('italic')? props.colors.primary : 'transparent'
+        }"
+        :disabled="editor.isActive('link') || editor.isActive('codeBlock')"
+      >
+        <font-awesome-icon icon="fa-solid fa-italic"></font-awesome-icon>
+      </Button>
+      <!--Strike button-->
+      <Button 
+        @click="editor.chain().focus().toggleStrike().run()"
+        class="min-w-[35px] max-h-[30px] duration-300 rounded-[5px] border-none"
+        :style="{ 
+          color: editor.isActive('strike')? props.colors.highlight : props.colors.text,
+          backgroundColor: editor.isActive('strike')? props.colors.primary : 'transparent'
+        }"
+        :disabled="editor.isActive('link') || editor.isActive('codeBlock')"
+      >
+        <font-awesome-icon icon="fa-solid fa-strikethrough"></font-awesome-icon>
+      </Button>
+      <!--Divider-->
+      <hr class="w-[1px] h-[70%] border-none py-[5px]" :style="{ backgroundColor: props.colors.divider }" />
+      <!--Link button-->
+      <Button 
+        @click="handleToolbarToggleLink"
+        class="min-w-[35px] max-h-[30px] duration-300 rounded-[5px] border-none"
+        :style="{ 
+          color: editor.isActive('link')? props.colors.highlight : props.colors.text,
+          backgroundColor: editor.isActive('link')? props.colors.primary : 'transparent'
+        }"
+        :disabled="editor.isActive('codeBlock')"
+      >
+        <font-awesome-icon icon="fa-solid fa-link"></font-awesome-icon>
+      </Button>
+      <!--Code block button-->
+      <Button 
+        @click="editor.chain().focus().toggleCodeBlock().run()"
+        class="min-w-[35px] max-h-[30px] duration-300 rounded-[5px] border-none"
+        :style="{ 
+          color: editor.isActive('codeBlock')? props.colors.highlight : props.colors.text,
+          backgroundColor: editor.isActive('codeBlock')? props.colors.primary : 'transparent'
+        }"
+        :disabled="editor.isActive('link')"
+      >
+        <font-awesome-icon icon="fa-solid fa-code"></font-awesome-icon>
+      </Button>
+    </bubble-menu>
+    <!--Editor container-->
+    <editor-content class="w-full min-h-[50px]" :editor="editor" />
+  </div>
 </template>
 
 <style lang="scss">

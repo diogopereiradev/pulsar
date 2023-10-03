@@ -16,7 +16,12 @@ library.add(...[
   SolidIcons.faArrowLeftLong,
   SolidIcons.faEye,
   SolidIcons.faBars,
-  SolidIcons.faMap
+  SolidIcons.faMap,
+  SolidIcons.faBold,
+  SolidIcons.faItalic,
+  SolidIcons.faStrikethrough,
+  SolidIcons.faLink,
+  SolidIcons.faCode
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

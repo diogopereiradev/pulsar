@@ -151,16 +151,16 @@ function deletePageConfirmDialog(pageId: number) {
         <ul class="flex flex-col">
           <li v-for="page in editor.doc.pages.filter(page => page.categoryId === category.id)">
             <div class="group flex items-center justify-between">
+              <!--Page Button-->
               <button
                 @click="handlePageChange(page.id)"
                 :title="page.title"
-                class="max-w-[160px] font-[400] truncate duration-300" 
+                class="dinamic-color-page-link max-w-[160px] font-[400] truncate duration-300" 
                 :style="{ color: editor.currentSelectedPage.id === page.id? editor.doc.colors.primary : `${editor.doc.colors.text}70` }"
-                @mouseenter="($event.currentTarget as HTMLButtonElement).style.color = editor.doc.colors.primary"
-                @mouseleave="editor.currentSelectedPage.id != page.id && (($event.currentTarget as HTMLButtonElement).style.color = `${editor.doc.colors.text}70`)"
               >
                 {{ page.title }}
               </button>
+              <!--New page button-->
               <Button
                 @click="deletePageConfirmDialog(page.id)"
                 class="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto hover:!bg-[#f99999]/20 !w-[30px] !h-[30px] border-none"
@@ -194,3 +194,9 @@ function deletePageConfirmDialog(pageId: number) {
     </li>
   </ul>
 </template>
+
+<style scoped>
+.dinamic-color-page-link:hover {
+  color: v-bind('editor.doc.colors.primary + 90') !important;
+}
+</style>
