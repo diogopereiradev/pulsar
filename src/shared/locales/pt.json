@@ -10,7 +10,11 @@
   },
   "markdowneditor": {
     "is-empty-message": "está vazio",
-    "line-is-empty-placeholder": "Digite \"/\" para ver as opções"
+    "line-is-empty-placeholder": "Digite \"/\" para ver as opções",
+    "slashcommands-popup-table-title": "Tabela",
+    "slashcommands-popup-table-description": "Crie tabelas facilmente ajustáveis",
+    "slashcommands-popup-image-title": "Imagem",
+    "slashcommands-popup-image-description": "Adicione imagens à página"
   },
   "home": {
     "title": "Pulsar - Inicio"

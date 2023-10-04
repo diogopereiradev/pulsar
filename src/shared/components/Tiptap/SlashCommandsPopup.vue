@@ -16,6 +16,20 @@ function handleCreateTable() {
     .insertTable({ rows: 2, cols: 2, withHeaderRow: true })
     .run();
 }
+
+function handleCreateImage() {
+  if(!props.editor) return;
+  const url = window.prompt('URL:');
+
+  if(url && url != '') {
+    props.editor
+      .chain()
+      .focus()
+      .undo()
+      .setImage({ src: url })
+      .run();
+  }
+}
 </script>
 
 <template>
@@ -36,7 +50,7 @@ function handleCreateTable() {
       <li>
         <Button
           @click="handleCreateTable"
-          title="Crie tabelas facilmente ajustáveis"
+          :title="$t('markdowneditor.slashcommands-popup-table-description')"
           class="flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[5px] !rounded-b-[0px] border-none !px-[15px] !py-[15px]"
           :style="{ backgroundColor: props.colors.secondary }"
         >
@@ -54,20 +68,21 @@ function handleCreateTable() {
               class="truncate"
               :style="{ color: props.colors.text + 'c9' }"
             >
-              Tabela
+              {{ $t('markdowneditor.slashcommands-popup-table-title') }}
             </h3>
             <p 
               class="max-w-[150px] text-[15px] truncate"
               :style="{ color: props.colors.text + '70' }"
             >
-              Crie tabelas facilmente ajustáveis
+              {{ $t('markdowneditor.slashcommands-popup-table-description') }}
             </p>
           </div>
         </Button>
       </li>
       <li>
         <Button 
-          title="Adicione imagens à página"
+          @click="handleCreateImage"
+          :title="$t('markdowneditor.slashcommands-popup-image-description')"
           class="flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
           :style="{ backgroundColor: props.colors.secondary }"
         >
@@ -85,13 +100,13 @@ function handleCreateTable() {
               class="truncate"
               :style="{ color: props.colors.text + 'c9' }"
             >
-              Imagem
+              {{ $t('markdowneditor.slashcommands-popup-image-title') }}
             </h3>
             <p 
               class="max-w-[150px] text-[15px] truncate"
               :style="{ color: props.colors.text + '70' }"
             >
-              Adicione imagens à página
+              {{ $t('markdowneditor.slashcommands-popup-image-description') }}
             </p>
           </div>
         </Button>

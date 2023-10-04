@@ -10,7 +10,11 @@
   },
   "markdowneditor": {
     "is-empty-message": "is empty",
-    "line-is-empty-placeholder": "Type \"/\" to see the options"
+    "line-is-empty-placeholder": "Type \"/\" to see the options",
+    "slashcommands-popup-table-title": "Table",
+    "slashcommands-popup-table-description": "Create easily adjustable tables",
+    "slashcommands-popup-image-title": "Image",
+    "slashcommands-popup-image-description": "Add images to the page"
   },
   "home": {
     "title": "Pulsar - Home"

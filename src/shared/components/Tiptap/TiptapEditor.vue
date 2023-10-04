@@ -11,6 +11,7 @@ import Table from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
+import Image from '@tiptap/extension-image';
 import SlashCommandsPopup from './SlashCommandsPopup.vue';
 import SelectionBubbleMenu from './SelectionBubbleMenu.vue';
 import TableControlsMenu from './TableControlsMenu.vue';
@@ -72,7 +73,8 @@ const editor = useEditor({
     }),
     TableHeader,
     TableCell,
-    TableRow
+    TableRow,
+    Image
   ],
   onUpdate: () => {
     emit('update:modelValue', editor.value?.getHTML());
@@ -141,6 +143,17 @@ watch(() => props.content, (value) => {
     color: v-bind('props.colors.text + "50"');
     pointer-events: none;
     height: 0;
+  }
+
+  // Image
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+
+    &.ProseMirror-selectednode {
+      outline: 3px solid v-bind('colors.primary');
+    }
   }
 
   // CodeBlock
