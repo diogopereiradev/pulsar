@@ -12,7 +12,10 @@ function updateHeadings() {
 
 // Monitor new headings in page and change the state to the new headings
 watch([() => editor.value.doc.pages, () => editor.value.currentSelectedPage], () => {
-  updateHeadings();
+  // Timeout to await for the headings to load in the document 
+  setTimeout(() => {
+    updateHeadings();
+  }, 100);
 });
 </script>
 
