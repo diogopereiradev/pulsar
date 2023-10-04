@@ -8,6 +8,10 @@
     "message-2": "Sua página está carregando, aguarde um pouco.",
     "message-3": "Parece que o Clovis está demorando um pouco."
   },
+  "markdowneditor": {
+    "is-empty-message": "está vazio",
+    "line-is-empty-placeholder": "Digite \"/\" para ver as opções"
+  },
   "home": {
     "title": "Pulsar - Inicio"
   },

@@ -10,4 +10,4 @@ onMounted(() => {
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-</template>./shared/storage
+</template>

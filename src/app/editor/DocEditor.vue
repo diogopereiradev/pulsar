@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TiptapEditor from '~/shared/components/TiptapEditor.vue';
+import TiptapEditor from '~/shared/components/Tiptap/TiptapEditor.vue';
 import EditorCategories from './EditorCategories.vue';
 import { useEditor } from '~/shared/states/editorState';
 
@@ -110,7 +110,7 @@ onBeforeMount(() => {
         :class="`2xl:hidden ${!mobileNavigationIsOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] duration-300 z-[10]`"
       ></div>
       <!--Editor-->
-      <div class="overflow-hidden w-full 2xl:px-[20px]">
+      <div class="overflow-hidden w-full 2xl:px-[40px]">
         <TiptapEditor
           v-if="editor.currentSelectedPage.id != -1"
           @update:model-value="(value) => handleEditorChange(value)"

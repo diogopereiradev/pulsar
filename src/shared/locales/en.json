@@ -8,6 +8,10 @@
     "message-2": "Your page is loading, please wait a moment.",
     "message-3": "It seems like Clovis is taking a little while."
   },
+  "markdowneditor": {
+    "is-empty-message": "is empty",
+    "line-is-empty-placeholder": "Type \"/\" to see the options"
+  },
   "home": {
     "title": "Pulsar - Home"
   },
