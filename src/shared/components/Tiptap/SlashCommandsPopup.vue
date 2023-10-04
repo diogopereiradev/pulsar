@@ -56,12 +56,12 @@ function handleBulletList() {
     }"
     :style="{ borderColor: props.colors.primary + '70' }"
   >
-    <ul class="flex flex-col">
+    <ul class="flex flex-col" :style="{ backgroundColor: props.colors.secondary }">
       <li>
         <Button
           @click="handleCreateTable"
           :title="$t('markdowneditor.slashcommands-popup-table-description')"
-          class="flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[5px] !rounded-b-[0px] border-none !px-[15px] !py-[15px]"
+          class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[5px] !rounded-b-[0px] border-none !px-[15px] !py-[15px]"
           :style="{ backgroundColor: props.colors.secondary }"
         >
           <div 
@@ -93,7 +93,7 @@ function handleBulletList() {
         <Button 
           @click="handleCreateImage"
           :title="$t('markdowneditor.slashcommands-popup-image-description')"
-          class="flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
+          class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
           :style="{ backgroundColor: props.colors.secondary }"
         >
           <div 
@@ -125,7 +125,7 @@ function handleBulletList() {
         <Button 
           @click="handleBulletList"
           :title="$t('markdowneditor.slashcommands-popup-bulletlist-description')"
-          class="flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
+          class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
           :style="{ backgroundColor: props.colors.secondary }"
         >
           <div 
@@ -156,3 +156,9 @@ function handleBulletList() {
     </ul>
   </floating-menu>
 </template>
+
+<style scoped>
+.dinamic-button-bg:hover {
+  background-color: v-bind('colors.primary + "70"') !important;
+}
+</style>
