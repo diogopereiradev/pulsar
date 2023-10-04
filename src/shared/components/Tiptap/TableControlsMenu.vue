@@ -33,21 +33,21 @@ const props = defineProps<{
           @click="editor.chain().addRowAfter().focus().run()"
           class="flex gap-[5px] items-center min-w-[35px] min-h-[35px] duration-300 rounded-[5px] border-none !px-[10px]"
           :style="{ 
-            color: props.colors.text,
+            color: props.colors.text
           }"
         >
           <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
-          <p>Linha</p>
+          <p>{{ $t('markdowneditor.slashcommands-popup-table-floatingmenu-line') }}</p>
         </Button>
         <Button 
           @click="editor.chain().addColumnAfter().focus().run()"
           class="flex gap-[5px] items-center min-w-[35px] min-h-[35px] duration-300 rounded-[5px] border-none !px-[10px]"
           :style="{ 
-            color: props.colors.text,
+            color: props.colors.text
           }"
         >
           <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
-          <p>Coluna</p>
+          <p>{{ $t('markdowneditor.slashcommands-popup-table-floatingmenu-column') }}</p>
         </Button>
       </div>
       <hr class="w-[95%] h-[1px] border-none mx-auto" :style="{ backgroundColor: props.colors.divider }" />
@@ -56,21 +56,21 @@ const props = defineProps<{
           @click="editor.chain().deleteRow().focus().run()"
           class="flex gap-[5px] items-center min-w-[35px] min-h-[35px] duration-300 rounded-[5px] border-none !px-[10px]"
           :style="{ 
-            color: props.colors.text,
+            color: props.colors.text
           }"
         >
           <font-awesome-icon icon="fa-solid fa-minus" class="text-[15px]"></font-awesome-icon>
-          <p>Linha</p>
+          <p>{{ $t('markdowneditor.slashcommands-popup-table-floatingmenu-line') }}</p>
         </Button>
         <Button 
           @click="editor.chain().deleteColumn().focus().run()"
           class="flex gap-[5px] items-center min-w-[35px] min-h-[35px] duration-300 rounded-[5px] border-none !px-[10px]"
           :style="{ 
-            color: props.colors.text,
+            color: props.colors.text
           }"
         >
           <font-awesome-icon icon="fa-solid fa-minus" class="text-[15px]"></font-awesome-icon>
-          <p>Coluna</p>
+          <p>{{ $t('markdowneditor.slashcommands-popup-table-floatingmenu-column') }}</p>
         </Button>
       </div>
     </div>

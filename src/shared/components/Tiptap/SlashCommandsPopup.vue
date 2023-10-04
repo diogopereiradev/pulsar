@@ -30,6 +30,16 @@ function handleCreateImage() {
       .run();
   }
 }
+
+function handleBulletList() {
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .toggleBulletList()
+    .run();
+}
 </script>
 
 <template>
@@ -107,6 +117,38 @@ function handleCreateImage() {
               :style="{ color: props.colors.text + '70' }"
             >
               {{ $t('markdowneditor.slashcommands-popup-image-description') }}
+            </p>
+          </div>
+        </Button>
+      </li>
+      <li>
+        <Button 
+          @click="handleBulletList"
+          :title="$t('markdowneditor.slashcommands-popup-bulletlist-description')"
+          class="flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
+          :style="{ backgroundColor: props.colors.secondary }"
+        >
+          <div 
+            class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"
+            :style="{ 
+              backgroundColor: props.colors.primary,
+              color: props.colors.text + 'c9'
+            }"
+          >
+            <font-awesome-icon icon="fa-solid fa-list" class="text-[18px]"></font-awesome-icon>
+          </div>
+          <div class="relative flex flex-col items-start justify-center h-full px-[15px]">
+            <h3 
+              class="truncate"
+              :style="{ color: props.colors.text + 'c9' }"
+            >
+              {{ $t('markdowneditor.slashcommands-popup-bulletlist-title') }}
+            </h3>
+            <p 
+              class="max-w-[150px] text-[15px] truncate"
+              :style="{ color: props.colors.text + '70' }"
+            >
+              {{ $t('markdowneditor.slashcommands-popup-bulletlist-description') }}
             </p>
           </div>
         </Button>

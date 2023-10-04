@@ -24,7 +24,8 @@ library.add(...[
   SolidIcons.faCode,
   SolidIcons.faTable,
   SolidIcons.faImage,
-  SolidIcons.faMinus
+  SolidIcons.faMinus,
+  SolidIcons.faList
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

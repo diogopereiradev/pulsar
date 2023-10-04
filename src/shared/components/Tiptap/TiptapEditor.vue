@@ -38,6 +38,9 @@ const editor = useEditor({
           style: `background-color: ${props.colors.divider} !important;`
         }
       },
+      bulletList: {
+        keepMarks: true
+      },
       codeBlock: false
     }),
     Placeholder.configure({
@@ -135,6 +138,14 @@ watch(() => props.content, (value) => {
 
   // Link
   a { color: v-bind('props.colors.primary'); }
+
+  // BulletList
+  ul,
+  ol {
+    padding: 0 1rem;
+    list-style: disc;
+    color: v-bind('colors.text');
+  }
 
   //Placeholder
   .is-empty::before {

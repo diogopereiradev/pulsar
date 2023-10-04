@@ -13,8 +13,12 @@
     "line-is-empty-placeholder": "Digite \"/\" para ver as opções",
     "slashcommands-popup-table-title": "Tabela",
     "slashcommands-popup-table-description": "Crie tabelas facilmente ajustáveis",
+    "slashcommands-popup-table-floatingmenu-line": "Linha",
+    "slashcommands-popup-table-floatingmenu-column": "Coluna",
     "slashcommands-popup-image-title": "Imagem",
-    "slashcommands-popup-image-description": "Adicione imagens à página"
+    "slashcommands-popup-image-description": "Adicione imagens à página",
+    "slashcommands-popup-bulletlist-title": "Lista",
+    "slashcommands-popup-bulletlist-description": "Adiciona listas à página"
   },
   "home": {
     "title": "Pulsar - Inicio"

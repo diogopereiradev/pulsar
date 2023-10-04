@@ -13,8 +13,13 @@
     "line-is-empty-placeholder": "Type \"/\" to see the options",
     "slashcommands-popup-table-title": "Table",
     "slashcommands-popup-table-description": "Create easily adjustable tables",
+    "slashcommands-popup-table-floatingmenu-line": "Line",
+    "slashcommands-popup-table-floatingmenu-column": "Column",
     "slashcommands-popup-image-title": "Image",
-    "slashcommands-popup-image-description": "Add images to the page"
+    "slashcommands-popup-image-description": "Add images to the page",
+    "slashcommands-popup-bulletlist-title": "Bullet List",
+    "slashcommands-popup-bulletlist-description": "Add bullet lists to the page"
+
   },
   "home": {
     "title": "Pulsar - Home"
