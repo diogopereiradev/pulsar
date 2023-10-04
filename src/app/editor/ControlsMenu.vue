@@ -226,6 +226,15 @@ onBeforeMount(async () => {
               :disabled="editor.doc.navigationTitle? false : true"
             />
           </div>
+          <!--Indexes Table TItle-->
+          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
+            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-texts-indexestable-title') }}</label>
+            <InputText
+              v-model="editor.doc.indexesTableTitle"
+              class="rounded-[5px] contrast-200 !border-secondary/60"
+              :placeholder="$t('editor.controls-menu-navigation-indexestable-title-input-placeholder')"
+            />
+          </div>
         </div>
       </form>
     </ScrollPanel>

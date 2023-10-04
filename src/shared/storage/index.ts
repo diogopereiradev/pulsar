@@ -31,6 +31,7 @@ export function dbUpgradeNeeded() {
     documentationsStore.createIndex('title', 'title', { unique: false });
     documentationsStore.createIndex('navigationTitle', 'navigationTitle', { unique: false });
     documentationsStore.createIndex('navigationSubTitle', 'navigationSubTitle', { unique: false });
+    documentationsStore.createIndex('indexesTableTitle', 'indexesTableTitle', { unique: false });
     documentationsStore.createIndex('description', 'description', { unique: false });
     documentationsStore.createIndex('categories', 'categories', { unique: false });
     documentationsStore.createIndex('pages', 'pages', { unique: false });

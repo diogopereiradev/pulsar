@@ -12,6 +12,7 @@ import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import Image from '@tiptap/extension-image';
+import Heading from '@tiptap/extension-heading';
 import SlashCommandsPopup from './SlashCommandsPopup.vue';
 import SelectionBubbleMenu from './SelectionBubbleMenu.vue';
 import TableControlsMenu from './TableControlsMenu.vue';
@@ -29,9 +30,6 @@ const editor = useEditor({
   content: JSON.parse(JSON.stringify(props.content)),
   extensions: [
     StarterKit.configure({
-      heading: {
-        levels: [1, 2, 3, 4]
-      },
       horizontalRule: {
         HTMLAttributes: {
           class: 'w-full h-[1px] border-none',
@@ -41,6 +39,7 @@ const editor = useEditor({
       bulletList: {
         keepMarks: true
       },
+      heading: false,
       codeBlock: false
     }),
     Placeholder.configure({
@@ -74,12 +73,32 @@ const editor = useEditor({
     Table.configure({ 
       resizable: true 
     }),
+    Heading
+    .configure({
+      levels: [1, 2, 3, 4]
+    })
+    .extend({
+      addAttributes() {
+        return {
+          ...this.parent?.(),
+          class: {
+            default: null,
+            renderHTML(attributes) {
+              return {
+                class: attributes.level === 1? 'tiptap-heading-element' : null 
+              }
+            },
+          }
+        }
+      }
+    }),
     TableHeader,
     TableCell,
     TableRow,
     Image
   ],
   onUpdate: () => {
+    // Send current editor html content to external components using emit event
     emit('update:modelValue', editor.value?.getHTML());
   }
 });

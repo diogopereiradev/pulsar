@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TiptapEditor from '~/shared/components/Tiptap/TiptapEditor.vue';
 import EditorCategories from './EditorCategories.vue';
+import IndexesTable from './IndexesTable.vue';
 import { useEditor } from '~/shared/states/editorState';
 
 const editor = useEditor();
@@ -121,6 +122,8 @@ onBeforeMount(() => {
           <p :style="{ color: editor.doc.colors.text + '50' }">Select a page first</p>
         </div>
       </div>
+      <!--Indexes Table-->
+      <IndexesTable v-if="editor.doc.features.indexesTable" />
     </div>
   </div>
 </template>

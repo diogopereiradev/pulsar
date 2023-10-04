@@ -67,6 +67,8 @@
     "controls-menu-navigation-title-input-placeholder": "Titulo do menu de navegação",
     "controls-menu-texts-navigation-sub-title": "Sub titulo de navegação",
     "controls-menu-navigatio-sub-title-input-placeholder": "Sub titulo para a navegação",
+    "controls-menu-texts-indexestable-title": "Titulo da tabela de indíces",
+    "controls-menu-navigation-indexestable-title-input-placeholder": "Digite um titulo",
     "doc-editor-new-category-button-message": "Nova Categoria",
     "doc-editor-new-page-button-message": "Nova Página",
     "delete-category-dialog-title": "Deseja deletar essa categoria?",
