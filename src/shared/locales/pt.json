@@ -18,7 +18,9 @@
     "slashcommands-popup-image-title": "Imagem",
     "slashcommands-popup-image-description": "Adicione imagens à página",
     "slashcommands-popup-bulletlist-title": "Lista",
-    "slashcommands-popup-bulletlist-description": "Adiciona listas à página"
+    "slashcommands-popup-bulletlist-description": "Adiciona listas à página",
+    "slashcommands-popup-codeblocks-title": "Blocos de Código",
+    "slashcommands-popup-codeblocks-description": "Adiciona blocos de códigos à página"
   },
   "home": {
     "title": "Pulsar - Inicio"
@@ -49,6 +51,7 @@
   },
   "editor": {
     "title": "Pulsar - Editando",
+    "non-page-selected-message": "Selecione uma página",
     "error-notfound-message": "A documentação informada não existe!",
     "error-notfound-button-label": "Voltar para Documentações",
     "controls-menu-save-button-aria-label": "Salvar",

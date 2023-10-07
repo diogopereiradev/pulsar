@@ -18,8 +18,9 @@
     "slashcommands-popup-image-title": "Image",
     "slashcommands-popup-image-description": "Add images to the page",
     "slashcommands-popup-bulletlist-title": "Bullet List",
-    "slashcommands-popup-bulletlist-description": "Add bullet lists to the page"
-
+    "slashcommands-popup-bulletlist-description": "Add bullet lists to the page",
+    "slashcommands-popup-codeblocks-title": "Code Block",
+    "slashcommands-popup-codeblocks-description": "Add highlighted code blocks to the page"
   },
   "home": {
     "title": "Pulsar - Home"
@@ -50,6 +51,7 @@
   },
   "editor": {
     "title": "Pulsar - Editing",
+    "non-page-selected-message": "Select one page",
     "error-notfound-message": "The documentation informed not exists!",
     "error-notfound-button-label": "Back to Documentations",
     "controls-menu-save-button-aria-label": "Save",
@@ -80,5 +82,8 @@
     "delete-page-dialog-message": "After deleting this page, you won't be able to recover your data. Think better before taking this action.",
     "delete-page-dialog-confirm-button-message": "Delete",
     "delete-page-dialog-cancel-button-message": "Close"
+  },
+  "preview": {
+    "title": "Pulsar - Preview"
   }
 }

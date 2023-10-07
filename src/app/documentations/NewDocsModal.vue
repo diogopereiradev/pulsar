@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Documentation, IDocumentation, documentationDataEmptyObj } from '~/shared/storage/models/Documentation';
+import { Documentation, IDocumentation, IDocumentationColorPalette, documentationDataEmptyObj } from '~/shared/storage/models/Documentation';
 import Tailwind from "primevue/passthrough/tailwind";
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
@@ -15,7 +15,7 @@ const docs = useDocumentations();
 const { id, createdAt, pages, ...formInitialData } = documentationDataEmptyObj;
 const formData = ref<Omit<IDocumentation, 'id' | 'createdAt' | 'pages'>>(formInitialData);
 
-const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
+const onColorChange = (type: keyof IDocumentationColorPalette, val: string) => {
   formData.value.colors[type] = `#${val}`;
 }
 
@@ -42,24 +42,16 @@ const handleDocCreate = async () => {
 };
 
 // Array to dinamically generate "color pickers" of the modal
-const colors = [
-  generateColor('Background', 'background'),
-  generateColor('Primary', 'primary'),
-  generateColor('Secondary', 'secondary'),
-  generateColor('Highlight', 'highlight'),
-  generateColor('Text', 'text'),
-  generateColor('Navbar Title', 'navbarTitle'),
-  generateColor('Divider', 'divider')
+type ColorNames = keyof IDocumentationColorPalette;
+const colors: ColorNames[] = [
+  'background',
+  'primary',
+  'secondary',
+  'highlight',
+  'text',
+  'navbarTitle',
+  'divider'
 ];
-
-type ColorName = 'primary' | 'secondary' | 'background' | 'highlight' | 'text' | 'navbarTitle' | 'divider'
-
-function generateColor(title: string, colorName: ColorName) {
-  return {
-    title,
-    colorName
-  };
-}
 </script>
 
 <template>
@@ -118,13 +110,13 @@ function generateColor(title: string, colorName: ColorName) {
             <div class="flex flex-wrap gap-[25px] mt-[10px]">
               <div
                 v-for="color of colors"
-                :key="color.title"
+                :key="color"
                 class="w-[calc(50%-25px)] sm:max-w-[105px] flex flex-col gap-[8px]"
               >
-                <label class="text-sm text-primary/40 font-[500]">{{ color.title }}</label>
+                <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
                 <ColorPicker 
-                  :model-value="formData.colors[color.colorName]" 
-                  @update:model-value="(val: string) => onColorChange(color.colorName, val)" 
+                  :model-value="formData.colors[color]" 
+                  @update:model-value="(val: string) => onColorChange(color, val)" 
                   format="hex" 
                 />
               </div>

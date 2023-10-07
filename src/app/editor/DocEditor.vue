@@ -22,8 +22,9 @@ onBeforeMount(() => {
     mobileNavigationIsOpen.value = true;
   };
   window.addEventListener('resize', () => {
-    if(window.innerWidth >= 1180) return;
-    mobileNavigationIsOpen.value = true;
+    if(window.innerWidth >= 1180) {
+      mobileNavigationIsOpen.value = true;
+    }
   });
 });
 </script>
@@ -34,26 +35,17 @@ onBeforeMount(() => {
     :style="{ backgroundColor: editor.doc.colors.background }"
   >
     <!--Doc navbar-->
-    <nav class="flex items-center justify-between w-full pb-[25px]">
-      <div class="flex items-center gap-[10px]">
-        <p
-          class="text-[25px] font-default font-[500]"
-          :style="{ color: editor.doc.colors.navbarTitle }"
-        >
-          {{ editor.doc.title }}
-        </p>
-      </div>
-      <div>
-        <Button @click="mobileNavigationIsOpen = true" class="2xl:hidden border-none !bg-transparent hover:!bg-transparent !p-[6px]">
-          <font-awesome-icon 
-            icon="fa-solid fa-bars"
-            class="text-[30px]"
-          ></font-awesome-icon>
-        </Button>
-      </div>
+    <nav class="2xl:hidden flex items-center w-full pb-[25px]">
+      <Button @click="mobileNavigationIsOpen = true" class="border-none !bg-transparent hover:!bg-transparent !p-[6px]">
+        <font-awesome-icon 
+          icon="fa-solid fa-bars"
+          class="text-[30px]"
+        ></font-awesome-icon>
+      </Button>
     </nav>
-    <hr class="w-full mx-auto h-[2px] border-none" :style="{ backgroundColor: editor.doc.colors.divider }" />
-    <div class="flex pt-[40px] mt-[30px]">
+    <hr class="2xl:hidden w-full mx-auto h-[2px] border-none" :style="{ backgroundColor: editor.doc.colors.divider }" />
+    <!--Doc navbar end-->
+    <div class="flex pt-[40px] mt-[10px]">
       <!--Navigation Menu-->
       <div 
         :class="`
@@ -119,11 +111,11 @@ onBeforeMount(() => {
           :colors="editor.doc.colors"
         />
         <div v-else class="w-full h-[300px] flex justify-center items-center">
-          <p :style="{ color: editor.doc.colors.text + '50' }">Select a page first</p>
+          <p :style="{ color: editor.doc.colors.text + '50' }">{{ $t('editor.non-page-selected-message') }}</p>
         </div>
       </div>
       <!--Indexes Table-->
-      <IndexesTable v-if="editor.doc.features.indexesTable" />
+      <IndexesTable />
     </div>
   </div>
 </template>

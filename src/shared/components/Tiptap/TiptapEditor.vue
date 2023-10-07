@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { lowlight } from './hljsConfig';
-import { useEditor, EditorContent } from '@tiptap/vue-3';
+import { useEditor, EditorContent, Editor, mergeAttributes } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -32,13 +32,24 @@ const editor = useEditor({
     StarterKit.configure({
       horizontalRule: {
         HTMLAttributes: {
-          class: 'w-full h-[1px] border-none',
-          style: `background-color: ${props.colors.divider} !important;`
+          class: 'pulsar-divider'
         }
       },
       bulletList: {
+        keepMarks: true,
+        HTMLAttributes: {
+          class: 'pulsar-bulletlist'
+        }
+      },
+      paragraph: {
+        HTMLAttributes: {
+          class: 'pulsar-paragraph'
+        }
+      },
+      hardBreak: {
         keepMarks: true
       },
+      gapcursor: false,
       heading: false,
       codeBlock: false
     }),
@@ -65,13 +76,22 @@ const editor = useEditor({
       autolink: false,
       linkOnPaste: true,
       HTMLAttributes: {
-        class: 'cursor-pointer'
+        class: 'pulsar-link'
       }
     }),
-    CodeBlockLowlight.configure({ lowlight }),
+    CodeBlockLowlight.configure({
+      lowlight,
+      exitOnArrowDown: true,
+      HTMLAttributes: {
+        class: 'highlighted-codeblock'
+      }
+    }),
     BubbleMenuExtension,
     Table.configure({ 
-      resizable: true 
+      resizable: true,
+      HTMLAttributes: {
+        class: 'pulsar-table'
+      }
     }),
     Heading
     .configure({
@@ -85,23 +105,96 @@ const editor = useEditor({
             default: null,
             renderHTML(attributes) {
               return {
-                class: attributes.level === 1? 'tiptap-heading-element' : null 
+                class: attributes.level <= 2? 
+                `pulsar-heading pulsar-heading-${attributes.level}` : 
+                `pulsar-heading-${attributes.level}` 
               }
-            },
+            }
           }
         }
       }
     }),
     TableHeader,
-    TableCell,
+    TableCell.extend({
+      addAttributes() {
+        return {
+          ...this.parent?.(),
+          colwidth: {
+            default: null,
+            parseHTML: element => {
+              const colwidth = element.getAttribute('colwidth');
+              const value = colwidth
+                ? colwidth.split(',').map(item => parseInt(item, 10))
+                : null;
+      
+              return value;
+            },
+          },
+          style: {
+            default: null,
+          }
+        }
+      },
+      renderHTML({ HTMLAttributes }) {
+        let totalWidth = 0;
+        let fixedWidth = true;
+
+        
+        if (HTMLAttributes.colwidth) {
+          HTMLAttributes.colwidth.forEach((col: number) => {
+            if (!col) {
+              fixedWidth = false;
+            } else {
+              totalWidth += col;
+            }
+          });
+        } else {
+          fixedWidth = false;
+        }
+    
+        if (fixedWidth && totalWidth > 0) {
+          HTMLAttributes.style = `width: ${totalWidth}px;`;
+        } else if (totalWidth && totalWidth > 0) {
+          HTMLAttributes.style = `min-width: ${totalWidth}px;`;
+        } else {
+          HTMLAttributes.style = null;
+        }
+
+        return [
+          'td',
+          mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+          0
+        ];
+      }
+    }),
     TableRow,
     Image
   ],
   onUpdate: () => {
+    const html = parseHTML(editor.value!);
     // Send current editor html content to external components using emit event
-    emit('update:modelValue', editor.value?.getHTML());
+    emit('update:modelValue', html);
   }
 });
+
+function getAllHighlightCodeblocks(viewInnerHTML: string) {
+  const parsedHtml = new DOMParser();
+  const document = parsedHtml.parseFromString(viewInnerHTML, 'text/html');
+  const allHighlightedCodeBlocks = document.querySelectorAll('.highlighted-codeblock');
+  return allHighlightedCodeBlocks;
+}
+
+function parseHTML(textEditor: Editor) {
+  const parsedDOM = new DOMParser();
+  const document = parsedDOM.parseFromString(textEditor.getHTML(), 'text/html');
+  
+  // Keep the span tags in codeblocks, to the highlight colors
+  const highlightedCodeblocks = getAllHighlightCodeblocks(textEditor.view.dom.innerHTML);
+  document.querySelectorAll('.highlighted-codeblock').forEach((codeblock) => {
+    codeblock.innerHTML = highlightedCodeblocks[0].innerHTML;
+  });
+  return document.body.innerHTML;
+}
 
 // Set editor content on props.content was changed
 watch(() => props.content, (value) => {
@@ -155,8 +248,20 @@ watch(() => props.content, (value) => {
   // Paragraph
   p { color: v-bind('props.colors.text + "b9"'); }
 
+  p:empty::after {
+    content: "\00A0";
+  }
+
   // Link
   a { color: v-bind('props.colors.primary'); }
+
+  // Horizontal rule
+  hr {
+    width: 100%;
+    height: 1px;
+    border: none;
+    background-color: v-bind('colors.divider') !important;
+  }
 
   // BulletList
   ul,
@@ -189,8 +294,7 @@ watch(() => props.content, (value) => {
   // CodeBlock
   pre {
     background-color: v-bind('props.colors.secondary');
-    color: #d8d6d6;
-    font-family: Roboto;
+    color: v-bind('props.colors.codeBlockText');
     font-weight: 400;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
@@ -202,7 +306,7 @@ watch(() => props.content, (value) => {
       font-size: 16px;
     }
 
-    .hljs-comment, .hljs-quote { color: #616161; }
+    .hljs-comment, .hljs-quote { color: v-bind('props.colors.codeBlockComments'); }
 
     .hljs-variable,
     .hljs-template-variable,
@@ -214,7 +318,7 @@ watch(() => props.content, (value) => {
     .hljs-name,
     .hljs-selector-id,
     .hljs-selector-class {
-      color: #F98181;
+      color: v-bind('props.colors.codeBlockVariable');
     }
 
     .hljs-number,
@@ -224,14 +328,14 @@ watch(() => props.content, (value) => {
     .hljs-literal,
     .hljs-type,
     .hljs-params {
-      color: #9a66dd;
+      color: v-bind('props.colors.codeBlockLiteral');
     }
 
-    .hljs-string, .hljs-symbol, .hljs-bullet { color: #B9F18D; }
+    .hljs-string, .hljs-symbol, .hljs-bullet { color: v-bind('props.colors.codeBlockString'); }
 
-    .hljs-title, .hljs-section { color: #86d667; }
+    .hljs-title, .hljs-section { color: v-bind('props.colors.codeBlockSection'); }
 
-    .hljs-keyword, .hljs-selector-tag { color: #896db6; }
+    .hljs-keyword, .hljs-selector-tag { color: v-bind('props.colors.codeBlockKeyword'); }
 
     .hljs-emphasis { font-style: italic;}
 
@@ -242,7 +346,6 @@ watch(() => props.content, (value) => {
   table {
     border-collapse: collapse;
     table-layout: fixed;
-    width: 100%;
     margin: 0;
     overflow: hidden;
 

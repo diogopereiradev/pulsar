@@ -40,7 +40,14 @@ export type IDocumentationColorPalette = {
   highlight: string
   navbarTitle: string,
   text: string,
-  divider: string
+  divider: string,
+  codeBlockText: string,
+  codeBlockVariable: string,
+  codeBlockLiteral: string,
+  codeBlockKeyword: string,
+  codeBlockString: string,
+  codeBlockSection: string,
+  codeBlockComments: string
 }
 
 export const documentationDataEmptyObj: IDocumentation = {
@@ -59,7 +66,14 @@ export const documentationDataEmptyObj: IDocumentation = {
     highlight: '#7665d733',
     text: '#d3d3d3',
     navbarTitle: '#d3d3d3',
-    divider: '#2b304a'
+    divider: '#2b304a',
+    codeBlockText: '#d3d3d3',
+    codeBlockVariable: '#F98181',
+    codeBlockLiteral: '#9a66dd',
+    codeBlockKeyword: '#896db6',
+    codeBlockString: '#B9F18D',
+    codeBlockSection: '#86d667',
+    codeBlockComments: '#616161'
   },
   features: {
     autoSave: true,

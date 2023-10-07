@@ -18,7 +18,7 @@
     <Link rel="shortcut icon" href="/favicons/favicon.ico" />
     <Link rel="preconnect" href="https://fonts.googleapis.com" />
     <Link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <Link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <Link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" /> 
     <Meta name="msapplication-TileColor" content="#1d2024" />
     <Meta name="msapplication-config" content="/favicons/browserconfig.xml" />
     <Meta name="theme-color" content="#1d2024" />

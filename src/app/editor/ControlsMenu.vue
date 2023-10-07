@@ -9,7 +9,7 @@ import TextArea from 'primevue/textarea';
 import ColorPicker from 'primevue/colorpicker';
 import InputSwitch from 'primevue/inputswitch';
 import { usePassThrough } from 'primevue/passthrough';
-import { Documentation, IDocumentation } from '~/shared/storage/models/Documentation';
+import { Documentation, IDocumentation, IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
 import { useEditor } from '~/shared/states/editorState';
 
 const { params } = useRoute();
@@ -19,8 +19,22 @@ const isOpen = ref(false);
 const editor = useEditor();
 
 // Array to dinamically generate "color pickers" of the menu
-type ColorName = 'primary' | 'secondary' | 'background' | 'highlight' | 'text' | 'navbarTitle' | 'divider';
-const colors: ColorName[] = ['background', 'primary', 'secondary', 'highlight', 'text', 'navbarTitle', 'divider'];
+type ColorName = keyof IDocumentationColorPalette;
+const colors: ColorName[] = [
+  'background', 
+  'primary', 
+  'secondary', 
+  'highlight', 
+  'text', 
+  'navbarTitle', 
+  'divider',
+  'codeBlockText',
+  'codeBlockLiteral',
+  'codeBlockKeyword',
+  'codeBlockSection',
+  'codeBlockString',
+  'codeBlockVariable'
+];
 
 const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
   editor.value.doc.colors[type] = `#${val}`;
@@ -67,7 +81,9 @@ onBeforeMount(async () => {
 
   // Toggle controls menu based on window size
   window.addEventListener('resize', () => {
-    isOpen.value = window.innerWidth >= 1180;
+    if(window.innerWidth >= 1180) {
+      isOpen.value = true;
+    }
   });
   isOpen.value = window.innerWidth >= 1180;
 
@@ -95,12 +111,12 @@ onBeforeMount(async () => {
         max-2xl:fixed
         max-2xl:left-0
         max-2xl:top-0
-        min-w-[280px]
-        max-w-[280px]
+        min-w-[310px]
+        max-w-[310px]
         max-md:max-w-[280px]
         max-md:min-w-[0px]
         bg-secondary
-        2xl:bg-secondary/50
+        2xl:bg-secondary/60
         h-screen
         z-[201]
       `"
@@ -131,16 +147,26 @@ onBeforeMount(async () => {
         <hr class="w-full h-[2px] bg-divider/60 border-none mb-[30px]" />
         <div class="flex items-center justify-between">
           <AppIcon class="min-w-[40px]" size="40" color="#d3d3d3"/>
-          <!--Save button, preview mode and other options-->
           <div class="flex items-center gap-[10px]">
-            <Button 
-              type="button"
-              class="w-[40px] min-h-[40px] !bg-[#d8985d]" 
+            <!--Preview button-->
+            <NuxtLinkLocale
+              :to="`/preview/${editor.doc.id}`"
+              class="flex justify-center items-center w-[40px] min-h-[40px] !bg-[#d8985d] rounded-[5px]" 
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
             >
-              <font-awesome-icon icon="fa-solid fa-eye" />
+              <font-awesome-icon icon="fa-solid fa-eye" class="text-[#fff]" />
+            </NuxtLinkLocale>
+            <!--Export doc button-->
+            <Button 
+              type="button"
+              class="w-[40px] min-h-[40px] !bg-primary" 
+              :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
+              :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
+            >
+              <font-awesome-icon icon="fa-solid fa-download" />
             </Button>
+            <!--Save button-->
             <Button
               type="submit"
               class="w-[40px] min-h-[40px] !bg-primary" 
@@ -194,7 +220,7 @@ onBeforeMount(async () => {
               <div
                 v-for="color of colors"
                 :key="color"
-                class="w-full flex justify-between gap-[8px]"
+                class="w-full flex items-center justify-between gap-[8px]"
               >
                 <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
                 <ColorPicker 

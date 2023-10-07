@@ -83,17 +83,5 @@ function handleToolbarToggleLink() {
     >
       <font-awesome-icon icon="fa-solid fa-link"></font-awesome-icon>
     </Button>
-    <!--Code block button-->
-    <Button 
-      @click="editor.chain().focus().toggleCodeBlock().run()"
-      class="min-w-[35px] max-h-[35px] duration-300 rounded-[5px] border-none"
-      :style="{ 
-        color: props.colors.text,
-        backgroundColor: editor.isActive('codeBlock')? props.colors.primary : 'transparent'
-      }"
-      :disabled="editor.isActive('link')"
-    >
-      <font-awesome-icon icon="fa-solid fa-code"></font-awesome-icon>
-    </Button>
   </bubble-menu>
 </template>

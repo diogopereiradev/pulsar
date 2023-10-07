@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@types/file-saver": "^2.0.5",
     "@types/lodash": "^4.14.199",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
@@ -58,7 +59,9 @@
     "@tiptap/pm": "^2.1.11",
     "@tiptap/starter-kit": "^2.1.11",
     "@tiptap/vue-3": "^2.1.11",
+    "file-saver": "^2.0.5",
     "highlight.js": "^11.8.0",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "lowlight": "^3.0.0",
     "primevue": "^3.34.1",
