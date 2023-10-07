@@ -82,5 +82,8 @@
     "delete-page-dialog-message": "Após deletar essa página você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
     "delete-page-dialog-confirm-button-message": "Deletar",
     "delete-page-dialog-cancel-button-message": "Fechar"
+  },
+  "preview": {
+    "title": "Pulsar - Pré-Visualização"
   }
 }
