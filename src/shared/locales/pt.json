@@ -81,7 +81,14 @@
     "delete-page-dialog-title": "Deseja deletar essa página?",
     "delete-page-dialog-message": "Após deletar essa página você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
     "delete-page-dialog-confirm-button-message": "Deletar",
-    "delete-page-dialog-cancel-button-message": "Fechar"
+    "delete-page-dialog-cancel-button-message": "Fechar",
+    "export-cancel-dialog-confirm-button-message": "Cancelar",
+    "export-cancel-dialog-cancel-button-message": "Continuar",
+    "export-cancel-dialog-title": "Deseja cancelar a exportação?",
+    "export-cancel-dialog-content": "Após cancelar esta ação você não terá nenhuma implicação com os seus dados, mas deverá compilar o projeto novamente.",
+    "export-modal-loading-message": "Comprimindo os dados da sua documentação, aguarde um momento...",
+    "export-modal-error-message": "Ocorreu um erro, clique no botão abaixo para tentar novamente.",
+    "export-modal-error-try-again-message": "Tentar novamente"
   },
   "preview": {
     "title": "Pulsar - Pré-Visualização"

@@ -81,7 +81,14 @@
     "delete-page-dialog-title": "Do you want to delete the page?",
     "delete-page-dialog-message": "After deleting this page, you won't be able to recover your data. Think better before taking this action.",
     "delete-page-dialog-confirm-button-message": "Delete",
-    "delete-page-dialog-cancel-button-message": "Close"
+    "delete-page-dialog-cancel-button-message": "Close",
+    "export-cancel-dialog-confirm-button-message": "Cancel",
+    "export-cancel-dialog-cancel-button-message": "Continue",
+    "export-cancel-dialog-title": "Do you want to cancel the export?",
+    "export-cancel-dialog-content": "After canceling this action you will not have any implications for your data, but you will have to compile the project again.",
+    "export-modal-loading-message": "Compressing your documentation data, wait a moment...",
+    "export-modal-error-message": "An error occurred, click the button below to try again.",
+    "export-modal-error-try-again-message": "Try again"
   },
   "preview": {
     "title": "Pulsar - Preview"

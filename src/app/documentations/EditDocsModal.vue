@@ -5,7 +5,7 @@ import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import ScrollPanel from 'primevue/scrollpanel';
 import InputSwitch from 'primevue/inputswitch';
-import DocPrototype from './DocPrototype.vue';
+import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
 import { usePassThrough } from 'primevue/passthrough';
 import { Status } from '~/@types/status';
@@ -19,7 +19,8 @@ const formData = ref<Pick<IDocumentation, 'title' | 'description' | 'features'>>
   title: docInfos?.title || '',
   description: docInfos?.description || '',
   features: docInfos?.features || {
-    indexesTable: true
+    indexesTable: true,
+    autoSave: true
   }
 });
 
@@ -47,7 +48,8 @@ const handleCloseModal = () => {
     title: updatedDocInfos?.title || '',
     description: updatedDocInfos?.description || '',
     features: updatedDocInfos?.features || {
-      indexesTable: true
+      indexesTable: true,
+      autoSave: true
     }
   };
 }

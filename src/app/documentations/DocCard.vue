@@ -4,7 +4,7 @@ import { useDocumentations } from '~/shared/states/documentationsState';
 import { useConfirm } from "primevue/useconfirm";
 import EditDocsModal from './EditDocsModal.vue';
 import ContextMenu from 'primevue/contextmenu';
-import DocPrototype from './DocPrototype.vue';
+import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { MenuItem } from 'primevue/menuitem';
 import { Status } from '~/@types/status';
 

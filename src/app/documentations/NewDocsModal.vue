@@ -6,7 +6,7 @@ import TextArea from 'primevue/textarea';
 import ScrollPanel from 'primevue/scrollpanel';
 import InputSwitch from 'primevue/inputswitch';
 import ColorPicker from 'primevue/colorpicker';
-import DocPrototype from './DocPrototype.vue';
+import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
 import { usePassThrough } from 'primevue/passthrough';
 import { Status } from '~/@types/status';

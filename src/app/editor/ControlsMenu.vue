@@ -158,8 +158,9 @@ onBeforeMount(async () => {
               <font-awesome-icon icon="fa-solid fa-eye" class="text-[#fff]" />
             </NuxtLinkLocale>
             <!--Export doc button-->
-            <Button 
+            <Button
               type="button"
+              @click="editor.exportDocModal.isOpen = true"
               class="w-[40px] min-h-[40px] !bg-primary" 
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"

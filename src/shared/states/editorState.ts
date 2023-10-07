@@ -7,6 +7,13 @@ type EditorStateType = {
     isSaved: boolean,
     isSaving: boolean
   },
+  exportDocModal: {
+    isLoading: boolean,
+    isError: boolean,
+    isCancelling: boolean,
+    isOpen: boolean,
+    data: Blob | undefined
+  },
   currentSelectedPage: IDocumentationPage
 };
 
@@ -16,6 +23,13 @@ export const useEditor = () => useState<EditorStateType>('editorState', () => ({
     isOpen: false,
     isSaved: true,
     isSaving: false
+  },
+  exportDocModal: {
+    isLoading: false,
+    isError: false,
+    isCancelling: false,
+    isOpen: false,
+    data: undefined
   },
   currentSelectedPage: {
     id: -1,

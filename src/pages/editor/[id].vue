@@ -2,6 +2,7 @@
 import ConfirmDialog from 'primevue/confirmdialog';
 import ControlsMenu from '~/app/editor/ControlsMenu.vue';
 import DocEditor from '~/app/editor/DocEditor.vue';
+import ExportModal from '~/app/editor/ExportModal.vue';
 import Error from '~/shared/components/Error.vue';
 import Loading from '~/shared/components/Loading.vue';
 import { Documentation } from '~/shared/storage/models/Documentation';
@@ -38,6 +39,7 @@ onBeforeMount(async () => {
     content: 'text-primary !bg-secondary py-[10px] px-[30px]',
     footer: 'text-primary !bg-secondary rounded-b-[5px] flex justify-end py-[25px] px-[25px]'
   }"/>
+  <ExportModal />
   <!--Page content-->
   <div class="flex max-2xl:flex-col" v-if="docExists && pageIsLoaded">
     <ControlsMenu />
