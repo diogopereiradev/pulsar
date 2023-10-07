@@ -5,7 +5,7 @@ const headings = ref<HTMLHeadingElement[]>([]);
 const preview = usePreview();
 
 function initHeadings() {
-  const newHeadings = document.querySelectorAll<HTMLHeadingElement>('.pulsar-heading');
+  const newHeadings = document.querySelectorAll<HTMLHeadingElement>('.pulsar-heading-indexed');
   const filteredHeadings = Array.from(newHeadings).filter(heading => heading.textContent);
   headings.value = filteredHeadings;
 }

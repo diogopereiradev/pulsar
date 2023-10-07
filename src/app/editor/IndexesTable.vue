@@ -5,7 +5,7 @@ const editor = useEditor();
 const headings = ref<HTMLHeadingElement[]>([]);
 
 function updateHeadings() {
-  const newHeadings = document.querySelectorAll<HTMLHeadingElement>('.pulsar-heading');
+  const newHeadings = document.querySelectorAll<HTMLHeadingElement>('.pulsar-heading-indexed');
   const filteredHeadings = Array.from(newHeadings).filter(heading => heading.textContent);
   headings.value = filteredHeadings;
 }

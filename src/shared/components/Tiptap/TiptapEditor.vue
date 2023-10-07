@@ -106,8 +106,8 @@ const editor = useEditor({
             renderHTML(attributes) {
               return {
                 class: attributes.level <= 2? 
-                `pulsar-heading pulsar-heading-${attributes.level}` : 
-                `pulsar-heading-${attributes.level}` 
+                `pulsar-heading pulsar-heading-indexed pulsar-heading-${attributes.level}` : 
+                `pulsar-heading pulsar-heading-${attributes.level}` 
               }
             }
           }
