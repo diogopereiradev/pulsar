@@ -6,11 +6,11 @@ import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import ScrollPanel from 'primevue/scrollpanel';
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
-import ColorPicker from 'primevue/colorpicker';
 import InputSwitch from 'primevue/inputswitch';
 import { usePassThrough } from 'primevue/passthrough';
 import { Documentation, IDocumentation, IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
 import { useEditor } from '~/shared/states/editorState';
+import HexColorPicker from '~/shared/components/HexColorPicker.vue';
 
 const { params } = useRoute();
 const docId = Number(params.id) || 0;
@@ -24,7 +24,6 @@ const colors: ColorName[] = [
   'background', 
   'primary', 
   'secondary', 
-  'highlight', 
   'text', 
   'navbarTitle', 
   'divider',
@@ -37,7 +36,7 @@ const colors: ColorName[] = [
 ];
 
 const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
-  editor.value.doc.colors[type] = `#${val}`;
+  editor.value.doc.colors[type] = val.includes('#')? val : `#${val}`;
 }
 
 async function handleSave() {
@@ -221,15 +220,15 @@ onBeforeMount(async () => {
               <div
                 v-for="color of colors"
                 :key="color"
-                class="w-full flex items-center justify-between gap-[8px]"
+                class="w-full flex flex-col"
               >
-                <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
-                <ColorPicker 
-                  class="w-[80px]"
-                  :model-value="editor.doc.colors[color]" 
-                  @update:model-value="(val: string) => onColorChange(color, val)" 
-                  format="hex" 
-                />
+                <div class="w-full flex items-center justify-between gap-[8px]">
+                  <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
+                  <HexColorPicker
+                    :model-value="editor.doc.colors[color]"
+                    @update:model-value="(val: string) => onColorChange(color, val)"
+                  />
+                </div>
               </div>
             </div>
           </div>

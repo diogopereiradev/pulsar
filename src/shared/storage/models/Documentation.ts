@@ -37,7 +37,6 @@ export type IDocumentationColorPalette = {
   background: string,
   primary: string,
   secondary: string,
-  highlight: string
   navbarTitle: string,
   text: string,
   divider: string,
@@ -63,7 +62,6 @@ export const documentationDataEmptyObj: IDocumentation = {
     background: '#151829',
     primary: '#7665d7',
     secondary: '#1a1d2e',
-    highlight: '#7665d733',
     text: '#d3d3d3',
     navbarTitle: '#d3d3d3',
     divider: '#2b304a',

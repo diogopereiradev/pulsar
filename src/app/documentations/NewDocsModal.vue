@@ -5,11 +5,11 @@ import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import ScrollPanel from 'primevue/scrollpanel';
 import InputSwitch from 'primevue/inputswitch';
-import ColorPicker from 'primevue/colorpicker';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
 import { usePassThrough } from 'primevue/passthrough';
 import { Status } from '~/@types/status';
+import HexColorPicker from '~/shared/components/HexColorPicker.vue';
 
 const docs = useDocumentations();
 const { id, createdAt, pages, ...formInitialData } = documentationDataEmptyObj;
@@ -47,7 +47,6 @@ const colors: ColorNames[] = [
   'background',
   'primary',
   'secondary',
-  'highlight',
   'text',
   'navbarTitle',
   'divider'
@@ -114,10 +113,13 @@ const colors: ColorNames[] = [
                 class="w-[calc(50%-25px)] sm:max-w-[105px] flex flex-col gap-[8px]"
               >
                 <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
-                <ColorPicker 
-                  :model-value="formData.colors[color]" 
-                  @update:model-value="(val: string) => onColorChange(color, val)" 
-                  format="hex" 
+                <HexColorPicker
+                  :toggler-button="{
+                    width: '100%',
+                    height: '35px'
+                  }"
+                  :model-value="formData.colors[color]"
+                  @update:model-value="(val: string) => onColorChange(color, val)"
                 />
               </div>
             </div>

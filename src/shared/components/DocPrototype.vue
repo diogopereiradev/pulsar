@@ -53,6 +53,6 @@ defineProps<Pick<IDocumentation, 'colors' | 'features'>>();
 
 <style scoped>
   .highlight:hover {
-    background-color: v-bind('colors.highlight') !important;
+    background-color: v-bind('colors.primary + "a9"') !important;
   }
 </style>
