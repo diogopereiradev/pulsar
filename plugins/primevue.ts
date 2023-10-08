@@ -30,13 +30,13 @@ const StylesWithTailwind = usePassThrough(
       root: '!bg-secondary/60 !backdrop-blur-lg border-0 px-[35px] shadow'
     },
     inputtext: {
-      root: 'w-full h-[40px] !bg-secondary/10 !border-1 !border-primary/30 placeholder:text-primary/30 focus:!border-primary/50 focus:!shadow-none duration-300'
+      root: 'w-full h-[40px] !bg-secondary/10 !border-1 !border-primary/30 !text-primary/80 placeholder:text-primary/30 focus:!border-primary/50 focus:!shadow-none duration-300'
     },
     button: {
       root: 'justify-center items-center bg-secondary/10 hover:bg-primary/80 !p-0 !border-1 !border-primary/30 focus:!shadow-none'
     },
     textarea: {
-      root: 'w-full max-h-[130px] rounded-[5px] !bg-secondary/10 placeholder:text-primary/30 !border-1 !border-primary/30 focus:!border-primary/50 focus:!shadow-none duration-300'
+      root: 'w-full max-h-[130px] rounded-[5px] !bg-secondary/10 !text-primary/80 placeholder:text-primary/30 !border-1 !border-primary/30 focus:!border-primary/50 focus:!shadow-none duration-300'
     },
     scrollpanel: {
       root: '!w-full',
