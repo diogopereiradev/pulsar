@@ -21,6 +21,7 @@ const StylesWithTailwind = usePassThrough(
           !items-center
           ${context.selected ? '!bg-primary hover:!bg-primary/80' : undefined}
           !rounded-[5px]
+          !text-primary
           hover:!bg-primary/20
           hover:text-primary/80
         `
