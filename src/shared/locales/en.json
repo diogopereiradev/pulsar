@@ -4,9 +4,7 @@
     "description": "Create modern documentation for your application using Pulsar. You will generate custom static documentation pages with Pulsar and can use them wherever you want."
   },
   "loading": {
-    "message-1": "1...2...3...Little sheep, why is it taking so long?",
-    "message-2": "Your page is loading, please wait a moment.",
-    "message-3": "It seems like Clovis is taking a little while."
+    "message": "Your page is loading, please wait a moment."
   },
   "markdowneditor": {
     "is-empty-message": "is empty",

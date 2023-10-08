@@ -4,9 +4,7 @@
     "description": "Crie documentações modernas para a sua aplicação usando o Pulsar. Você gerará páginas estáticas de documentações customizadas pelo Pulsar e poderá usar onde quiser."
   },
   "loading": {
-    "message-1": "Birll, vamo carregar isso aqui!!!",
-    "message-2": "Sua página está carregando, aguarde um pouco.",
-    "message-3": "Parece que o Clovis está demorando um pouco."
+    "message": "Sua página está carregando, aguarde um pouco."
   },
   "markdowneditor": {
     "is-empty-message": "está vazio",
