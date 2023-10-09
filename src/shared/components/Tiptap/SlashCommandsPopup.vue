@@ -42,7 +42,13 @@ function handleBulletList() {
 }
 
 function handleCodeblock() {
-  // Temporally disabled
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .setCodeBlock()
+    .run();
 }
 </script>
 
@@ -163,7 +169,6 @@ function handleCodeblock() {
           :title="$t('markdowneditor.slashcommands-popup-codeblocks-description')"
           class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
           :style="{ backgroundColor: props.colors.secondary }"
-          disabled
         >
           <div 
             class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"

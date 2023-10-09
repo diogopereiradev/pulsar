@@ -10,6 +10,7 @@ type EditorStateType = {
   exportDocModal: {
     isLoading: boolean,
     isError: boolean,
+    isDownloading: boolean,
     isCancelling: boolean,
     isOpen: boolean,
     data: Blob | undefined
@@ -27,6 +28,7 @@ export const useEditor = () => useState<EditorStateType>('editorState', () => ({
   exportDocModal: {
     isLoading: false,
     isError: false,
+    isDownloading: false,
     isCancelling: false,
     isOpen: false,
     data: undefined

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Editor } from '@tiptap/vue-3';
 import TiptapEditor from '~/shared/components/Tiptap/TiptapEditor.vue';
 import EditorCategories from './EditorCategories.vue';
 import IndexesTable from './IndexesTable.vue';
@@ -7,10 +8,25 @@ import { useEditor } from '~/shared/states/editorState';
 const editor = useEditor();
 const mobileNavigationIsOpen = ref(false);
 
-function handleEditorChange(value: string) {
+function parseCodeBlocks(unparsedContent: string, fullViewDom: string) {
+  const unparsedDom = new DOMParser().parseFromString(unparsedContent, 'text/html');
+  const fullDom = new DOMParser().parseFromString(fullViewDom, 'text/html');
+
+  fullDom.querySelectorAll('.highlighted-codeblock').forEach(codeBlock => {
+    const unparsedCodeBlocks = unparsedDom.querySelectorAll('.highlighted-codeblock');
+
+    unparsedCodeBlocks.forEach(unparsedCodeBlock => {
+      unparsedCodeBlock.innerHTML = codeBlock.innerHTML;
+    });
+  });
+  return unparsedDom.body.innerHTML;
+}
+
+function handleEditorChange(value: string, textEditorInstance: Editor) {
+  const parsedDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
   const updatedPages = editor.value.doc.pages.map(page => {
     if(page.id === editor.value.currentSelectedPage?.id) {
-      page.content = value;
+      page.content = parsedDom;
     }
     return page;
   });
@@ -106,7 +122,7 @@ onBeforeMount(() => {
       <div class="overflow-hidden w-full 2xl:px-[40px]">
         <TiptapEditor
           v-if="editor.currentSelectedPage?.id != -1"
-          @update:model-value="(value) => handleEditorChange(value)"
+          @update:model-value="(value, editor) => handleEditorChange(value, editor)"
           :content="editor.currentSelectedPage?.content"
           :colors="editor.doc.colors"
         />

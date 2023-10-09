@@ -1,0 +1,45 @@
+import { createLowlight } from 'lowlight';
+
+import js from 'highlight.js/lib/languages/javascript';
+import css from 'highlight.js/lib/languages/css';
+import typescript from 'highlight.js/lib/languages/typescript';
+import csharp from 'highlight.js/lib/languages/csharp';
+import c from 'highlight.js/lib/languages/c';
+import cpp from 'highlight.js/lib/languages/cpp';
+import rust from 'highlight.js/lib/languages/rust';
+import elixir from 'highlight.js/lib/languages/elixir';
+import go from 'highlight.js/lib/languages/go';
+import java from 'highlight.js/lib/languages/java';
+import xml from 'highlight.js/lib/languages/xml';
+import kotlin from 'highlight.js/lib/languages/kotlin';
+import python from 'highlight.js/lib/languages/python';
+import julia from 'highlight.js/lib/languages/julia';
+import graphql from 'highlight.js/lib/languages/graphql';
+import haml from 'highlight.js/lib/languages/haml';
+import django from 'highlight.js/lib/languages/django';
+import haskell from 'highlight.js/lib/languages/haskell';
+import dart from 'highlight.js/lib/languages/dart';
+import fortran from 'highlight.js/lib/languages/fortran';
+
+export const lowlight = createLowlight();
+
+lowlight.register({ js });
+lowlight.register({ css });
+lowlight.register({ typescript });
+lowlight.register({ csharp });
+lowlight.register({ c });
+lowlight.register({ cpp });
+lowlight.register({ rust });
+lowlight.register({ elixir });
+lowlight.register({ go });
+lowlight.register({ java });
+lowlight.register({ xml });
+lowlight.register({ kotlin });
+lowlight.register({ python });
+lowlight.register({ julia });
+lowlight.register({ graphql });
+lowlight.register({ haml });
+lowlight.register({ django });
+lowlight.register({ haskell });
+lowlight.register({ dart });
+lowlight.register({ fortran });

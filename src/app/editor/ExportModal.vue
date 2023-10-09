@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import fileSaver from 'file-saver';
-import { DocumentationFileBuilder } from '~/shared/dfs/DocumentationFileBuilder';
+import { DocumentationFileBuilder } from '~/shared/dfb/DocumentationFileBuilder';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useEditor } from '~/shared/states/editorState';
@@ -10,6 +10,7 @@ const confirm = useConfirm();
 const editor = useEditor();
 
 function startDocumentationExport() {
+  editor.value.exportDocModal.isDownloading = true;
   editor.value.exportDocModal.isLoading = true;
 
   setTimeout(async () => {
@@ -32,7 +33,10 @@ function downloadDocumentationFiles() {
   
   if(fileData) {
     fileSaver.saveAs(fileData, fileName);
+    editor.value.exportDocModal.isDownloading = false;
+    editor.value.exportDocModal.isOpen = false;
   } else {
+    editor.value.exportDocModal.isDownloading = false;
     editor.value.exportDocModal.isLoading = false;
     editor.value.exportDocModal.isError = true;
   }
@@ -57,6 +61,7 @@ function cancelConfirmDialog() {
       editor.value.exportDocModal.isOpen = false;
       editor.value.exportDocModal.isCancelling = false;
       editor.value.exportDocModal.isLoading = false;
+      editor.value.exportDocModal.isDownloading = false;
       editor.value.exportDocModal.data = undefined;
     },
     reject: () => {
@@ -144,4 +149,4 @@ function cancelConfirmDialog() {
       `"
     ></div>
   </div>
-</template>
+</template>~/shared/dfb/DocumentationFileBuilder

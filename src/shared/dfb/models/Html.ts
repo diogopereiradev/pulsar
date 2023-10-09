@@ -1,6 +1,8 @@
 import { IDocumentation, IDocumentationPage } from "~/shared/storage/models/Documentation";
 
-export function Html(page: IDocumentationPage, doc: IDocumentation) {
+export function Html(page: IDocumentationPage, doc: IDocumentation, isFirstPage: boolean) {
+  const relativePath = isFirstPage? './assets' : '../assets';
+
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -11,7 +13,8 @@ export function Html(page: IDocumentationPage, doc: IDocumentation) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="./assets/styles.css" />
+        <link rel="stylesheet" href="${relativePath}/reset.css" />
+        <link rel="stylesheet" href="${relativePath}/styles.css" />
       </head>
       <body>
         ${page.content}

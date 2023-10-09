@@ -2,10 +2,12 @@ import JSZip from "jszip";
 import { Html } from './models/Html';
 import { Css } from './models/Css';
 import { IDocumentation } from "../storage/models/Documentation";
+import { ResetCss } from "./models/ResetCss";
 
 type StringifiedHTMLPage = {
   title: string,
-  html: string
+  html: string,
+  isFirstPage: boolean
 }
 
 export class DocumentationFileBuilder {
@@ -22,9 +24,12 @@ export class DocumentationFileBuilder {
     const result: StringifiedHTMLPage[] = [];
 
     pages.forEach(page => {
+      const isFirstPage = pages.filter(p => p.categoryId === this.documentation.categories[0].id)[0].id === page.id? true : false;
+
       result.push({
         title: page.title, 
-        html: Html(page, this.documentation)
+        html: Html(page, this.documentation, isFirstPage),
+        isFirstPage
       });
     });
     return result;
@@ -33,10 +38,12 @@ export class DocumentationFileBuilder {
   async generate(): Promise<Blob> {
     this.getStringifiedHTMLPages().forEach(htmlPage => {
       const fileName = htmlPage.title.toLowerCase().replaceAll(' ', '').trim();
-      this.zip.file(`${fileName}.html`, htmlPage.html);
+      const pageFilePath = htmlPage.isFirstPage? 'index.html' : `pages/${fileName}.html`;
+      this.zip.file(pageFilePath, htmlPage.html);
     });
 
     this.zip.folder('assets');
+    this.zip.file('assets/reset.css', ResetCss());
     this.zip.file('assets/styles.css', Css(this.documentation));
 
     const result = await this.zip.generateAsync({ type: 'blob' });

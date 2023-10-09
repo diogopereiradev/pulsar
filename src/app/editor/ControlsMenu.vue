@@ -164,7 +164,8 @@ onBeforeMount(async () => {
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
             >
-              <font-awesome-icon icon="fa-solid fa-download" />
+              <font-awesome-icon v-if="!editor.exportDocModal.isDownloading" icon="fa-solid fa-download" />
+              <font-awesome-icon v-if="editor.exportDocModal.isDownloading" icon="fa-solid fa-circle-notch" class="text-[16px]" spin/>
             </Button>
             <!--Save button-->
             <Button

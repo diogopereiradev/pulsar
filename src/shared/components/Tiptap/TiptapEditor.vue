@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { lowlight } from './hljsConfig';
 import { useEditor as useTiptapEditor, EditorContent, mergeAttributes } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
 import Placeholder from '@tiptap/extension-placeholder';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Link from '@tiptap/extension-link';
 import BubbleMenuExtension from '@tiptap/extension-bubble-menu';
 import Table from '@tiptap/extension-table';
@@ -46,7 +48,9 @@ const editor = useTiptapEditor({
           class: 'pulsar-paragraph'
         }
       },
-      hardBreak: false,
+      hardBreak: {
+        keepMarks: true
+      },
       gapcursor: false,
       heading: false,
       codeBlock: false
@@ -83,6 +87,13 @@ const editor = useTiptapEditor({
       cellMinWidth: 200,
       HTMLAttributes: {
         class: 'pulsar-table'
+      }
+    }),
+    CodeBlockLowlight.configure({
+      lowlight,
+      exitOnArrowDown: true,
+      HTMLAttributes: {
+        class: 'highlighted-codeblock'
       }
     }),
     Heading
@@ -163,17 +174,17 @@ const editor = useTiptapEditor({
     Image
   ],
   parseOptions: {
-    preserveWhitespace: true
+    preserveWhitespace: 'full'
   },
   onUpdate: () => {
     // Send current editor html content to external components using emit event
-    emit('update:modelValue', editor.value?.getHTML());
+    emit('update:modelValue', editor.value?.getHTML(), editor.value);
   }
 });
 
 // Set editor content on props.content was changed
 watch(() => pageEditor.value.currentSelectedPage, (value) => {
-  if(!editor) return;
+  if(!editor.value) return;
   editor.value?.commands.setContent(value.content, true);
 });
 </script>
@@ -262,6 +273,59 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
     &.ProseMirror-selectednode {
       outline: 3px solid v-bind('colors.primary');
     }
+  }
+
+  // CodeBlock
+  pre {
+    background-color: v-bind('props.colors.secondary');
+    color: v-bind('props.colors.codeBlockText');
+    font-weight: 400;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    overflow-x: scroll;
+    white-space: pre !important;
+
+    code {
+      color: inherit;
+      padding: 0;
+      background: none;
+      font-size: 16px;
+    }
+
+    .hljs-comment, .hljs-quote { color: v-bind('props.colors.codeBlockComments'); }
+
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: v-bind('props.colors.codeBlockVariable');
+    }
+
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: v-bind('props.colors.codeBlockLiteral');
+    }
+
+    .hljs-string, .hljs-symbol, .hljs-bullet { color: v-bind('props.colors.codeBlockString'); }
+
+    .hljs-title, .hljs-section { color: v-bind('props.colors.codeBlockSection'); }
+
+    .hljs-keyword, .hljs-selector-tag { color: v-bind('props.colors.codeBlockKeyword'); }
+
+    .hljs-emphasis { font-style: italic;}
+
+    .hljs-strong { font-weight: 700; }
   }
 
   // Tables

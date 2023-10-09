@@ -19,13 +19,6 @@ export function Css(doc: IDocumentation) {
       ${generateGlobalVariables(doc.colors)}
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
     body {
       background-color: rgb(var(--background));
       font-family: Roboto;
@@ -128,6 +121,61 @@ export function Css(doc: IDocumentation) {
       text-align: left;
       background-color: rgb(var(--secondary));
     }
+    
+    .highlighted-codeblock {
+      width: 100%;
+      background-color: rgb(var(--secondary));
+      color: rgb(var(--codeBlockText));
+      font-family: Roboto;
+      font-weight: 400;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      overflow-x: scroll;
+      white-space: pre !important;
+    }
+
+    .highlighted-codeblock code {
+      color: inherit;
+      padding: 0;
+      background: none;
+      font-size: 16px;
+      white-space: pre;
+    }
+
+    .hljs-comment, .hljs-quote { color: rgb(var(--codeBlockComments)); }
+
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      color: rgb(var(--codeBlockVariable));
+    }
+
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      color: rgb(var(--codeBlockLiteral));
+    }
+
+    .hljs-string, .hljs-symbol, .hljs-bullet { color: rgb(var(--codeBlockString)); }
+
+    .hljs-title, .hljs-section { color: rgb(var(--codeBlockSection)); }
+
+    .hljs-keyword, .hljs-selector-tag { color: rgb(var(--codeBlockKeyword)); }
+
+    .hljs-emphasis { font-style: italic; }
+
+    .hljs-strong { font-weight: 700; }
 
     /* 2xl */
     @media only screen and (max-width: 1180px) {
