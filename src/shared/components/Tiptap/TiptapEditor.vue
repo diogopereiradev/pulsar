@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { lowlight } from './hljsConfig';
-import { useEditor, EditorContent, Editor, mergeAttributes } from '@tiptap/vue-3';
+import { useEditor as useTiptapEditor, EditorContent, mergeAttributes } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
 import Placeholder from '@tiptap/extension-placeholder';
 import Link from '@tiptap/extension-link';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import BubbleMenuExtension from '@tiptap/extension-bubble-menu';
 import Table from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
@@ -17,17 +15,19 @@ import SlashCommandsPopup from './SlashCommandsPopup.vue';
 import SelectionBubbleMenu from './SelectionBubbleMenu.vue';
 import TableControlsMenu from './TableControlsMenu.vue';
 import { IDocumentationColorPalette } from '../../storage/models/Documentation';
+import { useEditor } from '~/shared/states/editorState';
 
 const emit = defineEmits(['update:modelValue']);
+const pageEditor = useEditor();
 const props = defineProps<{
   colors: IDocumentationColorPalette,
-  content: string
+  content: string | undefined
 }>();
 
 const { t } = useI18n();
 
-const editor = useEditor({
-  content: JSON.parse(JSON.stringify(props.content)),
+const editor = useTiptapEditor({
+  content: props.content,
   extensions: [
     StarterKit.configure({
       horizontalRule: {
@@ -46,9 +46,7 @@ const editor = useEditor({
           class: 'pulsar-paragraph'
         }
       },
-      hardBreak: {
-        keepMarks: true
-      },
+      hardBreak: false,
       gapcursor: false,
       heading: false,
       codeBlock: false
@@ -79,16 +77,10 @@ const editor = useEditor({
         class: 'pulsar-link'
       }
     }),
-    CodeBlockLowlight.configure({
-      lowlight,
-      exitOnArrowDown: true,
-      HTMLAttributes: {
-        class: 'highlighted-codeblock'
-      }
-    }),
     BubbleMenuExtension,
     Table.configure({ 
       resizable: true,
+      cellMinWidth: 200,
       HTMLAttributes: {
         class: 'pulsar-table'
       }
@@ -170,38 +162,19 @@ const editor = useEditor({
     TableRow,
     Image
   ],
+  parseOptions: {
+    preserveWhitespace: true
+  },
   onUpdate: () => {
-    const html = parseHTML(editor.value!);
     // Send current editor html content to external components using emit event
-    emit('update:modelValue', html);
+    emit('update:modelValue', editor.value?.getHTML());
   }
 });
 
-function getAllHighlightCodeblocks(viewInnerHTML: string) {
-  const parsedHtml = new DOMParser();
-  const document = parsedHtml.parseFromString(viewInnerHTML, 'text/html');
-  const allHighlightedCodeBlocks = document.querySelectorAll('.highlighted-codeblock');
-  return allHighlightedCodeBlocks;
-}
-
-function parseHTML(textEditor: Editor) {
-  const parsedDOM = new DOMParser();
-  const document = parsedDOM.parseFromString(textEditor.getHTML(), 'text/html');
-  
-  // Keep the span tags in codeblocks, to the highlight colors
-  const highlightedCodeblocks = getAllHighlightCodeblocks(textEditor.view.dom.innerHTML);
-  document.querySelectorAll('.highlighted-codeblock').forEach((codeblock) => {
-    codeblock.innerHTML = highlightedCodeblocks[0].innerHTML;
-  });
-  return document.body.innerHTML;
-}
-
 // Set editor content on props.content was changed
-watch(() => props.content, (value) => {
+watch(() => pageEditor.value.currentSelectedPage, (value) => {
   if(!editor) return;
-  if(editor.value?.getHTML() === props.content) return;
-
-  editor.value?.commands.setContent(value, true);
+  editor.value?.commands.setContent(value.content, true);
 });
 </script>
 
@@ -289,57 +262,6 @@ watch(() => props.content, (value) => {
     &.ProseMirror-selectednode {
       outline: 3px solid v-bind('colors.primary');
     }
-  }
-
-  // CodeBlock
-  pre {
-    background-color: v-bind('props.colors.secondary');
-    color: v-bind('props.colors.codeBlockText');
-    font-weight: 400;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-
-    code {
-      color: inherit;
-      padding: 0;
-      background: none;
-      font-size: 16px;
-    }
-
-    .hljs-comment, .hljs-quote { color: v-bind('props.colors.codeBlockComments'); }
-
-    .hljs-variable,
-    .hljs-template-variable,
-    .hljs-attribute,
-    .hljs-tag,
-    .hljs-name,
-    .hljs-regexp,
-    .hljs-link,
-    .hljs-name,
-    .hljs-selector-id,
-    .hljs-selector-class {
-      color: v-bind('props.colors.codeBlockVariable');
-    }
-
-    .hljs-number,
-    .hljs-meta,
-    .hljs-built_in,
-    .hljs-builtin-name,
-    .hljs-literal,
-    .hljs-type,
-    .hljs-params {
-      color: v-bind('props.colors.codeBlockLiteral');
-    }
-
-    .hljs-string, .hljs-symbol, .hljs-bullet { color: v-bind('props.colors.codeBlockString'); }
-
-    .hljs-title, .hljs-section { color: v-bind('props.colors.codeBlockSection'); }
-
-    .hljs-keyword, .hljs-selector-tag { color: v-bind('props.colors.codeBlockKeyword'); }
-
-    .hljs-emphasis { font-style: italic;}
-
-    .hljs-strong { font-weight: 700; }
   }
 
   // Tables

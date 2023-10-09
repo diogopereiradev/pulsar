@@ -203,58 +203,6 @@ watch(() => preview.value.doc, () => {
     background-color: v-bind('preview.doc?.colors.secondary');
   }
 
-  .highlighted-codeblock {
-    width: 100%;
-    background-color: v-bind('preview.doc?.colors.secondary');
-    color: v-bind('preview.doc?.colors.codeBlockText');
-    font-family: Roboto;
-    font-weight: 400;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-  }
-
-  .highlighted-codeblock code {
-    color: inherit;
-    padding: 0;
-    background: none;
-    font-size: 16px;
-  }
-
-  .hljs-comment, .hljs-quote { color: v-bind('preview.doc?.colors.codeBlockComments'); }
-
-  .hljs-variable,
-  .hljs-template-variable,
-  .hljs-attribute,
-  .hljs-tag,
-  .hljs-name,
-  .hljs-regexp,
-  .hljs-link,
-  .hljs-name,
-  .hljs-selector-id,
-  .hljs-selector-class {
-    color: v-bind('preview.doc?.colors.codeBlockVariable');
-  }
-
-  .hljs-number,
-  .hljs-meta,
-  .hljs-built_in,
-  .hljs-builtin-name,
-  .hljs-literal,
-  .hljs-type,
-  .hljs-params {
-    color: v-bind('preview.doc?.colors.codeBlockLiteral');
-  }
-
-  .hljs-string, .hljs-symbol, .hljs-bullet { color: v-bind('preview.doc?.colors.codeBlockString'); }
-
-  .hljs-title, .hljs-section { color: v-bind('preview.doc?.colors.codeBlockSection'); }
-
-  .hljs-keyword, .hljs-selector-tag { color: v-bind('preview.doc?.colors.codeBlockKeyword'); }
-
-  .hljs-emphasis { font-style: italic; }
-
-  .hljs-strong { font-weight: 700; }
-
   /* 2xl */
   @media only screen and (max-width: 1180px) {
     .pulsar-page-container {

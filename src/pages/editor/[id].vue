@@ -5,17 +5,25 @@ import DocEditor from '~/app/editor/DocEditor.vue';
 import ExportModal from '~/app/editor/ExportModal.vue';
 import Error from '~/shared/components/Error.vue';
 import Loading from '~/shared/components/Loading.vue';
+import { useEditor } from '~/shared/states/editorState';
 import { Documentation } from '~/shared/storage/models/Documentation';
 
 definePageMeta({ layout: 'editor' });
 
 const { params } = useRoute();
+const editor = useEditor();
 const pageIsLoaded = ref(false);
 const docExists = ref(false);
 
 onBeforeMount(async () => {
   const id = Number(params.id) || 0;
   const doc = await Documentation.get(id);
+
+  // Reset old editor currentSelectedPage, because if you change documentation without reloading the page the SPA saves the old state
+  editor.value.currentSelectedPage = {
+    ...JSON.parse(JSON.stringify(editor.value.currentSelectedPage)),
+    id: -1
+  };
 
   // Verify if documentation exists in database
   setTimeout(() => {

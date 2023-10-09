@@ -1,27 +1,20 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
 import { useEditor } from '~/shared/states/editorState';
-import { Documentation, IDocumentationCategory, IDocumentationPage, documentationDataEmptyObj } from '~/shared/storage/models/Documentation';
+import { IDocumentationCategory, IDocumentationPage } from '~/shared/storage/models/Documentation';
 import InputableButton from './InputableButton.vue';
-import { Status } from "~/@types/status";
 
 const { t } = useI18n();
 const confirm = useConfirm();
 const editor = useEditor();
 
 async function handlePageChange(pageId: number) {
-  const result = await Documentation.get(editor.value.doc.id);
-
-  if(result) {
-    const page = result.pages.find(page => page.id === pageId);
+  const page = editor.value.doc.pages.find(page => page.id === pageId);
     
-    if(page) {
-      editor.value.currentSelectedPage = page;
-    } else {
-      console.error('Invalid page id!');
-    }
+  if(page) {
+    editor.value.currentSelectedPage = page;
   } else {
-    console.error('An error occurred on getting page data!');
+    console.error('Invalid page id!');
   }
 }
 
@@ -33,16 +26,7 @@ async function handleNewCategory(value: string) {
     label: value
   };
   const categoriesCopy = JSON.parse(JSON.stringify(editor.value.doc.categories));
-  
-  const result = await Documentation.edit(editor.value.doc.id, {
-    categories: [...categoriesCopy, newCategory]
-  });
-
-  if(result === Status.OK) {
-    setTimeout(() => editor.value.doc.categories = [...categoriesCopy, newCategory], 500);
-  } else {
-    console.error('An error occurred on creating a new category!');
-  }
+  setTimeout(() => editor.value.doc.categories = [...categoriesCopy, newCategory], 500);
 }
 
 async function handleNewPage(value: string, categoryId: number) {
@@ -58,16 +42,7 @@ async function handleNewPage(value: string, categoryId: number) {
     lastUpdateAt: Date.now()
   };
   const pagesCopy = JSON.parse(JSON.stringify(editor.value.doc.pages));
-  
-  const result = await Documentation.edit(editor.value.doc.id, {
-    pages: [...pagesCopy, newPage]
-  });
-  
-  if(result === Status.OK) {
-    editor.value.doc.pages = [...pagesCopy, newPage];
-  } else {
-    console.error('An error occurred on creating a new page!');
-  }
+  editor.value.doc.pages = [...pagesCopy, newPage];
 }
 
 function deleteCategoryConfirmDialog(categoryId: number) {
@@ -83,21 +58,13 @@ function deleteCategoryConfirmDialog(categoryId: number) {
       const pagesUpdated = categoryPagesProxyClone.filter((page: IDocumentationPage) => page.categoryId != categoryId);
       const categoriesProxyClone = JSON.parse(JSON.stringify(editor.value.doc.categories));
       const categoriesUpdated = categoriesProxyClone.filter((category: IDocumentationCategory) => category.id != categoryId);
-      const result = await Documentation.edit(editor.value.doc.id, {
-        categories: categoriesUpdated,
-        pages: pagesUpdated
-      });
 
-      if(result === Status.OK) {
-        editor.value.doc.categories = categoriesUpdated;
-        if(categoryId === editor.value.currentSelectedPage.categoryId) {
-          editor.value.currentSelectedPage = {
-            ...pagesUpdated[0],
-            id: -1
-          }
-        }
-      } else {
-        alert('An error occurred on trying to delete the category!');
+      editor.value.doc.categories = categoriesUpdated;
+      editor.value.doc.pages = pagesUpdated;
+
+      // Clear the currentSelectedPage if the category deleted is the same of the currentSelectedPage
+      if(categoryId === editor.value.currentSelectedPage?.categoryId) {
+        editor.value.currentSelectedPage = { ...pagesUpdated[0], id: -1 };
       }
     }
   });
@@ -114,20 +81,13 @@ function deletePageConfirmDialog(pageId: number) {
     accept: async () => {
       const pagesProxyClone = JSON.parse(JSON.stringify(editor.value.doc.pages));
       const pagesUpdated = pagesProxyClone.filter((page: IDocumentationCategory) => page.id != pageId);
-      const result = await Documentation.edit(editor.value.doc.id, {
-        pages: pagesUpdated
-      });
 
-      if(result === Status.OK) {
-        editor.value.doc.pages = pagesUpdated;
-        if(pageId === editor.value.currentSelectedPage.id) {
-          editor.value.currentSelectedPage = {
-            ...pagesUpdated[0],
-            id: -1
-          }
+      editor.value.doc.pages = pagesUpdated;
+      if(pageId === editor.value.currentSelectedPage?.id) {
+        editor.value.currentSelectedPage = {
+          ...pagesUpdated[0],
+          id: -1
         }
-      } else {
-        alert('An error occurred on trying to delete the category!');
       }
     }
   });
@@ -156,7 +116,7 @@ function deletePageConfirmDialog(pageId: number) {
                 @click="handlePageChange(page.id)"
                 :title="page.title"
                 class="dinamic-color-page-link max-w-[160px] font-[400] truncate duration-300" 
-                :style="{ color: editor.currentSelectedPage.id === page.id? editor.doc.colors.primary : `${editor.doc.colors.text}70` }"
+                :style="{ color: editor.currentSelectedPage?.id === page.id? editor.doc.colors.primary : `${editor.doc.colors.text}70` }"
               >
                 {{ page.title }}
               </button>

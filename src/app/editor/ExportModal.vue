@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import fileSaver from 'file-saver';
+import { DocumentationFileBuilder } from '~/shared/dfs/DocumentationFileBuilder';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useEditor } from '~/shared/states/editorState';
@@ -10,12 +12,30 @@ const editor = useEditor();
 function startDocumentationExport() {
   editor.value.exportDocModal.isLoading = true;
 
-  // Export logic
-  // It's a temp mock
-  setTimeout(() => {
+  setTimeout(async () => {
+    const dfs = new DocumentationFileBuilder(editor.value.doc);
+    const compressedBlob = await dfs.generate();
+  
+    if(compressedBlob) {
+      editor.value.exportDocModal.data = compressedBlob;
+      editor.value.exportDocModal.isLoading = false;
+    } else {
+      editor.value.exportDocModal.isLoading = false;
+      editor.value.exportDocModal.isError = true;
+    }
+  }, 500);
+}
+
+function downloadDocumentationFiles() {
+  const fileName = `${editor.value.doc.title.toLocaleLowerCase().replaceAll(' ', '').trim()}.zip`;
+  const fileData = editor.value.exportDocModal.data;
+  
+  if(fileData) {
+    fileSaver.saveAs(fileData, fileName);
+  } else {
     editor.value.exportDocModal.isLoading = false;
-    editor.value.exportDocModal.isCancelling = false;
-  }, 3000);
+    editor.value.exportDocModal.isError = true;
+  }
 }
 
 watch(() => editor.value.exportDocModal.isOpen, (val) => {
@@ -37,6 +57,7 @@ function cancelConfirmDialog() {
       editor.value.exportDocModal.isOpen = false;
       editor.value.exportDocModal.isCancelling = false;
       editor.value.exportDocModal.isLoading = false;
+      editor.value.exportDocModal.data = undefined;
     },
     reject: () => {
       editor.value.exportDocModal.isCancelling = false;
@@ -97,7 +118,10 @@ function cancelConfirmDialog() {
             />
           </div>
           <div class="flex justify-center items-center h-[20%]">
-            <Button class="flex items-center min-w-[170px] !h-[45px] !px-[20px] !bg-primary/80 hover:!bg-primary/50 hover:!text-primary/80 font-[500] rounded-[5px] border-none">
+            <Button 
+              @click="downloadDocumentationFiles"
+              class="flex items-center min-w-[170px] !h-[45px] !px-[20px] !bg-primary/80 hover:!bg-primary/50 hover:!text-primary/80 font-[500] rounded-[5px] border-none"
+            >
               Download
             </Button>
           </div>

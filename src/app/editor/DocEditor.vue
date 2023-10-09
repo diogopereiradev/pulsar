@@ -9,7 +9,7 @@ const mobileNavigationIsOpen = ref(false);
 
 function handleEditorChange(value: string) {
   const updatedPages = editor.value.doc.pages.map(page => {
-    if(page.id === editor.value.currentSelectedPage.id) {
+    if(page.id === editor.value.currentSelectedPage?.id) {
       page.content = value;
     }
     return page;
@@ -105,9 +105,9 @@ onBeforeMount(() => {
       <!--Editor-->
       <div class="overflow-hidden w-full 2xl:px-[40px]">
         <TiptapEditor
-          v-if="editor.currentSelectedPage.id != -1"
+          v-if="editor.currentSelectedPage?.id != -1"
           @update:model-value="(value) => handleEditorChange(value)"
-          :content="editor.currentSelectedPage.content"
+          :content="editor.currentSelectedPage?.content"
           :colors="editor.doc.colors"
         />
         <div v-else class="w-full h-[300px] flex justify-center items-center">
