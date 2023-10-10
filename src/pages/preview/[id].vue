@@ -95,7 +95,7 @@ watch(() => preview.value.doc, () => {
   />
 </template>
 
-<style>
+<style lang="scss">
   body {
     font-family: Roboto;
     font-weight: 400;
