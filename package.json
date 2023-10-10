@@ -60,16 +60,22 @@
     "@tiptap/pm": "^2.1.11",
     "@tiptap/starter-kit": "^2.1.11",
     "@tiptap/vue-3": "^2.1.11",
+    "browserify-fs": "^1.0.0",
+    "buffer": "^6.0.3",
     "css": "^3.0.0",
+    "events": "^3.3.0",
     "file-saver": "^2.0.5",
     "hex-to-rgb": "^1.0.1",
     "highlight.js": "^11.8.0",
-    "html-prettify": "^1.0.7",
     "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "lowlight": "^3.0.0",
+    "path-browserify": "^1.0.1",
     "primevue": "^3.34.1",
+    "stream": "^0.0.2",
     "tiptap-markdown": "^0.8.2",
+    "url": "^0.11.3",
+    "util": "^0.12.5",
     "vue-i18n": "^9.4.1"
   }
 }

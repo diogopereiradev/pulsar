@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import path from 'path';
+
 export default defineNuxtConfig({
   plugins: [
     './plugins/fontawesome.ts',
@@ -55,8 +57,15 @@ export default defineNuxtConfig({
   },
   css: ['~/shared/assets/globals.css', '@fortawesome/fontawesome-svg-core/styles.css'],
   vite: {
+    resolve: {
+      alias: {
+        fs: 'browserify-fs',
+        path: 'path-browserify',
+        '~': path.resolve(__dirname, './src')
+      }
+    },
     build: {
-      chunkSizeWarningLimit: 1000
+      chunkSizeWarningLimit: 2000
     }
   }
 });
