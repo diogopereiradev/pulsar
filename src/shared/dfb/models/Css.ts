@@ -19,6 +19,11 @@ export function Css(doc: IDocumentation) {
       ${generateGlobalVariables(doc.colors)}
     }
 
+    .pulsar-page-wrapper {
+      max-width: 2120px;
+      margin: 0 auto;
+    }
+
     body {
       background-color: rgb(var(--background));
       font-family: Roboto;
@@ -26,10 +31,20 @@ export function Css(doc: IDocumentation) {
       padding: 50px;
     }
 
+    .pulsar-utils-hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .pulsar-utils-truncate {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    .pulsar-current-page-content {
+      width: 100%;
+      word-break: break-word;
     }
   
     .pulsar-doc-navbar {
@@ -177,9 +192,109 @@ export function Css(doc: IDocumentation) {
 
     .hljs-strong { font-weight: 700; }
 
+    .pulsar-doc-navigation-menu-container {
+      display: flex;
+      justify-content: right;
+      width: 340px;
+    }
+    
+    .pulsar-doc-navigation-menu {
+      display: flex;
+      position: fixed;
+      flex-direction: column;
+      max-width: 240px;
+      width: 100%;
+      background-color: transparent;
+      transition: .3s;
+      z-index: 100;
+    }
+
+    .pulsar-navigation-menu-divider {
+      width: 100%;
+      height: 2px;
+      border: none;
+      background-color: rgba(var(--divider), 0.5);
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .pulsar-navigation-menu-mobile-backdrop {
+      display: none;
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      width: 100vw;
+      height: 100vh;
+      background-color: #00000050;
+      transition: .3s;
+      z-index: 99;
+    } 
+    
+    .pulsar-doc-navigation-menu-close-button {
+      display: none;
+      position: absolute;
+      right: 30px;
+      top: 30px;
+    } 
+    
+    .pulsar-doc-navigation-menu-map-icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 45px;
+      height: 45px;
+      background-color: rgba(var(--primary), 0.3);
+      border-radius: 10px;
+    }
+
+    .pulsar-navigation-menu-title {
+      color: rgba(var(--text), 0.8);
+      max-width: 150px;
+      font-size: 17px;
+    }
+
+    .pulsar-navigation-menu-subtitle {
+      color: rgba(var(--text), 0.6);
+      max-width: 150px;
+      font-size: 15px;
+      margin-top: -4px;
+    }
+
+    .pulsar-doc-navigation-menu-category-item {
+      color: rgba(var(--text));
+      font-weight: 500;
+      font-size: 15px;
+    }
+    
+    .pulsar-doc-navigation-menu-category-page-item:first-child {
+      margin-top: 5px;
+    } 
+    
+    .pulsar-doc-navigation-menu-category-page-item a {
+      display: flex;
+      align-items: center;
+      max-width: 160px;
+      border-left: 2px solid rgba(var(--divider), 0.725);
+      padding-left: 20px;
+      margin-left: 1px;
+      height: 36px;
+      font-weight: 400;
+      transition: .3s;
+    }
+    
+    .pulsar-doc-navigation-menu-category-page-item .router-link-active {
+      color: rgba(var(--primary)) !important;
+      border-left: 2px solid rgba(var(--primary)) !important;
+    }
+    
+    .pulsar-doc-navigation-menu-category-page-item a:hover {
+      color: rgba(var(--primary), 0.725) !important;
+      border-left: 2px solid rgba(var(--primary), 0.725) !important;
+    }
+
     /* 2xl */
     @media only screen and (max-width: 1180px) {
-      .pulsar-page-container {
+      .pulsar-page-wrapper {
         flex-direction: column;
       }
   
@@ -193,6 +308,30 @@ export function Css(doc: IDocumentation) {
   
       .pulsar-doc-page-nav-doc-indexes-table-container {
         gap: 0px;
+      }
+
+      .pulsar-doc-navigation-menu-container {
+        position: relative;
+        width: 0px;
+      }
+    
+      .pulsar-doc-navigation-menu {
+        min-width: 220px;
+        max-width: 320px;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        background-color: rgba(var(--secondary));
+        padding: 50px 40px;
+        overflow-y: scroll;
+      }
+    
+      .pulsar-navigation-menu-mobile-backdrop {
+        display: block;
+      }
+    
+      .pulsar-doc-navigation-menu-close-button {
+        display: block;
       }
     }
   `));

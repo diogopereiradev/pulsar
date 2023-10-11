@@ -3,6 +3,8 @@ import { Html } from './models/Html';
 import { Css } from './models/Css';
 import { IDocumentation } from "../storage/models/Documentation";
 import { ResetCss } from "./models/ResetCss";
+import { VueRouter } from "./models/VueRouter";
+import { Script } from "./models/Script";
 
 type StringifiedHTMLPage = {
   title: string,
@@ -25,10 +27,19 @@ export class DocumentationFileBuilder {
 
     pages.forEach(page => {
       const isFirstPage = pages.filter(p => p.categoryId === this.documentation.categories[0].id)[0].id === page.id? true : false;
+      let pageContent = undefined;
+
+      if(this.documentation.features.vueRouter && isFirstPage) {
+        pageContent = Html(page, this.documentation, isFirstPage);
+      } else if(this.documentation.features.vueRouter) {
+        pageContent = page.content;
+      } else {
+        pageContent = Html(page, this.documentation, isFirstPage);
+      }
 
       result.push({
         title: page.title, 
-        html: Html(page, this.documentation, isFirstPage),
+        html: pageContent,
         isFirstPage
       });
     });
@@ -45,6 +56,8 @@ export class DocumentationFileBuilder {
     this.zip.folder('assets');
     this.zip.file('assets/reset.css', ResetCss());
     this.zip.file('assets/styles.css', Css(this.documentation));
+    this.zip.file('assets/script.js', Script(this.documentation));
+    this.documentation.features.vueRouter && this.zip.file('assets/router.js', VueRouter(this.documentation));
 
     const result = await this.zip.generateAsync({ type: 'blob' });
     return result;

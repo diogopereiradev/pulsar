@@ -87,13 +87,7 @@ onBeforeMount(() => {
       </div>
       <hr 
         v-if="preview.doc?.navigationTitle" 
-        class="pulsar-divider" 
-        :style="{
-          width: '100%',
-          backgroundColor: preview.doc?.colors.divider + '80',
-          marginTop: '20px',
-          marginBottom: '20px'
-        }" 
+        class="pulsar-navigation-menu-divider" 
       />
       <ul
         :style="{
@@ -104,21 +98,23 @@ onBeforeMount(() => {
       >
         <!--Categories-->
         <li v-for="category in preview.doc?.categories" :key="category.id">
-          <h2 :style="{ fontSize: '15px', fontWeight: '500', color: preview.doc?.colors.text }">{{ category.label }}</h2>
+          <h2 class="pulsar-doc-navigation-menu-category-item">{{ category.label }}</h2>
           <!--Pages-->
           <ul>
             <li 
               v-for="page in preview.doc?.pages.filter(p => p.categoryId === category.id)" 
               class="pulsar-doc-navigation-menu-category-page-item"
               :style="{
-                borderColor: preview.currentSelectedPage?.id === page.id? preview.doc?.colors.primary : preview.doc?.colors.divider + 'a9'
               }"
             >
-              <button
+            <button
                 @click="handlePageChange(page.id)"
                 :title="page.title"
                 class="pulsar-utils-truncate" 
-                :style="{ color: preview.currentSelectedPage?.id === page.id? preview.doc?.colors.primary : `${preview.doc?.colors.text}70` }"
+                :style="{ 
+                  color: preview.currentSelectedPage?.id === page.id? preview.doc?.colors.primary : `${preview.doc?.colors.text}70`,
+                  borderColor: preview.currentSelectedPage?.id === page.id? preview.doc?.colors.primary : preview.doc?.colors.divider + 'a9'
+                }"
               >
                 {{ page.title }}
               </button>
@@ -148,6 +144,15 @@ onBeforeMount(() => {
   background-color: transparent;
   transition: .3s;
   z-index: 100;
+}
+
+.pulsar-navigation-menu-divider {
+  width: 100%;
+  height: 2px;
+  border: none;
+  background-color: v-bind('preview.doc?.colors.divider + "80"');
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .pulsar-navigation-menu-mobile-backdrop {
@@ -181,31 +186,29 @@ onBeforeMount(() => {
   border-radius: 10px;
 } 
 
-.pulsar-doc-navigation-menu-category-page-item {
-  border-left: 2px solid v-bind('preview.doc?.colors.divider + "a9"');
-  padding-left: 20px;
-  margin-left: 1px;
-  height: 30px;
-  transition: .3s;
-} 
+.pulsar-doc-navigation-menu-category-item {
+  color: v-bind('preview.doc?.colors.text');
+  font-weight: 500;
+  font-size: 15px;
+}
 
 .pulsar-doc-navigation-menu-category-page-item:first-child {
   margin-top: 5px;
 } 
 
 .pulsar-doc-navigation-menu-category-page-item button {
+  border-left: 2px solid v-bind('preview.doc?.colors.divider + "a9"');
+  padding-left: 20px;
+  margin-left: 1px;
   max-width: 160px;
+  height: 36px;
   font-weight: 400;
-  padding-top: 3px;
   transition: .3s;
-} 
-
-.pulsar-doc-navigation-menu-category-page-item:hover {
-  border-left: 2px solid v-bind('preview.doc?.colors.primary + "a9"') !important;
 } 
 
 .pulsar-doc-navigation-menu-category-page-item button:hover {
   color: v-bind('preview.doc?.colors.primary + "a9"') !important;
+  border-left: 2px solid v-bind('preview.doc?.colors.primary + "a9"') !important;
 }
 
 /* 2xl */

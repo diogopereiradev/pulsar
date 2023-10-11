@@ -25,7 +25,6 @@ const colors: ColorName[] = [
   'primary', 
   'secondary', 
   'text', 
-  'navbarTitle', 
   'divider',
   'codeBlockText',
   'codeBlockLiteral',
@@ -183,7 +182,7 @@ onBeforeMount(async () => {
         <hr class="w-full h-[2px] bg-divider/60 border-none my-[30px]" />
         <!--Controls-->
         <div class="flex flex-col pt-[5px] pb-[20px]">
-          <!--Indexes table-->
+          <!--Auto save-->
           <div class="w-full flex justify-between gap-[8px] mb-[40px]">
             <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-autosave-input-label') }}</label>
             <InputSwitch v-model="editor.doc.features.autoSave"/>
@@ -214,9 +213,14 @@ onBeforeMount(async () => {
             <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-indexestable-input-label') }}</label>
             <InputSwitch v-model="editor.doc.features.indexesTable"/>
           </div>
+          <!--Use vue router input-->
+          <div class="w-full flex justify-between gap-[8px] mt-[20px]">
+            <label class="text-sm text-primary/40 font-[500]">Vue Router</label>
+            <InputSwitch v-model="editor.doc.features.vueRouter"/>
+          </div>
           <!--Colors-->
           <div class="w-full flex flex-col gap-[8px] mt-[30px]">
-            <label class="text-lg text-primary/70 font-[500]">{{ $t('editor.controls-menu-colors-area-title') }}</label>
+            <h2 class="text-lg text-primary/70 font-[500]">{{ $t('editor.controls-menu-colors-area-title') }}</h2>
             <div class="w-full flex flex-col flex-wrap gap-[25px] mt-[10px]">
               <div
                 v-for="color of colors"

@@ -47,7 +47,7 @@ watch(() => preview.value.currentSelectedPage, () => {
 
 <style>
   .pulsar-indexes-table-container {
-    width: 250px;
+    min-width: 180px;
   }
 
   .pulsar-indexes-table {
@@ -56,7 +56,7 @@ watch(() => preview.value.currentSelectedPage, () => {
 
   @media only screen and (max-width: 1180px) {
     .pulsar-indexes-table {
-      margin-left: 70px;
+      margin-left: 20px;
     }
   }
 

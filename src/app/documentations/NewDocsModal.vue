@@ -48,7 +48,6 @@ const colors: ColorNames[] = [
   'primary',
   'secondary',
   'text',
-  'navbarTitle',
   'divider'
 ];
 </script>

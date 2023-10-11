@@ -13,7 +13,8 @@ export type IDocumentation = {
   colors: IDocumentationColorPalette,
   features: {
     autoSave: boolean,
-    indexesTable: boolean
+    indexesTable: boolean,
+    vueRouter: boolean
   },
   createdAt: number
 };
@@ -37,7 +38,6 @@ export type IDocumentationColorPalette = {
   background: string,
   primary: string,
   secondary: string,
-  navbarTitle: string,
   text: string,
   divider: string,
   codeBlockText: string,
@@ -49,6 +49,21 @@ export type IDocumentationColorPalette = {
   codeBlockComments: string
 }
 
+const defaultColors = {
+  background: '#0a0a14',
+  primary: '#7665d7',
+  secondary: '#18182e',
+  text: '#d3d3d3',
+  divider: '#2b304a',
+  codeBlockText: '#d3d3d3',
+  codeBlockVariable: '#F98181',
+  codeBlockLiteral: '#db6f3d',
+  codeBlockKeyword: '#9e5fd9',
+  codeBlockString: '#B9F18D',
+  codeBlockSection: '#70c25b',
+  codeBlockComments: '#616161'
+};
+
 export const documentationDataEmptyObj: IDocumentation = {
   id: 0,
   title: '',
@@ -58,24 +73,11 @@ export const documentationDataEmptyObj: IDocumentation = {
   description: '',
   categories: [],
   pages: [],
-  colors: {
-    background: '#151829',
-    primary: '#7665d7',
-    secondary: '#1a1d2e',
-    text: '#d3d3d3',
-    navbarTitle: '#d3d3d3',
-    divider: '#2b304a',
-    codeBlockText: '#d3d3d3',
-    codeBlockVariable: '#F98181',
-    codeBlockLiteral: '#9a66dd',
-    codeBlockKeyword: '#896db6',
-    codeBlockString: '#B9F18D',
-    codeBlockSection: '#86d667',
-    codeBlockComments: '#616161'
-  },
+  colors: defaultColors,
   features: {
     autoSave: true,
-    indexesTable: true
+    indexesTable: true,
+    vueRouter: true
   },
   createdAt: 0
 };

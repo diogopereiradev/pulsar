@@ -8,7 +8,7 @@ defineProps<Pick<IDocumentation, 'colors' | 'features'>>();
     <!--Navbar-->
     <div class="flex flex-col w-full p-[20px]">
       <div class="w-full flex justify-between">
-        <div class="w-[35px] h-[15px] rounded-[2px] duration-300" :style="{ backgroundColor: colors.navbarTitle }"></div>
+        <div class="w-[35px] h-[15px] rounded-[2px] duration-300" :style="{ backgroundColor: colors.text }"></div>
         <div class="w-[50px] h-[15px] rounded-[2px] duration-300" :style="{ backgroundColor: colors.primary }"></div>
       </div>
       <hr class="w-full h-[1px] border-none mt-[15px] duration-300" :style="{ backgroundColor: colors.divider }" />

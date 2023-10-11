@@ -58,8 +58,7 @@ watch(() => preview.value.doc, () => {
   <Head>
     <Title>{{ $t('preview.title') + ' ' + docId }}</Title>
   </Head>
-  <!--Page content-->
-  <div class="pulsar-page-container" v-if="docExists && pageIsLoaded">
+  <main class="pulsar-page-wrapper" v-if="docExists && pageIsLoaded">
     <!--Navbar-->
     <nav class="pulsar-doc-navbar">
       <!-- Open navigation menu button-->
@@ -83,7 +82,7 @@ watch(() => preview.value.doc, () => {
       ></div>
       <IndexesTable />
     </div>
-  </div>
+  </main>
   <!--Loading and Error component-->
   <Loading v-if="!pageIsLoaded" />
   <Error 
@@ -96,6 +95,14 @@ watch(() => preview.value.doc, () => {
 </template>
 
 <style lang="scss">
+  .pulsar-page-wrapper {
+    max-width: 2120px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 50px;
+    background-color: v-bind('preview.doc?.colors.background');
+  }
+
   body {
     font-family: Roboto;
     font-weight: 400;
@@ -105,12 +112,6 @@ watch(() => preview.value.doc, () => {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .pulsar-page-container {
-    min-height: 100vh;
-    padding: 50px;
-    background-color: v-bind('preview.doc?.colors.background');
   }
 
   .pulsar-doc-navbar {
@@ -258,7 +259,7 @@ watch(() => preview.value.doc, () => {
 
   /* 2xl */
   @media only screen and (max-width: 1180px) {
-    .pulsar-page-container {
+    .pulsar-page-wrapper {
       flex-direction: column;
     }
 
