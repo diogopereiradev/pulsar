@@ -195,7 +195,7 @@ export function Css(doc: IDocumentation) {
     .pulsar-doc-navigation-menu-container {
       display: flex;
       justify-content: right;
-      width: 340px;
+      min-width: 250px;
     }
     
     .pulsar-doc-navigation-menu {
@@ -293,6 +293,38 @@ export function Css(doc: IDocumentation) {
       border-left: 2px solid rgba(var(--primary), 0.725) !important;
     }
 
+    .pulsar-indexes-table-container {
+      min-width: 180px;
+    }
+  
+    .pulsar-indexes-table {
+      position: fixed;
+    }
+  
+    .pulsar-indexes-table-title {
+      color: rgba(var(--text), 0.91);
+      font-weight: 500;
+      font-size: 15px;
+    }
+  
+    .pulsar-indexes-table-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+  
+    .pulsar-indexes-table-list-button {
+      color: rgba(var(--text), 0.63);
+      font-size: 15px;
+    }
+  
+    @media only screen and (max-width: 768px) {
+      .pulsar-indexes-table-container {
+        display: none;
+      }
+    }
+
     /* 2xl */
     @media only screen and (max-width: 1180px) {
       .pulsar-page-wrapper {
@@ -313,7 +345,7 @@ export function Css(doc: IDocumentation) {
 
       .pulsar-doc-navigation-menu-container {
         position: relative;
-        width: 0px;
+        min-width: 0px;
       }
     
       .pulsar-doc-navigation-menu {
@@ -333,6 +365,10 @@ export function Css(doc: IDocumentation) {
     
       .pulsar-doc-navigation-menu-close-button {
         display: block;
+      }
+
+      .pulsar-indexes-table {
+        margin-left: 20px;
       }
     }
   `));

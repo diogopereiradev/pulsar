@@ -18,25 +18,12 @@ watch(() => preview.value.currentSelectedPage, () => {
 <template>
   <div class="pulsar-indexes-table-container">
     <div class="pulsar-indexes-table" v-if="headings.length >= 1 && preview.doc?.features.indexesTable">
-      <h2
-        :style="{ 
-          color: preview.doc?.colors.text + 'e9',
-          fontWeight: '500',
-          fontSize: '15px'
-        }"
-      >
+      <h2 class="pulsar-indexes-table-title">
         {{ preview.doc?.indexesTableTitle }}
       </h2>
-      <ul
-        :style="{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          marginTop: '10px'
-        }"
-      >
+      <ul class="pulsar-indexes-table-list">
         <li v-for="heading in headings">
-          <button @click="heading.scrollIntoView()" :style="{ color: preview.doc?.colors.text + 'a1', fontSize: '15px' }">
+          <button @click="heading.scrollIntoView()" class="pulsar-indexes-table-list-button">
             {{ heading.textContent }}
           </button>
         </li>
@@ -52,6 +39,24 @@ watch(() => preview.value.currentSelectedPage, () => {
 
   .pulsar-indexes-table {
     position: fixed;
+  }
+
+  .pulsar-indexes-table-title {
+    color: v-bind('preview.doc?.colors.text + "e9"');
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  .pulsar-indexes-table-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .pulsar-indexes-table-list-button {
+    color: v-bind('preview.doc?.colors.text + "a1"');
+    font-size: 15px;
   }
 
   @media only screen and (max-width: 1180px) {

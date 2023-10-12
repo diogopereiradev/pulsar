@@ -69,7 +69,22 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {
   `;
 }
 
-export function Html(page: IDocumentationPage, doc: IDocumentation, isFirstPage: boolean) {
+function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
+  return /* html */`
+    <div class="pulsar-indexes-table-container">
+      ${doc.features.indexesTable? /* html */`
+        <div class="pulsar-indexes-table" >
+          <h2 class="pulsar-indexes-table-title">
+            ${doc.indexesTableTitle}
+          </h2>
+          <ul class="pulsar-indexes-table-list"></ul>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+export function Html(page: IDocumentationPage, doc: IDocumentation) {
   return beautify(/* html */`
     <!DOCTYPE html>
     <html>
@@ -109,6 +124,7 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, isFirstPage:
               ${page.content}
             </div>
             <!--Indexes Table-->
+            ${IndexesTable(page, doc)}
           </div>
         </main>
         <script type="module" src="./assets/script.js"></script>

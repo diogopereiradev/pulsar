@@ -132,7 +132,7 @@ onBeforeMount(() => {
 .pulsar-doc-navigation-menu-container {
   display: flex;
   justify-content: right;
-  width: 410px;
+  min-width: 250px;
 }
 
 .pulsar-doc-navigation-menu {
@@ -215,7 +215,7 @@ onBeforeMount(() => {
 @media only screen and (max-width: 1180px) {
   .pulsar-doc-navigation-menu-container {
     position: relative;
-    width: 0px;
+    min-width: 0px;
   }
 
   .pulsar-doc-navigation-menu {
