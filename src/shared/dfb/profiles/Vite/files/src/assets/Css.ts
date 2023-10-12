@@ -209,6 +209,11 @@ export function Css(doc: IDocumentation) {
       z-index: 100;
     }
 
+    .pulsar-doc-navigation-menu-map-icon {
+      fill: rgba(var(--primary));
+      font-size: 19px;
+    }
+
     .pulsar-navigation-menu-divider {
       width: 100%;
       height: 2px;

@@ -1,6 +1,7 @@
 import beautify from "beautify";
 import { getIsFirstPage } from "~/shared/dfb/utils/getIsFirstPage";
 import { IDocumentation, IDocumentationPage } from "~/shared/storage/models/Documentation";
+import { MapIcon } from "./assets/icons/MapIcon";
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {
   return /* html */`
@@ -14,7 +15,7 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {
         ${doc.navigationTitle && /* html */`
           <div style="display: flex; gap: 15px;">
             <div class="pulsar-doc-navigation-menu-map-icon-container">
-              <i class="fa-solid fa-map" style="color: rgba(var(--primary)); font-size: 19px;"></i>
+              ${MapIcon('pulsar-doc-navigation-menu-map-icon')}
             </div>
             <div style="display: flex; flex-direction: column;">
               <p title="${doc.navigationTitle}" class="pulsar-navigation-menu-title pulsar-utils-truncate">
