@@ -10,6 +10,7 @@ import { PackageJson as VitePackageJson } from "./files/PackageJson";
 import { PnpmLock as VitePnpmLock } from "./files/PnpmLock";
 import { ViteConfig } from "./files/ViteConfig";
 import { Readme } from "./files/Readme";
+import { License } from "./files/License";
 
 type HTMLPage = {
   title: string,
@@ -56,12 +57,14 @@ function generateAssetsFiles(doc: IDocumentation, zip: JSZip) {
 function generateViteConfigurationFiles(doc: IDocumentation, zip: JSZip) {
   const gitignore = ViteGitIgnore();
   const readme = Readme(doc);
+  const license = License(doc);
   const packagejson = VitePackageJson(doc);
   const pnpmlock = VitePnpmLock();
   const viteconfig = ViteConfig();
 
   zip.file('.gitignore', gitignore);
   zip.file('README.md', readme);
+  zip.file('LICENSE', license);
   zip.file('package.json', packagejson);
   zip.file('pnpm-lock.yaml', pnpmlock);
   zip.file('vite.config.js', viteconfig);
