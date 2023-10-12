@@ -58,29 +58,31 @@ watch(() => preview.value.doc, () => {
   <Head>
     <Title>{{ $t('preview.title') + ' ' + docId }}</Title>
   </Head>
-  <main class="pulsar-page-wrapper" v-if="docExists && pageIsLoaded">
-    <!--Navbar-->
-    <nav class="pulsar-doc-navbar">
-      <!-- Open navigation menu button-->
-      <button 
-        @click="preview.navigationMenuIsOpen = true"
-        :style="{ color: preview.doc?.colors.text + 'b9' }"
-      >
-        <font-awesome-icon icon="fa-solid fa-bars" :style="{ fontSize: '30px' }"></font-awesome-icon>
-      </button>
-    </nav>
-    <hr class="pulsar-doc-navbar-divider pulsar-divider" />
-    <div class="pulsar-doc-page-nav-doc-indexes-table-container">
-      <NavigationMenu />
-      <!--Content-->
-      <div 
-        id="pulsar-current-page-content" 
-        :style="{ 
-          width: '100%',
-          wordBreak: 'break-word'
-        }"
-      ></div>
-      <IndexesTable />
+  <main class="pulsar-page-main" v-if="docExists && pageIsLoaded">
+    <div class="pulsar-page-wrapper">
+      <!--Navbar-->
+      <nav class="pulsar-doc-navbar">
+        <!-- Open navigation menu button-->
+        <button 
+          @click="preview.navigationMenuIsOpen = true"
+          :style="{ color: preview.doc?.colors.text + 'b9' }"
+        >
+          <font-awesome-icon icon="fa-solid fa-bars" :style="{ fontSize: '30px' }"></font-awesome-icon>
+        </button>
+      </nav>
+      <hr class="pulsar-doc-navbar-divider pulsar-divider" />
+      <div class="pulsar-doc-page-nav-doc-indexes-table-container">
+        <NavigationMenu />
+        <!--Content-->
+        <div 
+          id="pulsar-current-page-content" 
+          :style="{ 
+            width: '100%',
+            wordBreak: 'break-word'
+          }"
+        ></div>
+        <IndexesTable />
+      </div>
     </div>
   </main>
   <!--Loading and Error component-->
@@ -95,12 +97,15 @@ watch(() => preview.value.doc, () => {
 </template>
 
 <style lang="scss">
+  .pulsar-page-main {
+    background-color: v-bind('preview.doc?.colors.background');
+  }
+
   .pulsar-page-wrapper {
     max-width: 2120px;
     margin: 0 auto;
     min-height: 100vh;
     padding: 50px;
-    background-color: v-bind('preview.doc?.colors.background');
   }
 
   body {

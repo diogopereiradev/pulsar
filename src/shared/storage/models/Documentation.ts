@@ -13,8 +13,7 @@ export type IDocumentation = {
   colors: IDocumentationColorPalette,
   features: {
     autoSave: boolean,
-    indexesTable: boolean,
-    vueRouter: boolean
+    indexesTable: boolean
   },
   createdAt: number
 };
@@ -76,8 +75,7 @@ export const documentationDataEmptyObj: IDocumentation = {
   colors: defaultColors,
   features: {
     autoSave: true,
-    indexesTable: true,
-    vueRouter: true
+    indexesTable: true
   },
   createdAt: 0
 };

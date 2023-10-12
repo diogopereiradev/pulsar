@@ -14,8 +14,8 @@ function startDocumentationExport() {
   editor.value.exportDocModal.isLoading = true;
 
   setTimeout(async () => {
-    const dfs = new DocumentationFileBuilder(editor.value.doc);
-    const compressedBlob = await dfs.generate();
+    const dfb = new DocumentationFileBuilder(editor.value.doc);
+    const compressedBlob = await dfb.generate('vite');
   
     if(compressedBlob) {
       editor.value.exportDocModal.data = compressedBlob;

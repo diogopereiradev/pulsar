@@ -1,15 +1,13 @@
-import { IDocumentation } from "~/shared/storage/models/Documentation";
-
-export function Script(doc: IDocumentation) {
+export function Script() {
   return /* javascript */`
-    function openNavigationMenu() {
+    window.openNavigationMenu = () => {
       const menu = document.querySelector('.pulsar-doc-navigation-menu');
       const backdrop = document.querySelector('.pulsar-navigation-menu-mobile-backdrop');
       menu.classList.remove('pulsar-utils-hidden');
       backdrop.classList.remove('pulsar-utils-hidden');
     }
 
-    function closeNavigationMenu() {
+    window.closeNavigationMenu = () => {
       const menu = document.querySelector('.pulsar-doc-navigation-menu');
       const backdrop = document.querySelector('.pulsar-navigation-menu-mobile-backdrop');
       menu.classList.add('pulsar-utils-hidden');

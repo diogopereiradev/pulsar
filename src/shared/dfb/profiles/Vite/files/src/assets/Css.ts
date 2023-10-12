@@ -275,6 +275,7 @@ export function Css(doc: IDocumentation) {
       align-items: center;
       max-width: 160px;
       border-left: 2px solid rgba(var(--divider), 0.725);
+      color: rgba(var(--text), 0.4);
       padding-left: 20px;
       margin-left: 1px;
       height: 36px;
@@ -282,7 +283,7 @@ export function Css(doc: IDocumentation) {
       transition: .3s;
     }
     
-    .pulsar-doc-navigation-menu-category-page-item .router-link-active {
+    .pulsar-doc-navigation-menu-category-page-item .current-page {
       color: rgba(var(--primary)) !important;
       border-left: 2px solid rgba(var(--primary)) !important;
     }

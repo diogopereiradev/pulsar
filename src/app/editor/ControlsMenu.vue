@@ -213,11 +213,6 @@ onBeforeMount(async () => {
             <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-indexestable-input-label') }}</label>
             <InputSwitch v-model="editor.doc.features.indexesTable"/>
           </div>
-          <!--Use vue router input-->
-          <div class="w-full flex justify-between gap-[8px] mt-[20px]">
-            <label class="text-sm text-primary/40 font-[500]">Vue Router</label>
-            <InputSwitch v-model="editor.doc.features.vueRouter"/>
-          </div>
           <!--Colors-->
           <div class="w-full flex flex-col gap-[8px] mt-[30px]">
             <h2 class="text-lg text-primary/70 font-[500]">{{ $t('editor.controls-menu-colors-area-title') }}</h2>
