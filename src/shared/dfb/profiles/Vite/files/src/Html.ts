@@ -29,7 +29,7 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {
           <hr class="pulsar-navigation-menu-divider"/>
         `}
         <!--Categories-->
-        <ul style="display: flex; flex-direction: column; gap: 15px;">
+        <ul class="pulsar-doc-navigation-menu-category-list">
           ${doc.categories.map(category => {
             return /* html */`
               <li>

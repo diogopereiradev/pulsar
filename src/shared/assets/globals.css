@@ -4,10 +4,19 @@
 
 @layer base {
   * {
+    scrollbar-width: auto;
     @apply !font-default;
   }
 
   body {
     @apply bg-background;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-[4px] bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/80;
   }
 }

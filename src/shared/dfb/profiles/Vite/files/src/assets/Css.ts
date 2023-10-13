@@ -222,6 +222,24 @@ export function Css(doc: IDocumentation) {
       margin-top: 20px;
       margin-bottom: 20px;
     }
+
+    .pulsar-doc-navigation-menu-category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      overflow-y: auto;
+      max-height: 79vh;
+      padding-bottom: 30px;
+      scrollbar-width: thin;
+    }
+    
+    .pulsar-doc-navigation-menu-category-list::-webkit-scrollbar {
+      width: 2px;
+    }
+    
+    .pulsar-doc-navigation-menu-category-list::-webkit-scrollbar-thumb {
+      background-color: rgba(var(--text), 0.31);
+    }
     
     .pulsar-navigation-menu-mobile-backdrop {
       display: none;

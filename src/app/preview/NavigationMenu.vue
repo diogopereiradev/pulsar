@@ -89,13 +89,7 @@ onBeforeMount(() => {
         v-if="preview.doc?.navigationTitle" 
         class="pulsar-navigation-menu-divider" 
       />
-      <ul
-        :style="{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '15px'
-        }"
-      >
+      <ul class="pulsar-doc-navigation-menu-category-list">
         <!--Categories-->
         <li v-for="category in preview.doc?.categories" :key="category.id">
           <h2 class="pulsar-doc-navigation-menu-category-item">{{ category.label }}</h2>
@@ -153,6 +147,24 @@ onBeforeMount(() => {
   background-color: v-bind('preview.doc?.colors.divider + "80"');
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.pulsar-doc-navigation-menu-category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  max-height: 79vh;
+  padding-bottom: 30px;
+  scrollbar-width: thin;
+}
+
+.pulsar-doc-navigation-menu-category-list::-webkit-scrollbar {
+  width: 2px;
+}
+
+.pulsar-doc-navigation-menu-category-list::-webkit-scrollbar-thumb {
+  background-color: v-bind('preview.doc?.colors.text + "50"');
 }
 
 .pulsar-navigation-menu-mobile-backdrop {
