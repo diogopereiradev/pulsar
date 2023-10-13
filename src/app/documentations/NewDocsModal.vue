@@ -82,7 +82,7 @@ const colors: ColorNames[] = [
             <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-title-input-label') }}</label>
             <InputText
               v-model="formData.title"
-              class="rounded-[5px] contrast-200 !border-secondary/60"
+              class="rounded-[5px] contrast-200 !h-[45px] !border-secondary/60"
               :placeholder="$t('documentations.new-doc-modal-title-input-placeholder')"
               required
             />
@@ -109,13 +109,13 @@ const colors: ColorNames[] = [
               <div
                 v-for="color of colors"
                 :key="color"
-                class="w-[calc(50%-25px)] sm:max-w-[105px] flex flex-col gap-[8px]"
+                class="w-full sm:max-w-[105px] flex flex-col gap-[8px]"
               >
                 <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
                 <HexColorPicker
                   :toggler-button="{
                     width: '100%',
-                    height: '35px'
+                    height: '38px'
                   }"
                   :model-value="formData.colors[color]"
                   @update:model-value="(val: string) => onColorChange(color, val)"
@@ -125,10 +125,10 @@ const colors: ColorNames[] = [
           </div>
           <!--Cancel and submit buttons-->
           <div class="flex flex-wrap gap-[10px] mt-[50px] xl:pb-[40px] self-end">
-            <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-[40px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">
+            <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-[45px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">
               {{ $t('documentations.new-doc-modal-cancel-button-message') }}
             </Button>
-            <Button type="submit" class="w-[140px] !h-[40px] !bg-primary hover:!bg-primary/50">
+            <Button type="submit" class="w-[140px] !h-[45px] !bg-primary hover:!bg-primary/50">
               {{ $t('documentations.new-doc-modal-create-button-message') }}
             </Button>
           </div>
