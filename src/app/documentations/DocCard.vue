@@ -14,6 +14,8 @@ const docs = useDocumentations();
 const confirm = useConfirm();
 
 const editMenuIsOpen = ref(false);
+const isOpening = ref(false);
+
 const contextMenuRef = ref();
 const contextMenuItems = ref<MenuItem[]>([
   {
@@ -62,7 +64,8 @@ function deleteConfirmDialog() {
 
 <template>
   <div class="relative group grow w-[370px] bg-secondary/80 rounded-[7px] cursor-pointer">
-    <NuxtLinkLocale :to="`/editor/${data.id}`" class="w-full min-h-[300px]">
+    <!--Card Frame-->
+    <NuxtLinkLocale @click="isOpening = true" :to="`/editor/${data.id}`" class="w-full min-h-[300px]" v-if="!isOpening">
       <div class="relative flex justify-center pt-[20px] w-full h-[140px] bg-secondary/20 backdrop-contrast-[1.40] rounded-t-[7px] overflow-hidden">
         <div class="absolute left-0 top-0 bg-black/60 w-full h-full"></div>
         <DocPrototype
@@ -83,13 +86,19 @@ function deleteConfirmDialog() {
         </p>
       </div>
     </NuxtLinkLocale>
+    <!--Is Opening Step-->
+    <div class="flex flex-col gap-[20px] justify-center items-center max-h-[300px] h-[274px]" v-else>
+      <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-[50px] text-secondary" spin></font-awesome-icon>
+      <h3 class="text-center w-[300px] text-primary/80">{{ $t('documentations.doc-card-loading-message') }}</h3>
+    </div>
     <!--Doc ContextMenu-->
-    <div class="opacity-0 group-hover:opacity-100 duration-300 absolute right-[30px] top-[30px]">
+    <div class="opacity-0 group-hover:opacity-100 duration-300 absolute right-[30px] top-[30px]" v-if="!isOpening">
       <Button @click="contextMenuRef.show($event)" class="min-w-[40px] min-h-[40px] !bg-primary text-[23px] rounded-[6px]" aria-haspopup="true">
         <font-awesome-icon icon="fa-solid fa-ellipsis" />
       </Button>
       <ContextMenu ref="contextMenuRef" :model="contextMenuItems" />
     </div>
+    <!--Edit Doc MOdal-->
     <EditDocsModal 
       :doc-id="data.id" 
       :is-open="editMenuIsOpen"

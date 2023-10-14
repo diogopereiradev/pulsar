@@ -48,7 +48,9 @@
     "delete-doc-dialog-cancel-button-message": "Fechar",
     "upload-documentation-modal-title": "Fazer upload de uma documentação",
     "upload-documentation-modal-drag-and-drop-message": "Solte aqui um manifest.json pulsar",
-    "upload-documentation-modal-choose-from-computer-button": "Escolha do computador"
+    "upload-documentation-modal-choose-from-computer-button": "Escolha do computador",
+    "upload-documentation-modal-loading-message": "Fazendo upload de sua documentação, aguarde um momento...",
+    "doc-card-loading-message": "Abrindo sua documentação, aguarde um momento..."
   },
   "editor": {
     "title": "Pulsar - Editando",

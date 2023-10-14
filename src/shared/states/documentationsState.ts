@@ -4,11 +4,12 @@ export type IDocumentationsState = {
   search: string,
   data: IDocumentation[],
   currentPageData: IDocumentation[],
-  newDocsModalIsOpen: boolean,
   uploadDocsModal: {
     isOpen: boolean,
+    isLoading: boolean,
     highlighted: boolean
   }
+  newDocsModalIsOpen: boolean
 };
 
 export const useDocumentations = () => useState<IDocumentationsState>('documentationsState', () => ({
@@ -17,7 +18,8 @@ export const useDocumentations = () => useState<IDocumentationsState>('documenta
   currentPageData: [],
   uploadDocsModal: {
     isOpen: false,
+    isLoading: false,
     highlighted: false
   },
-  newDocsModalIsOpen: false,
+  newDocsModalIsOpen: false
 }));

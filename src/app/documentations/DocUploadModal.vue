@@ -17,7 +17,7 @@ async function upload(file: File) {
         alert(`Already exists a documentation using the id: ${fileDataParsed.data.id}`);
         docs.value.uploadDocsModal.isOpen = false;
       } else {
-        Documentation.create(fileDataParsed.data);
+        await Documentation.create(fileDataParsed.data);
         docs.value.data = [...JSON.parse(JSON.stringify(docs.value.data)), fileDataParsed.data];
         docs.value.uploadDocsModal.isOpen = false;
       }
@@ -45,7 +45,9 @@ async function handleDrop(e: DragEvent) {
   const file = e.dataTransfer?.files[0];
   
   if(file) {
-    upload(file);
+    docs.value.uploadDocsModal.isLoading = true;
+    await upload(file);
+    docs.value.uploadDocsModal.isLoading = false;
   }
 }
 
@@ -53,7 +55,9 @@ async function handleUpload(e: HTMLInputElement) {
   const file = e.files![0];
 
   if(file) {
-    upload(file);
+    docs.value.uploadDocsModal.isLoading = true;
+    await upload(file);
+    docs.value.uploadDocsModal.isLoading = false;
   }
 }
 </script>
@@ -81,54 +85,63 @@ async function handleUpload(e: HTMLInputElement) {
         duration-300
       `"
     >
-      <div class="flex items-center justify-between">
+      <!--Modal Header-->
+      <div class="flex items-center h-[40px] justify-between">
         <h2 class="text-[21px] text-primary/90 font-[500]">{{ $t('documentations.upload-documentation-modal-title') }}</h2>
         <button @click="docs.uploadDocsModal.isOpen = false">
           <font-awesome-icon icon="fa-solid fa-close" class="text-[23px] text-primary/80"></font-awesome-icon>
         </button>
       </div>
-      <div 
-        @click="uploadInput?.click()"
-        @dragenter.prevent="handleDragStart"
-        @dragleave.prevent="handleDragEnd"
-        @dragover.prevent="handleDragging"
-        @drop.prevent="handleDrop"
-        :class="`
-          w-full 
-          h-[62.5%]
-          max-lg:h-[200px] 
-          border-[2px] 
-          duration-300 
-          ${docs.uploadDocsModal.highlighted? 'border-primary' : 'border-primary/30'} 
-          rounded-[10px] 
-          mt-[30px] 
-          cursor-pointer
-        `"
-      >
-        <div class="flex flex-col justify-center items-center h-full">
-          <font-awesome-icon 
-            icon="fa-solid fa-cloud-arrow-up" 
-            :class="`text-[80px] duration-300 ${docs.uploadDocsModal.highlighted? 'text-secondary' : 'text-secondary/20'}`"
-          ></font-awesome-icon>
-          <p 
-            :class="`text-[17px] mt-[15px] duration-300 ${docs.uploadDocsModal.highlighted? 'text-secondary' : 'text-secondary/30'}`"
-          >
-            {{ $t('documentations.upload-documentation-modal-drag-and-drop-message') }}
-          </p>
+      <!--Upload Step-->
+      <div class="h-[calc(100%-80px)]" v-if="!docs.uploadDocsModal.isLoading">
+        <div 
+          @click="uploadInput?.click()"
+          @dragenter.prevent="handleDragStart"
+          @dragleave.prevent="handleDragEnd"
+          @dragover.prevent="handleDragging"
+          @drop.prevent="handleDrop"
+          :class="`
+            w-full 
+            h-[270px]
+            max-lg:h-[200px] 
+            border-[2px] 
+            duration-300 
+            ${docs.uploadDocsModal.highlighted? 'border-primary' : 'border-primary/30'} 
+            rounded-[10px] 
+            mt-[30px] 
+            cursor-pointer
+          `"
+        >
+          <div class="flex flex-col justify-center items-center h-full">
+            <font-awesome-icon 
+              icon="fa-solid fa-cloud-arrow-up" 
+              :class="`text-[80px] duration-300 ${docs.uploadDocsModal.highlighted? 'text-secondary' : 'text-secondary/20'}`"
+            ></font-awesome-icon>
+            <p 
+              :class="`text-[17px] mt-[15px] duration-300 ${docs.uploadDocsModal.highlighted? 'text-secondary' : 'text-secondary/30'}`"
+            >
+              {{ $t('documentations.upload-documentation-modal-drag-and-drop-message') }}
+            </p>
+          </div>
         </div>
+        <div class="w-full flex justify-center mt-[40px]">
+          <Button @click="uploadInput?.click()" class="w-[230px] !h-[45px] !bg-primary border-none">
+            {{ $t('documentations.upload-documentation-modal-choose-from-computer-button') }}
+          </Button>
+        </div>
+        <input 
+          @change="handleUpload($event.currentTarget as HTMLInputElement)"
+          ref="uploadInput" 
+          class="hidden" 
+          type="file"
+          accept="application/json"
+        />
       </div>
-      <div class="w-full h-[15%] flex items-center justify-center mt-[30px]">
-        <Button @click="uploadInput?.click()" class="w-[230px] !h-[45px] !bg-primary border-none">
-          {{ $t('documentations.upload-documentation-modal-choose-from-computer-button') }}
-        </Button>
+      <!--Loading Step-->
+      <div class="flex flex-col gap-[15px] items-center justify-center h-[calc(100%-40px)]" v-else>
+        <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-[50px] text-secondary" spin></font-awesome-icon>
+        <h3 class="text-center w-[300px] text-primary/80">{{ $t('documentations.upload-documentation-modal-loading-message') }}</h3>
       </div>
-      <input 
-        @change="handleUpload($event.currentTarget as HTMLInputElement)"
-        ref="uploadInput" 
-        class="hidden" 
-        type="file"
-        accept="application/json"
-      />
     </div>
     <!--Modal Backdrop-->
     <div 
