@@ -6,6 +6,7 @@ import { Documentation } from '~/shared/storage/models/Documentation';
 
 const ROWS_PER_PAGE = 6;
 const docs = useDocumentations();
+const docsListIsLoading = ref(true);
 
 // Get all docs(title) matched with docs.value.search
 const computedSearchData = computed(() => {
@@ -37,20 +38,24 @@ onMounted(async () => {
   if(initialDocs) {
     docs.value.data = initialDocs;
   }
+  docsListIsLoading.value = false;
 });
 </script>
 
 <template>
   <div class="flex flex-col gap-[25px] py-[50px]">
     <h2 class="text-[22px] text-primary/90 font-[500]">{{ $t('documentations.documentations-list-title') }}</h2>
+    <!--Docs Cards-->
     <div 
+      v-if="docs.currentPageData.length >= 1 && !docsListIsLoading"
       :class="`
         ${docs.currentPageData.length < 1 && 'hidden'} 
         flex 
         ${docs.currentPageData.length <= 2? 'justify-normal' : 'justify-between' } 
         gap-[20px] 
         flex-wrap
-    `">
+      `"
+    >
       <DocCard
         :class="docs.currentPageData.length <= 2 && '!grow-0 max-xl:!grow'"
         v-for="doc in docs.currentPageData"
@@ -58,9 +63,16 @@ onMounted(async () => {
         :data="doc"
       />
     </div>
-    <div :class="`${docs.currentPageData.length >= 1 && 'hidden'} w-full h-[240px] 3xl:h-[300px] flex justify-center items-center`">
+    <!--Loading-->
+    <div v-else-if="docsListIsLoading" class="flex flex-col justify-center items-center gap-[20px] h-[400px] 3xl:500px">
+      <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-[50px] text-secondary" spin></font-awesome-icon>
+      <h3 class="text-center w-[300px] text-primary/80">{{ $t('documentations.doc-list-loading-message') }}</h3>
+    </div>
+    <!--Empty List Message-->
+    <div v-else :class="`${docs.currentPageData.length >= 1 && 'hidden'} w-full h-[240px] 3xl:h-[300px] flex justify-center items-center`">
       <p class="text-[16px] text-primary/40 font-[400]">{{ $t('documentations.documentations-list-empty-message') }}</p>
     </div>
+    <!--Paginator-->
     <div :class="`${docs.currentPageData.length < 1 && 'hidden'} w-full justify-center mt-[10px]`">
       <Paginator
         @page="handlePageChange($event)" 

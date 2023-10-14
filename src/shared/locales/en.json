@@ -50,7 +50,8 @@
     "upload-documentation-modal-drag-and-drop-message": "Drop here a pulsar manifest.json",
     "upload-documentation-modal-choose-from-computer-button": "Choose from computer",
     "upload-documentation-modal-loading-message": "Uploading your documentation, wait a moment...",
-    "doc-card-loading-message": "Opening your documentation, wait a moment..."
+    "doc-card-loading-message": "Opening your documentation, wait a moment...",
+    "doc-list-loading-message": "Loading your documentations, wait a moment..."
   },
   "editor": {
     "title": "Pulsar - Editing",
