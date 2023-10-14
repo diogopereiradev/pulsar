@@ -35,8 +35,11 @@ function searchClear() {
     </template>
     <template #end>
       <div class="flex items-center gap-[10px] w-full">
-        <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[45px] min-h-[45px] !bg-primary">
+        <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[45px] min-h-[45px] !bg-primary border-none">
           <font-awesome-icon icon="fa-solid fa-plus" class="text-[20px]" />
+        </Button>
+        <Button @click="docs.uploadDocsModal.isOpen = !docs.uploadDocsModal.isOpen" class="w-[45px] min-h-[45px] !bg-[#d8985d] !border-none">
+          <font-awesome-icon icon="fa-solid fa-upload" class="text-[19px]" />
         </Button>
       </div>
     </template>

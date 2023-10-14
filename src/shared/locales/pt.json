@@ -45,7 +45,10 @@
     "delete-doc-dialog-title": "Deseja deletar essa documentação?",
     "delete-doc-dialog-message": "Após deletar essa documentação você não poderá recuperar os seus dados. Pense bem antes de realizar esta ação.",
     "delete-doc-dialog-confirm-button-message": "Deletar",
-    "delete-doc-dialog-cancel-button-message": "Fechar"
+    "delete-doc-dialog-cancel-button-message": "Fechar",
+    "upload-documentation-modal-title": "Fazer upload de uma documentação",
+    "upload-documentation-modal-drag-and-drop-message": "Solte aqui um manifest.json pulsar",
+    "upload-documentation-modal-choose-from-computer-button": "Escolha do computador"
   },
   "editor": {
     "title": "Pulsar - Editando",

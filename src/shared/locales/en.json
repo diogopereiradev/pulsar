@@ -45,7 +45,10 @@
     "delete-doc-dialog-title": "Do you want to delete the documentation?",
     "delete-doc-dialog-message": "After deleting this documentation, you won't be able to recover your data. Think better before taking this action.",
     "delete-doc-dialog-confirm-button-message": "Delete",
-    "delete-doc-dialog-cancel-button-message": "Close"
+    "delete-doc-dialog-cancel-button-message": "Close",
+    "upload-documentation-modal-title": "Upload a documentation",
+    "upload-documentation-modal-drag-and-drop-message": "Drop here a pulsar manifest.json",
+    "upload-documentation-modal-choose-from-computer-button": "Choose from computer"
   },
   "editor": {
     "title": "Pulsar - Editing",

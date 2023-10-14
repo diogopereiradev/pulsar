@@ -26,7 +26,9 @@ library.add(...[
   SolidIcons.faImage,
   SolidIcons.faMinus,
   SolidIcons.faList,
-  SolidIcons.faDownload
+  SolidIcons.faDownload,
+  SolidIcons.faUpload,
+  SolidIcons.faCloudArrowUp
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {
