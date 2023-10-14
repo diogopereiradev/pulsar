@@ -1,5 +1,7 @@
+import beautify from 'js-beautify';
+
 export function Script() {
-  return /* javascript */`
+  return beautify.js(/* javascript */`
     /* Navigation menu API */
     window.openNavigationMenu = () => {
       const menu = document.querySelector('.pulsar-doc-navigation-menu');
@@ -40,5 +42,7 @@ export function Script() {
         indexesTableList.innerHTML += item;
       });
     })();
-  `;
+  `, {
+    indent_size: 2
+  });
 }

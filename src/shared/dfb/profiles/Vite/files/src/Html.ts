@@ -1,4 +1,4 @@
-import beautify from "beautify";
+import beautify from "js-beautify";
 import { getIsFirstPage } from "~/shared/dfb/utils/getIsFirstPage";
 import { IDocumentation, IDocumentationPage } from "~/shared/storage/models/Documentation";
 import { MapIcon } from "./assets/icons/MapIcon";
@@ -86,7 +86,7 @@ function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
 }
 
 export function Html(page: IDocumentationPage, doc: IDocumentation) {
-  return beautify(/* html */`
+  return beautify.html(/* html */`
     <!DOCTYPE html>
     <html>
       <head>
@@ -132,6 +132,6 @@ export function Html(page: IDocumentationPage, doc: IDocumentation) {
       </body>
     </html>
   `, {
-    format: 'html'
+    indent_size: 2
   });
 }
