@@ -82,7 +82,7 @@ async function handleUpload(e: HTMLInputElement) {
       `"
     >
       <div class="flex items-center justify-between">
-        <h2 class="text-[23px] text-primary/90 font-[500]">{{ $t('documentations.upload-documentation-modal-title') }}</h2>
+        <h2 class="text-[21px] text-primary/90 font-[500]">{{ $t('documentations.upload-documentation-modal-title') }}</h2>
         <button @click="docs.uploadDocsModal.isOpen = false">
           <font-awesome-icon icon="fa-solid fa-close" class="text-[23px] text-primary/80"></font-awesome-icon>
         </button>
