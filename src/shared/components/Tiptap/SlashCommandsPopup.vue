@@ -1,11 +1,77 @@
 <script setup lang="ts">
 import { Editor, FloatingMenu } from '@tiptap/vue-3';
+import InputText from 'primevue/inputtext';
 import { IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
+
+const { t } = useI18n();
+
+type Slash = {
+  search: string,
+  commands: {
+    icon: {
+      icon: string,
+      class: string
+    },
+    title: string,
+    description: string,
+    executor: () => void
+  }[]
+};
 
 const props = defineProps<{
   editor: Editor | undefined,
   colors: IDocumentationColorPalette
 }>();
+
+const slash = ref<Slash>({
+  search: '',
+  commands: [
+    {
+      icon: {
+        icon: 'fa-solid fa-table',
+        class: 'text-[20px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-table-title'),
+      description: t('markdowneditor.slashcommands-popup-table-description'),
+      executor() {
+        handleCreateTable();
+      }
+    },
+    {
+      icon: {
+        icon: 'fa-solid fa-image',
+        class: 'text-[20px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-image-title'),
+      description: t('markdowneditor.slashcommands-popup-image-description'),
+      executor() {
+        handleCreateImage();
+      }
+    },
+    {
+      icon: {
+        icon: 'fa-solid fa-list',
+        class: 'text-[18px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-bulletlist-title'),
+      description: t('markdowneditor.slashcommands-popup-bulletlist-description'),
+      executor() {
+        handleBulletList();
+      }
+    },
+    {
+      icon: {
+        icon: 'fa-solid fa-code',
+        class: 'text-[18px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-codeblocks-title'),
+      description: t('markdowneditor.slashcommands-popup-codeblocks-description'),
+      executor() {
+        handleCodeblock();
+      }
+    },
+  ]
+});
 
 function handleCreateTable() {
   if(!props.editor) return;
@@ -55,7 +121,7 @@ function handleCodeblock() {
 <template>
   <floating-menu
     :editor="editor"
-    class="border-[1px] border-solid rounded-[5px]"
+    class="min-w-[290px] border-none !rounded-[5px] pt-[30px]"
     plugin-key="commandsFloatingMenu"
     :tippy-options="{ duration: 100, placement: 'bottom-start' }" 
     v-if="editor"
@@ -64,138 +130,54 @@ function handleCodeblock() {
       const currentLineText = currentLine?.text;
       return currentLineText === '/';
     }"
-    :style="{ borderColor: props.colors.primary + '70' }"
+    :style="{ backgroundColor: props.colors.secondary }"
   >
-    <ul class="flex flex-col" :style="{ backgroundColor: props.colors.secondary }">
-      <li>
-        <Button
-          @click="handleCreateTable"
-          :title="$t('markdowneditor.slashcommands-popup-table-description')"
-          class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[5px] !rounded-b-[0px] border-none !px-[15px] !py-[15px]"
-          :style="{ backgroundColor: props.colors.secondary }"
-        >
-          <div 
-            class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"
-            :style="{ 
-              backgroundColor: props.colors.primary,
-              color: props.colors.text + 'c9'
-            }"
+    <div class="flex flex-col">
+      <div class="flex flex-col gap-[10px] px-[30px]">
+        <h3 class="text-[17px] text-primary font-[500]">{{ $t('markdowneditor.slashcommands-popup-title') }}</h3>
+        <InputText v-model="slash.search" :placeholder="$t('markdowneditor.slashcommands-popup-search-bar-placeholder')" class="!h-[42px]"/>
+        <hr class="w-full h-[1px] border-none my-[10px]" :style="{ backgroundColor: props.colors.divider }"/>
+      </div>
+      <ul class="flex flex-col max-h-[245px] overflow-y-auto">
+        <li v-for="command in slash.search? slash.commands.filter(c => c.title.toLowerCase().match(slash.search.toLowerCase())) : slash.commands">
+          <Button
+            @click="command.executor()"
+            :title="command.description"
+            class="dinamic-button-bg flex items-center !justify-start w-full h-[80px] !rounded-[0px] border-none !px-[30px] !py-[15px]"
           >
-            <font-awesome-icon icon="fa-solid fa-table" class="text-[20px]"></font-awesome-icon>
-          </div>
-          <div class="relative flex flex-col items-start justify-center h-full px-[15px]">
-            <h3 
-              class="truncate"
-              :style="{ color: props.colors.text + 'c9' }"
+            <div 
+              class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"
+              :style="{ 
+                backgroundColor: props.colors.primary,
+                color: props.colors.text + 'c9'
+              }"
             >
-              {{ $t('markdowneditor.slashcommands-popup-table-title') }}
-            </h3>
-            <p 
-              class="max-w-[150px] text-[15px] truncate"
-              :style="{ color: props.colors.text + '70' }"
-            >
-              {{ $t('markdowneditor.slashcommands-popup-table-description') }}
-            </p>
+              <font-awesome-icon :icon="command.icon.icon" :class="command.icon.class"></font-awesome-icon>
+            </div>
+            <div class="relative flex flex-col items-start justify-center h-full px-[15px]">
+              <h3 
+                class="truncate"
+                :style="{ color: props.colors.text + 'c9' }"
+              >
+                {{ command.title }}
+              </h3>
+              <p 
+                class="max-w-[150px] text-[15px] truncate"
+                :style="{ color: props.colors.text + '70' }"
+              >
+                {{ command.description }}
+              </p>
+            </div>
+          </Button>
+        </li>
+        <!--Empty list message-->
+        <li v-if="slash.commands.length < 1 || slash.commands.filter(c => c.title.toLowerCase().match(slash.search.toLowerCase())).length < 1">
+          <div class="flex justify-center items-center w-full h-[80px]">
+            <p class="text-[15px] text-primary/50">{{ $t('markdowneditor.slashcommands-popup-no-commands-found-message') }}</p>
           </div>
-        </Button>
-      </li>
-      <li>
-        <Button 
-          @click="handleCreateImage"
-          :title="$t('markdowneditor.slashcommands-popup-image-description')"
-          class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
-          :style="{ backgroundColor: props.colors.secondary }"
-        >
-          <div 
-            class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"
-            :style="{ 
-              backgroundColor: props.colors.primary,
-              color: props.colors.text + 'c9'
-            }"
-          >
-            <font-awesome-icon icon="fa-solid fa-image" class="text-[20px]"></font-awesome-icon>
-          </div>
-          <div class="relative flex flex-col items-start justify-center h-full px-[15px]">
-            <h3 
-              class="truncate"
-              :style="{ color: props.colors.text + 'c9' }"
-            >
-              {{ $t('markdowneditor.slashcommands-popup-image-title') }}
-            </h3>
-            <p 
-              class="max-w-[150px] text-[15px] truncate"
-              :style="{ color: props.colors.text + '70' }"
-            >
-              {{ $t('markdowneditor.slashcommands-popup-image-description') }}
-            </p>
-          </div>
-        </Button>
-      </li>
-      <li>
-        <Button 
-          @click="handleBulletList"
-          :title="$t('markdowneditor.slashcommands-popup-bulletlist-description')"
-          class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
-          :style="{ backgroundColor: props.colors.secondary }"
-        >
-          <div 
-            class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"
-            :style="{ 
-              backgroundColor: props.colors.primary,
-              color: props.colors.text + 'c9'
-            }"
-          >
-            <font-awesome-icon icon="fa-solid fa-list" class="text-[18px]"></font-awesome-icon>
-          </div>
-          <div class="relative flex flex-col items-start justify-center h-full px-[15px]">
-            <h3 
-              class="truncate"
-              :style="{ color: props.colors.text + 'c9' }"
-            >
-              {{ $t('markdowneditor.slashcommands-popup-bulletlist-title') }}
-            </h3>
-            <p 
-              class="max-w-[150px] text-[15px] truncate"
-              :style="{ color: props.colors.text + '70' }"
-            >
-              {{ $t('markdowneditor.slashcommands-popup-bulletlist-description') }}
-            </p>
-          </div>
-        </Button>
-      </li>
-      <li>
-        <Button 
-          @click="handleCodeblock"
-          :title="$t('markdowneditor.slashcommands-popup-codeblocks-description')"
-          class="dinamic-button-bg flex items-center !justify-start w-[250px] h-[80px] !rounded-t-[0px] !rounded-b-[5px] border-none !px-[15px] !py-[15px]"
-          :style="{ backgroundColor: props.colors.secondary }"
-        >
-          <div 
-            class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"
-            :style="{ 
-              backgroundColor: props.colors.primary,
-              color: props.colors.text + 'c9'
-            }"
-          >
-            <font-awesome-icon icon="fa-solid fa-code" class="text-[18px]"></font-awesome-icon>
-          </div>
-          <div class="relative flex flex-col items-start justify-center h-full px-[15px]">
-            <h3 
-              class="truncate"
-              :style="{ color: props.colors.text + 'c9' }"
-            >
-              {{ $t('markdowneditor.slashcommands-popup-codeblocks-title') }}
-            </h3>
-            <p 
-              class="max-w-[150px] text-[15px] truncate"
-              :style="{ color: props.colors.text + '70' }"
-            >
-              {{ $t('markdowneditor.slashcommands-popup-codeblocks-description') }}
-            </p>
-          </div>
-        </Button>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </floating-menu>
 </template>
 

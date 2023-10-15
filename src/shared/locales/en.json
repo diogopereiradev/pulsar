@@ -9,6 +9,8 @@
   "markdowneditor": {
     "is-empty-message": "is empty",
     "line-is-empty-placeholder": "Type \"/\" to see the options",
+    "slashcommands-popup-title": "Commands",
+    "slashcommands-popup-search-bar-placeholder": "Search for commands",
     "slashcommands-popup-table-title": "Table",
     "slashcommands-popup-table-description": "Create easily adjustable tables",
     "slashcommands-popup-table-floatingmenu-line": "Line",
@@ -18,7 +20,8 @@
     "slashcommands-popup-bulletlist-title": "Bullet List",
     "slashcommands-popup-bulletlist-description": "Add bullet lists to the page",
     "slashcommands-popup-codeblocks-title": "Code Block",
-    "slashcommands-popup-codeblocks-description": "Add highlighted code blocks to the page"
+    "slashcommands-popup-codeblocks-description": "Add highlighted code blocks to the page",
+    "slashcommands-popup-no-commands-found-message": "No commands found"
   },
   "home": {
     "title": "Pulsar - Home"

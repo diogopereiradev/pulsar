@@ -9,6 +9,8 @@
   "markdowneditor": {
     "is-empty-message": "está vazio",
     "line-is-empty-placeholder": "Digite \"/\" para ver as opções",
+    "slashcommands-popup-title": "Comandos",
+    "slashcommands-popup-search-bar-placeholder": "Pesquisar comandos",
     "slashcommands-popup-table-title": "Tabela",
     "slashcommands-popup-table-description": "Crie tabelas facilmente ajustáveis",
     "slashcommands-popup-table-floatingmenu-line": "Linha",
@@ -18,7 +20,8 @@
     "slashcommands-popup-bulletlist-title": "Lista",
     "slashcommands-popup-bulletlist-description": "Adiciona listas à página",
     "slashcommands-popup-codeblocks-title": "Blocos de Código",
-    "slashcommands-popup-codeblocks-description": "Adiciona blocos de códigos à página"
+    "slashcommands-popup-codeblocks-description": "Adiciona blocos de códigos à página",
+    "slashcommands-popup-no-commands-found-message": "Nenhum comando encontrado"
   },
   "home": {
     "title": "Pulsar - Inicio"

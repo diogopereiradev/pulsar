@@ -190,7 +190,7 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
 </script>
 
 <template>
-  <div>
+  <div class="relative">
     <SelectionBubbleMenu
       :editor="editor"
       :colors="props.colors"
