@@ -62,6 +62,12 @@ dependencies:
   '@tiptap/extension-table-row':
     specifier: ^2.1.11
     version: 2.1.11(@tiptap/core@2.1.11)
+  '@tiptap/extension-task-item':
+    specifier: ^2.1.12
+    version: 2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+  '@tiptap/extension-task-list':
+    specifier: ^2.1.12
+    version: 2.1.12(@tiptap/core@2.1.11)
   '@tiptap/pm':
     specifier: ^2.1.11
     version: 2.1.11
@@ -2270,6 +2276,24 @@ packages:
     dependencies:
       '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/pm': 2.1.11
+    dev: false
+
+  /@tiptap/extension-task-item@2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-uqrDTO4JwukZUt40GQdvB6S+oDhdp4cKNPMi0sbteWziQugkSMLlkYvxU0Hfb/YeziaWWwFI7ssPu/hahyk6dQ==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+    dev: false
+
+  /@tiptap/extension-task-list@2.1.12(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-BUpYlEWK+Q3kw9KIiOqvhd0tUPhMcOf1+fJmCkluJok+okAxMbP1umAtCEQ3QkoCwLr+vpHJov7h3yi9+dwgeQ==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-text@2.1.11(@tiptap/core@2.1.11):

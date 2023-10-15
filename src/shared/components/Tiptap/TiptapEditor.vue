@@ -12,6 +12,8 @@ import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import Image from '@tiptap/extension-image';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
 import Heading from '@tiptap/extension-heading';
 import SlashCommandsPopup from './SlashCommandsPopup.vue';
 import SelectionBubbleMenu from './SelectionBubbleMenu.vue';
@@ -50,6 +52,11 @@ const editor = useTiptapEditor({
       },
       hardBreak: {
         keepMarks: true
+      },
+      orderedList: {
+        HTMLAttributes: {
+          class: 'pulsar-numberedlist'
+        }
       },
       gapcursor: false,
       heading: false,
@@ -171,7 +178,15 @@ const editor = useTiptapEditor({
       }
     }),
     TableRow,
-    Image
+    Image,
+    TaskList.configure({
+      HTMLAttributes: {
+        class: 'pulsar-todolist'
+      }
+    }),
+    TaskItem.configure({
+      nested: true
+    })
   ],
   parseOptions: {
     preserveWhitespace: 'full'
@@ -247,12 +262,19 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
     background-color: v-bind('colors.divider') !important;
   }
 
-  // BulletList
+  // BulletList and NumberedList
   ul,
   ol {
     padding: 0 1rem;
-    list-style: disc;
     color: v-bind('colors.text');
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
   }
 
   //Placeholder

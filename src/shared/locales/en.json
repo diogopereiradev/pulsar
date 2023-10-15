@@ -21,6 +21,16 @@
     "slashcommands-popup-bulletlist-description": "Add bullet lists to the page",
     "slashcommands-popup-codeblocks-title": "Code Block",
     "slashcommands-popup-codeblocks-description": "Add highlighted code blocks to the page",
+    "slashcommands-popup-numberedlist-title": "Numbered List",
+    "slashcommands-popup-numberedlist-description": "Add numbered lists to the page",
+    "slashcommands-popup-heading-1-title": "Heading 1",
+    "slashcommands-popup-heading-1-description": "Add heading 1 to the page",
+    "slashcommands-popup-heading-2-title": "Heading 2",
+    "slashcommands-popup-heading-2-description": "Add heading 2 to the page",
+    "slashcommands-popup-heading-3-title": "Heading 3",
+    "slashcommands-popup-heading-3-description": "Add heading 3 to the page",
+    "slashcommands-popup-heading-4-title": "Heading 4",
+    "slashcommands-popup-heading-4-description": "Add heading 4 to the page",
     "slashcommands-popup-no-commands-found-message": "No commands found"
   },
   "home": {

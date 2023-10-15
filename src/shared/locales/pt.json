@@ -21,6 +21,16 @@
     "slashcommands-popup-bulletlist-description": "Adiciona listas à página",
     "slashcommands-popup-codeblocks-title": "Blocos de Código",
     "slashcommands-popup-codeblocks-description": "Adiciona blocos de códigos à página",
+    "slashcommands-popup-numberedlist-title": "Lista Númerada",
+    "slashcommands-popup-numberedlist-description": "Adiciona listas númeradas à página",
+    "slashcommands-popup-heading-1-title": "Cabeçalho 1",
+    "slashcommands-popup-heading-1-description": "Adiciona cabeçalho 1 à página",
+    "slashcommands-popup-heading-2-title": "Cabeçalho 2",
+    "slashcommands-popup-heading-2-description": "Adiciona cabeçalho 2 à página",
+    "slashcommands-popup-heading-3-title": "Cabeçalho 3",
+    "slashcommands-popup-heading-3-description": "Adiciona cabeçalho 3 à página",
+    "slashcommands-popup-heading-4-title": "Cabeçalho 4",
+    "slashcommands-popup-heading-4-description": "Adiciona cabeçalho 4 à página",
     "slashcommands-popup-no-commands-found-message": "Nenhum comando encontrado"
   },
   "home": {

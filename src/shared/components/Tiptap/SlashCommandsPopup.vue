@@ -39,6 +39,50 @@ const slash = ref<Slash>({
     },
     {
       icon: {
+        icon: 'fa-solid fa-heading',
+        class: 'text-[20px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-heading-1-title'),
+      description: t('markdowneditor.slashcommands-popup-heading-1-description'),
+      executor() {
+        handleCreateHeading1();
+      }
+    },
+    {
+      icon: {
+        icon: 'fa-solid fa-heading',
+        class: 'text-[20px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-heading-2-title'),
+      description: t('markdowneditor.slashcommands-popup-heading-2-description'),
+      executor() {
+        handleCreateHeading2();
+      }
+    },
+    {
+      icon: {
+        icon: 'fa-solid fa-heading',
+        class: 'text-[20px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-heading-3-title'),
+      description: t('markdowneditor.slashcommands-popup-heading-3-description'),
+      executor() {
+        handleCreateHeading3();
+      }
+    },
+    {
+      icon: {
+        icon: 'fa-solid fa-heading',
+        class: 'text-[20px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-heading-4-title'),
+      description: t('markdowneditor.slashcommands-popup-heading-4-description'),
+      executor() {
+        handleCreateHeading4();
+      }
+    },
+    {
+      icon: {
         icon: 'fa-solid fa-image',
         class: 'text-[20px]'
       },
@@ -61,6 +105,17 @@ const slash = ref<Slash>({
     },
     {
       icon: {
+        icon: 'fa-solid fa-list-ol',
+        class: 'text-[19px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-numberedlist-title'),
+      description: t('markdowneditor.slashcommands-popup-numberedlist-description'),
+      executor() {
+        handleNumberedList();
+      }
+    },
+    {
+      icon: {
         icon: 'fa-solid fa-code',
         class: 'text-[18px]'
       },
@@ -69,7 +124,7 @@ const slash = ref<Slash>({
       executor() {
         handleCodeblock();
       }
-    },
+    }
   ]
 });
 
@@ -107,6 +162,16 @@ function handleBulletList() {
     .run();
 }
 
+function handleNumberedList() {
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .toggleOrderedList()
+    .run();
+}
+
 function handleCodeblock() {
   if(!props.editor) return;
   props.editor
@@ -116,6 +181,46 @@ function handleCodeblock() {
     .setCodeBlock()
     .run();
 }
+
+function handleCreateHeading1() {
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .setHeading({ level: 1 })
+    .run();
+}
+
+function handleCreateHeading2() {
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .setHeading({ level: 2 })
+    .run();
+}
+
+function handleCreateHeading3() {
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .setHeading({ level: 3 })
+    .run();
+}
+
+function handleCreateHeading4() {
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .setHeading({ level: 4 })
+    .run();
+}
 </script>
 
 <template>
@@ -123,7 +228,7 @@ function handleCodeblock() {
     :editor="editor"
     class="min-w-[290px] border-none !rounded-[5px] pt-[30px]"
     plugin-key="commandsFloatingMenu"
-    :tippy-options="{ duration: 100, placement: 'bottom-start' }" 
+    :tippy-options="{ duration: 100 }" 
     v-if="editor"
     :should-show="({ state }) => {
       const currentLine = state.doc.nodeAt(state.selection.from - 1);

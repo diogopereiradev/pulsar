@@ -186,6 +186,12 @@ watch(() => preview.value.doc, () => {
     color: v-bind('preview.doc?.colors.text');
   }
 
+  .pulsar-numberedlist {
+    padding: 0 1rem;
+    list-style: decimal;
+    color: v-bind('preview.doc?.colors.text');
+  }
+
   .pulsar-table {
     width: auto;
     border-collapse: collapse;

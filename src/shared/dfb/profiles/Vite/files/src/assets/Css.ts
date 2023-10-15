@@ -113,6 +113,12 @@ export function Css(doc: IDocumentation) {
       list-style: disc;
       color: rgb(var(--text));
     }
+
+    .pulsar-numberedlist {
+      padding: 0 1rem;
+      list-style: decimal;
+      color: rgba(var(--text)) !important;
+    }
   
     .pulsar-table {
       width: auto;
