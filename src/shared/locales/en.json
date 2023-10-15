@@ -31,6 +31,8 @@
     "slashcommands-popup-heading-3-description": "Add heading 3 to the page",
     "slashcommands-popup-heading-4-title": "Heading 4",
     "slashcommands-popup-heading-4-description": "Add heading 4 to the page",
+    "slashcommands-popup-divider-title": "Divider",
+    "slashcommands-popup-divider-description": "Add a divider to the page",
     "slashcommands-popup-no-commands-found-message": "No commands found"
   },
   "home": {

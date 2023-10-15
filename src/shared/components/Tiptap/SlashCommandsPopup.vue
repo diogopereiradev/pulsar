@@ -116,6 +116,17 @@ const slash = ref<Slash>({
     },
     {
       icon: {
+        icon: 'fa-solid fa-lines-leaning',
+        class: 'text-[19px]'
+      },
+      title: t('markdowneditor.slashcommands-popup-divider-title'),
+      description: t('markdowneditor.slashcommands-popup-divider-description'),
+      executor() {
+        handleCreateDivider();
+      }
+    },
+    {
+      icon: {
         icon: 'fa-solid fa-code',
         class: 'text-[18px]'
       },
@@ -221,12 +232,22 @@ function handleCreateHeading4() {
     .setHeading({ level: 4 })
     .run();
 }
+
+function handleCreateDivider() {
+  if(!props.editor) return;
+  props.editor
+    .chain()
+    .focus()
+    .undo()
+    .setHorizontalRule()
+    .run();
+}
 </script>
 
 <template>
   <floating-menu
     :editor="editor"
-    class="min-w-[290px] border-none !rounded-[5px] pt-[30px]"
+    class="min-w-[290px] border-[1px] border-solid !rounded-[5px] pt-[30px]"
     plugin-key="commandsFloatingMenu"
     :tippy-options="{ duration: 100 }" 
     v-if="editor"
@@ -235,7 +256,10 @@ function handleCreateHeading4() {
       const currentLineText = currentLine?.text;
       return currentLineText === '/';
     }"
-    :style="{ backgroundColor: props.colors.secondary }"
+    :style="{ 
+      backgroundColor: props.colors.secondary,
+      borderColor: props.colors.primary + '40'
+    }"
   >
     <div class="flex flex-col">
       <div class="flex flex-col gap-[10px] px-[30px]">

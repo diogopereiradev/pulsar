@@ -31,6 +31,8 @@
     "slashcommands-popup-heading-3-description": "Adiciona cabeçalho 3 à página",
     "slashcommands-popup-heading-4-title": "Cabeçalho 4",
     "slashcommands-popup-heading-4-description": "Adiciona cabeçalho 4 à página",
+    "slashcommands-popup-divider-title": "Separador",
+    "slashcommands-popup-divider-description": "Adiciona um separador à página",
     "slashcommands-popup-no-commands-found-message": "Nenhum comando encontrado"
   },
   "home": {

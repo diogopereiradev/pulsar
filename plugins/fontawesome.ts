@@ -28,6 +28,7 @@ library.add(...[
   SolidIcons.faList,
   SolidIcons.faListOl,
   SolidIcons.faHeading,
+  SolidIcons.faLinesLeaning,
   SolidIcons.faDownload,
   SolidIcons.faUpload,
   SolidIcons.faCloudArrowUp
