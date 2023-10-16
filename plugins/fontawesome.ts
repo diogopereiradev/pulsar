@@ -31,7 +31,9 @@ library.add(...[
   SolidIcons.faLinesLeaning,
   SolidIcons.faDownload,
   SolidIcons.faUpload,
-  SolidIcons.faCloudArrowUp
+  SolidIcons.faCloudArrowUp,
+  SolidIcons.faCube,
+  SolidIcons.faRotate
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

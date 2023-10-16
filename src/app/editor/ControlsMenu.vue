@@ -187,6 +187,16 @@ onBeforeMount(async () => {
             <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-autosave-input-label') }}</label>
             <InputSwitch v-model="editor.doc.features.autoSave"/>
           </div>
+          <!--Customize-->
+          <div class="hidden w-full flex items-center justify-between gap-[8px] mb-[40px]">
+            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-customize-input-label') }}</label>
+            <NuxtLinkLocale 
+              :to="`/customize/${editor.doc.id}`" 
+              class="text-primary/80 px-[15px] py-[6px] border-solid border-[1px] border-primary/40 hover:bg-primary hover:text-primary duration-300 rounded-[10px]"
+            >
+              {{ $t('editor.controls-menu-customize-input-text') }}
+            </NuxtLinkLocale>
+          </div>
           <h2 class="text-[18px] text-primary/80 font-[500]">{{ $t('editor.controls-menu-basic-infos-title') }}</h2>
           <!--Title input-->
           <div class="w-full flex flex-col gap-[8px] mt-[20px]">

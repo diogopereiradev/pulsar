@@ -11,6 +11,7 @@ export type IDocumentation = {
   categories: IDocumentationCategory[],
   pages: IDocumentationPage[],
   colors: IDocumentationColorPalette,
+  customizations: IDocumentationCustomization[],
   features: {
     autoSave: boolean,
     indexesTable: boolean
@@ -28,8 +29,6 @@ export type IDocumentationPage = {
   categoryId: number,
   title: string,
   content: string,
-  children: Omit<IDocumentationPage, 'children'>[],
-  lastUpdateAt: number,
   createdAt: number
 };
 
@@ -46,7 +45,17 @@ export type IDocumentationColorPalette = {
   codeBlockString: string,
   codeBlockSection: string,
   codeBlockComments: string
-}
+};
+
+export type IDocumentationCustomization = {
+  id: number,
+  title: string,
+  content: {
+    html: string,
+    css: string,
+    javascript: string
+  }
+};
 
 const defaultColors = {
   background: '#0a0a14',
@@ -73,6 +82,7 @@ export const documentationDataEmptyObj: IDocumentation = {
   categories: [],
   pages: [],
   colors: defaultColors,
+  customizations: [],
   features: {
     autoSave: true,
     indexesTable: true

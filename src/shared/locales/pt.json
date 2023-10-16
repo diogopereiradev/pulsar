@@ -6,6 +6,12 @@
   "loading": {
     "message": "Sua página está carregando, aguarde um pouco."
   },
+  "databasesync": {
+    "back-to-documentations-button-label": "Voltar",
+    "title": "Documentação não sincronizada",
+    "description": "Sua estrutura de documentação não está sincronizada com a estrutura do banco de dados, clique no botão abaixo para sincronizar agora. Esta ação não afeta seus dados!",
+    "missing-data-text": "Dados faltantes"
+  },
   "markdowneditor": {
     "is-empty-message": "está vazio",
     "line-is-empty-placeholder": "Digite \"/\" para ver as opções",
@@ -75,6 +81,8 @@
     "error-notfound-button-label": "Voltar para Documentações",
     "controls-menu-save-button-aria-label": "Salvar",
     "controls-menu-autosave-input-label": "Salvar Automático",
+    "controls-menu-customize-input-label": "Customizar",
+    "controls-menu-customize-input-text": "Abrir Editor",
     "controls-menu-previewmode-button-aria-label": "Modo de Prévia",
     "controls-menu-back-to-docs-button-message": "Voltar",
     "controls-menu-basic-infos-title": "Informações básicas",
@@ -111,5 +119,11 @@
   },
   "preview": {
     "title": "Pulsar - Pré-Visualização"
+  },
+  "customize": {
+    "title": "Pulsar - Customizar",
+    "controls-menu-customizations-title": "Customizações",
+    "controls-menu-new-customization-button-label": "Nova Customização",
+    "controls-menu-empty-customizations-message": "Nenhuma customização, use o botão abaixo para criar uma."
   }
 }

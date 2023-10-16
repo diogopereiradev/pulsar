@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Error from '~/shared/components/Error.vue';
 import Loading from '~/shared/components/Loading.vue';
+import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import { Documentation } from '~/shared/storage/models/Documentation';
 import { usePreview } from '~/shared/states/previewState';
 import NavigationMenu from '~/app/preview/NavigationMenu.vue';
@@ -8,7 +9,7 @@ import IndexesTable from '~/app/preview/IndexesTable.vue';
 
 definePageMeta({
   layout: 'preview'
-})
+});
 
 const { params } = useRoute();
 const docId = Number(params.id) || 0;
@@ -85,8 +86,12 @@ watch(() => preview.value.doc, () => {
       </div>
     </div>
   </main>
-  <!--Loading and Error component-->
+  <!--Page state component-->
   <Loading v-if="!pageIsLoaded" />
+  <DatabaseSync
+    :doc-id="preview.doc!.id"
+    v-if="pageIsLoaded && docExists"
+  />
   <Error 
     v-if="!docExists && pageIsLoaded"
     :status="404"

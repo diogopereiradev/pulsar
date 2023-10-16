@@ -6,6 +6,12 @@
   "loading": {
     "message": "Your page is loading, please wait a moment."
   },
+  "databasesync": {
+    "back-to-documentations-button-label": "Back",
+    "title": "Documentation is not synced",
+    "description": "Your documentation structure is not synced with the database structure, click in the sync button below to sync now. This action no affect your data!",
+    "missing-data-text": "Missing data"
+  },
   "markdowneditor": {
     "is-empty-message": "is empty",
     "line-is-empty-placeholder": "Type \"/\" to see the options",
@@ -75,6 +81,8 @@
     "error-notfound-button-label": "Back to Documentations",
     "controls-menu-save-button-aria-label": "Save",
     "controls-menu-autosave-input-label": "Auto Save",
+    "controls-menu-customize-input-label": "Customize",
+    "controls-menu-customize-input-text": "Open Editor",
     "controls-menu-previewmode-button-aria-label": "Preview Mode",
     "controls-menu-back-to-docs-button-message": "Back",
     "controls-menu-basic-infos-title": "Basic informations",
@@ -111,5 +119,11 @@
   },
   "preview": {
     "title": "Pulsar - Preview"
+  },
+  "customize": {
+    "title": "Pulsar - Customize",
+    "controls-menu-customizations-title": "Customizations",
+    "controls-menu-new-customization-button-label": "New Customization",
+    "controls-menu-empty-customizations-message": "No customizations found, create one using the button below."
   }
 }

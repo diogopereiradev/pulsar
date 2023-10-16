@@ -3,6 +3,7 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import ControlsMenu from '~/app/editor/ControlsMenu.vue';
 import DocEditor from '~/app/editor/DocEditor.vue';
 import ExportModal from '~/app/editor/ExportModal.vue';
+import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import Error from '~/shared/components/Error.vue';
 import Loading from '~/shared/components/Loading.vue';
 import { useEditor } from '~/shared/states/editorState';
@@ -53,8 +54,12 @@ onBeforeMount(async () => {
     <ControlsMenu />
     <DocEditor />
   </div>
-  <!--Loading and Error components-->
+  <!--Page state components-->
   <Loading v-if="!pageIsLoaded" />
+  <DatabaseSync
+    :doc-id="editor.doc.id"
+    v-if="pageIsLoaded && docExists"
+  />
   <Error 
     v-if="!docExists && pageIsLoaded" 
     :status="404"

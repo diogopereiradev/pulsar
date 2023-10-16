@@ -178,7 +178,11 @@ const editor = useTiptapEditor({
       }
     }),
     TableRow,
-    Image,
+    Image.configure({
+      HTMLAttributes: {
+        class: 'pulsar-image'
+      }
+    }),
     TaskList.configure({
       HTMLAttributes: {
         class: 'pulsar-todolist'
@@ -231,31 +235,31 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
 
 .tiptap {
   // Headings
-  h1, h2, h3, h4 {
+  .pulsar-heading {
     color: v-bind('props.colors.text');
     font-weight: 500;
   }
 
-  h1 { font-size: 35px; }
+  .pulsar-heading-1 { font-size: 35px; }
 
-  h2 { font-size: 30px; }
+  .pulsar-heading-2 { font-size: 30px; }
 
-  h3 { font-size: 25px; }
+  .pulsar-heading-3 { font-size: 25px; }
 
-  h4 { font-size: 22px; }
+  .pulsar-heading-4 { font-size: 22px; }
 
   // Paragraph
-  p { color: v-bind('props.colors.text + "b9"'); }
+  .pulsar-paragraph { color: v-bind('props.colors.text + "b9"'); }
 
-  p:empty::after {
+  .pulsar-paragrap:empty::after {
     content: "\00A0";
   }
 
   // Link
-  a { color: v-bind('props.colors.primary'); }
+  .pulsar-link { color: v-bind('props.colors.primary'); }
 
   // Horizontal rule
-  hr {
+  .pulsar-divider {
     width: 100%;
     height: 1px;
     border: none;
@@ -263,17 +267,17 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
   }
 
   // BulletList and NumberedList
-  ul,
-  ol {
+  .pulsar-bulletlist,
+  .pulsar-numberedlist {
     padding: 0 1rem;
     color: v-bind('colors.text');
   }
 
-  ul {
+  .pulsar-bulletlist {
     list-style: disc;
   }
 
-  ol {
+  .pulsar-numberedlist {
     list-style: decimal;
   }
 
@@ -287,7 +291,7 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
   }
 
   // Image
-  img {
+  .pulsar-image {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
@@ -298,7 +302,7 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
   }
 
   // CodeBlock
-  pre {
+  .highlighted-codeblock {
     background-color: v-bind('props.colors.secondary');
     color: v-bind('props.colors.codeBlockText');
     font-weight: 400;
