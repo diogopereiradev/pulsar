@@ -70,24 +70,24 @@ async function handleUpload(e: HTMLInputElement) {
         ${docs.uploadDocsModal.isOpen? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
         fixed
         overflow-y-auto
-        left-[50%]
-        top-[50%]
-        translate-x-[-50%]
-        translate-y-[-50%]
+        left-2/4
+        top-2/4
+        -translate-x-2/4
+        -translate-y-2/4
         w-[650px]
         h-[500px]
         max-lg:w-full
         max-lg:h-full
         bg-secondary
-        rounded-[10px]
+        rounded-lg
         z-[301]
-        p-[40px]
+        p-10
         duration-300
       `"
     >
       <!--Modal Header-->
-      <div class="flex items-center h-[40px] justify-between">
-        <h2 class="text-[21px] text-primary/90 font-[500]">{{ $t('documentations.upload-documentation-modal-title') }}</h2>
+      <div class="flex items-center h-10 justify-between">
+        <h2 class="text-[21px] text-primary/90 font-medium">{{ $t('documentations.upload-documentation-modal-title') }}</h2>
         <button @click="docs.uploadDocsModal.isOpen = false">
           <font-awesome-icon icon="fa-solid fa-close" class="text-[23px] text-primary/80"></font-awesome-icon>
         </button>
@@ -104,11 +104,11 @@ async function handleUpload(e: HTMLInputElement) {
             w-full 
             h-[270px]
             max-lg:h-[200px] 
-            border-[2px] 
+            border-2
             duration-300 
             ${docs.uploadDocsModal.highlighted? 'border-primary' : 'border-primary/30'} 
-            rounded-[10px] 
-            mt-[30px] 
+            rounded-lg
+            mt-7 
             cursor-pointer
           `"
         >
@@ -118,14 +118,14 @@ async function handleUpload(e: HTMLInputElement) {
               :class="`text-[80px] duration-300 ${docs.uploadDocsModal.highlighted? 'text-secondary' : 'text-secondary/20'}`"
             ></font-awesome-icon>
             <p 
-              :class="`text-[17px] mt-[15px] duration-300 ${docs.uploadDocsModal.highlighted? 'text-secondary' : 'text-secondary/30'}`"
+              :class="`text-[17px] mt-3.5 duration-300 ${docs.uploadDocsModal.highlighted? 'text-secondary' : 'text-secondary/30'}`"
             >
               {{ $t('documentations.upload-documentation-modal-drag-and-drop-message') }}
             </p>
           </div>
         </div>
-        <div class="w-full flex justify-center mt-[40px]">
-          <Button @click="uploadInput?.click()" class="w-[230px] !h-[45px] !bg-primary border-none">
+        <div class="w-full flex justify-center mt-10">
+          <Button @click="uploadInput?.click()" class="w-[230px] !h-11 !bg-primary border-none">
             {{ $t('documentations.upload-documentation-modal-choose-from-computer-button') }}
           </Button>
         </div>
@@ -138,7 +138,7 @@ async function handleUpload(e: HTMLInputElement) {
         />
       </div>
       <!--Loading Step-->
-      <div class="flex flex-col gap-[15px] items-center justify-center h-[calc(100%-40px)]" v-else>
+      <div class="flex flex-col gap-3.5 items-center justify-center h-[calc(100%-40px)]" v-else>
         <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-[50px] text-secondary" spin></font-awesome-icon>
         <h3 class="text-center w-[300px] text-primary/80">{{ $t('documentations.upload-documentation-modal-loading-message') }}</h3>
       </div>

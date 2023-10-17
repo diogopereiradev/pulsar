@@ -270,8 +270,8 @@ export function Css(doc: IDocumentation) {
       display: flex;
       justify-content: center;
       align-items: center;
-      min-width: 45px;
-      height: 45px;
+      min-width: 48px;
+      height: 48px;
       background-color: rgba(var(--primary), 0.3);
       border-radius: 10px;
     }

@@ -53,24 +53,25 @@ const colors: ColorNames[] = [
 </script>
 
 <template>
-  <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] flex max-xl:flex-col min-w-full xl:min-w-[400px] h-full xl:h-[450px] bg-secondary xl:rounded-[10px] max-xl:overflow-scroll z-[91]`">
+  <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 flex max-xl:flex-col min-w-full xl:min-w-[400px] h-full xl:h-[450px] bg-secondary xl:rounded-lg max-xl:overflow-scroll z-[91]`">
     <!--Doc prototype-->
-    <div class="flex justify-center items-center w-full xl:w-[400px] max-xl:py-[30px] bg-[#10111f] h-full rounded-l-[10px]">
+    <div class="flex justify-center items-center w-full xl:w-[400px] max-xl:py-8 bg-[#10111f] h-full rounded-l-[10px]">
       <DocPrototype
         :colors="formData.colors"
         :features="formData.features"
+        navbar
       />
     </div>
     <!--Form-->
-    <div class="w-full xl:w-[450px] p-[40px]">
-      <h2 class="text-primary/80 text-[20px] font-[500]">{{ $t('documentations.new-doc-modal-title') }}</h2>
-      <hr class="w-full h-[1px] bg-divider border-none mt-[20px]" />
+    <div class="w-full xl:w-[450px] p-10">
+      <h2 class="text-primary/80 text-xl font-medium">{{ $t('documentations.new-doc-modal-title') }}</h2>
+      <hr class="w-full h-px bg-divider border-none mt-5" />
       <ScrollPanel 
         class="relative w-full h-[calc(100%-10px)]"
         :pt="
           usePassThrough(Tailwind, { 
             scrollpanel: { 
-              barY: 'max-xl:hidden ml-[40px] !bg-secondary/30 contrast-200' 
+              barY: 'max-xl:hidden ml-10 !bg-secondary/30 contrast-200' 
             } 
           }, 
           { mergeProps: true, mergeSections: true }
@@ -78,18 +79,18 @@ const colors: ColorNames[] = [
       >
         <form @submit.prevent="handleDocCreate()" class="relative w-full h-full flex flex-col">
           <!--Title input-->
-          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
-            <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-title-input-label') }}</label>
+          <div class="w-full flex flex-col gap-2 mt-5">
+            <label class="text-md text-primary/70 font-medium">{{ $t('documentations.new-doc-modal-title-input-label') }}</label>
             <InputText
               v-model="formData.title"
-              class="rounded-[5px] contrast-200 !h-[45px] !border-secondary/60"
+              class="rounded-md contrast-200 !h-11 !border-secondary/60"
               :placeholder="$t('documentations.new-doc-modal-title-input-placeholder')"
               required
             />
           </div>
           <!--Description input-->
-          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
-            <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-description-input-label') }}</label>
+          <div class="w-full flex flex-col gap-2 mt-5">
+            <label class="text-md text-primary/70 font-medium">{{ $t('documentations.new-doc-modal-description-input-label') }}</label>
             <TextArea
               v-model="formData.description"
               class="!border-secondary/60 contrast-200 max-h-[74px]"
@@ -98,20 +99,20 @@ const colors: ColorNames[] = [
             />
           </div>
           <!--Indexes table-->
-          <div class="w-full flex justify-between gap-[8px] mt-[40px]">
-            <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-indexestable-input-label') }}</label>
+          <div class="w-full flex justify-between gap-2 mt-10">
+            <label class="text-md text-primary/70 font-medium">{{ $t('documentations.new-doc-modal-indexestable-input-label') }}</label>
             <InputSwitch v-model="formData.features.indexesTable"/>
           </div>
           <!--Colors-->
-          <div class="w-full flex flex-col gap-[8px] mt-[30px]">
-            <label class="text-md text-primary/70 font-[500]">{{ $t('documentations.new-doc-modal-colors-area-title') }}</label>
-            <div class="flex flex-wrap gap-[25px] mt-[10px]">
+          <div class="w-full flex flex-col gap-2 mt-7">
+            <label class="text-md text-primary/70 font-medium">{{ $t('documentations.new-doc-modal-colors-area-title') }}</label>
+            <div class="flex flex-wrap gap-6 mt-2.5">
               <div
                 v-for="color of colors"
                 :key="color"
-                class="w-full sm:max-w-[105px] flex flex-col gap-[8px]"
+                class="w-full sm:max-w-[105px] flex flex-col gap-2"
               >
-                <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
+                <label class="text-sm text-primary/40 font-medium">{{ color }}</label>
                 <HexColorPicker
                   :toggler-button="{
                     width: '100%',
@@ -124,11 +125,11 @@ const colors: ColorNames[] = [
             </div>
           </div>
           <!--Cancel and submit buttons-->
-          <div class="flex flex-wrap gap-[10px] mt-[50px] xl:pb-[40px] self-end">
-            <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-[45px] !bg-secondary/10 contrast-200 hover:!bg-secondary/40">
+          <div class="flex flex-wrap gap-2.5 mt-12 xl:pb-10 self-end">
+            <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="w-[140px] !h-11 !bg-secondary/10 contrast-200 hover:!bg-secondary/40">
               {{ $t('documentations.new-doc-modal-cancel-button-message') }}
             </Button>
-            <Button type="submit" class="w-[140px] !h-[45px] !bg-primary hover:!bg-primary/50">
+            <Button type="submit" class="w-[140px] !h-11 !bg-primary hover:!bg-primary/50">
               {{ $t('documentations.new-doc-modal-create-button-message') }}
             </Button>
           </div>

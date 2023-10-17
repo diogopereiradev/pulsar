@@ -74,25 +74,25 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div :class="`${data.isChecking? '' : 'opacity-0 pointer-events-none' } duration-300 fixed left-0 top-0 flex justify-center items-center w-screen h-screen bg-secondary px-[10px] z-[9999]`">
+  <div :class="`${data.isChecking? '' : 'opacity-0 pointer-events-none' } duration-300 fixed left-0 top-0 flex justify-center items-center w-screen h-screen bg-secondary px-2.5 z-[9999]`">
     <div class="flex flex-col items-center">
       <font-awesome-icon icon="fa-solid fa-rotate" class="text-[105px] text-secondary/75"></font-awesome-icon>
-      <div class="flex items-center flex-col gap-[10px] max-w-[600px] mt-[20px]">
-        <h2 class="text-[21px] text-primary/80 font-[500]">{{ $t('databasesync.title') }}</h2>
-        <p class="text-center text-[16px] text-primary/50">{{ $t('databasesync.description') }}</p>
-        <p class="text-[16px] text-primary/70" v-if="data.diff.length >= 1">
+      <div class="flex items-center flex-col gap-2.5 max-w-[600px] mt-5">
+        <h2 class="text-[21px] text-primary/80 font-medium">{{ $t('databasesync.title') }}</h2>
+        <p class="text-center text-base text-primary/50">{{ $t('databasesync.description') }}</p>
+        <p class="text-base text-primary/70" v-if="data.diff.length >= 1">
           <strong>{{ $t('databasesync.missing-data-text') }}: </strong>
           <span class="text-secondary/90">{{ data.diff.join(', ') }}</span>
         </p>
-        <div class="flex gap-[15px] mt-[25px]">
+        <div class="flex gap-3.5 mt-6">
           <NuxtLinkLocale 
             to="/documentations" 
-            class="flex gap-[15px] items-center w-[120px] md:w-[140px] h-[43px] bg-primary/20 hover:bg-primary duration-300 text-primary px-[20px] rounded-[5px]"
+            class="flex gap-3.5 items-center w-[120px] md:w-[140px] h-11 bg-primary/20 hover:bg-primary duration-300 text-primary px-5 rounded-md"
           >
             <font-awesome-icon icon="fa-solid fa-arrow-left-long"></font-awesome-icon>
             {{ $t('databasesync.back-to-documentations-button-label') }}
           </NuxtLinkLocale>
-          <Button @click="syncDoc()" class="!justify-start gap-[15px] w-[120px] md:w-[140px] !h-[43px] !bg-primary/80 hover:!bg-primary !px-[20px]">
+          <Button @click="syncDoc()" class="!justify-start gap-3.5 w-[120px] md:w-[140px] !h-11 !bg-primary/80 hover:!bg-primary !px-5">
             <font-awesome-icon icon="fa-solid fa-rotate" :spin="data.isSyncing"></font-awesome-icon>
             Sync
           </Button>

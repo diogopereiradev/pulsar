@@ -83,6 +83,7 @@
     "controls-menu-autosave-input-label": "Salvar Automático",
     "controls-menu-customize-input-label": "Customizar",
     "controls-menu-customize-input-text": "Abrir Editor",
+    "controls-menu-exportdoc-button-aria-label": "Exportar Documentação",
     "controls-menu-previewmode-button-aria-label": "Modo de Prévia",
     "controls-menu-back-to-docs-button-message": "Voltar",
     "controls-menu-basic-infos-title": "Informações básicas",
@@ -124,6 +125,12 @@
     "title": "Pulsar - Customizar",
     "controls-menu-customizations-title": "Customizações",
     "controls-menu-new-customization-button-label": "Nova Customização",
-    "controls-menu-empty-customizations-message": "Nenhuma customização, use o botão abaixo para criar uma."
+    "controls-menu-empty-customizations-message": "Nenhuma customização, use o botão acima para criar uma.",
+    "new-customization-modal-title": "Nova Customização",
+    "new-customization-modal-title-input-label": "Titulo",
+    "new-customization-modal-title-input-placeholder": "Titulo da customização",
+    "new-customization-modal-region-input-label": "Região",
+    "new-customization-modal-cancel-button-message": "Cancelar",
+    "new-customization-modal-create-button-message": "Criar"
   }
 }

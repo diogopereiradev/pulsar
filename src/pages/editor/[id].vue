@@ -43,10 +43,10 @@ onBeforeMount(async () => {
     <Title>{{ `${$t('editor.title')} ${params.id}` }}</Title>
   </Head>
   <ConfirmDialog :pt="{
-    root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-[5px]',
-    header: 'text-primary !bg-secondary rounded-t-[5px] flex justify-between items-center py-[20px] px-[30px]',
-    content: 'text-primary !bg-secondary py-[10px] px-[30px]',
-    footer: 'text-primary !bg-secondary rounded-b-[5px] flex justify-end py-[25px] px-[25px]'
+    root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-md',
+    header: 'text-primary !bg-secondary rounded-t-md flex justify-between items-center py-5 px-7',
+    content: 'text-primary !bg-secondary py-2.5 px-7',
+    footer: 'text-primary !bg-secondary rounded-b-md flex justify-end p-6'
   }"/>
   <ExportModal />
   <!--Page content-->

@@ -36,10 +36,8 @@ async function handleNewPage(value: string, categoryId: number) {
     id: Math.round(Math.random() * (10000 - 1) + 1),
     categoryId,
     title: value,
-    children: [],
     content: '',
-    createdAt: Date.now(),
-    lastUpdateAt: Date.now()
+    createdAt: Date.now()
   };
   const pagesCopy = JSON.parse(JSON.stringify(editor.value.doc.pages));
   editor.value.doc.pages = [...pagesCopy, newPage];
@@ -49,8 +47,8 @@ function deleteCategoryConfirmDialog(categoryId: number) {
   confirm.require({
     header: t('editor.delete-category-dialog-title'),
     message: t('editor.delete-category-dialog-message'),
-    acceptClass: 'min-w-[80px] min-h-[40px] !font-[400] !bg-[#c22d37] hover:!bg-[#992028] ml-[10px] border-0',
-    rejectClass: '!w-[80px] min-h-[40px] !font-[400]',
+    acceptClass: '!w-20 !h-10 !font-normal !bg-[#c22d37] hover:!bg-[#992028] ml-2.5 !border-none',
+    rejectClass: '!w-20 !h-10 !font-normal',
     acceptLabel: t('editor.delete-category-dialog-confirm-button-message'),
     rejectLabel: t('editor.delete-category-dialog-cancel-button-message'),
     accept: async () => {
@@ -74,8 +72,8 @@ function deletePageConfirmDialog(pageId: number) {
   confirm.require({
     header: t('editor.delete-page-dialog-title'),
     message: t('editor.delete-page-dialog-message'),
-    acceptClass: 'min-w-[80px] min-h-[40px] !font-[400] !bg-[#c22d37] hover:!bg-[#992028] ml-[10px] border-0',
-    rejectClass: '!w-[80px] min-h-[40px] !font-[400]',
+    acceptClass: '!w-20 !h-10 !font-normal !bg-[#c22d37] hover:!bg-[#992028] ml-2.5 !border-none',
+    rejectClass: '!w-20 !h-10 !font-normal',
     acceptLabel: t('editor.delete-page-dialog-confirm-button-message'),
     rejectLabel: t('editor.delete-page-dialog-cancel-button-message'),
     accept: async () => {
@@ -95,11 +93,11 @@ function deletePageConfirmDialog(pageId: number) {
 </script>
 
 <template>
-  <ul class="flex flex-col gap-[10px]">
+  <ul class="flex flex-col gap-2.5">
     <li v-for="category in editor.doc.categories" :key="category.id" class="group">
       <div class="flex flex-col">
         <div class="flex items-center justify-between">
-          <h2 class="text-[15px] font-[500]" :style="{ color: editor.doc.colors.text }">{{ category.label }}</h2>
+          <h2 class="text-[15px] font-medium" :style="{ color: editor.doc.colors.text }">{{ category.label }}</h2>
           <Button
             @click="deleteCategoryConfirmDialog(category.id)"
             class="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto hover:!bg-[#f99999]/20 !w-[30px] !h-[30px] border-none"
@@ -115,7 +113,7 @@ function deletePageConfirmDialog(pageId: number) {
               <button
                 @click="handlePageChange(page.id)"
                 :title="page.title"
-                class="dinamic-color-page-link max-w-[160px] font-[400] truncate duration-300" 
+                class="dinamic-color-page-link max-w-[160px] font-normal truncate duration-300" 
                 :style="{ color: editor.currentSelectedPage?.id === page.id? editor.doc.colors.primary : `${editor.doc.colors.text}70` }"
               >
                 {{ page.title }}
@@ -131,7 +129,7 @@ function deletePageConfirmDialog(pageId: number) {
           </li>
         </ul>
       </div>
-      <ul class="mt-[5px]">
+      <ul class="mt-1.5">
         <li>
           <InputableButton
             :color="editor.doc.colors.text"
@@ -143,7 +141,7 @@ function deletePageConfirmDialog(pageId: number) {
         </li>
       </ul>
     </li>
-    <li class="mt-[10px]">
+    <li class="mt-2.5">
       <InputableButton
         :color="editor.doc.colors.text"
         @update:submit="handleNewCategory"

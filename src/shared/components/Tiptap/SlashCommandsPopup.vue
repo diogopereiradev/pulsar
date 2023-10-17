@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Editor, FloatingMenu } from '@tiptap/vue-3';
+import { Editor, FloatingMenu, CommandProps } from '@tiptap/vue-3';
 import InputText from 'primevue/inputtext';
 import { IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
 
@@ -29,78 +29,96 @@ const slash = ref<Slash>({
     {
       icon: {
         icon: 'fa-solid fa-table',
-        class: 'text-[20px]'
+        class: 'text-xl'
       },
       title: t('markdowneditor.slashcommands-popup-table-title'),
       description: t('markdowneditor.slashcommands-popup-table-description'),
       executor() {
-        handleCreateTable();
+        commandExecutor(p => {
+          return p.commands.insertTable({ rows: 2, cols: 2, withHeaderRow: true });
+        });
       }
     },
     {
       icon: {
         icon: 'fa-solid fa-heading',
-        class: 'text-[20px]'
+        class: 'text-xl'
       },
       title: t('markdowneditor.slashcommands-popup-heading-1-title'),
       description: t('markdowneditor.slashcommands-popup-heading-1-description'),
       executor() {
-        handleCreateHeading1();
+        commandExecutor(p => {
+          return p.commands.setHeading({ level: 1 });
+        });
       }
     },
     {
       icon: {
         icon: 'fa-solid fa-heading',
-        class: 'text-[20px]'
+        class: 'text-xl'
       },
       title: t('markdowneditor.slashcommands-popup-heading-2-title'),
       description: t('markdowneditor.slashcommands-popup-heading-2-description'),
       executor() {
-        handleCreateHeading2();
+        commandExecutor(p => {
+          return p.commands.setHeading({ level: 2 });
+        });
       }
     },
     {
       icon: {
         icon: 'fa-solid fa-heading',
-        class: 'text-[20px]'
+        class: 'text-xl'
       },
       title: t('markdowneditor.slashcommands-popup-heading-3-title'),
       description: t('markdowneditor.slashcommands-popup-heading-3-description'),
       executor() {
-        handleCreateHeading3();
+        commandExecutor(p => {
+          return p.commands.setHeading({ level: 3 });
+        });
       }
     },
     {
       icon: {
         icon: 'fa-solid fa-heading',
-        class: 'text-[20px]'
+        class: 'text-xl'
       },
       title: t('markdowneditor.slashcommands-popup-heading-4-title'),
       description: t('markdowneditor.slashcommands-popup-heading-4-description'),
       executor() {
-        handleCreateHeading4();
+        commandExecutor(p => {
+          return p.commands.setHeading({ level: 4 });
+        });
       }
     },
     {
       icon: {
         icon: 'fa-solid fa-image',
-        class: 'text-[20px]'
+        class: 'text-xl'
       },
       title: t('markdowneditor.slashcommands-popup-image-title'),
       description: t('markdowneditor.slashcommands-popup-image-description'),
       executor() {
-        handleCreateImage();
+        const url = window.prompt('URL:');
+
+        if(url && url != '') {
+          commandExecutor(p => {
+            return p.commands.setImage({ src: url });
+          });
+        }
       }
     },
     {
       icon: {
         icon: 'fa-solid fa-list',
-        class: 'text-[18px]'
+        class: 'text-lg'
       },
       title: t('markdowneditor.slashcommands-popup-bulletlist-title'),
       description: t('markdowneditor.slashcommands-popup-bulletlist-description'),
       executor() {
-        handleBulletList();
+        commandExecutor(p => {
+          return p.commands.toggleBulletList();
+        });
       }
     },
     {
@@ -111,7 +129,9 @@ const slash = ref<Slash>({
       title: t('markdowneditor.slashcommands-popup-numberedlist-title'),
       description: t('markdowneditor.slashcommands-popup-numberedlist-description'),
       executor() {
-        handleNumberedList();
+        commandExecutor(p => {
+          return p.commands.toggleOrderedList();
+        });
       }
     },
     {
@@ -122,124 +142,38 @@ const slash = ref<Slash>({
       title: t('markdowneditor.slashcommands-popup-divider-title'),
       description: t('markdowneditor.slashcommands-popup-divider-description'),
       executor() {
-        handleCreateDivider();
+        commandExecutor(p => {
+          return p.commands.setHorizontalRule();
+        });
       }
     },
     {
       icon: {
         icon: 'fa-solid fa-code',
-        class: 'text-[18px]'
+        class: 'text-lg'
       },
       title: t('markdowneditor.slashcommands-popup-codeblocks-title'),
       description: t('markdowneditor.slashcommands-popup-codeblocks-description'),
       executor() {
-        handleCodeblock();
+        commandExecutor(p => {
+          return p.commands.toggleCodeBlock();
+        });
       }
     }
   ]
 });
 
-function handleCreateTable() {
+function commandExecutor(command: (props: CommandProps) => boolean) {
   if(!props.editor) return;
   props.editor
     .chain()
     .focus()
-    .undo()
-    .insertTable({ rows: 2, cols: 2, withHeaderRow: true })
-    .run();
-}
-
-function handleCreateImage() {
-  if(!props.editor) return;
-  const url = window.prompt('URL:');
-
-  if(url && url != '') {
-    props.editor
-      .chain()
-      .focus()
-      .undo()
-      .setImage({ src: url })
-      .run();
-  }
-}
-
-function handleBulletList() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .toggleBulletList()
-    .run();
-}
-
-function handleNumberedList() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .toggleOrderedList()
-    .run();
-}
-
-function handleCodeblock() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .setCodeBlock()
-    .run();
-}
-
-function handleCreateHeading1() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .setHeading({ level: 1 })
-    .run();
-}
-
-function handleCreateHeading2() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .setHeading({ level: 2 })
-    .run();
-}
-
-function handleCreateHeading3() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .setHeading({ level: 3 })
-    .run();
-}
-
-function handleCreateHeading4() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .setHeading({ level: 4 })
-    .run();
-}
-
-function handleCreateDivider() {
-  if(!props.editor) return;
-  props.editor
-    .chain()
-    .focus()
-    .undo()
-    .setHorizontalRule()
+    .setTextSelection({
+      from: props.editor.state.selection.from - 1,
+      to: props.editor.state.selection.from
+    })
+    .deleteSelection()
+    .command(p => command(p))
     .run();
 }
 </script>
@@ -247,7 +181,7 @@ function handleCreateDivider() {
 <template>
   <floating-menu
     :editor="editor"
-    class="min-w-[290px] border-[1px] border-solid !rounded-[5px] pt-[30px]"
+    class="min-w-[290px] border-[1px] border-solid !rounded-md pt-8"
     plugin-key="commandsFloatingMenu"
     :tippy-options="{ duration: 100 }" 
     v-if="editor"
@@ -262,20 +196,20 @@ function handleCreateDivider() {
     }"
   >
     <div class="flex flex-col">
-      <div class="flex flex-col gap-[10px] px-[30px]">
-        <h3 class="text-[17px] text-primary font-[500]">{{ $t('markdowneditor.slashcommands-popup-title') }}</h3>
-        <InputText v-model="slash.search" :placeholder="$t('markdowneditor.slashcommands-popup-search-bar-placeholder')" class="!h-[42px]"/>
-        <hr class="w-full h-[1px] border-none my-[10px]" :style="{ backgroundColor: props.colors.divider }"/>
+      <div class="flex flex-col gap-2.5 px-7">
+        <h3 class="text-[17px] text-primary font-medium">{{ $t('markdowneditor.slashcommands-popup-title') }}</h3>
+        <InputText v-model="slash.search" :placeholder="$t('markdowneditor.slashcommands-popup-search-bar-placeholder')" class="!h-11"/>
+        <hr class="w-full h-px border-none my-2.5" :style="{ backgroundColor: props.colors.divider }"/>
       </div>
       <ul class="flex flex-col max-h-[245px] overflow-y-auto">
         <li v-for="command in slash.search? slash.commands.filter(c => c.title.toLowerCase().match(slash.search.toLowerCase())) : slash.commands">
           <Button
             @click="command.executor()"
             :title="command.description"
-            class="dinamic-button-bg flex items-center !justify-start w-full h-[80px] !rounded-[0px] border-none !px-[30px] !py-[15px]"
+            class="dinamic-button-bg flex items-center !justify-start w-full h-20 !rounded-none border-none !px-7 !py-4"
           >
             <div 
-              class="flex justify-center items-center min-w-[50px] h-[50px] rounded-[5px]"
+              class="flex justify-center items-center !w-12 !h-12 rounded-md"
               :style="{ 
                 backgroundColor: props.colors.primary,
                 color: props.colors.text + 'c9'
@@ -283,7 +217,7 @@ function handleCreateDivider() {
             >
               <font-awesome-icon :icon="command.icon.icon" :class="command.icon.class"></font-awesome-icon>
             </div>
-            <div class="relative flex flex-col items-start justify-center h-full px-[15px]">
+            <div class="relative flex flex-col items-start justify-center h-full px-4">
               <h3 
                 class="truncate"
                 :style="{ color: props.colors.text + 'c9' }"
@@ -301,7 +235,7 @@ function handleCreateDivider() {
         </li>
         <!--Empty list message-->
         <li v-if="slash.commands.length < 1 || slash.commands.filter(c => c.title.toLowerCase().match(slash.search.toLowerCase())).length < 1">
-          <div class="flex justify-center items-center w-full h-[80px]">
+          <div class="flex justify-center items-center w-full h-20">
             <p class="text-[15px] text-primary/50">{{ $t('markdowneditor.slashcommands-popup-no-commands-found-message') }}</p>
           </div>
         </li>

@@ -47,21 +47,21 @@ onBeforeMount(() => {
 
 <template>
   <div 
-    class="w-full min-h-screen 2xl:max-h-screen px-[50px] py-[30px] 2xl:overflow-y-scroll"
+    class="w-full min-h-screen 2xl:max-h-screen px-12 py-7 2xl:overflow-y-scroll"
     :style="{ backgroundColor: editor.doc.colors.background }"
   >
     <!--Doc navbar-->
-    <nav class="2xl:hidden flex items-center w-full pb-[25px]">
-      <Button @click="mobileNavigationIsOpen = true" class="border-none !bg-transparent hover:!bg-transparent !p-[6px]">
+    <nav class="2xl:hidden flex items-center w-full pb-6">
+      <Button @click="mobileNavigationIsOpen = true" class="border-none !bg-transparent hover:!bg-transparent !p-1.5">
         <font-awesome-icon 
           icon="fa-solid fa-bars"
-          class="text-[30px]"
+          class="text-3xl"
         ></font-awesome-icon>
       </Button>
     </nav>
-    <hr class="2xl:hidden w-full mx-auto h-[2px] border-none" :style="{ backgroundColor: editor.doc.colors.divider }" />
+    <hr class="2xl:hidden w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.doc.colors.divider }" />
     <!--Doc navbar end-->
-    <div class="flex pt-[40px] mt-[10px]">
+    <div class="flex pt-10 mt-2.5">
       <!--Navigation Menu-->
       <div 
         :class="`
@@ -73,26 +73,26 @@ onBeforeMount(() => {
           max-2xl:fixed 
           max-2xl:left-0 
           max-2xl:top-0
-          max-2xl:px-[40px]
-          max-2xl:py-[50px]
+          max-2xl:px-10
+          max-2xl:py-14
           max-2xl:overflow-y-scroll
           max-w-[220px] 
           w-full 
           flex 
           flex-col 
-          gap-[20px]
+          gap-5
           z-[11]
           duration-300
         `"
       >
         <!--Mobile close button-->
-        <button @click="mobileNavigationIsOpen = false" class="2xl:hidden absolute right-[30px] top-[30px]">
-          <font-awesome-icon icon="fa-solid fa-close" class="text-[20px]" :style="{ color: editor.doc.colors.text }"></font-awesome-icon>
+        <button @click="mobileNavigationIsOpen = false" class="2xl:hidden absolute right-8 top-8">
+          <font-awesome-icon icon="fa-solid fa-close" class="text-xl" :style="{ color: editor.doc.colors.text }"></font-awesome-icon>
         </button>
         <!--Navigation menu title and icon-->
-        <div v-if="editor.doc.navigationTitle" class="max-w-[220px] flex items-center gap-[15px]">
+        <div v-if="editor.doc.navigationTitle" class="max-w-[220px] flex items-center gap-3.5">
           <div
-            class="flex justify-center items-center min-w-[45px] h-[45px] rounded-[10px]"
+            class="flex justify-center items-center w-12 h-12 rounded-lg"
             :style="{ backgroundColor: editor.doc.colors.primary + '40' }"
           >
             <font-awesome-icon 
@@ -105,12 +105,12 @@ onBeforeMount(() => {
             <p :title="editor.doc.navigationTitle" class="max-w-[150px] text-[17px] truncate" :style="{ color: editor.doc.colors.text + '99' }">
               {{ editor.doc.navigationTitle }}
             </p>
-            <p :title="editor.doc.navigationSubTitle" class="max-w-[150px] relative text-[15px] mt-[-4px] truncate" :style="{ color: editor.doc.colors.text + '80' }">
+            <p :title="editor.doc.navigationSubTitle" class="max-w-[150px] relative text-[15px] -mt-1 truncate" :style="{ color: editor.doc.colors.text + '80' }">
               {{ editor.doc.navigationSubTitle }}
             </p>
           </div>
         </div>
-        <hr v-if="editor.doc.navigationTitle" class="w-full mx-auto h-[2px] border-none" :style="{ backgroundColor: editor.doc.colors.divider + '40' }" />
+        <hr v-if="editor.doc.navigationTitle" class="w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.doc.colors.divider + '40' }" />
         <EditorCategories />
       </div>
       <!--Mobile Navigation menu backdrop-->
@@ -119,7 +119,7 @@ onBeforeMount(() => {
         :class="`2xl:hidden ${!mobileNavigationIsOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] duration-300 z-[10]`"
       ></div>
       <!--Editor-->
-      <div class="overflow-hidden w-full 2xl:px-[40px]">
+      <div class="overflow-hidden w-full 2xl:px-10">
         <TiptapEditor
           v-if="editor.currentSelectedPage?.id != -1"
           @update:model-value="(value, editor) => handleEditorChange(value, editor)"

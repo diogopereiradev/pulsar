@@ -94,17 +94,17 @@ onBeforeMount(async () => {
   <div class="max-2xl:w-full">
     <!--Mobile navbar-->
     <div 
-      :class="`${isOpen? 'opacity-0 mt-[-65px]' : ''} 2xl:hidden flex items-center justify-between px-[20px] w-full h-[60px] bg-secondary duration-300`"
+      :class="`${isOpen? 'opacity-0 -mt-16' : ''} 2xl:hidden flex items-center justify-between px-5 w-full h-[60px] bg-secondary duration-300`"
     >
       <AppIcon class="min-w-[40px]" size="35" color="#d3d3d3"/>
-      <Button @click="isOpen = true" class="2xl:hidden w-[40px] !h-[40px] !bg-transparent hover:!bg-transparent !border-0">
+      <Button @click="isOpen = true" class="2xl:hidden w-10 !h-[40px] !bg-transparent hover:!bg-transparent !border-0">
         <font-awesome-icon icon="fa-solid fa-bars" class="text-[25px]" />
       </Button>
     </div>
     <!--Menu-->
     <ScrollPanel 
       :class="`
-        ${isOpen? 'max-2xl:fixed' : 'opacity-0 ml-[-500px]'}
+        ${isOpen? 'max-2xl:fixed' : 'opacity-0 pointer-events-none'}
         relative
         max-2xl:fixed
         max-2xl:left-0
@@ -127,29 +127,29 @@ onBeforeMount(async () => {
         { mergeProps: true, mergeSections: true }
       )"
     >
-      <form @submit.prevent="handleSave" class="p-[30px]">
+      <form @submit.prevent="handleSave" class="p-8">
         <!--Back to documentations button and mobile close button-->
-        <div class="flex items-center justify-between pb-[30px]">
+        <div class="flex items-center justify-between pb-7">
           <NuxtLinkLocale 
             to="/documentations" 
-            class="flex items-center gap-[13px] w-[130px] min-h-[40px] bg-primary hover:bg-primary/80 active:bg-primary/60 duration-300 text-primary rounded-[5px] font-[500] pl-[20px]"
+            class="flex items-center gap-3 w-32 h-10 bg-primary hover:bg-primary/80 active:bg-primary/60 duration-300 text-primary rounded-md font-medium pl-5"
             aria-label=""
           >
             <font-awesome-icon icon="fa-solid fa-arrow-left-long" />
             {{ $t('editor.controls-menu-back-to-docs-button-message') }}
           </NuxtLinkLocale>
-          <Button @click="isOpen = false" class="2xl:hidden w-[40px] !h-[40px] !bg-transparent hover:!bg-transparent !border-0">
+          <Button @click="isOpen = false" class="2xl:hidden w-10 !h-[40px] !bg-transparent hover:!bg-transparent !border-0">
             <font-awesome-icon icon="fa-solid fa-close" class="text-[20px]" />
           </Button>
         </div>
-        <hr class="w-full h-[2px] bg-divider/60 border-none mb-[30px]" />
+        <hr class="w-full h-0.5 bg-divider/60 border-none mb-7" />
         <div class="flex items-center justify-between">
-          <AppIcon class="min-w-[40px]" size="40" color="#d3d3d3"/>
-          <div class="flex items-center gap-[10px]">
+          <AppIcon class="w-10" size="40" color="#d3d3d3"/>
+          <div class="flex items-center gap-2.5">
             <!--Preview button-->
             <NuxtLinkLocale
               :to="`/preview/${editor.doc.id}`"
-              class="flex justify-center items-center w-[40px] min-h-[40px] !bg-[#d8985d] rounded-[5px]" 
+              class="flex justify-center items-center w-10 h-10 !bg-[#d8985d] rounded-md" 
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
             >
@@ -159,58 +159,58 @@ onBeforeMount(async () => {
             <Button
               type="button"
               @click="editor.exportDocModal.isOpen = true"
-              class="w-[40px] min-h-[40px] !bg-primary" 
-              :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
-              :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
+              class="w-10 !h-10 !bg-primary" 
+              :title="$t('editor.controls-menu-exportdoc-button-aria-label')" 
+              :aria-label="$t('editor.controls-menu-exportdoc-button-aria-label')"
             >
               <font-awesome-icon v-if="!editor.exportDocModal.isDownloading" icon="fa-solid fa-download" />
-              <font-awesome-icon v-if="editor.exportDocModal.isDownloading" icon="fa-solid fa-circle-notch" class="text-[16px]" spin/>
+              <font-awesome-icon v-if="editor.exportDocModal.isDownloading" icon="fa-solid fa-circle-notch" class="text-base" spin/>
             </Button>
             <!--Save button-->
             <Button
               type="submit"
-              class="w-[40px] min-h-[40px] !bg-primary" 
+              class="w-10 !h-10 !bg-primary" 
               :title="$t('editor.controls-menu-save-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-save-button-aria-label')"
               :disabled="editor.controlsMenu.isSaved"
             >
               <font-awesome-icon v-if="!editor.controlsMenu.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
-              <font-awesome-icon v-if="editor.controlsMenu.isSaving" icon="fa-solid fa-circle-notch" class="text-[16px]" spin/>
+              <font-awesome-icon v-if="editor.controlsMenu.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
             </Button>
           </div>
         </div>
-        <hr class="w-full h-[2px] bg-divider/60 border-none my-[30px]" />
+        <hr class="w-full h-0.5 bg-divider/60 border-none my-7" />
         <!--Controls-->
-        <div class="flex flex-col pt-[5px] pb-[20px]">
+        <div class="flex flex-col pt-1 pb-5">
           <!--Auto save-->
-          <div class="w-full flex justify-between gap-[8px] mb-[40px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-autosave-input-label') }}</label>
+          <div class="w-full flex justify-between gap-2 mb-10">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-autosave-input-label') }}</label>
             <InputSwitch v-model="editor.doc.features.autoSave"/>
           </div>
           <!--Customize-->
-          <div class="hidden w-full flex items-center justify-between gap-[8px] mb-[40px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-customize-input-label') }}</label>
+          <div class="w-full flex items-center justify-between gap-2 mb-10">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-customize-input-label') }}</label>
             <NuxtLinkLocale 
               :to="`/customize/${editor.doc.id}`" 
-              class="text-primary/80 px-[15px] py-[6px] border-solid border-[1px] border-primary/40 hover:bg-primary hover:text-primary duration-300 rounded-[10px]"
+              class="flex items-center justify-center text-primary/80 w-32 h-10 border-solid border-[1px] border-primary/40 hover:bg-primary hover:text-primary duration-300 rounded-lg"
             >
               {{ $t('editor.controls-menu-customize-input-text') }}
             </NuxtLinkLocale>
           </div>
-          <h2 class="text-[18px] text-primary/80 font-[500]">{{ $t('editor.controls-menu-basic-infos-title') }}</h2>
+          <h2 class="text-[18px] text-primary/80 font-medium">{{ $t('editor.controls-menu-basic-infos-title') }}</h2>
           <!--Title input-->
-          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-title-input-label') }}</label>
+          <div class="w-full flex flex-col gap-2 mt-5">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-title-input-label') }}</label>
             <InputText
               v-model="editor.doc.title"
-              class="rounded-[5px] contrast-200 !border-secondary/60"
+              class="rounded-md contrast-200 !border-secondary/60"
               :placeholder="$t('editor.controls-menu-title-input-placeholder')"
               required
             />
           </div>
           <!--Description input-->
-          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-description-input-label') }}</label>
+          <div class="w-full flex flex-col gap-2 mt-5">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-description-input-label') }}</label>
             <TextArea
               v-model="editor.doc.description"
               class="!border-secondary/60 contrast-200 max-h-[150px]"
@@ -219,21 +219,21 @@ onBeforeMount(async () => {
             />
           </div>
           <!--Indexes table-->
-          <div class="w-full flex justify-between gap-[8px] mt-[40px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-indexestable-input-label') }}</label>
+          <div class="w-full flex justify-between gap-2 mt-10">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-indexestable-input-label') }}</label>
             <InputSwitch v-model="editor.doc.features.indexesTable"/>
           </div>
           <!--Colors-->
-          <div class="w-full flex flex-col gap-[8px] mt-[30px]">
-            <h2 class="text-lg text-primary/70 font-[500]">{{ $t('editor.controls-menu-colors-area-title') }}</h2>
-            <div class="w-full flex flex-col flex-wrap gap-[25px] mt-[10px]">
+          <div class="w-full flex flex-col gap-2 mt-7">
+            <h2 class="text-lg text-primary/70 font-medium">{{ $t('editor.controls-menu-colors-area-title') }}</h2>
+            <div class="w-full flex flex-col flex-wrap gap-6 mt-2.5">
               <div
                 v-for="color of colors"
                 :key="color"
                 class="w-full flex flex-col"
               >
-                <div class="w-full flex items-center justify-between gap-[8px]">
-                  <label class="text-sm text-primary/40 font-[500]">{{ color }}</label>
+                <div class="w-full flex items-center justify-between gap-2">
+                  <label class="text-sm text-primary/40 font-medium">{{ color }}</label>
                   <HexColorPicker
                     :model-value="editor.doc.colors[color]"
                     @update:model-value="(val: string) => onColorChange(color, val)"
@@ -242,32 +242,32 @@ onBeforeMount(async () => {
               </div>
             </div>
           </div>
-          <label class="text-lg text-primary/70 font-[500] mt-[40px]">{{ $t('editor.controls-menu-texts-area-title') }}</label>
+          <label class="text-lg text-primary/70 font-medium mt-10">{{ $t('editor.controls-menu-texts-area-title') }}</label>
           <!--Navigation title input-->
-          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-texts-navigation-title') }}</label>
+          <div class="w-full flex flex-col gap-2 mt-5">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-texts-navigation-title') }}</label>
             <InputText
               v-model="editor.doc.navigationTitle"
-              class="rounded-[5px] contrast-200 !border-secondary/60"
+              class="rounded-md contrast-200 !border-secondary/60"
               :placeholder="$t('editor.controls-menu-navigation-title-input-placeholder')"
             />
           </div>
           <!--Navigation sub title input-->
-          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-texts-navigation-sub-title') }}</label>
+          <div class="w-full flex flex-col gap-2 mt-5">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-texts-navigation-sub-title') }}</label>
             <InputText
               v-model="editor.doc.navigationSubTitle"
-              class="rounded-[5px] contrast-200 !border-secondary/60"
+              class="rounded-md contrast-200 !border-secondary/60"
               :placeholder="$t('editor.controls-menu-navigatio-sub-title-input-placeholder')"
               :disabled="editor.doc.navigationTitle? false : true"
             />
           </div>
           <!--Indexes Table TItle-->
-          <div class="w-full flex flex-col gap-[8px] mt-[20px]">
-            <label class="text-sm text-primary/40 font-[500]">{{ $t('editor.controls-menu-texts-indexestable-title') }}</label>
+          <div class="w-full flex flex-col gap-2 mt-5">
+            <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-texts-indexestable-title') }}</label>
             <InputText
               v-model="editor.doc.indexesTableTitle"
-              class="rounded-[5px] contrast-200 !border-secondary/60"
+              class="rounded-md contrast-200 !border-secondary/60"
               :placeholder="$t('editor.controls-menu-navigation-indexestable-title-input-placeholder')"
             />
           </div>

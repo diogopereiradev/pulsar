@@ -47,48 +47,21 @@ onBeforeMount(() => {
           gap: '15px'
         }"
       >
+        <!--Map icon-->
         <div class="pulsar-doc-navigation-menu-map-icon-container">
-          <font-awesome-icon 
-            icon="fa-solid fa-map" 
-            :style="{ 
-              color: preview.doc?.colors.primary,
-              fontSize: '19px'
-            }"
-          />
+          <font-awesome-icon icon="fa-solid fa-map" class="pulsar-doc-navigation-menu-map-icon" />
         </div>
-        <div :style="{
-          display: 'flex',
-          flexDirection: 'column'
-        }">
-          <p 
-            :title="preview.doc?.navigationTitle" 
-            class="pulsar-utils-truncate" 
-            :style="{ 
-              color: preview.doc?.colors.text + '99',
-              maxWidth: '150px',
-              fontSize: '17px'
-            }"
-          >
+        <!--Title/Subtitle-->
+        <div :style="{ display: 'flex', flexDirection: 'column' }">
+          <p :title="preview.doc?.navigationTitle" class="pulsar-utils-truncate pulsar-navigation-menu-title">
             {{ preview.doc?.navigationTitle }}
           </p>
-          <p 
-            :title="preview.doc?.navigationSubTitle"
-            class="pulsar-utils-truncate" 
-            :style="{ 
-              color: preview.doc?.colors.text + '80',
-              maxWidth: '150px',
-              fontSize: '15px',
-              marginTop: '-4px'
-            }"
-          >
+          <p :title="preview.doc?.navigationSubTitle" class="pulsar-utils-truncate pulsar-navigation-menu-subtitle">
             {{ preview.doc?.navigationSubTitle }}
           </p>
         </div>
       </div>
-      <hr 
-        v-if="preview.doc?.navigationTitle" 
-        class="pulsar-navigation-menu-divider" 
-      />
+      <hr v-if="preview.doc?.navigationTitle" class="pulsar-navigation-menu-divider"/>
       <ul class="pulsar-doc-navigation-menu-category-list">
         <!--Categories-->
         <li v-for="category in preview.doc?.categories" :key="category.id">
@@ -98,8 +71,6 @@ onBeforeMount(() => {
             <li 
               v-for="page in preview.doc?.pages.filter(p => p.categoryId === category.id)" 
               class="pulsar-doc-navigation-menu-category-page-item"
-              :style="{
-              }"
             >
             <button
                 @click="handlePageChange(page.id)"
@@ -138,6 +109,34 @@ onBeforeMount(() => {
   background-color: transparent;
   transition: .3s;
   z-index: 100;
+}
+
+.pulsar-doc-navigation-menu-map-icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 48px;
+  height: 48px;
+  background-color: v-bind('preview.doc?.colors.primary + "40"');
+  border-radius: 10px;
+}
+
+.pulsar-navigation-menu-title {
+  color: v-bind('preview.doc?.colors.text + "99"');
+  max-width: 150px;
+  font-size: 17px;
+}
+
+.pulsar-navigation-menu-subtitle {
+  color: v-bind('preview.doc?.colors.text + "80"');
+  max-width: 150px;
+  font-size: 15px;
+  margin-top: -4px;
+}
+
+.pulsar-doc-navigation-menu-map-icon {
+  color: v-bind('preview.doc?.colors.primary');
+  font-size: 19px;
 }
 
 .pulsar-navigation-menu-divider {
@@ -186,16 +185,6 @@ onBeforeMount(() => {
   position: absolute;
   right: 30px;
   top: 30px;
-} 
-
-.pulsar-doc-navigation-menu-map-icon-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 45px;
-  height: 45px;
-  background-color: v-bind('preview.doc?.colors.primary + "40"');
-  border-radius: 10px;
 } 
 
 .pulsar-doc-navigation-menu-category-item {

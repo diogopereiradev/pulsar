@@ -27,7 +27,7 @@ function handleToolbarToggleLink() {
 
 <template>
   <bubble-menu
-    class="flex gap-[10px] items-center px-[7px] h-[45px] rounded-[5px]"
+    class="flex gap-2.5 items-center px-2 h-11 rounded-md"
     :style="{ backgroundColor: props.colors.secondary }"
     :editor="editor"
     :tippy-options="{ duration: 100 }"
@@ -36,7 +36,7 @@ function handleToolbarToggleLink() {
     <!--Bold button-->
     <Button 
       @click="editor.chain().focus().toggleBold().run()"
-      class="min-w-[35px] max-h-[35px] duration-300 rounded-[5px] border-none"
+      class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
         color: props.colors.text,
         backgroundColor: editor.isActive('bold')? props.colors.primary : 'transparent'
@@ -48,7 +48,7 @@ function handleToolbarToggleLink() {
     <!--Italic button-->
     <Button 
       @click="editor.chain().focus().toggleItalic().run()"
-      class="min-w-[35px] max-h-[35px] duration-300 rounded-[5px] border-none"
+      class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
         color: props.colors.text,
         backgroundColor: editor.isActive('italic')? props.colors.primary : 'transparent'
@@ -60,7 +60,7 @@ function handleToolbarToggleLink() {
     <!--Strike button-->
     <Button 
       @click="editor.chain().focus().toggleStrike().run()"
-      class="min-w-[35px] max-h-[35px] duration-300 rounded-[5px] border-none"
+      class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
         color: props.colors.text,
         backgroundColor: editor.isActive('strike')? props.colors.primary : 'transparent'
@@ -70,11 +70,11 @@ function handleToolbarToggleLink() {
       <font-awesome-icon icon="fa-solid fa-strikethrough"></font-awesome-icon>
     </Button>
     <!--Divider-->
-    <hr class="w-[1px] h-[70%] border-none py-[5px]" :style="{ backgroundColor: props.colors.divider }" />
+    <hr class="w-px h-[70%] border-none py-1" :style="{ backgroundColor: props.colors.divider }" />
     <!--Link button-->
     <Button 
       @click="handleToolbarToggleLink"
-      class="min-w-[35px] max-h-[35px] duration-300 rounded-[5px] border-none"
+      class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
         color: props.colors.text,
         backgroundColor: editor.isActive('link')? props.colors.primary : 'transparent'

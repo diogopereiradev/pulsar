@@ -27,13 +27,13 @@ async function handleSubmit() {
     <Button 
       @click="isOpen = true"
       v-if="!isOpen && !isLoading"
-      class="gap-[10px] !bg-[#404040]/40 !text-[15px] hover:!bg-[#404040]/20 !px-[10px] !py-[3px] border-none"
+      class="gap-2.5 !bg-[#404040]/40 !text-[15px] hover:!bg-[#404040]/20 !px-2.5 !py-1 border-none"
       :style="{ color: color + '90' }"
     >
       <slot />
     </Button>
     <!--Loading-->
-    <div v-else-if="isLoading && !isOpen" class="w-[110px] flex justify-center">
+    <div v-else-if="isLoading && !isOpen" class="w-28 flex justify-center">
       <font-awesome-icon 
         icon="fa-solid fa-circle-notch" 
         :style="{ color }"

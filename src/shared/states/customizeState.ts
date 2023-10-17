@@ -5,7 +5,14 @@ type EditorStateType = {
   controlsMenu: {
     isOpen: boolean,
     isSaved: boolean,
-    isSaving: boolean
+    isSaving: boolean,
+    newCustomizationModal: {
+      isOpen: boolean,
+      data: {
+        title: string,
+        region: 'left' | 'right' | 'top' | 'bottom'
+      }
+    }
   }
 };
 
@@ -14,6 +21,13 @@ export const useCustomize = () => useState<EditorStateType>('customizeState', ()
   controlsMenu: {
     isOpen: false,
     isSaved: true,
-    isSaving: false
+    isSaving: false,
+    newCustomizationModal: {
+      isOpen: false,
+      data: {
+        title: '',
+        region: 'top'
+      }
+    }
   }
 }));

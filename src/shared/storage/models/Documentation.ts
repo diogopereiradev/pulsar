@@ -50,6 +50,7 @@ export type IDocumentationColorPalette = {
 export type IDocumentationCustomization = {
   id: number,
   title: string,
+  region: string,
   content: {
     html: string,
     css: string,
