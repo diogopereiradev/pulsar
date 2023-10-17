@@ -38,7 +38,7 @@ function searchClear() {
         <Button @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen" class="!w-11 !h-11 !bg-primary border-none">
           <font-awesome-icon icon="fa-solid fa-plus" class="text-xl" />
         </Button>
-        <Button @click="docs.uploadDocsModal.isOpen = !docs.uploadDocsModal.isOpen" class="!w-11 h-11 !bg-[#d8985d] !border-none">
+        <Button @click="docs.uploadDocsModal.isOpen = !docs.uploadDocsModal.isOpen" class="!w-11 !h-11 !bg-[#d8985d] !border-none">
           <font-awesome-icon icon="fa-solid fa-upload" class="text-[19px]" />
         </Button>
       </div>
