@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Editor, FloatingMenu, CommandProps } from '@tiptap/vue-3';
 import InputText from 'primevue/inputtext';
-import { IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
+import { IDocumentationColorPalette } from '~/database/models/Documentation';
 
 const { t } = useI18n();
 
@@ -248,4 +248,4 @@ function commandExecutor(command: (props: CommandProps) => boolean) {
 .dinamic-button-bg:hover {
   background-color: v-bind('colors.primary + "70"') !important;
 }
-</style>
+</style>~/shared/databse/models/Documentation

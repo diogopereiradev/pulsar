@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { dbUpgradeNeeded } from './shared/storage';
+import { dbUpgradeNeeded } from './database';
 
 onMounted(() => {
   dbUpgradeNeeded();
@@ -10,4 +10,4 @@ onMounted(() => {
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
-</template>
+</template>./shared/databse

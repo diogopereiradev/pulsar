@@ -1,6 +1,6 @@
 import beautify from "js-beautify";
 import { getIsFirstPage } from "~/shared/dfb/utils/getIsFirstPage";
-import { IDocumentation, IDocumentationPage } from "~/shared/storage/models/Documentation";
+import { IDocumentation, IDocumentationPage } from "~/shared/database/models/Documentation";
 import { MapIcon } from "./assets/icons/MapIcon";
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {

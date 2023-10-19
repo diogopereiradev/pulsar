@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ConfirmDialog from 'primevue/confirmdialog';
-import MouseLight from '~/shared/components/MouseLight.vue';
+import MouseLight from '~/shared/components/utils/MouseLight.vue';
 import DocsToolbar from '~/app/documentations/DocsToolbar.vue';
 import NewDocsModal from '~/app/documentations/NewDocsModal.vue';
 import DocsList from '~/app/documentations/DocsList.vue';

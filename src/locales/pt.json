@@ -6,6 +6,10 @@
   "loading": {
     "message": "Sua página está carregando, aguarde um pouco."
   },
+  "pagestates": {
+    "error-notfound-message": "A documentação informada não existe!",
+    "error-notfound-button-label": "Voltar para Documentações"
+  },
   "databasesync": {
     "back-to-documentations-button-label": "Voltar",
     "title": "Documentação não sincronizada",
@@ -77,8 +81,6 @@
   "editor": {
     "title": "Pulsar - Editando",
     "non-page-selected-message": "Selecione uma página",
-    "error-notfound-message": "A documentação informada não existe!",
-    "error-notfound-button-label": "Voltar para Documentações",
     "controls-menu-save-button-aria-label": "Salvar",
     "controls-menu-autosave-input-label": "Salvar Automático",
     "controls-menu-customize-input-label": "Customizar",
@@ -131,6 +133,14 @@
     "new-customization-modal-title-input-placeholder": "Titulo da customização",
     "new-customization-modal-region-input-label": "Região",
     "new-customization-modal-cancel-button-message": "Cancelar",
-    "new-customization-modal-create-button-message": "Criar"
+    "new-customization-modal-create-button-message": "Criar",
+    "delete-customization-dialog-title": "Deseja deletar essa customização?",
+    "delete-customization-dialog-message": "Após deletar esta customização você não poderá recuperar os dados apagados, então pense bem antes de realizar essa ação.",
+    "delete-customization-dialog-cancel-button-message": "Cancelar",
+    "delete-customization-dialog-confirm-button-message": "Deletar",
+    "customization-infos-menu-title-label": "Titulo",
+    "customization-infos-menu-region-label": "Região",
+    "customization-infos-menu-edit-button-label": "Editar",
+    "customization-infos-menu-close-button-label": "Fechar"
   }
 }

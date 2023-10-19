@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Editor, BubbleMenu } from '@tiptap/vue-3';
-import { IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
+import { IDocumentationColorPalette } from '~/database/models/Documentation';
 
 const props = defineProps<{
   editor: Editor | undefined,
@@ -84,4 +84,4 @@ function handleToolbarToggleLink() {
       <font-awesome-icon icon="fa-solid fa-link"></font-awesome-icon>
     </Button>
   </bubble-menu>
-</template>
+</template>~/shared/databse/models/Documentation

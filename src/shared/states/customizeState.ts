@@ -1,4 +1,4 @@
-import { IDocumentation, documentationDataEmptyObj } from "../storage/models/Documentation";
+import { IDocumentation, IDocumentationCustomization, documentationDataEmptyObj } from "~/database/models/Documentation";
 
 type EditorStateType = {
   doc: IDocumentation,
@@ -12,6 +12,10 @@ type EditorStateType = {
         title: string,
         region: 'left' | 'right' | 'top' | 'bottom'
       }
+    },
+    customizationInfosMenu: {
+      isOpen: boolean,
+      data: IDocumentationCustomization | undefined
     }
   }
 };
@@ -28,6 +32,10 @@ export const useCustomize = () => useState<EditorStateType>('customizeState', ()
         title: '',
         region: 'top'
       }
+    },
+    customizationInfosMenu: {
+      isOpen: false,
+      data: undefined
     }
   }
 }));

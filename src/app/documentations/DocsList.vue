@@ -2,7 +2,7 @@
 import Paginator, { PageState } from 'primevue/paginator';
 import DocCard from '~/app/documentations/DocCard.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
-import { Documentation } from '~/shared/storage/models/Documentation';
+import { Documentation } from '~/database/models/Documentation';
 
 const ROWS_PER_PAGE = 6;
 const docs = useDocumentations();
@@ -81,4 +81,4 @@ onMounted(async () => {
       />
     </div>
   </div>
-</template>
+</template>~/shared/databse/models/Documentation

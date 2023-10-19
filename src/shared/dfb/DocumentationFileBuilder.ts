@@ -1,4 +1,4 @@
-import { IDocumentation } from "../storage/models/Documentation";
+import { IDocumentation } from "~/database/models/Documentation";
 import { ViteBuilder } from "./profiles/Vite";
 
 type Profiles = 'vite';

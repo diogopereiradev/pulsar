@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IDocumentation } from '~/shared/storage/models/Documentation';
+import { IDocumentation } from '~/database/models/Documentation';
 defineProps<Pick<IDocumentation, 'colors' | 'features'> & {
   navbar?: boolean,
   selectedRegion?: 'left' | 'right' | 'top' | 'bottom'
@@ -90,4 +90,4 @@ defineProps<Pick<IDocumentation, 'colors' | 'features'> & {
       background-color: v-bind('colors.primary + "80"');
     }
   }
-</style>
+</style>~/shared/databse/models/Documentation

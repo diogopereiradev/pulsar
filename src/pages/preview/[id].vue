@@ -1,37 +1,26 @@
 <script setup lang="ts">
-import Error from '~/shared/components/Error.vue';
-import Loading from '~/shared/components/Loading.vue';
 import DatabaseSync from '~/shared/components/DatabaseSync.vue';
-import { Documentation } from '~/shared/storage/models/Documentation';
+import { Documentation } from '~/database/models/Documentation';
 import { usePreview } from '~/shared/states/previewState';
 import NavigationMenu from '~/app/preview/NavigationMenu.vue';
 import IndexesTable from '~/app/preview/IndexesTable.vue';
+import PageStates from '~/shared/components/PageStates.vue';
 
 definePageMeta({
   layout: 'preview'
 });
 
 const { params } = useRoute();
-const docId = Number(params.id) || 0;
-
 const preview = usePreview();
-const pageIsLoaded = ref(false);
-const docExists = ref(false);
 
 onBeforeMount(async () => {
-  const id = Number(params.id) || 0;
-  const doc = await Documentation.get(id);
+  const result = await Documentation.get(Number(params.id));
 
-  // Verify if documentation exists in database
-  preview.value.doc = doc;
-  setTimeout(() => {
-    if(doc) {
-      docExists.value = true;
-    } else {
-      docExists.value = false;
-    }
-    pageIsLoaded.value = true;
-  }, 500);
+  if(result) {
+    preview.value.doc = result;
+  } else {
+    alert('Error on loading doc');
+  }
 });
 
 // Set the page data on currentSelectedPage was changed
@@ -46,7 +35,7 @@ watch(() => preview.value.currentSelectedPage, (newPage) => {
 watch(() => preview.value.doc, () => {
   setTimeout(() => {
     const firstCategory = preview.value.doc?.categories[0];
-    const page = preview.value.doc?.pages.filter(p => p.categoryId === firstCategory?.id);
+    const page = preview.value.doc!.pages.filter(p => p.categoryId === firstCategory?.id);
 
     if(page) {
       preview.value.currentSelectedPage = page[0];
@@ -57,48 +46,44 @@ watch(() => preview.value.doc, () => {
 
 <template>
   <Head>
-    <Title>{{ $t('preview.title') + ' ' + docId }}</Title>
+    <Title>{{ $t('preview.title') + ' ' + params.id }}</Title>
   </Head>
-  <main class="pulsar-page-main" v-if="docExists && pageIsLoaded">
-    <div class="pulsar-page-wrapper">
-      <!--Navbar-->
-      <nav class="pulsar-doc-navbar">
-        <!-- Open navigation menu button-->
-        <button 
-          @click="preview.navigationMenuIsOpen = true"
-          :style="{ color: preview.doc?.colors.text + 'b9' }"
-        >
-          <font-awesome-icon icon="fa-solid fa-bars" :style="{ fontSize: '30px' }"></font-awesome-icon>
-        </button>
-      </nav>
-      <hr class="pulsar-doc-navbar-divider pulsar-divider" />
-      <div class="pulsar-doc-page-nav-doc-indexes-table-container">
-        <NavigationMenu />
-        <!--Content-->
-        <div 
-          id="pulsar-current-page-content" 
-          :style="{ 
-            width: '100%',
-            wordBreak: 'break-word'
-          }"
-        ></div>
-        <IndexesTable />
+  <PageStates
+    :error="{
+      status: 404,
+      redirectPath: '/documentations'
+    }"
+    :success-condition="async () => (await Documentation.get(Number(params.id))? true : false)"
+  >
+    <main class="pulsar-page-main">
+      <div class="pulsar-page-wrapper">
+        <!--Navbar-->
+        <nav class="pulsar-doc-navbar">
+          <!-- Open navigation menu button-->
+          <button 
+            @click="preview.navigationMenuIsOpen = true"
+            :style="{ color: preview.doc?.colors.text + 'b9' }"
+          >
+            <font-awesome-icon icon="fa-solid fa-bars" :style="{ fontSize: '30px' }"></font-awesome-icon>
+          </button>
+        </nav>
+        <hr class="pulsar-doc-navbar-divider pulsar-divider" />
+        <div class="pulsar-doc-page-nav-doc-indexes-table-container">
+          <NavigationMenu />
+          <!--Content-->
+          <div 
+            id="pulsar-current-page-content" 
+            :style="{ 
+              width: '100%',
+              wordBreak: 'break-word'
+            }"
+          ></div>
+          <IndexesTable />
+        </div>
       </div>
-    </div>
-  </main>
-  <!--Page state component-->
-  <Loading v-if="!pageIsLoaded" />
-  <DatabaseSync
-    :doc-id="preview.doc!.id"
-    v-if="pageIsLoaded && docExists"
-  />
-  <Error 
-    v-if="!docExists && pageIsLoaded"
-    :status="404"
-    :message="$t('editor.error-notfound-message')"
-    :redirect-button-label="$t('editor.error-notfound-button-label')"
-    redirect-path="/documentations"
-  />
+      <DatabaseSync :doc-id="Number(params.id)" />
+    </main>
+  </PageStates>
 </template>
 
 <style lang="scss">

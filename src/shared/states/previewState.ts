@@ -1,4 +1,4 @@
-import { IDocumentation, IDocumentationPage } from '~/shared/storage/models/Documentation';
+import { IDocumentation, IDocumentationPage } from '~/database/models/Documentation';
 
 export type IDocumentationsState = {
   doc: IDocumentation | undefined,

@@ -1,4 +1,4 @@
-import { IDocumentation } from '~/shared/storage/models/Documentation';
+import { IDocumentation } from '~/shared/database/models/Documentation';
 
 export type IDocumentationsState = {
   search: string,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useDocumentations } from '~/shared/states/documentationsState';
-import { Documentation } from '~/shared/storage/models/Documentation';
+import { Documentation } from '~/database/models/Documentation';
 
 const docs = useDocumentations();
 const uploadInput = ref<HTMLInputElement>();
@@ -159,4 +159,4 @@ async function handleUpload(e: HTMLInputElement) {
       `"
     ></div>
   </div>
-</template>
+</template>~/shared/databse/models/Documentation

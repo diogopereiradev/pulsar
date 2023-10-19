@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Editor, FloatingMenu } from '@tiptap/vue-3';
-import { IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
+import { IDocumentationColorPalette } from '~/database/models/Documentation';
 
 const props = defineProps<{
   editor: Editor | undefined,
@@ -75,4 +75,4 @@ const props = defineProps<{
       </div>
     </div>
   </floating-menu>
-</template>
+</template>~/shared/databse/models/Documentation

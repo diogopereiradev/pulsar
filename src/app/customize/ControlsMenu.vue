@@ -2,13 +2,13 @@
 import lodash from 'lodash';
 import Tailwind from "primevue/passthrough/tailwind";
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
-import InputSwitch from 'primevue/inputswitch';
 import ScrollPanel from 'primevue/scrollpanel';
 import { usePassThrough } from 'primevue/passthrough';
 import { useCustomize } from '~/shared/states/customizeState';
 import { Status } from "~/@types/status";
-import { Documentation } from "~/shared/storage/models/Documentation";
+import { Documentation, IDocumentationCustomization } from "~/database/models/Documentation";
 import NewCustomizationModal from './NewCustomizationModal.vue';
+import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
 
 const { params } = useRoute();
 const docId = Number(params.id) || 0;
@@ -35,6 +35,13 @@ function startAutoSave() {
       handleSave();
     }
   }, 2000);
+}
+
+function openCustomizationInfosMenu(customization: IDocumentationCustomization) {
+  customize.value.controlsMenu.customizationInfosMenu.data = customization;
+  setTimeout(() => {
+    customize.value.controlsMenu.customizationInfosMenu.isOpen = true;
+  }, 50);
 }
 
 // Check if editor.value.doc or currentSelectedPage has been modified. If the data has been changed, the user can save the data
@@ -166,7 +173,8 @@ onBeforeMount(async () => {
           <!--Customizations-->
           <div class="flex flex-col gap-2.5 mt-7" v-if="customize.doc.customizations.length >= 1">
             <Button
-              v-for="customization in customize.doc.customizations" 
+              v-for="customization in customize.doc.customizations"
+              @click="openCustomizationInfosMenu(customization)"
               class="group !justify-start gap-3.5 w-full !min-h-[43px] !bg-primary/[0.15] hover:!bg-primary/50 border-none !px-5 duration-300"
             >
               <font-awesome-icon icon="fa-solid fa-microchip" class="text-xl text-secondary/90 duration-300 group-hover:text-primary"></font-awesome-icon>
@@ -180,6 +188,8 @@ onBeforeMount(async () => {
         </div>
       </form>
     </ScrollPanel>
+    <!--Customization infos menu-->
+    <CustomizationInfosMenu />
     <!--New customization modal-->
     <NewCustomizationModal />
     <!--Menu mobile backdrop-->
@@ -188,4 +198,4 @@ onBeforeMount(async () => {
       :class="`2xl:hidden ${!customize.controlsMenu.isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] z-[200]`"
     ></div>
   </div>
-</template>
+</template>~/shared/databse/models/Documentation

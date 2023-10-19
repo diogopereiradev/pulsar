@@ -1,61 +1,43 @@
 <script setup lang="ts">
-import Error from '~/shared/components/Error.vue';
-import Loading from '~/shared/components/Loading.vue';
+import ConfirmDialog from 'primevue/confirmdialog';
 import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
-import { Documentation } from '~/shared/storage/models/Documentation';
+import { Documentation } from '~/database/models/Documentation';
 import { useCustomize } from '~/shared/states/customizeState';
+import PageStates from '~/shared/components/PageStates.vue';
 
 definePageMeta({
   layout: 'customize'
 });
 
 const { params } = useRoute();
-const docId = Number(params.id) || 0;
-
 const customize = useCustomize();
-const pageIsLoaded = ref(false);
-const docExists = ref(false);
-
-onBeforeMount(async () => {
-  const id = Number(params.id) || 0;
-  const doc = await Documentation.get(id);
-
-  // Verify if documentation exists in database
-  setTimeout(() => {
-    if(doc) {
-      docExists.value = true;
-      customize.value.doc = doc;
-    } else {
-      docExists.value = false;
-    }
-    pageIsLoaded.value = true;
-  }, 500);
-});
 </script>
 
 <template>
   <div>
     <Head>
-      <Title>{{ $t('customize.title') + ' ' + docId }}</Title>
+      <Title>{{ $t('customize.title') + ' ' + params.id }}</Title>
     </Head>
-    <main v-if="pageIsLoaded && docExists">
-      <div class="flex">
-        <ControlsMenu />
-      </div>
-    </main>
-    <!--Page state component-->
-    <Loading v-if="!pageIsLoaded" />
-    <DatabaseSync
-    :doc-id="customize.doc.id"
-      v-if="pageIsLoaded && docExists"
-    />
-    <Error 
-      v-if="!docExists && pageIsLoaded"
-      :status="404"
-      :message="$t('editor.error-notfound-message')"
-      :redirect-button-label="$t('editor.error-notfound-button-label')"
-      redirect-path="/documentations"
-    />
+    <PageStates
+      :error="{
+        status: 404,
+        redirectPath: '/documentations'
+      }"
+      :success-condition="async () => (await Documentation.get(Number(params.id))? true : false)"
+    >
+      <main>
+        <ConfirmDialog :pt="{
+          root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-md',
+          header: 'text-primary !bg-secondary rounded-t-md flex justify-between items-center py-5 px-7',
+          content: 'text-primary !bg-secondary py-2.5 px-7',
+          footer: 'text-primary !bg-secondary rounded-b-md flex justify-end p-6'
+        }"/>
+        <div class="flex">
+          <ControlsMenu />
+        </div>
+        <DatabaseSync :doc-id="customize.doc.id" />
+      </main>
+    </PageStates>
   </div>
 </template>

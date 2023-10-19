@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Status } from '~/@types/status';
-import { Documentation, IDocumentation, documentationDataEmptyObj } from '../storage/models/Documentation';
+import { Documentation, IDocumentation, documentationDataEmptyObj } from '~/database/models/Documentation';
 
 type Data = {
   isChecking: boolean,
@@ -100,4 +100,4 @@ onBeforeMount(() => {
       </div>
     </div>
   </div>
-</template>
+</template>../databse/models/Documentation

@@ -25,6 +25,7 @@ export default {
         background: '#0f111b',
         primary: '#7665d7',
         secondary: '#1a1d2e',
+        secondary_darken: '#131524',
         divider: '#2b304a'
       },
       textColor: {

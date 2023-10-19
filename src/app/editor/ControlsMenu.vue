@@ -8,9 +8,9 @@ import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import InputSwitch from 'primevue/inputswitch';
 import { usePassThrough } from 'primevue/passthrough';
-import { Documentation, IDocumentation, IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
+import { Documentation, IDocumentation, IDocumentationColorPalette } from '~/database/models/Documentation';
 import { useEditor } from '~/shared/states/editorState';
-import HexColorPicker from '~/shared/components/HexColorPicker.vue';
+import HexColorPicker from '~/shared/components/utils/HexColorPicker.vue';
 
 const { params } = useRoute();
 const docId = Number(params.id) || 0;
@@ -280,4 +280,4 @@ onBeforeMount(async () => {
       :class="`2xl:hidden ${!isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] z-[200]`"
     ></div>
   </div>
-</template>
+</template>~/shared/databse/models/Documentation

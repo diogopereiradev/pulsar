@@ -6,6 +6,10 @@
   "loading": {
     "message": "Your page is loading, please wait a moment."
   },
+  "pagestates": {
+    "error-notfound-message": "The documentation informed not exists!",
+    "error-notfound-button-label": "Back to Documentations"
+  },
   "databasesync": {
     "back-to-documentations-button-label": "Back",
     "title": "Documentation is not synced",
@@ -77,8 +81,6 @@
   "editor": {
     "title": "Pulsar - Editing",
     "non-page-selected-message": "Select one page",
-    "error-notfound-message": "The documentation informed not exists!",
-    "error-notfound-button-label": "Back to Documentations",
     "controls-menu-save-button-aria-label": "Save",
     "controls-menu-autosave-input-label": "Auto Save",
     "controls-menu-customize-input-label": "Customize",
@@ -131,6 +133,14 @@
     "new-customization-modal-title-input-placeholder": "Title of the customization",
     "new-customization-modal-region-input-label": "Region",
     "new-customization-modal-cancel-button-message": "Cancel",
-    "new-customization-modal-create-button-message": "Create"
+    "new-customization-modal-create-button-message": "Create",
+    "delete-customization-dialog-title": "Do you want to delete this customization?",
+    "delete-customization-dialog-message": "After deleting this customization you will not be able to recover the deleted data, so think carefully before taking this action.",
+    "delete-customization-dialog-cancel-button-message": "Cancel",
+    "delete-customization-dialog-confirm-button-message": "Delete",
+    "customization-infos-menu-title-label": "Title",
+    "customization-infos-menu-region-label": "Region",
+    "customization-infos-menu-edit-button-label": "Edit",
+    "customization-infos-menu-close-button-label": "Close"
   }
 }

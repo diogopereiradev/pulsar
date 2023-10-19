@@ -1,4 +1,4 @@
-import { IDocumentation, IDocumentationPage, documentationDataEmptyObj } from "../storage/models/Documentation";
+import { IDocumentation, IDocumentationPage, documentationDataEmptyObj } from "~/database/models/Documentation";
 
 type EditorStateType = {
   doc: IDocumentation,

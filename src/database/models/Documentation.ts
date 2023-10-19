@@ -50,7 +50,7 @@ export type IDocumentationColorPalette = {
 export type IDocumentationCustomization = {
   id: number,
   title: string,
-  region: string,
+  region: 'left' | 'right' | 'top' | 'bottom',
   content: {
     html: string,
     css: string,

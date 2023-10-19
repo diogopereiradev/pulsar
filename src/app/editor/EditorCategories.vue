@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
 import { useEditor } from '~/shared/states/editorState';
-import { IDocumentationCategory, IDocumentationPage } from '~/shared/storage/models/Documentation';
+import { IDocumentationCategory, IDocumentationPage } from '~/database/models/Documentation';
 import InputableButton from './InputableButton.vue';
 
 const { t } = useI18n();
@@ -157,4 +157,4 @@ function deletePageConfirmDialog(pageId: number) {
 .dinamic-color-page-link:hover {
   color: v-bind('editor.doc.colors.primary + 90') !important;
 }
-</style>
+</style>~/shared/databse/models/Documentation

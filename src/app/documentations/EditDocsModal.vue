@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Documentation, IDocumentation, IDocumentationColorPalette } from '~/shared/storage/models/Documentation';
+import { Documentation, IDocumentation, IDocumentationColorPalette } from '~/database/models/Documentation';
 import Tailwind from "primevue/passthrough/tailwind";
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
@@ -124,4 +124,4 @@ const handleCloseModal = () => {
     @click="handleCloseModal"
     :class="`fixed left-0 top-0 w-screen h-screen bg-[#00000090] z-[90] duration-300 ${isOpen? 'opacity-1' : 'opacity-0 pointer-events-none'}`"
   ></div>
-</template>
+</template>~/shared/databse/models/Documentation

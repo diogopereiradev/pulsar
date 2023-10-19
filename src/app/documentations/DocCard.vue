@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Documentation, IDocumentation } from '~/shared/storage/models/Documentation';
+import { Documentation, IDocumentation } from '~/database/models/Documentation';
 import { useDocumentations } from '~/shared/states/documentationsState';
 import { useConfirm } from "primevue/useconfirm";
 import EditDocsModal from './EditDocsModal.vue';
@@ -105,4 +105,4 @@ function deleteConfirmDialog() {
       @close-modal="closeEditModal"
     />
   </div>
-</template>
+</template>~/shared/databse/models/Documentation
