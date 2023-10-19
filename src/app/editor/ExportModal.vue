@@ -115,7 +115,7 @@ function cancelConfirmDialog() {
         </div>
         <!--Download area-->
         <div class="relative h-full" v-if="!editor.exportDocModal.isError && !editor.exportDocModal.isLoading">
-          <div class="relative w-full h-4/5 bg-background/80 lg:rounded-t-[10px] overflow-hidden">
+          <div class="relative w-full h-4/5 bg-secondary_darken lg:rounded-t-[10px] overflow-hidden">
             <DocPrototype
               class="absolute left-2/4 -translate-x-2/4 bottom-[-90px] max-sm:scale-100 max-md:scale-[1.2] max-lg:scale-[1.6]"
               :colors="editor.doc.colors"

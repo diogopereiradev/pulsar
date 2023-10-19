@@ -55,7 +55,7 @@ const colors: ColorNames[] = [
 <template>
   <div :class="`${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'} duration-300 fixed left-2/4 top-2/4 -translate-x-2/4 -translate-y-2/4 flex max-xl:flex-col min-w-full xl:min-w-[400px] h-full xl:h-[450px] bg-secondary xl:rounded-lg max-xl:overflow-scroll z-[91]`">
     <!--Doc prototype-->
-    <div class="flex justify-center items-center w-full xl:w-[400px] max-xl:py-8 bg-[#10111f] h-full rounded-l-[10px]">
+    <div class="flex justify-center items-center w-full xl:w-[400px] max-xl:py-8 bg-secondary_darken h-full rounded-l-[10px]">
       <DocPrototype
         :colors="formData.colors"
         :features="formData.features"

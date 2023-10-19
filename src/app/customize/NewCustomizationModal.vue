@@ -55,7 +55,7 @@ async function handleSubmit() {
       `"
     >
       <!--Doc prototype-->
-      <div class="flex justify-center items-center w-full xl:min-w-[350px] h-full bg-secondary contrast-[1.09] rounded-l-xl max-xl:py-8">
+      <div class="flex justify-center items-center w-full xl:min-w-[350px] h-full bg-secondary_darken rounded-l-xl max-xl:py-8">
         <DocPrototype
           :colors="customize.doc.colors"
           :features="customize.doc.features"
