@@ -2,9 +2,9 @@
 import ConfirmDialog from 'primevue/confirmdialog';
 import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
+import PageStates from '~/shared/components/PageStates.vue';
 import { Documentation } from '~/database/models/Documentation';
 import { useCustomize } from '~/shared/states/customizeState';
-import PageStates from '~/shared/components/PageStates.vue';
 
 definePageMeta({
   layout: 'customize'
@@ -26,7 +26,7 @@ const customize = useCustomize();
       }"
       :success-condition="async () => (await Documentation.get(Number(params.id))? true : false)"
     >
-      <main>
+      <main class="wrapper">
         <ConfirmDialog :pt="{
           root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-md',
           header: 'text-primary !bg-secondary rounded-t-md flex justify-between items-center py-5 px-7',
@@ -41,3 +41,10 @@ const customize = useCustomize();
     </PageStates>
   </div>
 </template>
+
+<style>
+  .wrapper {
+    background-color: v-bind('customize.doc.colors.background');
+    height: 100vh;
+  }
+</style>

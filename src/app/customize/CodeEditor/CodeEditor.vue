@@ -9,6 +9,7 @@ import { useCustomize } from '~/shared/states/customizeState';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import { Documentation } from '~/database/models/Documentation';
 import { Status } from '~/@types/status';
+import { ResetCss } from '~/shared/dfb/profiles/Vite/files/src/assets/ResetCss';
 
 const customize = useCustomize();
 
@@ -24,7 +25,7 @@ async function handleSave() {
     
     if(editingCustomization) {
       customize.value.controlsMenu.isSaving = true;
-      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.doc.customizations.filter(c => c.id != editingCustomization.id)));
+      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.doc.customizations.filter(c => c.id != editingCustomization.id && c.id != -1)));
       const result = await Documentation.edit(customize.value.doc.id, {
         customizations: [...updatedCustomizations, JSON.parse(JSON.stringify(editingCustomization))]
       });
@@ -45,6 +46,22 @@ function startAutoSave() {
   }, 2000);
 }
 
+function resizeStart() {
+  const previewFrame = document.querySelector<HTMLIFrameElement>('#pulsar-code-preview');
+
+  if(previewFrame) {
+    previewFrame.style.pointerEvents = 'none';
+  }
+}
+
+function resizeEnd() {
+  const previewFrame = document.querySelector<HTMLIFrameElement>('#pulsar-code-preview');
+  
+  if(previewFrame) {
+    previewFrame.style.pointerEvents = 'auto';
+  }
+}
+
 // Check if data has been modified. If the data has been changed, the user can save the data
 watch(() => customize.value.controlsMenu.customizationInfosMenu.data, async (_, currentCustomizationData) => {
   if(!currentCustomizationData?.id || currentCustomizationData.id === -1) return;
@@ -57,6 +74,27 @@ watch(() => customize.value.controlsMenu.customizationInfosMenu.data, async (_, 
   }
 }, { deep: true });
 
+// Loads preview data
+watch(() => customize.value.controlsMenu.customizationInfosMenu.data.content, (content) => {
+  const previewFrame = document.querySelector<HTMLIFrameElement>('#pulsar-code-preview');
+  
+  previewFrame?.contentDocument?.location.reload();
+
+  setTimeout(() => {
+    const style = document.createElement('style');
+    const script = document.createElement('script');
+
+    style.innerHTML = ResetCss() + ' ' + content.css ;
+    script.innerHTML = content.javascript;
+
+    if(previewFrame && previewFrame.contentDocument) {
+      previewFrame.contentDocument.head.innerHTML = style.outerHTML;
+      previewFrame.contentDocument.body.innerHTML = content.html;
+      previewFrame.contentDocument.body.appendChild(script);
+    }
+  }, 500);
+}, { deep: true });
+
 onBeforeMount(async () => {
   // Start auto save
   startAutoSave();
@@ -65,8 +103,16 @@ onBeforeMount(async () => {
 
 <template>
   <aside :class="`${customize.codeEditor.isOpen? '' : 'opacity-0 pointer-events-none'} duration-300 fixed left-0 top-0 flex w-screen h-screen z-[305]`">
-    <splitpanes vertical>
-      <pane :size="25" :min-size="24" :max-size="80">
+    <splitpanes
+      @resize="resizeStart()"
+      @resized="resizeEnd()"
+      vertical
+    >
+      <pane 
+        :size="25" 
+        :min-size="24" 
+        :max-size="80"
+      >
         <div class="relative h-full bg-secondary">
           <div class="flex justify-between items-center h-24 px-7">
             <div class="flex items-center gap-3.5">
@@ -90,7 +136,7 @@ onBeforeMount(async () => {
               </button>
             </div>
           </div>
-          <splitpanes horizontal class="!h-[calc(100%-96px)]">
+          <splitpanes horizontal class="!h-[calc(100%-96px)]" first-splitter>
             <pane class="min-h-[40px]">
               <div class="w-full min-h-[40px] max-h-[53px] bg-secondary_darken/80">
                 <div class="w-40 h-full bg-secondary_darken contrast-[0.9] flex gap-2.5 items-center px-5 border-t-4 border-secondary">
@@ -121,8 +167,15 @@ onBeforeMount(async () => {
           </splitpanes>
         </div>
       </pane>
-      <pane :size="75">
-        
+      <pane 
+        :size="75" 
+        :min-size="20"
+      >
+        <iframe
+          id="pulsar-code-preview"
+          class="w-full h-full ml-1"
+          :style="{ backgroundColor: customize.doc.colors.background }"
+        ></iframe>
       </pane>
     </splitpanes>
   </aside>

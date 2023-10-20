@@ -188,7 +188,7 @@ onBeforeMount(async () => {
             <InputSwitch v-model="editor.doc.features.autoSave"/>
           </div>
           <!--Customize-->
-          <div class="hidden w-full items-center justify-between gap-2 mb-10">
+          <div class="w-full flex items-center justify-between gap-2 mb-10">
             <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-customize-input-label') }}</label>
             <NuxtLinkLocale 
               :to="`/customize/${editor.doc.id}`" 
