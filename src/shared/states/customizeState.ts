@@ -2,6 +2,9 @@ import { IDocumentation, IDocumentationCustomization, documentationDataEmptyObj 
 
 type EditorStateType = {
   doc: IDocumentation,
+  codeEditor: {
+    isOpen: boolean
+  }
   controlsMenu: {
     isOpen: boolean,
     isSaved: boolean,
@@ -15,13 +18,16 @@ type EditorStateType = {
     },
     customizationInfosMenu: {
       isOpen: boolean,
-      data: IDocumentationCustomization | undefined
+      data: IDocumentationCustomization
     }
   }
 };
 
 export const useCustomize = () => useState<EditorStateType>('customizeState', () => ({
   doc: documentationDataEmptyObj,
+  codeEditor: {
+    isOpen: false
+  },
   controlsMenu: {
     isOpen: false,
     isSaved: true,
@@ -35,7 +41,16 @@ export const useCustomize = () => useState<EditorStateType>('customizeState', ()
     },
     customizationInfosMenu: {
       isOpen: false,
-      data: undefined
+      data: {
+        id: -1,
+        title: '',
+        region: 'top',
+        content: {
+          html: '',
+          css: '',
+          javascript: ''
+        }
+      }
     }
   }
 }));

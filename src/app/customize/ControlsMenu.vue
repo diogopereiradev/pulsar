@@ -9,6 +9,7 @@ import { Status } from "~/@types/status";
 import { Documentation, IDocumentationCustomization } from "~/database/models/Documentation";
 import NewCustomizationModal from './NewCustomizationModal.vue';
 import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
+import CodeEditor from './CodeEditor/CodeEditor.vue';
 
 const { params } = useRoute();
 const docId = Number(params.id) || 0;
@@ -44,7 +45,7 @@ function openCustomizationInfosMenu(customization: IDocumentationCustomization) 
   }, 50);
 }
 
-// Check if editor.value.doc or currentSelectedPage has been modified. If the data has been changed, the user can save the data
+// Check if customize.value.doc has been modified. If the data has been changed, the user can save the data
 watch(() => customize.value.doc, async (_, oldDocData) => {
   if(!oldDocData.id) return;
   const docInfos = await Documentation.get(docId);
@@ -188,6 +189,8 @@ onBeforeMount(async () => {
         </div>
       </form>
     </ScrollPanel>
+    <!--Code editor menu-->
+    <CodeEditor />
     <!--Customization infos menu-->
     <CustomizationInfosMenu />
     <!--New customization modal-->
@@ -198,4 +201,4 @@ onBeforeMount(async () => {
       :class="`2xl:hidden ${!customize.controlsMenu.isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] z-[200]`"
     ></div>
   </div>
-</template>~/shared/databse/models/Documentation
+</template>

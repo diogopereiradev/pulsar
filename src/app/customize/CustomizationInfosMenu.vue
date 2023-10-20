@@ -37,8 +37,10 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
   });
 }
 
-function workInProgress() {
-  alert('Work in Progress');
+function openCodeEditor() {
+  customize.value.codeEditor.isOpen = true;
+  customize.value.controlsMenu.isOpen = false;
+  customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
 }
 </script>
 
@@ -73,7 +75,7 @@ function workInProgress() {
         <Button @click="customize.controlsMenu.customizationInfosMenu.isOpen = false" class="!w-[100px] !h-10">
           {{ $t('customize.customization-infos-menu-close-button-label') }}
         </Button>
-        <Button @click="workInProgress()" class="!w-[100px] !h-10 !bg-primary hover:!bg-primary/70">
+        <Button @click="openCodeEditor()" class="!w-[100px] !h-10 !bg-primary hover:!bg-primary/70">
           {{ $t('customize.customization-infos-menu-edit-button-label') }}
         </Button>
         <Button 
