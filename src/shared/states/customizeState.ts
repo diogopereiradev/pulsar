@@ -3,7 +3,9 @@ import { IDocumentation, IDocumentationCustomization, documentationDataEmptyObj 
 type EditorStateType = {
   doc: IDocumentation,
   codeEditor: {
-    isOpen: boolean
+    isOpen: boolean,
+    isMobile: boolean,
+    onlyShowResult: boolean
   }
   controlsMenu: {
     isOpen: boolean,
@@ -26,7 +28,9 @@ type EditorStateType = {
 export const useCustomize = () => useState<EditorStateType>('customizeState', () => ({
   doc: documentationDataEmptyObj,
   codeEditor: {
-    isOpen: false
+    isOpen: false,
+    isMobile: false,
+    onlyShowResult: false
   },
   controlsMenu: {
     isOpen: false,

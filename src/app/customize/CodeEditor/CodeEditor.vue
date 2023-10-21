@@ -12,11 +12,22 @@ import { Status } from '~/@types/status';
 import { ResetCss } from '~/shared/dfb/profiles/Vite/files/src/assets/ResetCss';
 
 const customize = useCustomize();
+const currentMobileTab = ref<'HtmlEditor' | 'CssEditor' | 'JavascriptEditor'>('HtmlEditor');
+const mobileEditors = {
+  HtmlEditor,
+  CssEditor,
+  JavascriptEditor
+};
 
 function closeCodeEditor() {
   customize.value.codeEditor.isOpen = false;
   customize.value.controlsMenu.isOpen = true;
   customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
+}
+
+function openPreview() {
+  customize.value.codeEditor.onlyShowResult = true;
+  customize.value.controlsMenu.isOpen = false;
 }
 
 async function handleSave() {
@@ -99,6 +110,21 @@ onBeforeMount(async () => {
   // Start auto save
   startAutoSave();
 });
+
+// Check if the device is small and update the key "isMobile"
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    if(window.innerWidth <= 768) {
+      customize.value.codeEditor.isMobile = true;
+    } else {
+      customize.value.codeEditor.isMobile = false;
+      customize.value.codeEditor.onlyShowResult = false;
+    }
+  });
+  if(window.innerWidth <= 768) {
+    customize.value.codeEditor.isMobile = true;
+  }
+});
 </script>
 
 <template>
@@ -106,15 +132,18 @@ onBeforeMount(async () => {
     <splitpanes
       @resize="resizeStart()"
       @resized="resizeEnd()"
-      vertical
+      :vertical="customize.codeEditor.isMobile? false : true"
+      :horizontal="customize.codeEditor.isMobile? true : false"
     >
       <pane 
-        :size="25" 
-        :min-size="24" 
-        :max-size="80"
+        :size="customize.codeEditor.isMobile? 55 : 25" 
+        :max-size="customize.codeEditor.isMobile? 55 : 80"
+        :min-size="customize.codeEditor.onlyShowResult? false : 24"
+        :class="`max-lg:h-[240px] min-w-[280px] ${customize.codeEditor.onlyShowResult? '!max-h-[110px]' : ''}`"
       >
-        <div class="relative h-full bg-secondary">
-          <div class="flex justify-between items-center h-24 px-7">
+        <div :class="`relative h-full ${customize.codeEditor.onlyShowResult? '' : 'bg-secondary'}`">
+          <!--Customization title and close button-->
+          <div :class="`flex justify-between items-center h-24 px-7 ${customize.codeEditor.onlyShowResult? 'hidden' : ''}`">
             <div class="flex items-center gap-3.5">
               <AppIcon class="min-w-[40px]" color="#d3d3d3"/>
               <h2 class="text-xl text-primary font-bold">{{ customize.controlsMenu.customizationInfosMenu.data?.title }}</h2>
@@ -136,7 +165,8 @@ onBeforeMount(async () => {
               </button>
             </div>
           </div>
-          <splitpanes horizontal class="!h-[calc(100%-96px)]" first-splitter>
+          <!--Desktop Editors-->
+          <splitpanes horizontal :class="`${customize.codeEditor.isMobile? '!hidden' : ''} !h-[calc(100%-96px)]`" first-splitter>
             <pane class="min-h-[40px]">
               <div class="w-full min-h-[40px] max-h-[53px] bg-secondary_darken/80">
                 <div class="w-40 h-full bg-secondary_darken contrast-[0.9] flex gap-2.5 items-center px-5 border-t-4 border-secondary">
@@ -165,15 +195,55 @@ onBeforeMount(async () => {
               <JavascriptEditor class="min-h-0 overflow-y-auto"/>
             </pane>
           </splitpanes>
+          <!--Mobile Editors-->
+          <div :class="`flex lg:hidden flex-col h-full ${customize.codeEditor.onlyShowResult? 'hidden' : ''}`">
+            <div class="flex overflow-x-scroll w-full min-h-[40px] bg-secondary_darken mb-2.5 -mt-1.5">
+              <button 
+                @click="currentMobileTab = 'HtmlEditor'"
+                :class="`h-full px-7 ${currentMobileTab === 'HtmlEditor'? 'bg-primary/60' : ''}`"
+              >
+                HTML
+              </button>
+              <button 
+                @click="currentMobileTab = 'CssEditor'"
+                :class="`h-full px-7 ${currentMobileTab === 'CssEditor'? 'bg-primary/60' : ''}`"
+              >
+                CSS
+              </button>
+              <button 
+                @click="currentMobileTab = 'JavascriptEditor'"
+                :class="`h-full px-7 ${currentMobileTab === 'JavascriptEditor'? 'bg-primary/60' : ''}`"
+              >
+                JavaScript
+              </button>
+              <button 
+                @click="openPreview()"
+                class="h-full px-7"
+              >
+                Preview
+              </button>
+            </div>
+            <component :is="mobileEditors[currentMobileTab]"></component>
+          </div>
+          <!--Preview close button-->
+          <div :class="`flex flex-col items-center justify-center w-full h-full ${customize.codeEditor.onlyShowResult? '' : 'hidden'}`">
+            <button 
+              @click="customize.codeEditor.onlyShowResult = false"
+              class="w-10 min-h-[40px] !bg-primary rounded-full"
+            >
+              <font-awesome-icon icon="fa-solid fa-eye"></font-awesome-icon>
+            </button>
+            <hr class="w-[85%] h-px border-none mt-5 mx-auto" :style="{ backgroundColor: customize.doc.colors.divider + 'a9' }"/>
+          </div>
         </div>
       </pane>
       <pane 
-        :size="75" 
-        :min-size="20"
+        :size="customize.codeEditor.isMobile? 45 : 75" 
+        :min-size="customize.codeEditor.isMobile? 20 : 20" 
       >
         <iframe
           id="pulsar-code-preview"
-          class="w-full h-full ml-1"
+          class="w-full h-full"
           :style="{ backgroundColor: customize.doc.colors.background }"
         ></iframe>
       </pane>
@@ -182,6 +252,10 @@ onBeforeMount(async () => {
 </template>
 
 <style>
+  .cm-editor {
+    height: v-bind('customize.codeEditor.isMobile? "48%" : "100%"');
+  }
+
   .splitpanes__pane {
     height: 100%;
     display: flex;
@@ -194,16 +268,16 @@ onBeforeMount(async () => {
     position: relative;
     width: 100%;
     height: 5px;
-    background-color: transparent;
+    background-color: v-bind('customize.codeEditor.isMobile && !customize.codeEditor.onlyShowResult? "#131524" : "transparent"');
   }
 
   .splitpanes--horizontal > .splitpanes__splitter:before {
     content: '';
     position: absolute;
     left: 0;
-    top: 6px;
+    top: v-bind('customize.codeEditor.isMobile? "0px" : "6px"');
     width: 100%;
-    height: 50px;
+    height: v-bind('customize.codeEditor.isMobile? "0px" : "50px"');
     z-index: 1;
   }
 

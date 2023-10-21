@@ -78,14 +78,14 @@ onBeforeMount(async () => {
 <template>
   <div class="max-2xl:w-full">
     <!--Mobile navbar-->
-    <div 
-      :class="`${customize.controlsMenu.isOpen? 'opacity-0 -mt-16' : ''} 2xl:hidden flex items-center justify-between px-5 w-full h-16 bg-secondary duration-300`"
+    <nav 
+      :class="`${customize.controlsMenu.isOpen || customize.codeEditor.isOpen? 'opacity-0 -mt-16' : ''} 2xl:hidden flex items-center justify-between px-5 w-full h-16 bg-secondary duration-300`"
     >
       <AppIcon class="min-w-[40px]" size="35" color="#d3d3d3"/>
       <Button @click="customize.controlsMenu.isOpen = true" class="2xl:hidden w-[40px] !h-[40px] !bg-transparent hover:!bg-transparent !border-0">
         <font-awesome-icon icon="fa-solid fa-bars" class="text-[25px]" />
       </Button>
-    </div>
+    </nav>
     <!--Menu-->
     <ScrollPanel 
       :class="`
