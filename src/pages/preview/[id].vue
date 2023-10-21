@@ -12,16 +12,7 @@ definePageMeta({
 
 const { params } = useRoute();
 const preview = usePreview();
-
-onBeforeMount(async () => {
-  const result = await Documentation.get(Number(params.id));
-
-  if(result) {
-    preview.value.doc = result;
-  } else {
-    alert('Error on loading doc');
-  }
-});
+const topRegion = ref<HTMLDivElement>();
 
 // Set the page data on currentSelectedPage was changed
 watch(() => preview.value.currentSelectedPage, (newPage) => {
@@ -42,6 +33,37 @@ watch(() => preview.value.doc, () => {
     }
   }, 500);
 });
+
+// Load customizations
+watch(() => preview.value.doc, (doc) => {
+  setTimeout(() => {
+    doc?.customizations.forEach(c => {
+      if(c.region === 'top') {
+        const elem = document.createElement('div');
+        elem.innerHTML = c.content.html;
+        topRegion.value?.appendChild(elem);
+      }
+
+      const style = document.createElement('style');
+      style.innerHTML = c.content.css;
+      document.head.appendChild(style);
+
+      const script = document.createElement('script');
+      script.innerHTML = c.content.javascript;
+      document.body.appendChild(script);
+    });
+  }, 500);
+});
+
+onBeforeMount(async () => {
+  const result = await Documentation.get(Number(params.id));
+
+  if(result) {
+    preview.value.doc = result;
+  } else {
+    alert('Error on loading doc');
+  }
+});
 </script>
 
 <template>
@@ -56,9 +78,11 @@ watch(() => preview.value.doc, () => {
     :success-condition="async () => (await Documentation.get(Number(params.id))? true : false)"
   >
     <main class="pulsar-page-main">
+      <!--Top customization region-->
+      <div ref="topRegion"></div>
       <div class="pulsar-page-wrapper">
         <!--Navbar-->
-        <nav class="pulsar-doc-navbar">
+        <nav :class="`pulsar-doc-navbar ${preview.doc!.customizations.filter(c => c.region === 'top').length > 0? '!hidden' : ''}`">
           <!-- Open navigation menu button-->
           <button 
             @click="preview.navigationMenuIsOpen = true"
@@ -67,7 +91,7 @@ watch(() => preview.value.doc, () => {
             <font-awesome-icon icon="fa-solid fa-bars" :style="{ fontSize: '30px' }"></font-awesome-icon>
           </button>
         </nav>
-        <hr class="pulsar-doc-navbar-divider pulsar-divider" />
+        <hr :class="`pulsar-doc-navbar-divider pulsar-divider ${preview.doc!.customizations.filter(c => c.region === 'top').length > 0? '!hidden' : ''}`" />
         <div class="pulsar-doc-page-nav-doc-indexes-table-container">
           <NavigationMenu />
           <!--Content-->
@@ -88,13 +112,13 @@ watch(() => preview.value.doc, () => {
 
 <style lang="scss">
   .pulsar-page-main {
+    max-width: 2120px;
+    margin: 0 auto;
+    min-height: 100vh;
     background-color: v-bind('preview.doc?.colors.background');
   }
 
   .pulsar-page-wrapper {
-    max-width: 2120px;
-    margin: 0 auto;
-    min-height: 100vh;
     padding: 50px;
   }
 

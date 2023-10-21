@@ -34,7 +34,8 @@ library.add(...[
   SolidIcons.faCloudArrowUp,
   SolidIcons.faRotate,
   SolidIcons.faMicrochip,
-  SolidIcons.faCode
+  SolidIcons.faCode,
+  SolidIcons.faWindowMaximize
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

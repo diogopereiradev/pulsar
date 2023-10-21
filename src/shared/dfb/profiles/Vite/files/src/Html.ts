@@ -1,6 +1,6 @@
 import beautify from "js-beautify";
 import { getIsFirstPage } from "~/shared/dfb/utils/getIsFirstPage";
-import { IDocumentation, IDocumentationPage } from "~/shared/database/models/Documentation";
+import { IDocumentation, IDocumentationPage } from "~/database/models/Documentation";
 import { MapIcon } from "./assets/icons/MapIcon";
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {
@@ -107,15 +107,17 @@ export function Html(page: IDocumentationPage, doc: IDocumentation) {
       </head>
       <body>
         <main class="pulsar-page-wrapper">
-          <!--Mobile Navbar-->
-          <nav class="pulsar-doc-navbar">
-            <button 
-              onclick="openNavigationMenu();"
-              style="color: rgba(var(--text), 0.9);"
-            >
-              <i class="fa-solid fa-bars" style="font-size: 30px;"></i>
-            </button>
-          </nav>
+          <!--Default mobile Navbar-->
+          ${doc.customizations.filter(c => c.region === 'top').length > 0? '' : /* html */`
+            <nav class="pulsar-doc-navbar">
+              <button 
+                onclick="openNavigationMenu();"
+                style="color: rgba(var(--text), 0.9);"
+              >
+                <i class="fa-solid fa-bars" style="font-size: 30px;"></i>
+              </button>
+            </nav>
+          `}
           <hr class="pulsar-doc-navbar-divider pulsar-divider" />
           <div class="pulsar-doc-page-nav-doc-indexes-table-container">
             <!--Navigation Menu-->

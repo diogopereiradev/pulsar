@@ -1,7 +1,7 @@
 import css from 'css';
 // @ts-ignore
 import hexToRgb from 'hex-to-rgb';
-import { IDocumentation, IDocumentationColorPalette } from "~/shared/database/models/Documentation";
+import { IDocumentation, IDocumentationColorPalette } from "~/database/models/Documentation";
 
 function generateGlobalVariables(colors: IDocumentationColorPalette): string {
   const colorNames = Object.keys(colors);

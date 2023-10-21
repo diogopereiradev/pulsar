@@ -1,4 +1,4 @@
-import { IDocumentation } from '~/shared/database/models/Documentation'; 
+import { IDocumentation } from '~/database/models/Documentation'; 
 
 export function License(doc: IDocumentation) {
   return `
