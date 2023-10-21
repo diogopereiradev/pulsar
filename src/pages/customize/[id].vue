@@ -33,8 +33,11 @@ const customize = useCustomize();
           content: 'text-primary !bg-secondary py-2.5 px-7',
           footer: 'text-primary !bg-secondary rounded-b-md flex justify-end p-6'
         }"/>
-        <div class="flex">
+        <div class="flex max-2xl:flex-col w-full">
           <ControlsMenu />
+          <div class="w-full max-2xl:h-[400px] flex justify-center items-center">
+            <p class="text-primary/50">{{ $t('customize.empty-customization-preview-message') }}</p>
+          </div>
         </div>
         <DatabaseSync :doc-id="customize.doc.id" />
       </main>

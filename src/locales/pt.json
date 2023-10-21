@@ -125,6 +125,7 @@
   },
   "customize": {
     "title": "Pulsar - Customizar",
+    "empty-customization-preview-message": "Seleciona uma customização",
     "controls-menu-customizations-title": "Customizações",
     "controls-menu-new-customization-button-label": "Nova Customização",
     "controls-menu-empty-customizations-message": "Nenhuma customização, use o botão acima para criar uma.",
