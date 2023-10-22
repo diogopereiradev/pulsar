@@ -13,6 +13,7 @@ definePageMeta({
 const { params } = useRoute();
 const preview = usePreview();
 const topRegion = ref<HTMLDivElement>();
+const bottomRegion = ref<HTMLDivElement>();
 
 // Set the page data on currentSelectedPage was changed
 watch(() => preview.value.currentSelectedPage, (newPage) => {
@@ -42,6 +43,12 @@ watch(() => preview.value.doc, (doc) => {
         const elem = document.createElement('div');
         elem.innerHTML = c.content.html;
         topRegion.value?.appendChild(elem);
+      }
+
+      if(c.region === 'bottom') {
+        const elem = document.createElement('div');
+        elem.innerHTML = c.content.html;
+        bottomRegion.value?.appendChild(elem);
       }
 
       const style = document.createElement('style');
@@ -105,6 +112,8 @@ onBeforeMount(async () => {
           <IndexesTable />
         </div>
       </div>
+      <!--Bottom customization region-->
+      <div ref="bottomRegion"></div>
       <DatabaseSync :doc-id="Number(params.id)" />
     </main>
   </PageStates>

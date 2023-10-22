@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { usePreview } from '~/shared/states/previewState';
 
+const navigationMenuRef = ref<HTMLDivElement>();
+const navigationMenuLinksListRef = ref<HTMLUListElement>();
 const preview = usePreview();
 
 async function handlePageChange(pageId: number) {
@@ -12,6 +14,31 @@ async function handlePageChange(pageId: number) {
     console.error('Invalid page id!');
   }
 }
+
+// Lock the menu position when reach the scroll limit
+watch([navigationMenuRef, navigationMenuLinksListRef], ([menu, linksList]) => {
+  if(menu && linksList) {
+    window.addEventListener('scroll', ev => {
+      const container = menu.parentElement;
+
+      if(container) {
+        const currentPercentage = (window.scrollY / container.scrollHeight) * 100;
+        
+        if(currentPercentage >= 74 && window.innerWidth >= 1181) {
+          menu.style.position = 'absolute';
+          menu.style.bottom = '20px';
+          menu.style.maxHeight = 'auto';
+          linksList.style.overflowY = 'visible';
+        } else {
+          menu.style.position = 'fixed';
+          menu.style.bottom = 'auto';
+          menu.style.maxHeight = '100vh';
+          linksList.style.overflowY = 'scroll';
+        }
+      }
+    });
+  }
+});
 
 onBeforeMount(() => {
   // Open navigation menu if the window width is upper than 1180px
@@ -28,7 +55,8 @@ onBeforeMount(() => {
 
 <template>
   <div class="pulsar-doc-navigation-menu-container">
-    <div 
+    <div
+      ref="navigationMenuRef"
       class="pulsar-doc-navigation-menu"
       :style="{
         opacity: preview.navigationMenuIsOpen? '1' : '0',
@@ -62,7 +90,7 @@ onBeforeMount(() => {
         </div>
       </div>
       <hr v-if="preview.doc?.navigationTitle" class="pulsar-navigation-menu-divider"/>
-      <ul class="pulsar-doc-navigation-menu-category-list">
+      <ul ref="navigationMenuLinksListRef" class="pulsar-doc-navigation-menu-category-list">
         <!--Categories-->
         <li v-for="category in preview.doc?.categories" :key="category.id">
           <h2 class="pulsar-doc-navigation-menu-category-item">{{ category.label }}</h2>
@@ -95,6 +123,7 @@ onBeforeMount(() => {
 
 <style>
 .pulsar-doc-navigation-menu-container {
+  position: relative;
   display: flex;
   justify-content: right;
   min-width: 250px;
@@ -105,6 +134,7 @@ onBeforeMount(() => {
   position: fixed;
   flex-direction: column;
   max-width: 240px;
+  max-height: 100vh;
   width: 100%;
   background-color: transparent;
   transition: .3s;
@@ -222,7 +252,7 @@ onBeforeMount(() => {
   .pulsar-doc-navigation-menu {
     min-width: 220px;
     max-width: 320px;
-    height: 100vh;
+    min-height: 100vh;
     left: 0;
     top: 0;
     background-color: v-bind('preview.doc?.colors.secondary');
