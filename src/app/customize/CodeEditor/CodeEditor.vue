@@ -253,7 +253,7 @@ onMounted(() => {
 
 <style>
   .cm-editor {
-    height: v-bind('customize.codeEditor.isMobile? "48%" : "100%"');
+    height: v-bind('customize.codeEditor.isMobile? "130px" : "100%"');
   }
 
   .splitpanes__pane {
