@@ -65,10 +65,11 @@ export function Script() {
     });
 
     // Indexes table loader
-    (() => {
+    window.initIndexesTable = () => {
       const indexesTableList = document.querySelector('.pulsar-indexes-table-list');
       const allIndexedHeadings = document.querySelectorAll('.pulsar-heading-indexed');
-  
+      const headings = [];
+
       allIndexedHeadings.forEach(indexedHeading => {
         const headingUniqueId = indexedHeading.textContent.toLowerCase().replaceAll(' ', '').trim() + '-' + Math.round(Math.random() * (10000 - 1) + 1);
         indexedHeading.id = headingUniqueId;
@@ -80,8 +81,13 @@ export function Script() {
             </a>
           </li>
         \``};
-        indexesTableList.innerHTML += item;
+        headings.push(item);
       });
+      indexesTableList.innerHTML = headings.join('');
+    }
+
+    (() => {
+      window.initIndexesTable();
     })();
   `, {
     indent_size: 2

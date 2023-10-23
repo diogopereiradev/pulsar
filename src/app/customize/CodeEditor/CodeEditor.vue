@@ -9,7 +9,7 @@ import { useCustomize } from '~/shared/states/customizeState';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import { Documentation } from '~/database/models/Documentation';
 import { Status } from '~/@types/status';
-import { ResetCss } from '~/shared/dfb/profiles/Vite/files/src/assets/ResetCss';
+import { ResetCss } from '~/shared/dfb/files/src/assets/ResetCss';
 
 const customize = useCustomize();
 const currentMobileTab = ref<'HtmlEditor' | 'CssEditor' | 'JavascriptEditor'>('HtmlEditor');

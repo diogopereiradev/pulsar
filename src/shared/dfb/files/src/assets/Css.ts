@@ -301,7 +301,7 @@ export function Css(doc: IDocumentation) {
       margin-top: 5px;
     } 
     
-    .pulsar-doc-navigation-menu-category-page-item a {
+    .pulsar-doc-navigation-menu-category-page-item .pulsar-navigation-link {
       display: flex;
       align-items: center;
       max-width: 160px;

@@ -2,8 +2,10 @@ import beautify from "js-beautify";
 import { getIsFirstPage } from "~/shared/dfb/utils/getIsFirstPage";
 import { IDocumentation, IDocumentationPage } from "~/database/models/Documentation";
 import { MapIcon } from "./assets/icons/MapIcon";
+import { Css } from "./assets/Css";
+import { ResetCss } from "./assets/ResetCss";
 
-function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {
+function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
   return /* html */`
     <div class="pulsar-doc-navigation-menu-container">
       <div class="pulsar-doc-navigation-menu">
@@ -45,13 +47,24 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation): string {
                         class="pulsar-doc-navigation-menu-category-page-item"
                         style="border-color: rgba(var(--divider), 0.725);"
                       >
-                        <a
-                          href="${isFirst? '/' : '/' + routeName + '.html'}"
-                          title="${categoryPage.title}"
-                          class="pulsar-utils-truncate ${page.title.toLowerCase().replaceAll(' ', '').trim() === routeName? 'current-page' : ''}"
-                        >
-                          ${categoryPage.title}
-                        </a>
+                        ${isToPreview? /* html */`
+                          <button
+                            onclick="changeRoute(this, ${JSON.stringify(categoryPage).replaceAll('"', '\'')})"
+                            title="${categoryPage.title}"
+                            data-id="${categoryPage.id}"
+                            class="pulsar-navigation-link pulsar-utils-truncate ${routeName === page.title.toLowerCase().replaceAll(' ', '').trim() && 'current-page'}"
+                          >
+                            ${categoryPage.title}
+                          </button>
+                        ` : /* html */`
+                          <a
+                            href="${isFirst? '/' : '/' + routeName + '.html'}"
+                            title="${categoryPage.title}"
+                            class="pulsar-navigation-link pulsar-utils-truncate ${page.title.toLowerCase().replaceAll(' ', '').trim() === routeName? 'current-page' : ''}"
+                          >
+                            ${categoryPage.title}
+                          </a>
+                        `}
                       </li>  
                     `;
                   }).join(' ')}
@@ -85,28 +98,59 @@ function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
   `;
 }
 
-export function Html(page: IDocumentationPage, doc: IDocumentation) {
+function Content(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+  return /* html */`
+    <div class="pulsar-doc-page-nav-doc-indexes-table-container">
+      <!--Navigation Menu-->
+      ${NavigationMenu(page, doc, isToPreview)}
+      <!--Page Content-->
+      ${isToPreview? /* html */`
+        <div class="pulsar-current-page-content"></div>
+      ` : /* html */`
+        <div class="pulsar-current-page-content">
+          ${page.content}
+        </div>
+      `}
+      <!--Indexes Table-->
+      ${IndexesTable(page, doc)}
+    </div>
+  `;
+}
+
+function BasicHeadTags(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+  return /* html */`
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name='author' content='${doc.title}' />
+    <meta name='description' content='${doc.description}' />
+    <meta name='robots' content='index,follow' />
+    <meta name='og:title' content='${doc.title} - ${page.title}' />
+    <meta name='og:description' content='${doc.description}' />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    ${isToPreview? /* html */`
+      <style>${ResetCss()}</style>
+      <style>${Css(doc)}</style>
+    ` : 
+    /* html */`
+      <script src="https://kit.fontawesome.com/813705bae2.js" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="./assets/reset.css" />
+      <link rel="stylesheet" href="./assets/styles.css" />
+    `}
+  `;
+}
+
+export function Html(page: IDocumentationPage, doc: IDocumentation, options = { isToPreview: false }) {
   return beautify.html(/* html */`
     <!DOCTYPE html>
     <html>
       <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name='author' content='${doc.title}' />
-        <meta name='description' content='${doc.description}' />
-        <meta name='robots' content='index,follow' />
-        <meta name='og:title' content='${doc.title} - ${page.title}' />
-        <meta name='og:description' content='${doc.description}' />
         <title>${doc.title} - ${page.title}</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="./assets/reset.css" />
-        <link rel="stylesheet" href="./assets/styles.css" />
-        <script src="https://kit.fontawesome.com/813705bae2.js" crossorigin="anonymous"></script>
+        ${BasicHeadTags(page, doc, options.isToPreview)}
       </head>
       <body>
-        <main class="pulsar-page-wrapper">
+        <main id="app" class="pulsar-page-wrapper">
           <!--Default mobile Navbar-->
           ${doc.customizations.filter(c => c.region === 'top').length > 0? '' : /* html */`
             <nav class="pulsar-doc-navbar">
@@ -117,20 +161,11 @@ export function Html(page: IDocumentationPage, doc: IDocumentation) {
                 <i class="fa-solid fa-bars" style="font-size: 30px;"></i>
               </button>
             </nav>
+            <hr class="pulsar-doc-navbar-divider pulsar-divider" />
           `}
-          <hr class="pulsar-doc-navbar-divider pulsar-divider" />
-          <div class="pulsar-doc-page-nav-doc-indexes-table-container">
-            <!--Navigation Menu-->
-            ${NavigationMenu(page, doc)}
-            <!--Page Content-->
-            <div class="pulsar-current-page-content">
-              ${page.content}
-            </div>
-            <!--Indexes Table-->
-            ${IndexesTable(page, doc)}
-          </div>
+          ${Content(page, doc, options.isToPreview)}
         </main>
-        <script type="module" src="./assets/script.js"></script>
+        ${options.isToPreview? '' : /* html */`<script type="module" src="./assets/script.js"></script>`}
       </body>
     </html>
   `, {
