@@ -9,7 +9,7 @@ import { useCustomize } from '~/shared/states/customizeState';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import { Documentation } from '~/database/models/Documentation';
 import { Status } from '~/@types/status';
-import { ResetCss } from '~/shared/dfb/profiles/Vite/files/src/assets/ResetCss';
+import { ResetCss } from '~/shared/dfb/files/src/assets/ResetCss';
 
 const customize = useCustomize();
 const currentMobileTab = ref<'HtmlEditor' | 'CssEditor' | 'JavascriptEditor'>('HtmlEditor');
@@ -253,7 +253,7 @@ onMounted(() => {
 
 <style>
   .cm-editor {
-    height: v-bind('customize.codeEditor.isMobile? "48%" : "100%"');
+    height: v-bind('customize.codeEditor.isMobile? "130px" : "100%"');
   }
 
   .splitpanes__pane {

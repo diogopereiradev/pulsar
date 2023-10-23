@@ -29,7 +29,6 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
       if(result === Status.OK) {
         customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
         customize.value.doc.customizations = updatedCustomizations;
-        console.log('dsfsd')
       } else {
         alert('Error on deleting customization');
       }

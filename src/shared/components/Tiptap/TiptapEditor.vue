@@ -18,7 +18,7 @@ import Heading from '@tiptap/extension-heading';
 import SlashCommandsPopup from './SlashCommandsPopup.vue';
 import SelectionBubbleMenu from './SelectionBubbleMenu.vue';
 import TableControlsMenu from './TableControlsMenu.vue';
-import { IDocumentationColorPalette } from '../~/database/models/Documentation';
+import { IDocumentationColorPalette } from '~/database/models/Documentation';
 import { useEditor } from '~/shared/states/editorState';
 
 const emit = defineEmits(['update:modelValue']);

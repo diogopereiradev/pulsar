@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import fileSaver from 'file-saver';
-import { DocumentationFileBuilder } from '~/shared/dfb/DocumentationFileBuilder';
+import { DocumentationFileBuilder } from '~/shared/dfb';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useEditor } from '~/shared/states/editorState';
@@ -15,7 +15,7 @@ function startDocumentationExport() {
 
   setTimeout(async () => {
     const dfb = new DocumentationFileBuilder(editor.value.doc);
-    const compressedBlob = await dfb.generate('vite');
+    const compressedBlob = await dfb.generate();
   
     if(compressedBlob) {
       editor.value.exportDocModal.data = compressedBlob;
@@ -150,4 +150,4 @@ function cancelConfirmDialog() {
       `"
     ></div>
   </div>
-</template>~/shared/dfb/DocumentationFileBuilder
+</template>

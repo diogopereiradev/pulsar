@@ -1,7 +1,7 @@
 import css from 'css';
 // @ts-ignore
 import hexToRgb from 'hex-to-rgb';
-import { IDocumentation, IDocumentationColorPalette } from "~/shared/database/models/Documentation";
+import { IDocumentation, IDocumentationColorPalette } from "~/database/models/Documentation";
 
 function generateGlobalVariables(colors: IDocumentationColorPalette): string {
   const colorNames = Object.keys(colors);
@@ -13,7 +13,7 @@ function generateGlobalVariables(colors: IDocumentationColorPalette): string {
 }
 
 export function Css(doc: IDocumentation) {
-  return css.stringify(css.parse(`
+  return css.stringify(css.parse(/* css */`
     /* Colors are in RGB, as it is easy to control the alpha color */
     :root {
       ${generateGlobalVariables(doc.colors)}
@@ -199,6 +199,7 @@ export function Css(doc: IDocumentation) {
     .hljs-strong { font-weight: 700; }
 
     .pulsar-doc-navigation-menu-container {
+      position: relative;
       display: flex;
       justify-content: right;
       min-width: 250px;
@@ -209,6 +210,7 @@ export function Css(doc: IDocumentation) {
       position: fixed;
       flex-direction: column;
       max-width: 240px;
+      max-height: 100vh;
       width: 100%;
       background-color: transparent;
       transition: .3s;
@@ -299,7 +301,7 @@ export function Css(doc: IDocumentation) {
       margin-top: 5px;
     } 
     
-    .pulsar-doc-navigation-menu-category-page-item a {
+    .pulsar-doc-navigation-menu-category-page-item .pulsar-navigation-link {
       display: flex;
       align-items: center;
       max-width: 160px;
@@ -323,11 +325,24 @@ export function Css(doc: IDocumentation) {
     }
 
     .pulsar-indexes-table-container {
+      position: relative;
       min-width: 180px;
     }
   
     .pulsar-indexes-table {
       position: fixed;
+      overflow-y: auto;
+      max-height: 100vh;
+      scrollbar-width: thin;
+      margin-left: 20px;
+    }
+
+    .pulsar-indexes-table::-webkit-scrollbar {
+      width: 2px;
+    }
+    
+    .pulsar-indexes-table::-webkit-scrollbar-thumb {
+      background-color: rgba(var(--text), 0.6);
     }
   
     .pulsar-indexes-table-title {
@@ -380,7 +395,7 @@ export function Css(doc: IDocumentation) {
       .pulsar-doc-navigation-menu {
         min-width: 220px;
         max-width: 320px;
-        height: 100vh;
+        min-height: 100vh;
         left: 0;
         top: 0;
         background-color: rgba(var(--secondary));
@@ -397,7 +412,7 @@ export function Css(doc: IDocumentation) {
       }
 
       .pulsar-indexes-table {
-        margin-left: 20px;
+        margin-left: 40px;
       }
     }
   `));
