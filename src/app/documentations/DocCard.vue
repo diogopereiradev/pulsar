@@ -105,4 +105,4 @@ function deleteConfirmDialog() {
       @close-modal="closeEditModal"
     />
   </div>
-</template>~/shared/databse/models/Documentation
+</template>

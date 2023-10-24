@@ -280,4 +280,4 @@ onBeforeMount(async () => {
       :class="`2xl:hidden ${!isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] z-[200]`"
     ></div>
   </div>
-</template>~/shared/databse/models/Documentation
+</template>

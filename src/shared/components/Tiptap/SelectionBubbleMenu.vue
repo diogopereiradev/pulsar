@@ -84,4 +84,4 @@ function handleToolbarToggleLink() {
       <font-awesome-icon icon="fa-solid fa-link"></font-awesome-icon>
     </Button>
   </bubble-menu>
-</template>~/shared/databse/models/Documentation
+</template>

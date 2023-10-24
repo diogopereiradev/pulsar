@@ -23,7 +23,7 @@ const props = defineProps<{
     }"
   >
     <div 
-      class="flex flex-col gap-2.5 p-2.5 h-11 rounded-md"
+      class="flex flex-col gap-2.5 p-2.5 min-h-[44px] rounded-md"
       :style="{
         backgroundColor: props.colors.secondary
       }"
@@ -31,7 +31,7 @@ const props = defineProps<{
       <div class="flex items-center gap-2.5">
         <Button 
           @click="editor.chain().addRowAfter().focus().run()"
-          class="flex gap-1.5 items-center !w-9 !h-9 duration-300 rounded-md border-none !px-2.5"
+          class="flex gap-1.5 items-center !min-w-[36px] !min-h-[36px] duration-300 rounded-md border-none !px-2.5"
           :style="{ 
             color: props.colors.text
           }"
@@ -41,7 +41,7 @@ const props = defineProps<{
         </Button>
         <Button 
           @click="editor.chain().addColumnAfter().focus().run()"
-          class="flex gap-1.5 items-center !w-9 !h-9 duration-300 rounded-md border-none !px-2.5"
+          class="flex gap-1.5 items-center !min-w-[36px] !min-h-[36px] duration-300 rounded-md border-none !px-2.5"
           :style="{ 
             color: props.colors.text
           }"
@@ -54,7 +54,7 @@ const props = defineProps<{
       <div class="flex items-center gap-2.5">
         <Button 
           @click="editor.chain().deleteRow().focus().run()"
-          class="flex gap-1.5 items-center !w-9 !h-9 duration-300 rounded-md border-none !px-2.5"
+          class="flex gap-1.5 items-center !min-w-[36px] !min-h-[36px] duration-300 rounded-md border-none !px-2.5"
           :style="{ 
             color: props.colors.text
           }"
@@ -64,7 +64,7 @@ const props = defineProps<{
         </Button>
         <Button 
           @click="editor.chain().deleteColumn().focus().run()"
-          class="flex gap-1.5 items-center !w-9 !h-9 duration-300 rounded-md border-none !px-2.5"
+          class="flex gap-1.5 items-center !min-w-[36px] !min-h-[36px] duration-300 rounded-md border-none !px-2.5"
           :style="{ 
             color: props.colors.text
           }"
@@ -75,4 +75,4 @@ const props = defineProps<{
       </div>
     </div>
   </floating-menu>
-</template>~/shared/databse/models/Documentation
+</template>
