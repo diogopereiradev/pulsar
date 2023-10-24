@@ -141,4 +141,4 @@ const colors: ColorNames[] = [
     @click="docs.newDocsModalIsOpen = !docs.newDocsModalIsOpen"
     :class="`fixed left-0 top-0 w-screen h-screen bg-[#00000090] z-[90] duration-300 ${docs.newDocsModalIsOpen? 'opacity-1' : 'opacity-0 pointer-events-none'}`"
   ></div>
-</template>~/shared/databse/models/Documentation
+</template>

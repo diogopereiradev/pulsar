@@ -81,4 +81,4 @@ onMounted(async () => {
       />
     </div>
   </div>
-</template>~/shared/databse/models/Documentation
+</template>

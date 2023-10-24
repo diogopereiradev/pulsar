@@ -157,4 +157,4 @@ function deletePageConfirmDialog(pageId: number) {
 .dinamic-color-page-link:hover {
   color: v-bind('editor.doc.colors.primary + 90') !important;
 }
-</style>~/shared/databse/models/Documentation
+</style>

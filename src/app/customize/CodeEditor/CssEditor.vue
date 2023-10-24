@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import beautify from 'beautify';
 import { Codemirror } from 'vue-codemirror';
 import { css } from '@codemirror/lang-css';
 import { oneDark } from '@codemirror/theme-one-dark';

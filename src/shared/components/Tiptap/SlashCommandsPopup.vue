@@ -248,4 +248,4 @@ function commandExecutor(command: (props: CommandProps) => boolean) {
 .dinamic-button-bg:hover {
   background-color: v-bind('colors.primary + "70"') !important;
 }
-</style>~/shared/databse/models/Documentation
+</style>

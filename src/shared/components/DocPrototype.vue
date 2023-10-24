@@ -90,4 +90,4 @@ defineProps<Pick<IDocumentation, 'colors' | 'features'> & {
       background-color: v-bind('colors.primary + "80"');
     }
   }
-</style>~/shared/databse/models/Documentation
+</style>

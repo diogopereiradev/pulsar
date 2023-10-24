@@ -100,4 +100,4 @@ onBeforeMount(() => {
       </div>
     </div>
   </div>
-</template>../databse/models/Documentation
+</template>
