@@ -333,7 +333,7 @@ export function Css(doc: IDocumentation) {
       position: sticky;
       top: 50px;
       overflow-y: auto;
-      max-height: 100vh;
+      height: 100vh;
       scrollbar-width: thin;
       margin-left: 20px;
       padding-bottom: 100px;
