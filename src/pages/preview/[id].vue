@@ -35,7 +35,7 @@ function iframeLoad(ev: Event) {
 
     const script = document.createElement('script');
     script.type = 'module';
-    script.innerHTML = Script();
+    script.innerHTML = Script(doc.value);
     
     iframe.contentDocument.head.appendChild(fontAwesomeScript);
     iframe.contentDocument.body.appendChild(script);
