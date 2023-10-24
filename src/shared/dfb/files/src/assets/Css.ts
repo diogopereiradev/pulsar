@@ -22,13 +22,13 @@ export function Css(doc: IDocumentation) {
     .pulsar-page-wrapper {
       max-width: 2120px;
       margin: 0 auto;
+      padding: 50px;
     }
 
     body {
       background-color: rgb(var(--background));
       font-family: Roboto;
       font-weight: 400;
-      padding: 50px;
     }
 
     .pulsar-utils-hidden {
@@ -199,7 +199,6 @@ export function Css(doc: IDocumentation) {
     .hljs-strong { font-weight: 700; }
 
     .pulsar-doc-navigation-menu-container {
-      position: relative;
       display: flex;
       justify-content: right;
       min-width: 250px;
@@ -207,7 +206,8 @@ export function Css(doc: IDocumentation) {
     
     .pulsar-doc-navigation-menu {
       display: flex;
-      position: fixed;
+      position: sticky;
+      top: 50px;
       flex-direction: column;
       max-width: 240px;
       max-height: 100vh;
@@ -330,11 +330,13 @@ export function Css(doc: IDocumentation) {
     }
   
     .pulsar-indexes-table {
-      position: fixed;
+      position: sticky;
+      top: 50px;
       overflow-y: auto;
       max-height: 100vh;
       scrollbar-width: thin;
       margin-left: 20px;
+      padding-bottom: 100px;
     }
 
     .pulsar-indexes-table::-webkit-scrollbar {
@@ -396,6 +398,7 @@ export function Css(doc: IDocumentation) {
         min-width: 220px;
         max-width: 320px;
         min-height: 100vh;
+        position: fixed;
         left: 0;
         top: 0;
         background-color: rgba(var(--secondary));

@@ -54,7 +54,7 @@ export class DocumentationFileBuilder {
   }
 
   generateAssetsFiles() {
-    const script = Script();
+    const script = Script(this.documentation);
     const styles = Css(this.documentation);
     const resetStyles = ResetCss();
   

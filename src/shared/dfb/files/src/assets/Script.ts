@@ -1,6 +1,7 @@
 import beautify from 'js-beautify';
+import { IDocumentation } from '~/database/models/Documentation';
 
-export function Script() {
+export function Script(doc: IDocumentation) {
   return beautify.js(/* javascript */`
     /* Navigation menu API */
     window.openNavigationMenu = () => {
@@ -23,46 +24,35 @@ export function Script() {
       }
     });
 
-    // Lock the menu position when reach the scroll limit
-    window.addEventListener('scroll', ev => {
-      const container = document.querySelector('.pulsar-doc-navigation-menu-container');
-      const navigationMenu = document.querySelector('.pulsar-doc-navigation-menu');
-      const navigationMenuLinksList = document.querySelector('.pulsar-doc-navigation-menu-category-list');
+    // Customizations
+    window.loadCustomizations = () => {
+      const topRegion = document.querySelector('#topRegion');
+      const bottomRegion = document.querySelector('#bottomRegion');
 
-      if(navigationMenu) {
-        const currentPercentage = (window.scrollY / container.scrollHeight) * 100;
-        
-        if(currentPercentage >= 74 && window.innerWidth >= 1181) {
-          navigationMenu.style.position = 'absolute';
-          navigationMenu.style.bottom = '20px';
-          navigationMenu.style.maxHeight = 'auto';
-          navigationMenuLinksList.style.overflowY = 'visible';
-        } else {
-          navigationMenu.style.position = 'fixed';
-          navigationMenu.style.bottom = 'auto';
-          navigationMenu.style.maxHeight = '100vh';
-          navigationMenuLinksList.style.overflowY = 'scroll';
+      ${doc.customizations.map(c => /* javascript */`
+        if(\'${c.region}\' === 'top') {
+          const elem${c.id} = document.createElement('div');
+          elem${c.id}.innerHTML = \`${c.content.html}\`;
+          topRegion.appendChild(elem${c.id});
         }
-      }
-    });
 
-    // Lock the table position when reach the scroll limit
-    window.addEventListener('scroll', ev => {
-      const container = document.querySelector('.pulsar-indexes-table-container');
-      const table = document.querySelector('.pulsar-indexes-table');
-
-      if(container) {
-        const currentPercentage = (window.scrollY / container.scrollHeight) * 100;
-        
-        if(currentPercentage >= 83) {
-          table.style.position = 'absolute';
-          table.style.bottom = '80px';
-        } else {
-          table.style.position = 'fixed';
-          table.style.bottom = 'auto';
+        if(\'${c.region}\' === 'bottom') {
+          const elem${c.id} = document.createElement('div');
+          elem${c.id}.innerHTML = \`${c.content.html}\`;
+          bottomRegion.appendChild(elem${c.id});
         }
-      }
-    });
+
+        (() => {
+          const style = document.createElement('style');
+          style.innerHTML = \`${c.content.css}\`;
+          document.head.appendChild(style);
+
+          const script = document.createElement('script');
+          script.innerHTML = \`${c.content.javascript}\`;
+          document.body.appendChild(script);
+        })();
+      `).join('')}
+    };
 
     // Indexes table loader
     window.initIndexesTable = () => {
@@ -88,6 +78,7 @@ export function Script() {
 
     (() => {
       window.initIndexesTable();
+      window.loadCustomizations();
     })();
   `, {
     indent_size: 2

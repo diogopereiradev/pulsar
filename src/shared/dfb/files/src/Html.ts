@@ -150,7 +150,9 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, options = { 
         ${BasicHeadTags(page, doc, options.isToPreview)}
       </head>
       <body>
-        <main id="app" class="pulsar-page-wrapper">
+        <!--Top customization region-->
+        <div id="topRegion"></div>
+        <main class="pulsar-page-wrapper">
           <!--Default mobile Navbar-->
           ${doc.customizations.filter(c => c.region === 'top').length > 0? '' : /* html */`
             <nav class="pulsar-doc-navbar">
@@ -165,6 +167,8 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, options = { 
           `}
           ${Content(page, doc, options.isToPreview)}
         </main>
+        <!--Bottom customization region-->
+        <div id="bottomRegion"></div>
         ${options.isToPreview? '' : /* html */`<script type="module" src="./assets/script.js"></script>`}
       </body>
     </html>
