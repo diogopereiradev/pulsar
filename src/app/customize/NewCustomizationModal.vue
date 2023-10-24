@@ -5,7 +5,7 @@ import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useCustomize } from '~/shared/states/customizeState';
 import { Documentation } from '~/database/models/Documentation';
 
-const regions: ('left' | 'top' | 'right' | 'bottom')[] = ['left', 'top', 'right', 'bottom'];
+const regions: ('top' | 'bottom')[] = ['top', 'bottom'];
 const customize = useCustomize();
 
 async function handleSubmit() {
@@ -96,9 +96,7 @@ async function handleSubmit() {
                 <font-awesome-icon 
                   icon="fa-solid fa-arrow-left-long" 
                   :class="`
-                    ${region === 'left'? 'rotate-0' : ''}
                     ${region === 'top'? 'rotate-90' : ''}
-                    ${region === 'right'? 'rotate-180' : ''}
                     ${region === 'bottom'? '-rotate-90' : ''}
                   `"
                 ></font-awesome-icon>

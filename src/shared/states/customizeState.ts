@@ -15,7 +15,7 @@ type EditorStateType = {
       isOpen: boolean,
       data: {
         title: string,
-        region: 'left' | 'right' | 'top' | 'bottom'
+        region: 'top' | 'bottom'
       }
     },
     customizationInfosMenu: {
