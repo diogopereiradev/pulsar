@@ -13,6 +13,7 @@ import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import Image from '@tiptap/extension-image';
 import TaskItem from '@tiptap/extension-task-item';
+import GapCursor from '@tiptap/extension-gapcursor';
 import TaskList from '@tiptap/extension-task-list';
 import Heading from '@tiptap/extension-heading';
 import SlashCommandsPopup from './SlashCommandsPopup.vue';
@@ -58,7 +59,6 @@ const editor = useTiptapEditor({
           class: 'pulsar-numberedlist'
         }
       },
-      gapcursor: false,
       heading: false,
       codeBlock: false
     }),
@@ -231,6 +231,10 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
       class="w-full min-h-[80vh] !overflow-visible" 
       :editor="editor"
     />
+    <div
+      @click="editor?.chain().focus('end').run()"
+      class="w-full h-[20vh] mt-5 cursor-pointer"
+    ></div>
   </div>
 </template>
 

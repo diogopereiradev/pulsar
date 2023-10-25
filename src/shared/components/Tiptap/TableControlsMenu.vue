@@ -73,6 +73,17 @@ const props = defineProps<{
           <p>{{ $t('markdowneditor.slashcommands-popup-table-floatingmenu-column') }}</p>
         </Button>
       </div>
+      <hr class="w-[95%] h-[1px] border-none mx-auto" :style="{ backgroundColor: props.colors.divider }" />
+      <Button 
+          @click="editor.chain().deleteTable().focus().run()"
+          class="flex gap-1.5 items-center !min-w-[36px] !min-h-[36px] duration-300 rounded-md border-none !px-2.5"
+          :style="{ 
+            color: props.colors.text
+          }"
+        >
+          <font-awesome-icon icon="fa-solid fa-trash" class="text-[15px]"></font-awesome-icon>
+          <p>{{ $t('markdowneditor.slashcommands-popup-table-floatingmenu-removetable') }}</p>
+        </Button>
     </div>
   </floating-menu>
 </template>
