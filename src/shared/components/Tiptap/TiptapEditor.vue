@@ -223,7 +223,13 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
       :colors="props.colors"
     />
     <!--Editor container-->
-    <editor-content class="w-full min-h-[80vh] !overflow-visible" :editor="editor" />
+    <editor-content 
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+      class="w-full min-h-[80vh] !overflow-visible" 
+      :editor="editor" 
+    />
   </div>
 </template>
 
