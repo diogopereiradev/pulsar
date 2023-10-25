@@ -31,6 +31,18 @@ export function Css(doc: IDocumentation) {
       font-weight: 400;
     }
 
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgb(var(--primary));
+    }
+
     .pulsar-utils-hidden {
       opacity: 0;
       pointer-events: none;
@@ -45,6 +57,7 @@ export function Css(doc: IDocumentation) {
     .pulsar-current-page-content {
       width: 100%;
       word-break: break-word;
+      overflow-x: hidden;
     }
   
     .pulsar-doc-navbar {
@@ -91,8 +104,10 @@ export function Css(doc: IDocumentation) {
       color: rgba(var(--text), 0.725);
     }
 
-    .pulsar-paragraph:empty:after {
-      content: '\xA0'
+    .pulsar-paragraph:empty {
+      position: relative;
+      min-width: 30px;
+      min-height: 24px;
     }
   
     .pulsar-divider {
@@ -120,15 +135,26 @@ export function Css(doc: IDocumentation) {
       color: rgba(var(--text)) !important;
     }
   
-    .pulsar-table {
+    .pulsar-table-wrapper {
+      padding: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .tableWrapper {
+      padding: 1rem 0;
+      overflow-x: auto;
+    }
+
+    .tableWrapper table {
       width: auto;
       border-collapse: collapse;
       table-layout: fixed;
       margin: 0;
-      overflow: hidden;
+      overflow-x: scroll;
+      word-break: initial;
     }
     
-    .pulsar-table td, th {
+    .tableWrapper table td, th {
       min-width: 1em;
       border: 2px solid rgb(var(--secondary));
       padding: 3px 5px;
@@ -137,7 +163,7 @@ export function Css(doc: IDocumentation) {
       position: relative;
     }
   
-    .pulsar-table th {
+    .tableWrapper table th {
       font-weight: bold;
       text-align: left;
       background-color: rgb(var(--secondary));

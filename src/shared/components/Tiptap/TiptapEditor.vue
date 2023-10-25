@@ -91,6 +91,7 @@ const editor = useTiptapEditor({
     BubbleMenuExtension,
     Table.configure({ 
       resizable: true,
+      lastColumnResizable: true,
       cellMinWidth: 200,
       HTMLAttributes: {
         class: 'pulsar-table'
@@ -163,9 +164,9 @@ const editor = useTiptapEditor({
         }
     
         if (fixedWidth && totalWidth > 0) {
-          HTMLAttributes.style = `width: ${totalWidth}px;`;
-        } else if (totalWidth && totalWidth > 0) {
           HTMLAttributes.style = `min-width: ${totalWidth}px;`;
+        } else if (totalWidth && totalWidth > 0) {
+          HTMLAttributes.style = `max-width: ${totalWidth}px;`;
         } else {
           HTMLAttributes.style = null;
         }

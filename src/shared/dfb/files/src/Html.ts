@@ -77,7 +77,7 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPrevi
       <!--Mobile navigation menu backdrop-->
       <div 
         onclick="closeNavigationMenu();" 
-        class="pulsar-navigation-menu-mobile-backdrop pulsar-utils-hidden"
+        class="pulsar-navigation-menu-mobile-backdrop"
       ></div>
     </div>
   `;
