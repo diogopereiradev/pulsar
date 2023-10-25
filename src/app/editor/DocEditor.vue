@@ -22,11 +22,26 @@ function parseCodeBlocks(unparsedContent: string, fullViewDom: string) {
   return unparsedDom.body.innerHTML;
 }
 
+function parseTablesWrapper(unparsedContent: string, fullViewDom: string) {
+  const unparsedDom = new DOMParser().parseFromString(unparsedContent, 'text/html');
+  const fullDom = new DOMParser().parseFromString(fullViewDom, 'text/html');
+
+  fullDom.querySelectorAll('.tableWrapper').forEach(tablewrapper => {
+    const unparsedCodeBlocks = unparsedDom.querySelectorAll('.pulsar-table');
+
+    unparsedCodeBlocks.forEach(unparsedCodeBlock => {
+      unparsedCodeBlock.outerHTML = tablewrapper.outerHTML;
+    });
+  });
+  return unparsedDom.body.innerHTML;
+}
+
 function handleEditorChange(value: string, textEditorInstance: Editor) {
-  const parsedDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
+  const parsedCodeBlocksDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
+  const parsedTablesWrapperDom = parseTablesWrapper(parsedCodeBlocksDom, textEditorInstance.view.dom.innerHTML);
   const updatedPages = editor.value.doc.pages.map(page => {
     if(page.id === editor.value.currentSelectedPage?.id) {
-      page.content = parsedDom;
+      page.content = parsedTablesWrapperDom;
     }
     return page;
   });
