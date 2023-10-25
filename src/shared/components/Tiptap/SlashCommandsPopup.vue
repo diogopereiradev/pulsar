@@ -183,7 +183,10 @@ function commandExecutor(command: (props: CommandProps) => boolean) {
     :editor="editor"
     class="min-w-[290px] border-[1px] border-solid !rounded-md pt-8"
     plugin-key="commandsFloatingMenu"
-    :tippy-options="{ duration: 100 }" 
+    :tippy-options="{ 
+      duration: 100,
+      placement: 'bottom-start'
+    }" 
     v-if="editor"
     :should-show="({ state }) => {
       const currentLine = state.doc.nodeAt(state.selection.from - 1);
@@ -204,6 +207,8 @@ function commandExecutor(command: (props: CommandProps) => boolean) {
       <ul class="flex flex-col max-h-[245px] overflow-y-auto">
         <li v-for="command in slash.search? slash.commands.filter(c => c.title.toLowerCase().match(slash.search.toLowerCase())) : slash.commands">
           <Button
+            tabindex="1"
+            :aria-label="command.title"
             @click="command.executor()"
             :title="command.description"
             class="dinamic-button-bg flex items-center !justify-start w-full h-20 !rounded-none border-none !px-7 !py-4"

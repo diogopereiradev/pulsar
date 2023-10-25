@@ -82,7 +82,11 @@ onBeforeMount(async () => {
       :class="`${customize.controlsMenu.isOpen || customize.codeEditor.isOpen? 'opacity-0 -mt-16' : ''} 2xl:hidden flex items-center justify-between px-5 w-full h-16 bg-secondary duration-300`"
     >
       <AppIcon class="min-w-[40px]" size="35" color="#d3d3d3"/>
-      <Button @click="customize.controlsMenu.isOpen = true" class="2xl:hidden w-[40px] !h-[40px] !bg-transparent hover:!bg-transparent !border-0">
+      <Button 
+        @click="customize.controlsMenu.isOpen = true"
+        :aria-label="$t('customize.controls-menu-open-button-aria-label')"
+        class="2xl:hidden w-[40px] !h-[40px] !bg-transparent hover:!bg-transparent !border-0"
+      >
         <font-awesome-icon icon="fa-solid fa-bars" class="text-[25px]" />
       </Button>
     </nav>
@@ -116,14 +120,17 @@ onBeforeMount(async () => {
         <!--Back to editor button and mobile close button-->
         <div class="flex items-center justify-between pb-7">
           <NuxtLinkLocale 
-            :to="`/editor/${customize.doc.id}`" 
+            :to="`/editor/${customize.doc.id}`"
+            :aria-label="$t('customize.controls-menu-back-to-editor-button-message')"
             class="flex items-center gap-3 w-32 h-10 bg-primary hover:bg-primary/80 active:bg-primary/60 duration-300 text-primary rounded-md font-medium pl-5"
-            aria-label=""
           >
             <font-awesome-icon icon="fa-solid fa-arrow-left-long" />
-            {{ $t('editor.controls-menu-back-to-docs-button-message') }}
+            {{ $t('customize.controls-menu-back-to-editor-button-message') }}
           </NuxtLinkLocale>
-          <Button @click="customize.controlsMenu.isOpen = false" class="2xl:hidden w-10 !h-10 !bg-transparent hover:!bg-transparent !border-0">
+          <Button 
+            @click="customize.controlsMenu.isOpen = false" 
+            class="2xl:hidden w-10 !h-10 !bg-transparent hover:!bg-transparent !border-0"
+          >
             <font-awesome-icon icon="fa-solid fa-close" class="text-xl" />
           </Button>
         </div>

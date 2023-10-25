@@ -126,9 +126,11 @@
   "customize": {
     "title": "Pulsar - Customize",
     "empty-customization-preview-message": "Select a customization",
+    "controls-menu-back-to-editor-button-message": "Back",
     "controls-menu-customizations-title": "Customizations",
     "controls-menu-new-customization-button-label": "New Customization",
     "controls-menu-empty-customizations-message": "No customizations found, create one using the button above.",
+    "controls-menu-open-button-aria-label": "Open navigation menu",
     "new-customization-modal-title": "New Customization",
     "new-customization-modal-title-input-label": "Title",
     "new-customization-modal-title-input-placeholder": "Title of the customization",
