@@ -12,7 +12,7 @@ const StylesWithTailwind = usePassThrough(
       root: 'border-0 group !bg-secondary/60 hover:bg-secondary/80 shadow',
       input: 'items-center h-11 text-primary/80 !bg-transparent group-hover:bg-secondary border-0 duration-300',
       trigger: '!bg-transparent group-hover:bg-secondary duration-300',
-      wrapper: 'mt-2.5 px-5 py-2.5 !bg-secondary/60 !backdrop-blur-lg',
+      wrapper: 'mt-2.5 px-5 py-2.5 !bg-secondary/60 !backdrop-blur-lg !rounded-[20px]',
       list: '!flex !flex-col !gap-2 text-primary/80',
       item: ({ props, state, context }) => ({
         class: `

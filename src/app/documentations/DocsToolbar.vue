@@ -25,7 +25,7 @@ function searchClear() {
           :placeholder="$t('documentations.toolbar-search-placeholder')" 
           class="mr-2 w-full placeholder:text-primary/40 lg:w-[300px] h-11"
         />
-        <Button type="submit" class="!w-11 !h-11">
+        <Button type="submit" class="!min-w-[44px] !h-11">
           <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
         </Button>
         <Button @click="searchClear()" type="button" :class="`${!docs.search && 'hidden'} !w-11 !h-11 ml-2.5`">
