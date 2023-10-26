@@ -30,7 +30,8 @@ export default {
       },
       textColor: {
         primary: '#d3d3d3',
-        secondary: '#7665d7'
+        secondary: '#7665d7',
+        darken: '#131524'
       },
       fontFamily: {
         default: ['Roboto', 'Inter', 'open-sans', 'sans-serif']

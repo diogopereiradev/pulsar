@@ -3,10 +3,11 @@ import { LocaleObject } from '@nuxtjs/i18n/dist/runtime/composables';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import Dropdown from 'primevue/dropdown';
 import MobileMenu from './MobileMenu.vue';
+import DonateMenu from './DonateMenu.vue';
 
-const { path } = useRoute();
 const { localeProperties, setLocale } = useI18n();
 const selectedLocale = ref<LocaleObject>();
+const donateMenuIsOpen = ref(false);
 
 watch(selectedLocale, () => {
   if(selectedLocale?.value) {
@@ -16,7 +17,6 @@ watch(selectedLocale, () => {
 
 onMounted(() => {
   selectedLocale.value = localeProperties.value;
-  console.log(path);
 });
 </script>
 
@@ -28,12 +28,12 @@ onMounted(() => {
         <ul class="flex items-center gap-7">
           <li>
             <NuxtLinkLocale to="/" class="text-primary/90 hover:text-secondary/90 duration-300 font-normal">
-              Home
+              {{ $t('navbar.links-home') }}
             </NuxtLinkLocale>
           </li>
           <li>
             <NuxtLinkLocale to="#" class="text-primary/90 hover:text-secondary/90 duration-300 font-normal">
-              Documentations
+              {{ $t('navbar.links-documentations') }}
             </NuxtLinkLocale>
           </li>
           <li>
@@ -47,9 +47,12 @@ onMounted(() => {
             </a>
           </li>
           <li>
-            <button class="text-primary/90 hover:text-secondary/90 duration-300">
-              Donate
-            </button>
+            <div class="flex flex-col">
+              <button @click="donateMenuIsOpen = true" class="text-primary/90 hover:text-secondary/90 duration-300">
+                {{ $t('navbar.links-donate') }}
+              </button>
+              <DonateMenu :isOpen="donateMenuIsOpen" @update:close="donateMenuIsOpen = false"/>
+            </div>
           </li>
         </ul>
       </div>
@@ -65,7 +68,7 @@ onMounted(() => {
           to="/documentations"
           class="flex items-center justify-center w-[150px] 2xl:w-[160px] h-11 text-primary font-normal bg-primary/80 hover:bg-primary/60 hover:text-primary/90 duration-300 border-none rounded-[15px]"
         >
-          Getting Started
+          {{ $t('navbar.getting-started-button') }}
         </NuxtLinkLocale>
       </div>
       <MobileMenu />

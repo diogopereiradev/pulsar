@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { LocaleObject } from '@nuxtjs/i18n/dist/runtime/composables';
+import BuyMeACoffeIcon from '~/shared/components/icons/BuyMeACoffeIcon.vue';
 import Dropdown from 'primevue/dropdown';
 
 const { localeProperties, setLocale } = useI18n();
 const selectedLocale = ref<LocaleObject>();
 const mobileMenuIsOpen = ref(false);
+const donateMenuIsOpen = ref(false);
+const isCopiedPix = ref(false);
+const isCopiedPixTimer = ref();
 
 function openMobileMenu() {
   mobileMenuIsOpen.value = true;
@@ -15,6 +19,21 @@ function closeMobileMenu() {
   mobileMenuIsOpen.value = false;
   document.body.style.overflow = 'auto';
 }
+
+
+function copyPix() {
+  window.navigator.clipboard.writeText('diogopereira.conta.pix@gmail.com');
+  isCopiedPix.value = true;
+}
+
+watch(isCopiedPix, (newIsCopied) => {
+  if(!newIsCopied) return;
+
+  if(isCopiedPixTimer.value) clearTimeout(isCopiedPixTimer.value);
+  isCopiedPixTimer.value = setTimeout(() => {
+    isCopiedPix.value = false;
+  }, 1500);
+});
 
 watch(selectedLocale, () => {
   if(selectedLocale?.value) {
@@ -65,19 +84,19 @@ onMounted(() => {
         to="/documentations"
         class="flex items-center justify-center w-full h-11 text-primary font-normal bg-primary/80 hover:bg-primary/60 hover:text-primary/90 duration-300 border-none rounded-[15px]"
       >
-        Getting Started
+        {{ $t('navbar.getting-started-button') }}
       </NuxtLinkLocale>
       <hr class="bg-secondary_darken w-[95%] mx-auto h-px border-none mt-3"/>
       <div>
         <ul class="flex flex-col gap-2 px-3">
           <li>
             <NuxtLinkLocale to="/" class="block text-primary/90 hover:text-secondary/90 duration-300 font-normal w-full py-1">
-              Home
+              {{ $t('navbar.links-home') }}
             </NuxtLinkLocale>
           </li>
           <li>
             <NuxtLinkLocale to="#" class="block text-primary/90 hover:text-secondary/90 duration-300 font-normal w-full py-1">
-              Documentations
+              {{ $t('navbar.links-documentations') }}
             </NuxtLinkLocale>
           </li>
           <li>
@@ -91,8 +110,34 @@ onMounted(() => {
             </a>
           </li>
           <li>
-            <button class="text-left text-primary/90 hover:text-secondary/90 duration-300 w-full py-1">
-              Donate
+            <button @click="donateMenuIsOpen = true" class="text-left text-primary/90 hover:text-secondary/90 duration-300 w-full py-1">
+              {{ $t('navbar.links-donate') }}
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div :class="`${donateMenuIsOpen? '' : 'opacity-0 pointer-events-none'} absolute left-0 top-0 w-full h-full bg-secondary rounded-[15px] duration-300`">
+        <button @click="donateMenuIsOpen = false" class="absolute right-6 top-6">
+          <font-awesome-icon icon="fa-solid fa-close" class="text-[20px] text-primary/70"></font-awesome-icon>
+        </button>
+        <ul class="w-full flex flex-col gap-3 p-6 mt-14">
+          <li>
+            <a
+              href="https://www.buymeacoffee.com/diogopereiy"
+              target="_blank"
+              rel="noreferrer"
+              class="text-left w-full h-11 flex items-center gap-0.5 bg-[#c2bb59] rounded-[15px] px-1"
+            >
+              <BuyMeACoffeIcon
+                class="w-[45px] !fill-secondary_darken"
+              />
+              Buy me a coffe
+            </a>
+          </li>
+          <li>
+            <button @click="copyPix()" class="text-left w-full h-11 flex items-center gap-4 bg-[#70cf64] rounded-[15px] px-4">
+              <font-awesome-icon icon="fa-brands fa-pix" class="text-darken text-[20px] duration-300"></font-awesome-icon>
+              {{ isCopiedPix? $t('navbar.pix-copied') : 'Pix' }}
             </button>
           </li>
         </ul>

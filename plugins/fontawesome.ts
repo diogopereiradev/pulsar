@@ -1,6 +1,7 @@
 import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import * as SolidIcons from '@fortawesome/free-solid-svg-icons';
+import * as BrandsIcons from '@fortawesome/free-brands-svg-icons';
 
 config.autoAddCss = false;
 library.add(...[
@@ -35,7 +36,8 @@ library.add(...[
   SolidIcons.faRotate,
   SolidIcons.faMicrochip,
   SolidIcons.faCode,
-  SolidIcons.faWindowMaximize
+  SolidIcons.faWindowMaximize,
+  BrandsIcons.faPix
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

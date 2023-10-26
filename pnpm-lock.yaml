@@ -20,6 +20,9 @@ dependencies:
   '@fortawesome/fontawesome-svg-core':
     specifier: ^6.4.2
     version: 6.4.2
+  '@fortawesome/free-brands-svg-icons':
+    specifier: ^6.4.2
+    version: 6.4.2
   '@fortawesome/free-solid-svg-icons':
     specifier: ^6.4.2
     version: 6.4.2
@@ -1122,6 +1125,14 @@ packages:
 
   /@fortawesome/fontawesome-svg-core@6.4.2:
     resolution: {integrity: sha512-gjYDSKv3TrM2sLTOKBc5rH9ckje8Wrwgx1CxAPbN5N3Fm4prfi7NsJVWd1jklp7i5uSCVwhZS5qlhMXqLrpAIg==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 6.4.2
+    dev: false
+
+  /@fortawesome/free-brands-svg-icons@6.4.2:
+    resolution: {integrity: sha512-LKOwJX0I7+mR/cvvf6qIiqcERbdnY+24zgpUSouySml+5w8B4BJOx8EhDR/FTKAu06W12fmUIcv6lzPSwYKGGg==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:

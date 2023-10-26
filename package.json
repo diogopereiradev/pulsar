@@ -27,6 +27,7 @@
     "@codemirror/lang-javascript": "^6.2.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@nuxtjs/i18n": "8.0.0-rc.4",
