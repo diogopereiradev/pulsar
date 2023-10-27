@@ -24,7 +24,7 @@ onMounted(() => {
   <nav class="relative w-full flex-col px-7 3xl:px-32 xl:px-10 md:px-12 py-10 z-[80]">
     <div class="w-full flex items-center justify-between">
       <AppIcon class="min-w-[40px]" size="40" color="#d3d3d3"/>
-      <div class="hidden xl:flex items-center px-7 h-11 bg-secondary/10 rounded-[15px] border border-solid border-primary/20">
+      <div class="hidden xl:flex items-center px-7 h-11 bg-secondary/10 rounded-[10px] border border-solid border-primary/20">
         <ul class="flex items-center gap-7">
           <li>
             <NuxtLinkLocale to="/" class="text-primary/90 hover:text-secondary/90 duration-300 font-normal">
@@ -58,7 +58,7 @@ onMounted(() => {
       </div>
       <div class="hidden xl:flex items-center gap-2.5">
         <Dropdown 
-          class="max-w-[170px] 2xl:max-w-[180px] !h-11 !rounded-[15px] !px-2"
+          class="max-w-[170px] 2xl:max-w-[180px] !h-11 !rounded-[10px] !px-2"
           v-model="selectedLocale"
           :options="$i18n.locales" 
           optionLabel="name"
@@ -66,7 +66,7 @@ onMounted(() => {
         />
         <NuxtLinkLocale 
           to="/documentations"
-          class="flex items-center justify-center w-[150px] 2xl:w-[160px] h-11 text-primary font-normal bg-primary/80 hover:bg-primary/60 hover:text-primary/90 duration-300 border-none rounded-[15px]"
+          :class="`${$route.path.match('/documentations')? 'hidden' : 'flex'} items-center justify-center w-[150px] 2xl:w-[160px] h-11 text-primary font-normal bg-primary/80 hover:bg-primary/60 hover:text-primary/90 duration-300 border-none rounded-[10px]`"
         >
           {{ $t('navbar.getting-started-button') }}
         </NuxtLinkLocale>

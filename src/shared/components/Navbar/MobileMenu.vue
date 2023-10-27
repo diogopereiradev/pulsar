@@ -82,7 +82,7 @@ onMounted(() => {
       />
       <NuxtLinkLocale 
         to="/documentations"
-        class="flex items-center justify-center w-full h-11 text-primary font-normal bg-primary/80 hover:bg-primary/60 hover:text-primary/90 duration-300 border-none rounded-[15px]"
+        :class="`${$route.path.match('/documentations')? 'hidden' : 'flex'} items-center justify-center w-full h-11 text-primary font-normal bg-primary/80 hover:bg-primary/60 hover:text-primary/90 duration-300 border-none rounded-[15px]`"
       >
         {{ $t('navbar.getting-started-button') }}
       </NuxtLinkLocale>

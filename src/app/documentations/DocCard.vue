@@ -43,8 +43,8 @@ function deleteConfirmDialog() {
   confirm.require({
     header: t('documentations.delete-doc-dialog-title'),
     message: t('documentations.delete-doc-dialog-message'),
-    acceptClass: '!w-20 !h-10 !font-normal !bg-[#c22d37] hover:!bg-[#992028] ml-2.5 border-0',
-    rejectClass: '!w-20 !h-10 !font-normal',
+    acceptClass: '!w-32 !h-11 !font-normal !bg-[#c22d37] hover:!bg-[#992028] ml-2.5 border-0',
+    rejectClass: '!w-32 !h-11 !font-normal',
     acceptLabel: t('documentations.delete-doc-dialog-confirm-button-message'),
     rejectLabel: t('documentations.delete-doc-dialog-cancel-button-message'),
     accept: async () => {

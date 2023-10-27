@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import BuyMeACoffeIcon from '../icons/BuyMeACoffeIcon.vue';
 
-defineEmits(['update:close']);
-defineProps<{ isOpen: boolean }>();
+const emit = defineEmits(['update:close']);
+const props = defineProps<{ isOpen: boolean }>();
 
 const isCopied = ref(false);
 const isCopiedTimer = ref();
@@ -19,6 +19,14 @@ watch(isCopied, (newIsCopied) => {
   isCopiedTimer.value = setTimeout(() => {
     isCopied.value = false;
   }, 1500);
+});
+
+onMounted(() => {
+  window.addEventListener('keyup', e => {
+    if(e.key === 'Escape' && props.isOpen) {
+      emit('update:close');
+    }
+  });
 });
 </script>
 
