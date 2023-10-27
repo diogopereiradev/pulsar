@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ConfirmDialog from 'primevue/confirmdialog';
-import MouseLight from '~/shared/components/utils/MouseLight.vue';
 import DocsToolbar from '~/app/documentations/DocsToolbar.vue';
 import NewDocsModal from '~/app/documentations/NewDocsModal.vue';
 import DocsList from '~/app/documentations/DocsList.vue';
@@ -12,12 +11,11 @@ import DocUploadModal from '~/app/documentations/DocUploadModal.vue';
     <Title>{{ $t('documentations.title') }}</Title>
   </Head>
   <ConfirmDialog :pt="{
-    root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-md',
-    header: 'text-primary !bg-secondary rounded-t-md flex justify-between items-center py-5 px-7',
+    root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-[15px]',
+    header: 'text-primary !bg-secondary rounded-t-[15px] flex justify-between items-center py-5 px-7',
     content: 'text-primary !bg-secondary py-2.5 px-7',
-    footer: 'text-primary !bg-secondary rounded-b-md flex justify-end p-6'
+    footer: 'text-primary !bg-secondary rounded-b-[15px] flex justify-end p-6'
   }"/>
-  <MouseLight />
   <NewDocsModal />
   <DocUploadModal />
   <div class="mx-auto max-w-[1250px] mt-7 3xl:mt-16 px-5 md:px-12">

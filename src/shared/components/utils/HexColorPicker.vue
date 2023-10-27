@@ -19,7 +19,7 @@ const overlay = ref<OverlayPanel>();
     <button
       type="button"
       @click="overlay?.toggle($event)"
-      class="w-20 h-8 rounded-lg border-primary/40 border-[1px] border-solid"
+      class="w-20 h-8 rounded-[7px] border-primary/40 border-[1px] border-solid"
       :style="{
         backgroundColor: modelValue || 'transparent',
         width: props.togglerButton?.width && props.togglerButton.width + ' !important',
@@ -29,10 +29,10 @@ const overlay = ref<OverlayPanel>();
     <OverlayPanel 
       ref="overlay"
       :pt="{
-        root: 'before:!hidden'
+        root: 'before:!hidden !rounded-[5px]'
       }"
     >
-      <div class="flex flex-col bg-secondary rounded-b-lg">
+      <div class="flex flex-col bg-secondary !rounded-[7px] shadow-lg">
         <ColorPicker
           :model-value="modelValue"
           @update:model-value="(val: string) => $emit('update:modelValue', val)"

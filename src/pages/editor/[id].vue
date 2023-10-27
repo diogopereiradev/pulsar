@@ -35,10 +35,10 @@ onBeforeMount(async () => {
   >
     <main>
       <ConfirmDialog :pt="{
-        root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-md',
-        header: 'text-primary !bg-secondary rounded-t-md flex justify-between items-center py-5 px-7',
+        root: 'w-[280px] md:w-[400px] lg:w-[600px]',
+        header: 'text-primary !bg-secondary !rounded-t-[15px] flex justify-between items-center py-5 px-7',
         content: 'text-primary !bg-secondary py-2.5 px-7',
-        footer: 'text-primary !bg-secondary rounded-b-md flex justify-end p-6'
+        footer: 'text-primary !bg-secondary !rounded-b-[15px] flex justify-end p-6'
       }"/>
       <ExportModal />
       <div class="flex max-2xl:flex-col">

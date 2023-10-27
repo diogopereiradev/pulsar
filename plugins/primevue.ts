@@ -12,7 +12,7 @@ const StylesWithTailwind = usePassThrough(
       root: 'border-0 group !bg-secondary/60 hover:bg-secondary/80 shadow',
       input: 'items-center h-11 text-primary/80 !bg-transparent group-hover:bg-secondary border-0 duration-300',
       trigger: '!bg-transparent group-hover:bg-secondary duration-300',
-      wrapper: 'mt-2.5 px-5 py-2.5 !bg-secondary/60 !backdrop-blur-lg',
+      wrapper: 'mt-2.5 px-5 py-2.5 !bg-secondary/60 !backdrop-blur-lg !rounded-[13px]',
       list: '!flex !flex-col !gap-2 text-primary/80',
       item: ({ props, state, context }) => ({
         class: `
@@ -50,8 +50,12 @@ const StylesWithTailwind = usePassThrough(
       })
     },
     colorpicker: {
-      input: 'w-full !shadow-none hover:!border-primary/80',
-      panel: '!z-[9999]',
+      input: 'w-full !shadow-none !rounded-t-[5px] hover:!border-primary/80',
+      panel: '!z-[9999] !rounded-t-[5px] !bg-transparent !shadow-none',
+      content: '!rounded-[5px]',
+      selector: '!rounded-[5px]',
+      color: '!rounded-[5px]',
+      hue: '!rounded-[5px]',
       hueHandle: ''
     },
     paginator: {

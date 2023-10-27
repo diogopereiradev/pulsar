@@ -16,6 +16,15 @@
     "description": "Your documentation structure is not synced with the database structure, click in the sync button below to sync now. This action no affect your data!",
     "missing-data-text": "Missing data"
   },
+  "navbar": {
+    "links-home": "Home",
+    "links-documentations": "Documentations",
+    "links-donate": "Donate",
+    "getting-started-button": "Getting Started",
+    "pix-copied": "Copied",
+    "donate-buy-me-a-coffe-description": "Help the developer of this project donating in Buy me a coffe.",
+    "donate-pix-description": "Help the developer of this project donating in Pix."
+  },
   "markdowneditor": {
     "is-empty-message": "is empty",
     "line-is-empty-placeholder": "Type \"/\" to see the options",
@@ -146,5 +155,12 @@
     "customization-infos-menu-region-label": "Region",
     "customization-infos-menu-edit-button-label": "Edit",
     "customization-infos-menu-close-button-label": "Close"
+  },
+  "homepage": {
+    "header-feature-title": "New feature: Customizations",
+    "header-title": "Pulsar: Document Everything",
+    "header-description": "Complete documentation solution with Pulsar.",
+    "header-getting-started-button": "Getting Started",
+    "header-learn-about-button": "Learn About"
   }
 }
