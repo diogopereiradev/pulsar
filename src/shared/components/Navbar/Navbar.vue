@@ -21,18 +21,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav class="relative w-full flex-col px-7 3xl:px-32 xl:px-10 md:px-12 py-10 z-[80]">
+  <nav class="relative w-full flex-col px-7 3xl:px-32 xl:px-14 md:px-12 py-10 z-[80]">
     <div class="w-full flex items-center justify-between">
       <AppIcon class="min-w-[40px]" size="40" color="#d3d3d3"/>
       <div class="hidden xl:flex items-center px-7 h-11 bg-secondary/10 rounded-[10px] border border-solid border-primary/20">
         <ul class="flex items-center gap-7">
           <li>
-            <NuxtLinkLocale to="/" class="text-primary/90 hover:text-secondary/90 duration-300 font-normal">
+            <NuxtLinkLocale to="/" class="text-primary/80 hover:text-secondary/90 duration-300 font-normal">
               {{ $t('navbar.links-home') }}
             </NuxtLinkLocale>
           </li>
           <li>
-            <NuxtLinkLocale to="#" class="text-primary/90 hover:text-secondary/90 duration-300 font-normal">
+            <NuxtLinkLocale to="#" class="text-primary/80 hover:text-secondary/90 duration-300 font-normal">
               {{ $t('navbar.links-documentations') }}
             </NuxtLinkLocale>
           </li>
@@ -41,14 +41,14 @@ onMounted(() => {
               href="https://github.com/FhillSlinger/pulsar" 
               target="_blank" 
               rel="noreferrer" 
-              class="text-primary/90 hover:text-secondary/90 duration-300 font-normal"
+              class="text-primary/80 hover:text-secondary/90 duration-300 font-normal"
             >
               Github
             </a>
           </li>
           <li>
             <div class="flex flex-col">
-              <button @click="donateMenuIsOpen = true" class="text-primary/90 hover:text-secondary/90 duration-300">
+              <button @click="donateMenuIsOpen = true" class="text-primary/80 hover:text-secondary/90 duration-300">
                 {{ $t('navbar.links-donate') }}
               </button>
               <DonateMenu :isOpen="donateMenuIsOpen" @update:close="donateMenuIsOpen = false"/>

@@ -29,7 +29,7 @@ export default {
         divider: '#2b304a'
       },
       textColor: {
-        primary: '#d3d3d3',
+        primary: '#f0f0f0',
         secondary: '#7665d7',
         darken: '#131524'
       },

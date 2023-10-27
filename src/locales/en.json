@@ -155,5 +155,12 @@
     "customization-infos-menu-region-label": "Region",
     "customization-infos-menu-edit-button-label": "Edit",
     "customization-infos-menu-close-button-label": "Close"
+  },
+  "homepage": {
+    "header-feature-title": "New feature: Customizations",
+    "header-title": "Pulsar: Document Everything",
+    "header-description": "Complete documentation solution with Pulsar.",
+    "header-getting-started-button": "Getting Started",
+    "header-learn-about-button": "Learn About"
   }
 }

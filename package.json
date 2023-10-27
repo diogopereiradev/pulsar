@@ -30,6 +30,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@nuxt/image": "^1.0.0",
     "@nuxtjs/i18n": "8.0.0-rc.4",
     "@tiptap/extension-bold": "^2.1.11",
     "@tiptap/extension-bubble-menu": "^2.1.11",
