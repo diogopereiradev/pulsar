@@ -5,6 +5,7 @@
 @layer base {
   * {
     scrollbar-width: auto;
+    scroll-behavior: smooth;
     @apply !font-default;
   }
 
