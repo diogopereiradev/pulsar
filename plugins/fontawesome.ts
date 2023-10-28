@@ -34,9 +34,11 @@ library.add(...[
   SolidIcons.faUpload,
   SolidIcons.faCloudArrowUp,
   SolidIcons.faRotate,
+  SolidIcons.faPalette,
   SolidIcons.faMicrochip,
   SolidIcons.faCode,
   SolidIcons.faWindowMaximize,
+  BrandsIcons.faMarkdown,
   BrandsIcons.faPix
 ]);
 
