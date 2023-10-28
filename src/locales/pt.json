@@ -161,6 +161,23 @@
     "header-title": "Pulsar: Documente Tudo",
     "header-description": "Solução de documentação completa com o Pulsar.",
     "header-getting-started-button": "Começar Agora",
-    "header-learn-about-button": "Aprender mais"
+    "header-learn-about-button": "Aprender mais",
+    "features-new-text": "Novo",
+    "features-export-title": "Exportar",
+    "features-export-description": "Exporte documentos facilmente usando o Vite.",
+    "features-import-title": "Importar",
+    "features-import-description": "Importe facilmente com um manifest.json.",
+    "features-customizations-title": "Customizações",
+    "features-customizations-description": "Crie componentes como Navbars e Footers.",
+    "features-colors-title": "Cores",
+    "features-colors-description": "Personalize todas as cores da sua documentação.",
+    "features-preview-title": "Prévia",
+    "features-preview-description": "Você pode facilmente ver a documentação final.",
+    "features-markdown-title": "Markdown",
+    "features-markdown-description": "O editor tem suporte para recursos de markdown.",
+    "features-codeblocks-title": "Blocos de Código",
+    "features-cobeblocks-description": "O editor tem suporte para blocos de código.",
+    "features-tables-title": "Tabelas",
+    "features-tables-description": "O editor tem suporte para tabelas redimensionáveis."
   }
 }

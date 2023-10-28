@@ -8,50 +8,52 @@ type Item = {
   new?: boolean
 };
 
-const topItems: Item[] = ref([
+const { t } = useI18n();
+
+const topItems = ref<Item[]>([
   {
     icon: 'fa-solid fa-download',
-    title: 'Export',
-    description: 'Export docs easily using Vite to run the documentation.'
+    title: t('homepage.features-export-title'),
+    description: t('homepage.features-export-description')
   },
   {
     icon: 'fa-solid fa-upload',
-    title: 'Import',
-    description: 'Import docs easily using a manifest.json.'
+    title: t('homepage.features-import-title'),
+    description: t('homepage.features-import-description')
   },
   {
     icon: 'fa-solid fa-microchip',
-    title: 'Customizations',
-    description: 'Create custom components like, navbars and footers.',
+    title: t('homepage.features-customizations-title'),
+    description: t('homepage.features-customizations-description'),
     new: true
   },
   {
     icon: 'fa-solid fa-palette',
-    title: 'Colors',
-    description: 'Customize all colors of your documentations.'
+    title: t('homepage.features-colors-title'),
+    description: t('homepage.features-colors-description')
   }
 ]);
 
-const bottomItems: Item[] = ref([
+const bottomItems = ref<Item[]>([
   {
     icon: 'fa-solid fa-eye',
-    title: 'Preview',
-    description: 'You can easily preview the final documentation.'
+    title: t('homepage.features-preview-title'),
+    description: t('homepage.features-preview-description')
   },
   {
     icon: 'fa-brands fa-markdown',
-    title: 'Markdown',
-    description: 'The editor has support to markdown features.'
+    title: t('homepage.features-markdown-title'),
+    description: t('homepage.features-markdown-description')
   },
   {
     icon: 'fa-solid fa-code',
-    title: 'Code Blocks',
-    description: 'The editor has support to highlighted code blocks.'
+    title: t('homepage.features-codeblocks-title'),
+    description: t('homepage.features-cobeblocks-description')
   },
   {
     icon: 'fa-solid fa-table',
-    title: 'Tables',
-    description: 'The editor has support to resizable tables.'
+    title: t('homepage.features-tables-title'),
+    description: t('homepage.features-tables-description')
   }
 ]);
 
@@ -71,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="w-full flex min-h-[300px] px-20 mt-2">
+  <section class="w-full flex max-w-[1600px] mx-auto min-h-[300px] px-20 mt-2">
     <hr class="max-[1344px]:hidden side-separator w-0.5 h-[300px] border-none" />
     <div class="w-full flex flex-col">
       <!--Top cards container-->
@@ -84,7 +86,7 @@ onMounted(() => {
             class="relative flex flex-col items-start w-full h-[196px] cursor-pointer px-[45px] py-8 card-hover-gradient duration-300"
           >
             <div v-if="item.new" class="absolute right-7 top-7 flex items-center justify-center min-w-[70px] min-h-[36px] new-button-gradient border border-solid border-primary/70 rounded-[10px]">
-              <p class="new-button-text-gradient">New</p>
+              <p class="new-button-text-gradient">{{ $t('homepage.features-new-text') }}</p>
             </div>
             <font-awesome-icon :icon="item.icon" class="text-[28px] text-primary/90"></font-awesome-icon>
             <h3 class="text-primary text-[18px] mt-5">{{ item.title }}</h3>
@@ -104,7 +106,7 @@ onMounted(() => {
             class="relative flex flex-col items-start w-full h-[196px] cursor-pointer px-[45px] py-8 bottom-card-hover-gradient duration-300"
           >
             <div v-if="item.new" class="absolute right-7 top-7 flex items-center justify-center min-w-[70px] min-h-[36px] new-button-gradient border border-solid border-primary/70 rounded-[10px]">
-              <p class="new-button-text-gradient">New</p>
+              <p class="new-button-text-gradient">{{ $t('homepage.features-new-text') }}</p>
             </div>
             <font-awesome-icon :icon="item.icon" class="text-[28px] text-primary/90"></font-awesome-icon>
             <h3 class="text-primary text-[18px] mt-5">{{ item.title }}</h3>
