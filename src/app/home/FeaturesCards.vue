@@ -73,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="w-full flex max-w-[1600px] mx-auto min-h-[300px] px-20 mt-2">
+  <section id="featuressection" class="w-full flex max-w-[1600px] mx-auto min-h-[300px] px-20 mt-2">
     <hr class="max-[1344px]:hidden side-separator w-0.5 h-[300px] border-none" />
     <div class="w-full flex flex-col">
       <!--Top cards container-->
