@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SparklingIcon from '~/shared/components/icons/SparklingIcon.vue';
+import StarsRain from '~/shared/components/utils/StarsRain.vue';
 </script>
 
 <template>
@@ -24,7 +25,14 @@ import SparklingIcon from '~/shared/components/icons/SparklingIcon.vue';
         {{ $t('homepage.header-learn-about-button') }}
       </NuxtLinkLocale>
     </div>
-    <div class="relative w-[85%] mt-32">
+    <StarsRain
+      :amount="40"
+      :max-speed="8"
+      :min-speed="2"
+      :max-size="3"
+      class="max-w-[85%] mt-16"
+    />
+    <div class="relative w-[85%]">
       <div class="w-full rounded-[10px] border-[10px] border-primary/20 shadow-[0px_0px_0px_1px_theme(colors.primary)99]">
         <picture class="w-full object-cover rounded-[10px]">
           <source media="(max-width: 468px)" srcset="/images/editor-mobile.webp" />
