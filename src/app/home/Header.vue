@@ -3,7 +3,7 @@ import SparklingIcon from '~/shared/components/icons/SparklingIcon.vue';
 </script>
 
 <template>
-  <header class="w-full h-[500px] flex flex-col items-center gap-3 pt-14">
+  <header class="w-full min-h-[500px] flex flex-col items-center gap-3 pt-14">
     <div class="absolute w-full max-w-[400px] h-[400px] bg-primary/10 blur-[80px] rounded-full z-[-1]"></div>
     <a class="features-button-gradient flex items-center gap-3 max-w-[290px] min-h-[37px] max-lg:mb-2 border border-solid border-primary/70 rounded-[10px] px-4 duration-300 cursor-pointer">
       <SparklingIcon
