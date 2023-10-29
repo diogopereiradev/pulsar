@@ -30,7 +30,7 @@ import StarsRain from '~/shared/components/utils/StarsRain.vue';
       :max-speed="8"
       :min-speed="2"
       :max-size="3"
-      class="max-w-[85%] mt-16"
+      class="max-w-[85%] mt-12"
     />
     <div class="relative w-[85%]">
       <div class="w-full rounded-[10px] border-[10px] border-primary/20 shadow-[0px_0px_0px_1px_theme(colors.primary)99]">

@@ -178,6 +178,15 @@
     "features-codeblocks-title": "Blocos de Código",
     "features-cobeblocks-description": "O editor tem suporte para blocos de código.",
     "features-tables-title": "Tabelas",
-    "features-tables-description": "O editor tem suporte para tabelas redimensionáveis."
+    "features-tables-description": "O editor tem suporte para tabelas redimensionáveis.",
+    "editor-features-feature-title": "Ver Funcionalidades",
+    "editor-features-title": "Veja Algumas Funções do Editor",
+    "editor-features-description": "Libere sua criatividade usando Blocos de Código, Markdown, Slash Commands e Tabelas no editor Pulsar.",
+    "editor-features-codeblocks-title": "Blocos de Códigos",
+    "editor-features-codeblocks-description": "Você pode facilmente criar um bloco de código com highlight para documentar seus códigos no editor Pulsar.",
+    "editor-features-tables-title": "Tabelas",
+    "editor-features-tables-description": "Você pode facilmente criar uma tabela em sua documentação para organizar melhor seu texto.",
+    "editor-features-customizations-title": "Customizações",
+    "editor-features-customizations-description": "Você pode criar facilmente uma customização como Navbars ou Footers usando o editor de customizações."
   }
 }
