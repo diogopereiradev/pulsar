@@ -11,11 +11,11 @@
         <div class="w-full max-w-[300px] h-[130px] rounded-[10px] mx-auto mt-10 bg-secondary border border-primary/30 p-5 overflow-hidden">
           <div class="flex gap-1">
             <div class="w-[20px] h-[8px] bg-[#e66e6e] rounded-md"></div>
-            <div class="animate-[functionName1_8s_infinite] w-[50px] h-[8px] bg-[#7cdd81] rounded-md"></div>
+            <div class="lg:animate-[functionName1_8s_infinite] w-[50px] h-[8px] bg-[#7cdd81] rounded-md"></div>
             <div class="w-[7px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
           </div>
           <div class="flex gap-1 mt-1.5 ml-2.5">
-            <div class="animate-[functionName2_5s_infinite_1s] w-[40px] h-[8px] bg-[#a76dce] rounded-md"></div>
+            <div class="lg:animate-[functionName2_5s_infinite_1s] w-[40px] h-[8px] bg-[#a76dce] rounded-md"></div>
             <div class="w-[25px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
             <div class="w-[7px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
             <div class="w-[30px] h-[8px] bg-[#7cdd81] rounded-md"></div>
@@ -24,7 +24,7 @@
           <div class="flex gap-1 mt-1.5 ml-2.5">
             <div class="w-[30px] h-[8px] bg-[#a76dce] rounded-md"></div>
             <div class="w-[7px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
-            <div class="animate-[functionName3_3s_infinite_1.5s] w-[10px] h-[8px] bg-[#7cdd81] rounded-md"></div>
+            <div class="lg:animate-[functionName3_3s_infinite_1.5s] w-[10px] h-[8px] bg-[#7cdd81] rounded-md"></div>
             <div class="w-[7px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
           </div>
           <div class="flex gap-1 mt-1.5">
@@ -38,7 +38,7 @@
             <div class="w-[7px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
           </div>
           <div class="flex gap-1 mt-1.5">
-            <div class="animate-[functionName4_3s_infinite_2s] w-[20px] h-[8px] bg-[#a76dce] rounded-md"></div>
+            <div class="lg:animate-[functionName4_3s_infinite_2s] w-[20px] h-[8px] bg-[#a76dce] rounded-md"></div>
             <div class="w-[25px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
             <div class="w-[7px] h-[8px] bg-[#f0ebeb] rounded-md"></div>
             <div class="w-[30px] h-[8px] bg-[#7cdd81] rounded-md"></div>
