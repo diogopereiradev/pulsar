@@ -38,6 +38,8 @@ library.add(...[
   SolidIcons.faMicrochip,
   SolidIcons.faCode,
   SolidIcons.faWindowMaximize,
+  BrandsIcons.faCss3,
+  BrandsIcons.faSquareJs,
   BrandsIcons.faMarkdown,
   BrandsIcons.faPix
 ]);

@@ -153,9 +153,9 @@ onMounted(() => {
 }
 
 .new-button-text-gradient {
-    background: linear-gradient(-90deg, rgba(234,205,240,1) 0%, rgba(158,146,232,1) 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+  background: linear-gradient(-90deg, rgba(234,205,240,1) 0%, rgba(158,146,232,1) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 </style>

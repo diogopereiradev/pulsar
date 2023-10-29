@@ -2,6 +2,7 @@
 import Header from '~/app/home/Header.vue';
 import FeaturesCards from '~/app/home/FeaturesCards.vue';
 import MainFeatures from '~/app/home/MainFeatures.vue';
+import Customizations from '~/app/home/Customizations.vue';
 </script>
 
 <template>
@@ -12,5 +13,6 @@ import MainFeatures from '~/app/home/MainFeatures.vue';
     <Header />
     <FeaturesCards />
     <MainFeatures />
+    <Customizations />
   </div>
 </template>

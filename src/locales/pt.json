@@ -187,6 +187,12 @@
     "editor-features-tables-title": "Tabelas",
     "editor-features-tables-description": "Você pode facilmente criar uma tabela em sua documentação para organizar melhor seu texto.",
     "editor-features-customizations-title": "Customizações",
-    "editor-features-customizations-description": "Você pode criar facilmente uma customização como Navbars ou Footers usando o editor de customizações."
+    "editor-features-customizations-description": "Você pode criar facilmente uma customização como Navbars ou Footers usando o editor de customizações.",
+    "customizations-feature-button": "Customizações",
+    "customizations-title": "Customize suas Documentações",
+    "customizations-description": "Dê à sua documentação a aparência desejada com a capacidade de criar componentes usando HTML/CSS/JS.",
+    "customizations-features-html-description": "O editor de personalizações oferece suporte a HTML, então você pode criar facilmente componentes bonitos.",
+    "customizations-features-css-description": "O editor de personalizações oferece suporte a CSS, então você pode criar estilos bonitos para seus componentes com facilidade.",
+    "customizations-features-javascript-description": "O editor de personalizações oferece suporte a JavaScript, permitindo que você crie facilmente interatividade para seus componentes."
   }
 }
