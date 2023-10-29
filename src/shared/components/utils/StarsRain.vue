@@ -7,6 +7,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+const windowWidth = ref<number | undefined>();
 const uniqueId = ref<number | undefined>();
 const container = ref<HTMLDivElement>();
 
@@ -32,13 +33,19 @@ function startAnimation() {
   }
 }
 
+watch(windowWidth, () => {
+  startAnimation();
+});
+
 onMounted(() => {
   const id = Math.round(Math.random() * (10000 - 1) + 1);
   uniqueId.value = id;
   startAnimation();
 
   window.addEventListener('resize', () => {
-    startAnimation();
+    if(window.innerWidth != windowWidth.value) {
+      windowWidth.value = window.innerWidth;
+    }
   });
 });
 </script>
