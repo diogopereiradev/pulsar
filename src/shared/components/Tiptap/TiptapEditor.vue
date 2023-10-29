@@ -376,7 +376,7 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
     th {
       min-width: 1em;
       border: 2px solid v-bind('colors.secondary');
-      padding: 3px 5px;
+      padding: 6px 5px;
       vertical-align: top;
       box-sizing: border-box;
       position: relative;

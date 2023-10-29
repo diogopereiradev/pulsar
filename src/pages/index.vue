@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Header from '~/app/home/Header.vue';
 import FeaturesCards from '~/app/home/FeaturesCards.vue';
+import MainFeatures from '~/app/home/MainFeatures.vue';
 </script>
 
 <template>
@@ -10,5 +11,6 @@ import FeaturesCards from '~/app/home/FeaturesCards.vue';
   <div class="flex flex-col">
     <Header />
     <FeaturesCards />
+    <MainFeatures />
   </div>
 </template>

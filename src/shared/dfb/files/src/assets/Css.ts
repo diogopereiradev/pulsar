@@ -134,11 +134,6 @@ export function Css(doc: IDocumentation) {
       list-style: decimal;
       color: rgba(var(--text)) !important;
     }
-  
-    .pulsar-table-wrapper {
-      padding: 1rem 0;
-      overflow-x: auto;
-    }
 
     .tableWrapper {
       padding: 1rem 0;
@@ -157,7 +152,7 @@ export function Css(doc: IDocumentation) {
     .tableWrapper table td, th {
       min-width: 1em;
       border: 2px solid rgb(var(--secondary));
-      padding: 3px 5px;
+      padding: 6px 5px;
       vertical-align: top;
       box-sizing: border-box;
       position: relative;

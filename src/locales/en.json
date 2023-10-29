@@ -178,6 +178,15 @@
     "features-codeblocks-title": "Code Blocks",
     "features-cobeblocks-description": "The editor has support to highlighted code blocks.",
     "features-tables-title": "Tables",
-    "features-tables-description": "The editor has support to resizable tables."
+    "features-tables-description": "The editor has support to resizable tables.",
+    "editor-features-feature-title": "Features Preview",
+    "editor-features-title": "Preview Some Editor Features",
+    "editor-features-description": "Unlock your creativity using, Code Blocks, Markdown, Slash Commands, and Tables in the Pulsar editor.",
+    "editor-features-codeblocks-title": "Code Blocks",
+    "editor-features-codeblocks-description": "You can easily create a highlighted codeblock to document your codes in Pulsar editor.",
+    "editor-features-tables-title": "Tables",
+    "editor-features-tables-description": "You can easily create a table in your documentation to organize better your text on Pulsar editor.",
+    "editor-features-customizations-title": "Customizations",
+    "editor-features-customizations-description": "You can easily create a customization (Navbars, Footers, etc) using the customization editor."
   }
 }
