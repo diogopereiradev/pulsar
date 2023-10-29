@@ -36,7 +36,7 @@ import StarsRain from '~/shared/components/utils/StarsRain.vue';
       <div class="w-full rounded-[10px] border-[10px] border-primary/20 shadow-[0px_0px_0px_1px_theme(colors.primary)99]">
         <picture class="w-full object-cover rounded-[10px]">
           <source media="(max-width: 468px)" srcset="/images/editor-mobile.webp" />
-          <img src="/images/editor.webp" />
+          <img class="w-full object-cover" src="/images/editor.webp" />
         </picture>
       </div>
       <div class="absolute -left-0.5 top-0 w-[calc(100%+4px)] h-[calc(100%+2px)] editor-image-gradient rounded-[10px]"></div>
