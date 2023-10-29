@@ -4,6 +4,7 @@ import { IDocumentation, IDocumentationPage } from "~/database/models/Documentat
 import { MapIcon } from "./assets/icons/MapIcon";
 import { Css } from "./assets/Css";
 import { ResetCss } from "./assets/ResetCss";
+import { PreviewCustomizations } from "../../utils/PreviewCustomizations";
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
   return /* html */`
@@ -150,8 +151,15 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, options = { 
         ${BasicHeadTags(page, doc, options.isToPreview)}
       </head>
       <body>
-        <!--Top customization region-->
-        <div id="topRegion"></div>
+        <!--Top customizations regions-->
+        <div id="top-region-container">
+          ${options.isToPreview? 
+          '' : `
+            ${doc.customizations.map(c => c.region === 'top'? `
+              <iframe class="topRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"></iframe> 
+            ` : '').join('')}
+          `}
+        </div>
         <main class="pulsar-page-wrapper">
           <!--Default mobile Navbar-->
           ${doc.customizations.filter(c => c.region === 'top').length > 0? '' : /* html */`
@@ -167,8 +175,15 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, options = { 
           `}
           ${Content(page, doc, options.isToPreview)}
         </main>
-        <!--Bottom customization region-->
-        <div id="bottomRegion"></div>
+        <!--Bottom customizations regions-->
+        <div id="bottom-region-container">
+          ${options.isToPreview? 
+          '' : `
+            ${doc.customizations.map(c => c.region === 'bottom'? `
+              <iframe class="bottomRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"></iframe> 
+            ` : '').join('')}
+          `}
+        </div>
         ${options.isToPreview? '' : /* html */`<script type="module" src="./assets/script.js"></script>`}
       </body>
     </html>

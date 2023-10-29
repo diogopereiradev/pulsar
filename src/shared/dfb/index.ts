@@ -12,6 +12,7 @@ import { ViteConfig } from "./files/ViteConfig";
 import { Readme } from "./files/Readme";
 import { License } from "./files/License";
 import { Manifest } from "./files/Manifest";
+import { CustomizationHtml } from "./files/src/customizations/CustomizationHtml";
 
 type HTMLPage = {
   title: string,
@@ -64,6 +65,13 @@ export class DocumentationFileBuilder {
     this.zip.file('src/assets/reset.css', resetStyles);
   }
 
+  generateCustomizationsFiles() {
+    this.zip.folder('src/customizations');
+    this.documentation.customizations.forEach(c => {
+      this.zip.file(`src/customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html`, CustomizationHtml(c));
+    });
+  }
+
   generateConfigurationFiles() {
     const gitignore = ViteGitIgnore();
     const readme = Readme(this.documentation);
@@ -85,6 +93,7 @@ export class DocumentationFileBuilder {
   async generate() {
     this.generatePageFiles();
     this.generateAssetsFiles();
+    this.generateCustomizationsFiles();
     this.generateConfigurationFiles();
     
     return await this.zip.generateAsync({ type: 'blob' });
