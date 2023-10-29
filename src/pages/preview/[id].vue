@@ -5,6 +5,7 @@ import PageStates from '~/shared/components/PageStates.vue';
 import { Html } from '~/shared/dfb/files/src/Html';
 import { Script } from '~/shared/dfb/files/src/assets/Script';
 import { PreviewRouter } from '~/shared/dfb/utils/PreviewRouter';
+import { PreviewCustomizations } from '~/shared/dfb/utils/PreviewCustomizations';
 
 definePageMeta({
   layout: 'preview'
@@ -33,11 +34,16 @@ function iframeLoad(ev: Event) {
     routerScript.type = 'module';
     routerScript.innerHTML = PreviewRouter(routes);
 
+    const customizationsScript = document.createElement('script');
+    customizationsScript.type = 'module';
+    customizationsScript.innerHTML = PreviewCustomizations(doc.value.customizations);
+
     const script = document.createElement('script');
     script.type = 'module';
     script.innerHTML = Script(doc.value);
     
     iframe.contentDocument.head.appendChild(fontAwesomeScript);
+    iframe.contentDocument.body.appendChild(customizationsScript);
     iframe.contentDocument.body.appendChild(script);
     iframe.contentDocument.body.appendChild(routerScript);
   }

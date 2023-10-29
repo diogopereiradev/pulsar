@@ -24,36 +24,6 @@ export function Script(doc: IDocumentation) {
       }
     });
 
-    // Customizations
-    window.loadCustomizations = () => {
-      const topRegion = document.querySelector('#topRegion');
-      const bottomRegion = document.querySelector('#bottomRegion');
-
-      ${doc.customizations.map(c => /* javascript */`
-        if(\'${c.region}\' === 'top') {
-          const elem${c.id} = document.createElement('div');
-          elem${c.id}.innerHTML = \`${c.content.html}\`;
-          topRegion.appendChild(elem${c.id});
-        }
-
-        if(\'${c.region}\' === 'bottom') {
-          const elem${c.id} = document.createElement('div');
-          elem${c.id}.innerHTML = \`${c.content.html}\`;
-          bottomRegion.appendChild(elem${c.id});
-        }
-
-        (() => {
-          const style = document.createElement('style');
-          style.innerHTML = \`${c.content.css}\`;
-          document.head.appendChild(style);
-
-          const script = document.createElement('script');
-          script.innerHTML = \`${c.content.javascript}\`;
-          document.body.appendChild(script);
-        })();
-      `).join('')}
-    };
-
     // Indexes table loader
     window.initIndexesTable = () => {
       const indexesTableList = document.querySelector('.pulsar-indexes-table-list');
@@ -78,7 +48,6 @@ export function Script(doc: IDocumentation) {
 
     (() => {
       window.initIndexesTable();
-      window.loadCustomizations();
     })();
   `, {
     indent_size: 2

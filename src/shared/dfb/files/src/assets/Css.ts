@@ -22,7 +22,7 @@ export function Css(doc: IDocumentation) {
     .pulsar-page-wrapper {
       max-width: 2120px;
       margin: 0 auto;
-      padding: 50px;
+      padding: 20px 50px 50px 50px;
     }
 
     body {
@@ -41,6 +41,18 @@ export function Css(doc: IDocumentation) {
 
     ::-webkit-scrollbar-thumb {
       background-color: rgb(var(--primary));
+    }
+
+    .top-region-container {
+      width: 100%;
+    }
+
+    .topRegion {
+      width: 100%;
+    }
+
+    .bottomRegion {
+      width: 100%;
     }
 
     .pulsar-utils-hidden {
