@@ -13,7 +13,7 @@ const navbar = useNavbar();
       <!--Left content-->
       <div class="relative hidden lg:flex flex-col w-[18%] h-full p-14">
         <div class="flex items-center gap-3">
-          <AppIcon class="min-w-[36px] fill-white/70"/>
+          <AppIcon class="min-w-[36px] max-w-[36px] fill-white/70"/>
           <h3 class="text-xl text-primary/80 font-medium">Pulsar</h3>
         </div>
         <div class="absolute bottom-14 flex flex-col">
