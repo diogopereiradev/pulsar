@@ -1,61 +1,68 @@
-# Nuxt 3 Minimal Starter
+<div align="center">
+  <img width="330" src="./readme-assets/pulsar-logo.webp" alt="pulsar-icon" />
+  <div>
+    <img alt="GitHub package.json version (branch)" src="https://img.shields.io/github/package-json/v/FhillSlinger/pulsar/main?style=for-the-badge">
+    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/FhillSlinger/pulsar?style=for-the-badge">
+    <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/FhillSlinger/pulsar?style=for-the-badge">
+    <img alt="GitHub" src="https://img.shields.io/github/license/FhillSlinger/pulsar?style=for-the-badge">
+    <img alt="Website" src="https://img.shields.io/website?up_message=running&down_message=failing&url=https%3A%2F%2Fpulsar.diogopereira.tech&logo=vercel&style=for-the-badge">
+    <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Production?label=production%20state&style=for-the-badge">
+    <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Preview?label=preview%20state&style=for-the-badge">
+  </div>
+  <div>
+    <br />
+    <p>Pulsar is a powerfull <strong>documentation online editor</strong></p>
+    <p>Pulsar is the ultimate solution for streamlining documentation page creation. With its intuitive interface and powerful features, Pulsar allows you to quickly and efficiently build documentation pages. Organize information, add content effortlessly, and deliver a seamless documentation experience for your users.</p>
+  </div>
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+  [Getting started](#getting-started) •
+  [Cloning Repository](#cloning-repository) •
+  [Contribute](#contribute)
+  
+</div>
 
-## Setup
+<div>
+  <hr />
+  <img src="./readme-assets/editor-typing.gif">
+  <hr />
+  <h2>Getting Started</h2>
+  <p>Getting Started with Pulsar, your gateway to efficient online documentation editing. If you're ready to embark on a journey of creating impeccable documentation pages, you've come to the right place. You can access the project on this url</p>
+  <a href="https://pulsar.diogopereira.tech">https://pulsar.diogopereira.tech</a>
+  <br />
+  <br />
+  <br />
+  <h2>Cloning Repository</h2>
+  <p>To run the project on your machine and contribute to the project, you can clone the repository and run the following commands:</p>
 
-Make sure to install the dependencies:
+  ```
+  git clone https://github.com/FhillSlinger/pulsar.git
+  ```
 
-```bash
-# npm
-npm install
+  <p>Move to the folder:</p>
 
-# pnpm
-pnpm install
+  ```
+  cd pulsar
+  ```
 
-# yarn
-yarn install
-```
+  <p>Install the dependencies using <strong>>pnpm</strong>:</p>
 
-## Development Server
+  ```
+  pnpm install
+  ```
 
-Start the development server on `http://localhost:3000`:
+  <p>And finally run the project in development mode:</p>
 
-```bash
-# npm
-npm run dev
+  ```
+  pnpm dev
+  ```
 
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
+  <p>After execute the command pnpm dev, you can access the project in http://localhost:3000</p>
+  <br />
+  <br />
+  <h2>Contribute</h2>
+  <p>Please star the project and help the developer with a donation on Buy me a Coffe:</p>
+  <br />
+  <a href="https://www.buymeacoffee.com/diogopereiy" target="_blank">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" width="200" >
+  </a>
+</div>
