@@ -63,7 +63,12 @@ const navbar = useNavbar();
               </NuxtLinkLocale>
             </li>
             <li>
-              <a href="#" class="text-base text-primary/50 hover:text-secondary/80 duration-300 font-normal">
+              <a 
+                href="https://github.com/FhillSlinger/pulsar"
+                target="_blank"
+                rel="noreferrer"
+                class="text-base text-primary/50 hover:text-secondary/80 duration-300 font-normal"
+              >
                 Documentations
               </a>
             </li>
