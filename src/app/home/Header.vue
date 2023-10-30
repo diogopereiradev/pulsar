@@ -21,9 +21,14 @@ import StarsRain from '~/shared/components/utils/StarsRain.vue';
       <NuxtLinkLocale to="/documentations" class="px-5 py-3 rounded-[10px] border-none text-primary bg-primary/70 hover:bg-primary/90 mt-7 duration-300">
         {{ $t('homepage.header-getting-started-button') }}
       </NuxtLinkLocale>
-      <NuxtLinkLocale to="/" class="px-5 py-3 rounded-[10px] text-primary bg-primary/20 hover:bg-primary/50 border border-solid border-primary/40 mt-7 duration-300">
+      <a
+        href="https://github.com/FhillSlinger/pulsar"
+        target="_blank"
+        rel="noreferrer"
+        class="px-5 py-3 rounded-[10px] text-primary bg-primary/20 hover:bg-primary/50 border border-solid border-primary/40 mt-7 duration-300"
+      >
         {{ $t('homepage.header-learn-about-button') }}
-      </NuxtLinkLocale>
+      </a>
     </div>
     <StarsRain
       :amount="40"

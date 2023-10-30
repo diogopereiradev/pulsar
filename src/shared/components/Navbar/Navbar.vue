@@ -31,9 +31,14 @@ onMounted(() => {
             </NuxtLinkLocale>
           </li>
           <li>
-            <NuxtLinkLocale to="#" class="text-primary/80 hover:text-secondary/90 duration-300 font-normal">
+            <a 
+              href="https://github.com/FhillSlinger/pulsar"
+              target="_blank"
+              rel="noreferrer"
+              class="text-primary/80 hover:text-secondary/90 duration-300 font-normal"
+            >
               {{ $t('navbar.links-documentations') }}
-            </NuxtLinkLocale>
+            </a>
           </li>
           <li>
             <a 
