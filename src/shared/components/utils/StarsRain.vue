@@ -51,7 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="container" :id="`starscontainer-${uniqueId}`" class="relative w-full min-h-[150px] overflow-hidden"></div>
+  <div ref="container" :id="`starscontainer-${uniqueId}`" class="relative min-h-[150px] overflow-hidden"></div>
 </template>
 
 <style>
