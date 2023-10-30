@@ -41,7 +41,8 @@ library.add(...[
   BrandsIcons.faCss3,
   BrandsIcons.faSquareJs,
   BrandsIcons.faMarkdown,
-  BrandsIcons.faPix
+  BrandsIcons.faPix,
+  BrandsIcons.faGithub
 ]);
 
 export default defineNuxtPlugin((nuxtApp) => {

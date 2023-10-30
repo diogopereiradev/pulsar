@@ -1,30 +1,27 @@
 <script setup lang="ts">
+import { useNavbar } from '~/shared/states/navbarState';
 import BuyMeACoffeIcon from '../icons/BuyMeACoffeIcon.vue';
 
-const emit = defineEmits(['update:close']);
-const props = defineProps<{ isOpen: boolean }>();
-
-const isCopied = ref(false);
-const isCopiedTimer = ref();
+const navbar = useNavbar();
 
 function copyPix() {
   window.navigator.clipboard.writeText('diogopereira.conta.pix@gmail.com');
-  isCopied.value = true;
+  navbar.value.donateMenu.isCopiedPix = true;
 }
 
-watch(isCopied, (newIsCopied) => {
+watch(() => navbar.value.donateMenu.isCopiedPix, (newIsCopied) => {
   if(!newIsCopied) return;
 
-  if(isCopiedTimer.value) clearTimeout(isCopiedTimer.value);
-  isCopiedTimer.value = setTimeout(() => {
-    isCopied.value = false;
+  if(navbar.value.donateMenu.isCopiedTimer) clearTimeout(navbar.value.donateMenu.isCopiedTimer);
+  navbar.value.donateMenu.isCopiedTimer = setTimeout(() => {
+    navbar.value.donateMenu.isCopiedPix = false;
   }, 1500);
 });
 
 onMounted(() => {
   window.addEventListener('keyup', e => {
-    if(e.key === 'Escape' && props.isOpen) {
-      emit('update:close');
+    if(e.key === 'Escape' && navbar.value.donateMenu.isOpen) {
+      navbar.value.donateMenu.isOpen = false;
     }
   });
 });
@@ -34,7 +31,7 @@ onMounted(() => {
   <div>
     <div 
       :class="`
-        ${isOpen? '' : 'opacity-0 pointer-events-none'}
+        ${navbar.donateMenu.isOpen? '' : 'opacity-0 pointer-events-none'}
         fixed
         left-[50%]
         top-[50%]
@@ -88,15 +85,15 @@ onMounted(() => {
         </div>
         <div class="flex items-center justify-center w-full h-[30%] bg-secondary_darken/40 rounded-b-[15px]">
           <button class="flex items-center gap-2.5 bg-[#70cf64] text-darken rounded-[15px] px-5 h-12 duration-300">
-            {{ isCopied? $t('navbar.pix-copied') : 'diogopereira.conta.pix@gmail.com' }}
+            {{ navbar.donateMenu.isCopiedPix? $t('navbar.pix-copied') : 'diogopereira.conta.pix@gmail.com' }}
           </button>
         </div>
       </div>
     </div>
     <div 
-      @click="$emit('update:close')" 
+      @click="navbar.donateMenu.isOpen = false" 
       :class="`
-        ${isOpen? '' : 'opacity-0 pointer-events-none'} 
+        ${navbar.donateMenu.isOpen? '' : 'opacity-0 pointer-events-none'} 
         fixed 
         left-0 
         top-0 

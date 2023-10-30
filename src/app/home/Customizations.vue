@@ -29,7 +29,7 @@ const topItems = ref<Item[]>([
 </script>
 
 <template>
-  <section class="flex flex-col items-center min-h-[400px] mt-24 mb-10">
+  <section id="customizationssection" class="flex flex-col items-center min-h-[400px] mt-24 mb-10">
     <div class="flex flex-col items-center w-full px-12">
       <div class="customizations-button-gradient flex items-center gap-3 h-[37px] max-lg:mb-2 border border-solid border-primary/70 rounded-[10px] px-4 duration-300">
         <p class="customizations-text-gradient text-base text-primary/80">{{ $t('homepage.customizations-feature-button') }}</p>

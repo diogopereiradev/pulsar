@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { LocaleObject } from '@nuxtjs/i18n/dist/runtime/composables';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import Dropdown from 'primevue/dropdown';
 import MobileMenu from './MobileMenu.vue';
 import DonateMenu from './DonateMenu.vue';
+import { useNavbar } from '~/shared/states/navbarState';
 
 const { localeProperties, setLocale } = useI18n();
-const selectedLocale = ref<LocaleObject>();
-const donateMenuIsOpen = ref(false);
+const navbar = useNavbar();
 
-watch(selectedLocale, () => {
-  if(selectedLocale?.value) {
-    setLocale(selectedLocale.value.code);
+watch(() => navbar.value.selectedLocale, () => {
+  if(navbar.value.selectedLocale) {
+    setLocale(navbar.value.selectedLocale.code);
   }
 });
 
 onMounted(() => {
-  selectedLocale.value = localeProperties.value;
+  navbar.value.selectedLocale = localeProperties.value;
 });
 </script>
 
@@ -48,10 +47,10 @@ onMounted(() => {
           </li>
           <li>
             <div class="flex flex-col">
-              <button @click="donateMenuIsOpen = true" class="text-primary/80 hover:text-secondary/90 duration-300">
+              <button @click="navbar.donateMenu.isOpen = true" class="text-primary/80 hover:text-secondary/90 duration-300">
                 {{ $t('navbar.links-donate') }}
               </button>
-              <DonateMenu :isOpen="donateMenuIsOpen" @update:close="donateMenuIsOpen = false"/>
+              <DonateMenu/>
             </div>
           </li>
         </ul>
@@ -59,7 +58,7 @@ onMounted(() => {
       <div class="hidden xl:flex items-center gap-2.5">
         <Dropdown 
           class="max-w-[170px] 2xl:max-w-[180px] !h-11 !rounded-[10px] !px-2"
-          v-model="selectedLocale"
+          v-model="navbar.selectedLocale"
           :options="$i18n.locales" 
           optionLabel="name"
           :placeholder="$i18n.localeProperties.name"
