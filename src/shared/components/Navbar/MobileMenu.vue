@@ -1,48 +1,44 @@
 <script setup lang="ts">
-import { LocaleObject } from '@nuxtjs/i18n/dist/runtime/composables';
 import BuyMeACoffeIcon from '~/shared/components/icons/BuyMeACoffeIcon.vue';
 import Dropdown from 'primevue/dropdown';
+import { useNavbar } from '~/shared/states/navbarState';
 
 const { localeProperties, setLocale } = useI18n();
-const selectedLocale = ref<LocaleObject>();
-const mobileMenuIsOpen = ref(false);
-const donateMenuIsOpen = ref(false);
-const isCopiedPix = ref(false);
-const isCopiedPixTimer = ref();
+const navbar = useNavbar();
 
 function openMobileMenu() {
-  mobileMenuIsOpen.value = true;
+  navbar.value.mobileMenuIsOpen = true;
   document.body.style.overflow = 'hidden';
 }
 
 function closeMobileMenu() {
-  mobileMenuIsOpen.value = false;
+  navbar.value.mobileMenuIsOpen = false;
   document.body.style.overflow = 'auto';
 }
 
 
 function copyPix() {
   window.navigator.clipboard.writeText('diogopereira.conta.pix@gmail.com');
-  isCopiedPix.value = true;
+  navbar.value.donateMenu.isCopiedPix = true;
 }
 
-watch(isCopiedPix, (newIsCopied) => {
+watch(() => navbar.value.donateMenu.isCopiedPix, (newIsCopied) => {
   if(!newIsCopied) return;
 
-  if(isCopiedPixTimer.value) clearTimeout(isCopiedPixTimer.value);
-  isCopiedPixTimer.value = setTimeout(() => {
-    isCopiedPix.value = false;
+  if(navbar.value.donateMenu.isCopiedTimer) clearTimeout(navbar.value.donateMenu.isCopiedTimer);
+  navbar.value.donateMenu.isCopiedTimer = setTimeout(() => {
+    navbar.value.donateMenu.isCopiedPix = false;
   }, 1500);
 });
 
-watch(selectedLocale, () => {
-  if(selectedLocale?.value) {
-    setLocale(selectedLocale.value.code);
+watch(() => navbar.value.selectedLocale, () => {
+  if(navbar.value.selectedLocale) {
+    setLocale(navbar.value.selectedLocale.code);
   }
 });
 
 onMounted(() => {
-  selectedLocale.value = localeProperties.value;
+  navbar.value.selectedLocale = localeProperties.value;
 });
 </script>
 
@@ -56,7 +52,7 @@ onMounted(() => {
     </Button>
     <div 
       :class="`
-        ${mobileMenuIsOpen? '' : 'opacity-0 pointer-events-none'} 
+        ${navbar.mobileMenuIsOpen? '' : 'opacity-0 pointer-events-none'} 
         flex 
         flex-col 
         gap-3 
@@ -75,7 +71,7 @@ onMounted(() => {
     >
       <Dropdown 
         class="max-w-[170px] !h-11 !rounded-[15px] !px-2 !bg-secondary_darken/70"
-        v-model="selectedLocale"
+        v-model="navbar.selectedLocale"
         :options="$i18n.locales" 
         optionLabel="name"
         :placeholder="$i18n.localeProperties.name"
@@ -110,14 +106,14 @@ onMounted(() => {
             </a>
           </li>
           <li>
-            <button @click="donateMenuIsOpen = true" class="text-left text-primary/90 hover:text-secondary/90 duration-300 w-full py-1">
+            <button @click="navbar.donateMenu.isOpen = true" class="text-left text-primary/90 hover:text-secondary/90 duration-300 w-full py-1">
               {{ $t('navbar.links-donate') }}
             </button>
           </li>
         </ul>
       </div>
-      <div :class="`${donateMenuIsOpen? '' : 'opacity-0 pointer-events-none'} absolute left-0 top-0 w-full h-full bg-secondary rounded-[15px] duration-300`">
-        <button @click="donateMenuIsOpen = false" class="absolute right-6 top-6">
+      <div :class="`${navbar.donateMenu.isOpen? '' : 'opacity-0 pointer-events-none'} absolute left-0 top-0 w-full h-full bg-secondary rounded-[15px] duration-300`">
+        <button @click="navbar.donateMenu.isOpen = false" class="absolute right-6 top-6">
           <font-awesome-icon icon="fa-solid fa-close" class="text-[20px] text-primary/70"></font-awesome-icon>
         </button>
         <ul class="w-full flex flex-col gap-3 p-6 mt-14">
@@ -137,7 +133,7 @@ onMounted(() => {
           <li>
             <button @click="copyPix()" class="text-left w-full h-11 flex items-center gap-4 bg-[#70cf64] rounded-[15px] px-4">
               <font-awesome-icon icon="fa-brands fa-pix" class="text-darken text-[20px] duration-300"></font-awesome-icon>
-              {{ isCopiedPix? $t('navbar.pix-copied') : 'Pix' }}
+              {{ navbar.donateMenu.isCopiedPix? $t('navbar.pix-copied') : 'Pix' }}
             </button>
           </li>
         </ul>
@@ -145,7 +141,7 @@ onMounted(() => {
     </div>
     <div
       @click="closeMobileMenu()"
-      :class="`${mobileMenuIsOpen? '' : 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen duration-300 bg-black/30 z-[9998]`"
+      :class="`${navbar.mobileMenuIsOpen? '' : 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen duration-300 bg-black/30 z-[9998]`"
     ></div>
   </div>
 </template>

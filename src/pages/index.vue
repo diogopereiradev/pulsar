@@ -4,6 +4,7 @@ import FeaturesCards from '~/app/home/FeaturesCards.vue';
 import MainFeatures from '~/app/home/MainFeatures.vue';
 import Customizations from '~/app/home/Customizations.vue';
 import GettingStarted from '~/app/home/GettingStarted.vue';
+import Footer from '~/app/home/Footer.vue';
 </script>
 
 <template>
@@ -16,5 +17,6 @@ import GettingStarted from '~/app/home/GettingStarted.vue';
     <MainFeatures />
     <Customizations />
     <GettingStarted />
+    <Footer />
   </div>
 </template>
