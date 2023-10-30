@@ -58,7 +58,6 @@
 
   <p>After execute the command pnpm dev, you can access the project in http://localhost:3000</p>
   <br />
-  <br />
   <h2>Contribute</h2>
   <p>Please star the project and help the developer with a donation on Buy me a Coffe:</p>
   <br />
