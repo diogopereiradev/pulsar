@@ -4,7 +4,7 @@
     <img alt="GitHub package.json version (branch)" src="https://img.shields.io/github/package-json/v/FhillSlinger/pulsar/main?style=for-the-badge">
     <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/FhillSlinger/pulsar?style=for-the-badge">
     <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/FhillSlinger/pulsar?style=for-the-badge">
-    <img alt="GitHub" src="https://img.shields.io/github/license/FhillSlinger/pulsar?style=for-the-badge">
+    <img alt="GitHub" src="https://img.shields.io/github/license/FhillSlinger/pulsar?style=for-the-badge&cacheSeconds=60">
     <img alt="Website" src="https://img.shields.io/website?up_message=running&down_message=failing&url=https%3A%2F%2Fpulsar.diogopereira.tech&logo=vercel&style=for-the-badge">
     <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Production?label=production%20state&style=for-the-badge">
     <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Preview?label=preview%20state&style=for-the-badge">
