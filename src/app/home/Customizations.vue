@@ -29,7 +29,7 @@ const topItems = ref<Item[]>([
 </script>
 
 <template>
-  <section class="flex flex-col items-center min-h-[400px] mt-16 mb-10">
+  <section class="flex flex-col items-center min-h-[400px] mt-24 mb-10">
     <div class="flex flex-col items-center w-full px-12">
       <div class="customizations-button-gradient flex items-center gap-3 h-[37px] max-lg:mb-2 border border-solid border-primary/70 rounded-[10px] px-4 duration-300">
         <p class="customizations-text-gradient text-base text-primary/80">{{ $t('homepage.customizations-feature-button') }}</p>
@@ -42,9 +42,9 @@ const topItems = ref<Item[]>([
       :max-speed="8"
       :min-speed="2"
       :max-size="3"
-      class="max-w-[85%] -mt-20"
+      class="w-[85%] max-w-[1400px] -mt-20"
     />
-    <div class="relative w-[85%]">
+    <div class="relative w-[85%] max-w-[1400px]">
       <div class="w-full rounded-[10px] border-[10px] border-primary/20 shadow-[0px_0px_0px_1px_theme(colors.primary)99]">
         <picture class="w-full object-cover rounded-[10px]">
           <source media="(max-width: 568px)" srcset="/images/customizations-mobile.webp" />
@@ -54,7 +54,7 @@ const topItems = ref<Item[]>([
       <div class="absolute -left-0.5 top-0 w-[calc(100%+4px)] h-[calc(100%+2px)] customizations-image-gradient rounded-[10px]"></div>
     </div>
     <!--Cards container-->
-    <div class="w-full flex justify-center flex-wrap px-20">
+    <div class="w-full max-w-[1600px] flex justify-center flex-wrap px-20">
       <hr class="max-[1344px]:hidden customizations-separator w-0.5 h-[230px] border-none" />
       <!--Cards-->
       <div class="flex grow min-w-[250px] w-[295px]" v-for="(item, i) in topItems">
