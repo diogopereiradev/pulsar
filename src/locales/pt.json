@@ -193,6 +193,10 @@
     "customizations-description": "Dê à sua documentação a aparência desejada com a capacidade de criar componentes usando HTML/CSS/JS.",
     "customizations-features-html-description": "O editor de personalizações oferece suporte a HTML, então você pode criar facilmente componentes bonitos.",
     "customizations-features-css-description": "O editor de personalizações oferece suporte a CSS, então você pode criar estilos bonitos para seus componentes com facilidade.",
-    "customizations-features-javascript-description": "O editor de personalizações oferece suporte a JavaScript, permitindo que você crie facilmente interatividade para seus componentes."
+    "customizations-features-javascript-description": "O editor de personalizações oferece suporte a JavaScript, permitindo que você crie facilmente interatividade para seus componentes.",
+    "gettingstarted-feature-title": "Comece Agora",
+    "gettingstarted-title": "Pulsar: Documente Tudo",
+    "gettingstarted-description": "Solução de documentação completa com o Pulsar.",
+    "gettingstarted-getting-started-button": "Começar Agora"
   }
 }

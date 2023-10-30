@@ -193,6 +193,10 @@
     "customizations-description": "Give your documentation the look of your goal, and you will be able to create components using HTML/CSS/JS.",
     "customizations-features-html-description": "The customizations editor has support to HTML, then you can easily create beautiful components.",
     "customizations-features-css-description": "The customizations editor has support to CSS, then you can easily create beautiful styles to your components.",
-    "customizations-features-javascript-description": "The customizations editor has support to Javascript, then you can easily create interactivity to your components."
+    "customizations-features-javascript-description": "The customizations editor has support to Javascript, then you can easily create interactivity to your components.",
+    "gettingstarted-feature-title": "Get Started",
+    "gettingstarted-title": "Pulsar: Document Everything",
+    "gettingstarted-description": "Complete documentation solution with Pulsar.",
+    "gettingstarted-getting-started-button": "Getting Started"
   }
 }

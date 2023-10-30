@@ -74,7 +74,7 @@ const topItems = ref<Item[]>([
   </section>
 </template>
 
-<style>
+<style scoped>
   .customizations-button-gradient {
     background: linear-gradient(180deg, rgba(25,29,43,0) 0%, rgba(111,97,191,0.2) 100%); 
   }
