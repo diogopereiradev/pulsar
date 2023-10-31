@@ -1,4 +1,5 @@
 {
+  "priority": 1,
   "name": "Pulsar",
   "description": {
     "pt": "Crie sites de documentação modernos para sua aplicação usando Pulsar. Você gerará páginas de documentação estáticas personalizadas com o Pulsar.",
