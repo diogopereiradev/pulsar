@@ -41,13 +41,13 @@ async function handleSubmit() {
       ></font-awesome-icon>
     </div>
     <!--Input-->
-    <form @submit.prevent="handleSubmit" v-else>
-      <InputText
-        v-model="value"
-        @blur="handleSubmit"
-        v-focus
-        :style="{ color }"
-      />
-    </form>
+    <InputText
+      v-else
+      v-model="value"
+      @blur="handleSubmit"
+      @keyup="(ev) => ev.key === 'Enter'? handleSubmit() : false"
+      v-focus
+      :style="{ color }"
+    />
   </div>
 </template>
