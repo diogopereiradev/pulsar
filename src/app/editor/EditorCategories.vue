@@ -26,7 +26,7 @@ async function handleNewCategory(value: string) {
     label: value
   };
   const categoriesCopy = JSON.parse(JSON.stringify(editor.value.doc.categories));
-  setTimeout(() => editor.value.doc.categories = [...categoriesCopy, newCategory], 500);
+  editor.value.doc.categories = [...categoriesCopy, newCategory];
 }
 
 async function handleNewPage(value: string, categoryId: number) {
@@ -118,7 +118,7 @@ function deletePageConfirmDialog(pageId: number) {
               >
                 {{ page.title }}
               </button>
-              <!--New page button-->
+              <!--Delete page button-->
               <Button
                 @click="deletePageConfirmDialog(page.id)"
                 class="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto hover:!bg-[#f99999]/20 !w-[30px] !h-[30px] border-none"
@@ -133,7 +133,7 @@ function deletePageConfirmDialog(pageId: number) {
         <li>
           <InputableButton
             :color="editor.doc.colors.text"
-            @update:submit="(value) => handleNewPage(value, category.id)"
+            @update:submit="handleNewPage($event, category.id)"
           >
             <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
             {{ $t('editor.doc-editor-new-page-button-message') }}
@@ -144,7 +144,7 @@ function deletePageConfirmDialog(pageId: number) {
     <li class="mt-2.5">
       <InputableButton
         :color="editor.doc.colors.text"
-        @update:submit="handleNewCategory"
+        @update:submit="handleNewCategory($event)"
       >
         <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
         {{ $t('editor.doc-editor-new-category-button-message') }}

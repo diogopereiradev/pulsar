@@ -12,11 +12,7 @@ async function handleSubmit() {
   isOpen.value = false;
   isLoading.value = true;
   await emit('update:submit', value.value);
-  if(value.value) {
-    setTimeout(() => isLoading.value = false, 500);
-  } else {
-    isLoading.value = false;
-  }
+  isLoading.value = false;
   value.value = '';
 }
 </script>
@@ -44,7 +40,7 @@ async function handleSubmit() {
     <InputText
       v-else
       v-model="value"
-      @blur="handleSubmit"
+      @blur="handleSubmit()"
       @keyup="(ev) => ev.key === 'Enter'? handleSubmit() : false"
       v-focus
       :style="{ color }"
