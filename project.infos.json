@@ -1,0 +1,31 @@
+{
+  "priority": 1,
+  "name": "Pulsar",
+  "description": {
+    "pt": "Crie sites de documentação modernos para sua aplicação usando Pulsar. Você gerará páginas de documentação estáticas personalizadas com o Pulsar.",
+    "en": "Create modern documentation websites for your application using Pulsar. You will generate custom static documentation pages with Pulsar."
+  },
+  "technologies": [
+    {
+      "label": "Vue.js",
+      "color": "#4dc93a"
+    },
+    {
+      "label": "Nuxt.js",
+      "color": "#4dc93a"
+    },
+    {
+      "label": "Tailwind",
+      "color": "#4d90b6"
+    },
+    {
+      "label": "Typescript",
+      "color": "#4d90b6"
+    }
+  ],
+  "projectThumbImageUrl": "https://i.ibb.co/Xpjz7dY/image.png",
+  "projectIconUrl": "https://raw.githubusercontent.com/FhillSlinger/pulsar/main/public/favicons/favicon.ico",
+  "projectRepositoryUrl": "https://github.com/FhillSlinger/pulsar",
+  "projectLiveUrl": "https://pulsar.diogopereira.tech/",
+  "createdAt": "30/10/2023"
+}
