@@ -31,7 +31,6 @@ function handleNewCategory(value: string) {
 
 function handleNewPage(value: string, categoryId: number) {
   if(!value || !categoryId) return;
-  console.log(`Was called, page: ${value}, categoryId: ${categoryId}`);
 
   const newPage: IDocumentationPage = {
     id: Math.round(Math.random() * (10000 - 1) + 1),

@@ -173,7 +173,7 @@ function commandExecutor(command: (props: CommandProps) => boolean) {
       to: props.editor.state.selection.from
     })
     .deleteSelection()
-    .command(p => command(p))
+    .command(command)
     .run();
 }
 </script>
@@ -209,7 +209,7 @@ function commandExecutor(command: (props: CommandProps) => boolean) {
           <Button
             tabindex="1"
             :aria-label="command.title"
-            @click="command.executor()"
+            @click="command.executor"
             :title="command.description"
             class="dinamic-button-bg flex items-center !justify-start w-full h-20 !rounded-none border-none !px-7 !py-4"
           >
