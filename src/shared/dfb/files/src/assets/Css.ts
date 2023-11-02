@@ -22,7 +22,7 @@ export function Css(doc: IDocumentation) {
     .pulsar-page-wrapper {
       max-width: 2120px;
       margin: 0 auto;
-      padding: 20px 50px 50px 50px;
+      padding: 70px 50px 50px 50px;
     }
 
     body {
