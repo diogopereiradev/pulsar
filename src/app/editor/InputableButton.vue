@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import InputText from 'primevue/inputtext';
 
-defineProps<{ color: string }>();
+const props = defineProps<{
+  data?: object,
+  color: string 
+}>();
 const emit = defineEmits(['update:submit']);
 
 const value = ref('');
 const isOpen = ref(false);
 const isLoading = ref(false);
 
-async function handleSubmit() {
+function handleSubmit() {
   isOpen.value = false;
   isLoading.value = true;
-  await emit('update:submit', value.value);
-  if(value.value) {
-    setTimeout(() => isLoading.value = false, 500);
-  } else {
-    isLoading.value = false;
-  }
+  // @ts-ignore
+  emit('update:submit', value.value, props.data? props.data.categoryId : undefined);
+  isLoading.value = false;
   value.value = '';
 }
 </script>
@@ -41,13 +41,13 @@ async function handleSubmit() {
       ></font-awesome-icon>
     </div>
     <!--Input-->
-    <form @submit.prevent="handleSubmit" v-else>
-      <InputText
-        v-model="value"
-        @blur="handleSubmit"
-        v-focus
-        :style="{ color }"
-      />
-    </form>
+    <InputText
+      v-else
+      v-model="value"
+      @blur="handleSubmit()"
+      @keyup="(ev) => ev.key === 'Enter'? handleSubmit() : false"
+      v-focus
+      :style="{ color }"
+    />
   </div>
 </template>
