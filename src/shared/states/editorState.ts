@@ -5,7 +5,8 @@ type EditorStateType = {
   controlsMenu: {
     isOpen: boolean,
     isSaved: boolean,
-    isSaving: boolean
+    isSaving: boolean,
+    isExportingManifest: boolean
   },
   exportDocModal: {
     isLoading: boolean,
@@ -23,7 +24,8 @@ export const useEditor = () => useState<EditorStateType>('editorState', () => ({
   controlsMenu: {
     isOpen: false,
     isSaved: true,
-    isSaving: false
+    isSaving: false,
+    isExportingManifest: false
   },
   exportDocModal: {
     isLoading: false,

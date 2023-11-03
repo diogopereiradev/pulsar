@@ -38,6 +38,7 @@ library.add(...[
   SolidIcons.faMicrochip,
   SolidIcons.faCode,
   SolidIcons.faWindowMaximize,
+  SolidIcons.faFileArrowDown,
   BrandsIcons.faCss3,
   BrandsIcons.faSquareJs,
   BrandsIcons.faMarkdown,

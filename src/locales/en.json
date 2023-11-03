@@ -96,6 +96,7 @@
     "controls-menu-customize-input-label": "Customize",
     "controls-menu-customize-input-text": "Open Editor",
     "controls-menu-exportdoc-button-aria-label": "Export Documentation",
+    "controls-menu-exportmanifest-button-aria-label": "Export manifest.json",
     "controls-menu-previewmode-button-aria-label": "Preview Mode",
     "controls-menu-back-to-docs-button-message": "Back",
     "controls-menu-basic-infos-title": "Basic informations",

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import lodash from 'lodash';
+import { saveAs } from 'file-saver';
 import { Status } from '~/@types/status';
 import Tailwind from "primevue/passthrough/tailwind";
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
@@ -11,6 +12,7 @@ import { usePassThrough } from 'primevue/passthrough';
 import { Documentation, IDocumentation, IDocumentationColorPalette } from '~/database/models/Documentation';
 import { useEditor } from '~/shared/states/editorState';
 import HexColorPicker from '~/shared/components/utils/HexColorPicker.vue';
+import { Manifest } from '~/shared/dfb/files/Manifest';
 
 const { params } = useRoute();
 const docId = Number(params.id) || 0;
@@ -58,6 +60,12 @@ function startAutoSave() {
       handleSave();
     }
   }, 2000);
+}
+
+function handleManifestExport() {
+  const data = Manifest(editor.value.doc);
+  const blob = new Blob([data], { type: 'application/json' });
+  saveAs(blob, `${editor.value.doc.title.toLowerCase().replaceAll(' ', '').trim()}-manifest.json`);
 }
 
 // Check if editor.value.doc or currentSelectedPage has been modified. If the data has been changed, the user can save the data
@@ -109,9 +117,9 @@ onBeforeMount(async () => {
         max-2xl:fixed
         max-2xl:left-0
         max-2xl:top-0
-        min-w-[310px]
-        max-w-[310px]
-        max-md:max-w-[280px]
+        min-w-[330px]
+        max-w-[330px]
+        max-md:max-w-[330px]
         max-md:min-w-[0px]
         bg-secondary
         2xl:bg-secondary/70
@@ -144,7 +152,7 @@ onBeforeMount(async () => {
         </div>
         <hr class="w-full h-0.5 bg-divider/60 border-none mb-7" />
         <div class="flex items-center justify-between">
-          <AppIcon class="w-10" size="40" color="#d3d3d3"/>
+          <AppIcon class="min-w-[40px]" size="40" color="#d3d3d3"/>
           <div class="flex items-center gap-2.5">
             <!--Preview button-->
             <NuxtLinkLocale
@@ -155,6 +163,17 @@ onBeforeMount(async () => {
             >
               <font-awesome-icon icon="fa-solid fa-eye" class="text-[#fff]" />
             </NuxtLinkLocale>
+            <!--Export manifest button-->
+            <Button
+              type="button"
+              @click="handleManifestExport"
+              class="w-10 !h-10 !bg-primary" 
+              :title="$t('editor.controls-menu-exportmanifest-button-aria-label')" 
+              :aria-label="$t('editor.controls-menu-exportmanifest-button-aria-label')"
+            >
+              <font-awesome-icon v-if="!editor.controlsMenu.isExportingManifest" icon="fa-solid fa-file-arrow-down" class="text-[17px]"/>
+              <font-awesome-icon v-if="editor.controlsMenu.isExportingManifest" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+            </Button>
             <!--Export doc button-->
             <Button
               type="button"

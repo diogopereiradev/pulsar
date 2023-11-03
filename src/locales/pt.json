@@ -95,6 +95,7 @@
     "controls-menu-autosave-input-label": "Salvar Automático",
     "controls-menu-customize-input-label": "Customizar",
     "controls-menu-customize-input-text": "Abrir Editor",
+    "controls-menu-exportmanifest-button-aria-label": "Exportar manifest.json",
     "controls-menu-exportdoc-button-aria-label": "Exportar Documentação",
     "controls-menu-previewmode-button-aria-label": "Modo de Prévia",
     "controls-menu-back-to-docs-button-message": "Voltar",
