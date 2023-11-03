@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import lodash from 'lodash';
-import { saveAs } from 'file-saver';
+import fileSaver from 'file-saver';
 import { Status } from '~/@types/status';
 import Tailwind from "primevue/passthrough/tailwind";
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
@@ -65,7 +65,7 @@ function startAutoSave() {
 function handleManifestExport() {
   const data = Manifest(editor.value.doc);
   const blob = new Blob([data], { type: 'application/json' });
-  saveAs(blob, `${editor.value.doc.title.toLowerCase().replaceAll(' ', '').trim()}-manifest.json`);
+  fileSaver.saveAs(blob, `${editor.value.doc.title.toLowerCase().replaceAll(' ', '').trim()}-manifest.json`);
 }
 
 // Check if editor.value.doc or currentSelectedPage has been modified. If the data has been changed, the user can save the data
