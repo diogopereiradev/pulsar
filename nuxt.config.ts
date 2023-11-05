@@ -2,14 +2,36 @@
 import path from 'path';
 
 export default defineNuxtConfig({
+  modules: [
+    '@sidebase/nuxt-auth',
+    '@nuxtjs/i18n', 
+    '@nuxt/image'
+  ],
   plugins: [
     './plugins/fontawesome.ts',
     './plugins/primevue.ts',
     './plugins/directives.ts'
   ],
+  srcDir: 'src',
+  dir: { public: '../public' },
+  devtools: { 
+    enabled: true
+  },
   nitro: {
     compressPublicAssets: true,
     minify: true
+  },
+  vite: {
+    resolve: {
+      alias: {
+        fs: 'browserify-fs',
+        path: 'path-browserify',
+        '~': path.resolve(__dirname, './src')
+      }
+    },
+    build: {
+      chunkSizeWarningLimit: 2000
+    }
   },
   routeRules: {
     '/**': { prerender: true }
@@ -22,7 +44,6 @@ export default defineNuxtConfig({
       'primevue'
     ]
   },
-  modules: ['@nuxtjs/i18n', '@nuxt/image'],
   i18n: {
     vueI18n: './i18n.config.ts',
     defaultLocale: 'en',
@@ -34,38 +55,24 @@ export default defineNuxtConfig({
         code: 'en',
         iso: 'en-US',
         name: 'English',
-        file: 'locales/en.json'
+        file: 'shared/locales/en.json'
       },
       {
         code: 'pt',
         iso: 'pt-BR',
         name: 'Português',
-        file: 'locales/pt.json'
+        file: 'shared/locales/pt.json'
       }
     ]
   },
-  devtools: { 
-    enabled: true
-  },  
-  srcDir: 'src',
-  dir: { public: '../public' },
+  auth: {
+    isEnabled: true
+  },
   postcss: {
     plugins: {
       autoprefixer: {},
       tailwindcss: {}
     }
   },
-  css: ['~/shared/assets/globals.css', '@fortawesome/fontawesome-svg-core/styles.css'],
-  vite: {
-    resolve: {
-      alias: {
-        fs: 'browserify-fs',
-        path: 'path-browserify',
-        '~': path.resolve(__dirname, './src')
-      }
-    },
-    build: {
-      chunkSizeWarningLimit: 2000
-    }
-  }
+  css: ['~/shared/assets/globals.css', '@fortawesome/fontawesome-svg-core/styles.css']
 });

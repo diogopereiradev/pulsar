@@ -20,7 +20,7 @@ const StylesWithTailwind = usePassThrough(
           !flex
           !items-center
           ${context.selected ? '!bg-primary hover:!bg-primary/80' : undefined}
-          !rounded-md
+          !rounded-[10px]
           !text-primary
           hover:!bg-primary/20
           hover:text-primary/80

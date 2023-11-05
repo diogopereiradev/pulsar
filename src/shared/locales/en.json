@@ -58,6 +58,10 @@
   "home": {
     "title": "Pulsar - Home"
   },
+  "auth": {
+    "title": "Pulsar - Authenticate",
+    "form-title": "Authenticate"
+  },
   "documentations": {
     "title": "Pulsar - Your documentations",
     "toolbar-search-placeholder": "Search for documentations",

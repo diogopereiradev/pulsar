@@ -7,7 +7,7 @@ import { Documentation } from '~/database/models/Documentation';
 import { useCustomize } from '~/shared/states/customizeState';
 
 definePageMeta({
-  layout: 'customize'
+  middleware: 'authentication'
 });
 
 const { params } = useRoute();

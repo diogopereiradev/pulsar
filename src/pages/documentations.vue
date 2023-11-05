@@ -4,6 +4,11 @@ import DocsToolbar from '~/app/documentations/DocsToolbar.vue';
 import NewDocsModal from '~/app/documentations/NewDocsModal.vue';
 import DocsList from '~/app/documentations/DocsList.vue';
 import DocUploadModal from '~/app/documentations/DocUploadModal.vue';
+
+definePageMeta({
+  layout: 'with-navbar',
+  middleware: 'authentication'
+})
 </script>
 
 <template>

@@ -20,11 +20,8 @@ export async function dbConnect(callback: (db: IDBDatabase) => void): Promise<St
   });
 }
 
-export function dbUpgradeNeeded() {
-  const request = window.indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
-
-  request.onupgradeneeded = (ev) => {
-    const db = (ev as unknown as { target: { result: IDBDatabase } }).target.result;
+function tableInit(ev: { target: { result: IDBDatabase } }) {
+  const db = ev.target.result;
     const documentationsStore = db.createObjectStore('documentations', { keyPath: 'id', autoIncrement: true });
 
     documentationsStore.createIndex('id', 'id', { unique: true });
@@ -39,5 +36,12 @@ export function dbUpgradeNeeded() {
     documentationsStore.createIndex('customizations', 'customizations', { unique: false });
     documentationsStore.createIndex('features', 'features', { unique: false });
     documentationsStore.createIndex('createdAt', 'createdAt', { unique: false });
+}
+
+export function dbUpgradeNeeded() {
+  const request = window.indexedDB.open(DATABASE_NAME, DATABASE_VERSION);
+
+  request.onupgradeneeded = (ev) => {
+    tableInit(ev as unknown as { target: { result: IDBDatabase } });
   };
 }

@@ -58,6 +58,10 @@
   "home": {
     "title": "Pulsar - Inicio"
   },
+  "auth": {
+    "title": "Pulsar - Autenticar-se",
+    "form-title": "Autenticar-se"
+  },
   "documentations": {
     "title": "Pulsar - Suas documentações",
     "toolbar-search-placeholder": "Pesquisar documentações",

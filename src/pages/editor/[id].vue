@@ -8,7 +8,9 @@ import { useEditor } from '~/shared/states/editorState';
 import { Documentation } from '~/database/models/Documentation';
 import PageStates from '~/shared/components/PageStates.vue';
 
-definePageMeta({ layout: 'editor' });
+definePageMeta({
+  middleware: 'authentication'
+});
 
 const { params } = useRoute();
 const editor = useEditor();

@@ -6,6 +6,7 @@ type NavbarStateType = {
     isCopiedPix: boolean,
     isCopiedTimer: NodeJS.Timeout | undefined
   },
+  profileMenuIsOpen: boolean,
   mobileMenuIsOpen: boolean,
   selectedLocale: LocaleObject | undefined
 };
@@ -16,6 +17,7 @@ export const useNavbar = () => useState<NavbarStateType>('navbarState', () => ({
     isCopiedPix: false,
     isCopiedTimer: undefined
   },
+  profileMenuIsOpen: false,
   mobileMenuIsOpen: false,
   selectedLocale: undefined
 }));

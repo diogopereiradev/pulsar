@@ -8,7 +8,8 @@ import { PreviewRouter } from '~/shared/dfb/utils/PreviewRouter';
 import { PreviewCustomizations } from '~/shared/dfb/utils/PreviewCustomizations';
 
 definePageMeta({
-  layout: 'preview'
+  layout: 'preview',
+  middleware: 'authentication'
 });
 
 const { params } = useRoute();
