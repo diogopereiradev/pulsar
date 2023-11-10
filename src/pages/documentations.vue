@@ -1,14 +1,25 @@
 <script setup lang="ts">
+import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import DocsToolbar from '~/app/documentations/DocsToolbar.vue';
 import NewDocsModal from '~/app/documentations/NewDocsModal.vue';
 import DocsList from '~/app/documentations/DocsList.vue';
-import DocUploadModal from '~/app/documentations/DocUploadModal.vue';
+import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 
 definePageMeta({
   layout: 'with-navbar',
   middleware: 'authentication'
-})
+});
+
+const show = ref(true);
+
+function onDatabaseSyncOpen() {
+  show.value = false;
+}
+
+function onDatabaseSyncClose() {
+  show.value = true;
+}
 </script>
 
 <template>
@@ -22,8 +33,9 @@ definePageMeta({
     footer: 'text-primary !bg-secondary rounded-b-[15px] flex justify-end p-6'
   }"/>
   <NewDocsModal />
-  <DocUploadModal />
-  <div class="mx-auto max-w-[1250px] mt-7 3xl:mt-16 px-5 md:px-12">
+  <DatabaseSync @on:open="onDatabaseSyncOpen" @on:close="onDatabaseSyncClose"/>
+  <Toast class="z-[9999]" position="bottom-right"/>
+  <div v-if="show" class="mx-auto max-w-[1250px] mt-7 3xl:mt-16 px-5 md:px-12">
     <DocsToolbar />
     <DocsList />
   </div>

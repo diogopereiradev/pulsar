@@ -1,4 +1,4 @@
-import { IDocumentation } from "~/database/models/Documentation";
+import { IDocumentation } from "~/@types/declarations/Documentation";
 import { getIsFirstPage } from "./utils/getIsFirstPage";
 import { Html } from "./files/src/Html";
 import JSZip from "jszip";

@@ -1,5 +1,5 @@
 import beautify from 'js-beautify';
-import { IDocumentation } from '~/database/models/Documentation';
+import { IDocumentation } from '~/@types/declarations/Documentation';
 
 export function Script(doc: IDocumentation) {
   return beautify.js(/* javascript */`

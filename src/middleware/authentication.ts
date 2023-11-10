@@ -1,6 +1,5 @@
 import i18nConfig from "~~/i18n.config";
 
-
 export default defineNuxtRouteMiddleware(async (to) => {
   const i18nconfig = await i18nConfig();
   type AvailableLocales = keyof typeof i18nconfig.messages;

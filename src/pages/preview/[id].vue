@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DatabaseSync from '~/shared/components/DatabaseSync.vue';
-import { Documentation, IDocumentation } from '~/database/models/Documentation';
+import { IDocumentation } from '~/@types/declarations/Documentation';
 import PageStates from '~/shared/components/PageStates.vue';
 import { Html } from '~/shared/dfb/files/src/Html';
 import { Script } from '~/shared/dfb/files/src/assets/Script';
@@ -13,6 +13,8 @@ definePageMeta({
 });
 
 const { params } = useRoute();
+const pageIsLoaded = ref(false);
+const pageIsError = ref(false);
 const doc = ref<IDocumentation | undefined>();
 
 // Load the page when iframe is loaded
@@ -52,12 +54,16 @@ function iframeLoad(ev: Event) {
 
 // Load documentation
 onBeforeMount(async () => {
-  const result = await Documentation.get(Number(params.id));
-
-  if(result) {
-    doc.value = result;
+  const result = await $fetch(`/api/getDoc?id=${params.id}`, {
+    method: 'GET'
+  });
+  const typedResult = result as { count: number, limit: number, docs: IDocumentation[] };
+  
+  if(typedResult && typedResult.docs.length > 0) {
+    doc.value = typedResult.docs[0];
+    pageIsLoaded.value = true;
   } else {
-    alert('Error on loading doc');
+    pageIsError.value = true;
   }
 });
 </script>
@@ -71,7 +77,8 @@ onBeforeMount(async () => {
       status: 404,
       redirectPath: '/documentations'
     }"
-    :success-condition="async () => (await Documentation.get(Number(params.id))? true : false)"
+    :is-loaded="pageIsLoaded"
+    :is-error="pageIsError"
   >
     <main>
       <iframe 

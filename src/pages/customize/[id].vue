@@ -3,14 +3,15 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
 import PageStates from '~/shared/components/PageStates.vue';
-import { Documentation } from '~/database/models/Documentation';
 import { useCustomize } from '~/shared/states/customizeState';
 
 definePageMeta({
-  middleware: 'authentication'
+  middleware: ['authentication']
 });
 
 const { params } = useRoute();
+const pageIsLoaded = ref(false);
+const pageIsError = ref(false);
 const customize = useCustomize();
 </script>
 
@@ -24,7 +25,8 @@ const customize = useCustomize();
         status: 404,
         redirectPath: '/documentations'
       }"
-      :success-condition="async () => (await Documentation.get(Number(params.id))? true : false)"
+      :is-loaded="pageIsLoaded"
+      :is-error="pageIsError"
     >
       <main class="wrapper">
         <ConfirmDialog :pt="{

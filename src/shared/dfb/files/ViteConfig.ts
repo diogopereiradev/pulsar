@@ -1,7 +1,7 @@
 import beautify from "beautify";
 
 export function ViteConfig() {
-  return beautify(`
+  return beautify(/* javascript */`
     import path from 'path';
     import { sync } from 'glob';
     import { defineConfig } from 'vite';

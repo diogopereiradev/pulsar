@@ -1,4 +1,4 @@
-import { IDocumentation } from '~/database/models/Documentation'; 
+import { IDocumentation } from '~/@types/declarations/Documentation'; 
 
 export function License(doc: IDocumentation) {
   return `

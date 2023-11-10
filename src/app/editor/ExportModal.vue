@@ -14,7 +14,7 @@ function startDocumentationExport() {
   editor.value.exportDocModal.isLoading = true;
 
   setTimeout(async () => {
-    const dfb = new DocumentationFileBuilder(editor.value.doc);
+    const dfb = new DocumentationFileBuilder(editor.value.unsavedDoc);
     const compressedBlob = await dfb.generate();
   
     if(compressedBlob) {
@@ -28,7 +28,7 @@ function startDocumentationExport() {
 }
 
 function downloadDocumentationFiles() {
-  const fileName = `${editor.value.doc.title.toLocaleLowerCase().replaceAll(' ', '').trim()}.zip`;
+  const fileName = `${editor.value.unsavedDoc.title.toLocaleLowerCase().replaceAll(' ', '').trim()}.zip`;
   const fileData = editor.value.exportDocModal.data;
   
   if(fileData) {
@@ -118,8 +118,8 @@ function cancelConfirmDialog() {
           <div class="relative w-full h-4/5 bg-secondary_darken lg:rounded-t-[10px] overflow-hidden">
             <DocPrototype
               class="absolute left-2/4 -translate-x-2/4 bottom-[-90px] max-sm:scale-100 max-md:scale-[1.2] max-lg:scale-[1.6]"
-              :colors="editor.doc.colors"
-              :features="editor.doc.features"
+              :colors="editor.unsavedDoc.colors"
+              :features="editor.unsavedDoc.features"
               navbar
             />
           </div>

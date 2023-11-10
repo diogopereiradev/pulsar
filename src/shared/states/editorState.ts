@@ -1,7 +1,9 @@
-import { IDocumentation, IDocumentationPage, documentationDataEmptyObj } from "~/database/models/Documentation";
+import { IDocumentation, IDocumentationPage } from "~/@types/declarations/Documentation";
+import { documentationDataEmptyObj } from "~/@types/utils/documentation";
 
 type EditorStateType = {
-  doc: IDocumentation,
+  unsavedDoc: IDocumentation,
+  docDataSinceLastSave: IDocumentation,
   controlsMenu: {
     isOpen: boolean,
     isSaved: boolean,
@@ -20,7 +22,8 @@ type EditorStateType = {
 };
 
 export const useEditor = () => useState<EditorStateType>('editorState', () => ({
-  doc: documentationDataEmptyObj,
+  unsavedDoc: documentationDataEmptyObj,
+  docDataSinceLastSave: documentationDataEmptyObj,
   controlsMenu: {
     isOpen: false,
     isSaved: true,
@@ -39,7 +42,6 @@ export const useEditor = () => useState<EditorStateType>('editorState', () => ({
     id: -1,
     categoryId: -1,
     title: '',
-    children: [],
     content: '',
     createdAt: 0,
     lastUpdateAt: 0

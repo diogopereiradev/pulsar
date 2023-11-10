@@ -1,92 +1,82 @@
 <script setup lang="ts">
-import { Status } from '~/@types/status';
-import { Documentation, IDocumentation, documentationDataEmptyObj } from '~/database/models/Documentation';
+import { useToast } from 'primevue/usetoast';
+import { Documentation } from '../indexedDB/models/Documentation';
+import { IOldDocumentation } from '../indexedDB/@types/OldDocumentation';
+
+const emit = defineEmits(['on:open', 'on:close']);
 
 type Data = {
-  isChecking: boolean,
+  isOpen: boolean,
   isSyncing: boolean,
-  diff: string[]
+  docs: IOldDocumentation[]
 };
 
-const props = defineProps<{ docId: number }>();
+const toast = useToast();
 const data = ref<Data>({
-  isChecking: false,
+  isOpen: false,
   isSyncing: false,
-  diff: []
+  docs: []
 });
 
-async function validityDocSync() {
-  if(props.docId != 0) {
-    const doc = await Documentation.get(props.docId);
+const showError = (message: string) => {
+  toast.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: message || 'Error on syncing the documentations',
+    life: 6000
+  });
+};
 
-    if(doc) {
-      const docKeys = Object.keys(doc);
-      const databaseColumnsKeys = Object.keys(documentationDataEmptyObj);
-      const diff = databaseColumnsKeys.filter(key => !docKeys.includes(key));
-      data.value.diff = diff;
+async function syncDoc() {
+  if(data.value.isSyncing) return;
+  data.value.isSyncing = true;
 
-      if(data.value.diff.length >= 1) {
-        data.value.isChecking = true;
+  const headers = useRequestHeaders(['cookie']) as HeadersInit;
+  try {
+    const result: { status: number, message: string } = await $fetch('/api/syncOldDoc', {
+      method: 'POST',
+      headers,
+      body: {
+        docs: data.value.docs
       }
+    });
+  
+    if(result && result.status === 200) {
+      emit('on:close');
+      data.value.isOpen = false;
+      data.value.isSyncing = false;
+      data.value.docs = [];
+      Documentation.clear();
     }
+  } catch(err) {
+    data.value.isSyncing = false;
+    // @ts-expect-error
+    showError(err.message);
   }
 }
 
-function syncDoc() {
-  if(data.value.isSyncing) return;
-  data.value.isSyncing = true;
-  setTimeout(async () => {
-    const databaseColumnsKeys = Object.keys(documentationDataEmptyObj);
-    const updatedDocData: Partial<IDocumentation> = {};
+onMounted(async () => {
+  const oldDocs = await Documentation.getAll();
 
-    data.value.diff.forEach(diffKeyname => {
-      // @ts-ignore
-      updatedDocData[diffKeyname] = documentationDataEmptyObj[diffKeyname];
-    });
-    
-    const updatedKeys = Object.keys(updatedDocData);
-    const onlyKeysThatExists = databaseColumnsKeys.filter(key => updatedKeys.includes(key) && key);
-    const conflitsIsResolved = onlyKeysThatExists.length === updatedKeys.length;
-    
-    if(conflitsIsResolved) {
-      const result = await Documentation.edit(props.docId, updatedDocData);
+  if(!oldDocs) return;
+  if(oldDocs.length < 1) return;
 
-      if(result === Status.OK) {
-        data.value.isSyncing = false;
-        data.value.isChecking = false;
-        data.value.diff = [];
-      } else {
-        alert('Error on trying to edit the documentation!');
-      }
-    } else {
-      alert('Error on trying to sync the documentation!');
-    }
-  }, 300);
-}
-
-watch(() => props.docId, async (id) => {
-  validityDocSync();
-});
-
-onBeforeMount(() => {
-  validityDocSync();
+  data.value.docs = oldDocs;
+  data.value.isOpen = true;
+  emit('on:open');
 });
 </script>
 
 <template>
-  <div :class="`${data.isChecking? '' : 'opacity-0 pointer-events-none' } duration-300 fixed left-0 top-0 flex justify-center items-center w-screen h-screen bg-secondary px-2.5 z-[9999]`">
+  <div v-if="data.docs.length >= 1" :class="`${data.isOpen? '' : 'opacity-0 pointer-events-none' } duration-300 fixed left-0 top-0 flex justify-center items-center w-screen h-screen bg-secondary px-2.5 z-[800]`">
     <div class="flex flex-col items-center">
       <font-awesome-icon icon="fa-solid fa-rotate" class="text-[105px] text-secondary/75"></font-awesome-icon>
       <div class="flex items-center flex-col gap-2.5 max-w-[600px] mt-5">
         <h2 class="text-[21px] text-primary/80 font-medium">{{ $t('databasesync.title') }}</h2>
         <p class="text-center text-base text-primary/50">{{ $t('databasesync.description') }}</p>
-        <p class="text-base text-primary/70" v-if="data.diff.length >= 1">
-          <strong>{{ $t('databasesync.missing-data-text') }}: </strong>
-          <span class="text-secondary/90">{{ data.diff.join(', ') }}</span>
-        </p>
         <div class="flex gap-3.5 mt-6">
           <NuxtLinkLocale 
-            to="/documentations" 
+            to="/" 
             class="flex gap-3.5 items-center w-[120px] md:w-[140px] h-11 bg-primary/20 hover:bg-primary duration-300 text-primary px-5 rounded-md"
           >
             <font-awesome-icon icon="fa-solid fa-arrow-left-long"></font-awesome-icon>

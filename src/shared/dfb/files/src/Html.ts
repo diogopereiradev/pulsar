@@ -1,10 +1,9 @@
 import beautify from "js-beautify";
 import { getIsFirstPage } from "~/shared/dfb/utils/getIsFirstPage";
-import { IDocumentation, IDocumentationPage } from "~/database/models/Documentation";
+import { IDocumentation, IDocumentationPage } from "~/@types/declarations/Documentation";
 import { MapIcon } from "./assets/icons/MapIcon";
 import { Css } from "./assets/Css";
 import { ResetCss } from "./assets/ResetCss";
-import { PreviewCustomizations } from "../../utils/PreviewCustomizations";
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
   return /* html */`
@@ -15,17 +14,17 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPrevi
           <i class="fa-solid fa-xmark" style="color: rgba(var(--text)); font-size: 20px;"></i>
         </button>
         <!--Map icon and title-->
-        ${doc.navigationTitle && /* html */`
+        ${doc.messages.navigationTitle && /* html */`
           <div style="display: flex; gap: 15px;">
             <div class="pulsar-doc-navigation-menu-map-icon-container">
               ${MapIcon('pulsar-doc-navigation-menu-map-icon')}
             </div>
             <div style="display: flex; flex-direction: column;">
-              <p title="${doc.navigationTitle}" class="pulsar-navigation-menu-title pulsar-utils-truncate">
-                ${doc.navigationTitle}
+              <p title="${doc.messages.navigationTitle}" class="pulsar-navigation-menu-title pulsar-utils-truncate">
+                ${doc.messages.navigationTitle}
               </p>
-              <p title="${doc.navigationSubTitle}" class="pulsar-navigation-menu-subtitle pulsar-utils-truncate">
-                ${doc.navigationSubTitle}
+              <p title="${doc.messages.navigationSubTitle}" class="pulsar-navigation-menu-subtitle pulsar-utils-truncate">
+                ${doc.messages.navigationSubTitle}
               </p>
             </div>
           </div>
@@ -50,7 +49,7 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPrevi
                       >
                         ${isToPreview? /* html */`
                           <button
-                            onclick="changeRoute(this, ${JSON.stringify(categoryPage).replaceAll('"', '\'')})"
+                            onclick="changeRoute(this, ${categoryPage.id})"
                             title="${categoryPage.title}"
                             data-id="${categoryPage.id}"
                             class="pulsar-navigation-link pulsar-utils-truncate ${routeName === page.title.toLowerCase().replaceAll(' ', '').trim() && 'current-page'}"
@@ -90,7 +89,7 @@ function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
       ${doc.features.indexesTable? /* html */`
         <div class="pulsar-indexes-table" >
           <h2 class="pulsar-indexes-table-title">
-            ${doc.indexesTableTitle}
+            ${doc.messages.indexesTableTitle}
           </h2>
           <ul class="pulsar-indexes-table-list"></ul>
         </div>

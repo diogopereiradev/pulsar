@@ -1,4 +1,4 @@
-import { IDocumentationCustomization } from "~/database/models/Documentation";
+import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
 
 export function CustomizationHtml(customization: IDocumentationCustomization) {
   return /* html */`

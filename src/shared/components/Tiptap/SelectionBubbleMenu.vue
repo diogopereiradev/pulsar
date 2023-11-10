@@ -84,4 +84,4 @@ function handleToolbarToggleLink() {
       <font-awesome-icon icon="fa-solid fa-link"></font-awesome-icon>
     </Button>
   </bubble-menu>
-</template>
+</template>~/shared/database/models/Documentation~/indexedDB/models/Documentation

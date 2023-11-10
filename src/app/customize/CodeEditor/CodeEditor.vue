@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import 'splitpanes/dist/splitpanes.css';
-import lodash from 'lodash';
 import HtmlEditor from './HtmlEditor.vue';
 import CssEditor from './CssEditor.vue';
 import JavascriptEditor from './JavascriptEditor.vue';
 import { Splitpanes, Pane } from 'splitpanes';
 import { useCustomize } from '~/shared/states/customizeState';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
-import { Documentation } from '~/database/models/Documentation';
-import { Status } from '~/@types/status';
 import { ResetCss } from '~/shared/dfb/files/src/assets/ResetCss';
 
 const customize = useCustomize();
@@ -31,6 +28,7 @@ function openPreview() {
 }
 
 async function handleSave() {
+  /*
   if(!customize.value.controlsMenu.isSaved) {
     const editingCustomization = customize.value.controlsMenu.customizationInfosMenu.data;
     
@@ -47,6 +45,7 @@ async function handleSave() {
       customize.value.controlsMenu.isSaving = false;
     }
   }
+  */
 }
 
 function startAutoSave() {
@@ -75,6 +74,7 @@ function resizeEnd() {
 
 // Check if data has been modified. If the data has been changed, the user can save the data
 watch(() => customize.value.controlsMenu.customizationInfosMenu.data, async (_, currentCustomizationData) => {
+  /*
   if(!currentCustomizationData?.id || currentCustomizationData.id === -1) return;
   const docInfos = await Documentation.get(customize.value.doc.id);
 
@@ -83,6 +83,7 @@ watch(() => customize.value.controlsMenu.customizationInfosMenu.data, async (_, 
   } else {
     customize.value.controlsMenu.isSaved = false;
   }
+  */
 }, { deep: true });
 
 // Loads preview data

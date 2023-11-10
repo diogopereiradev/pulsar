@@ -111,7 +111,8 @@ onMounted(() => {
             :class="`
               ${navbar.profileMenuIsOpen? 'flex' : 'opacity-0 scale-[0.7] pointer-events-none'}
               absolute 
-              left-0 
+              left-2/4
+              -translate-x-2/4
               top-[55px] 
               w-[200px] 
               min-h-[140px] 

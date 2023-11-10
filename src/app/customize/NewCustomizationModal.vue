@@ -3,12 +3,12 @@ import InputText from 'primevue/inputtext';
 import { Status } from '~/@types/status';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useCustomize } from '~/shared/states/customizeState';
-import { Documentation } from '~/database/models/Documentation';
 
 const regions: ('top' | 'bottom')[] = ['top', 'bottom'];
 const customize = useCustomize();
 
 async function handleSubmit() {
+  /*
   const newCustomization = {
     id: Math.round(Math.random() * (10000 - 1) + 1),
     content: { html: '', css: '', js: '' },
@@ -27,6 +27,7 @@ async function handleSubmit() {
   }
   customize.value.controlsMenu.newCustomizationModal.isOpen = false;
   customize.value.controlsMenu.newCustomizationModal.data.title = '';
+  */
 }
 </script>
 
@@ -125,4 +126,4 @@ async function handleSubmit() {
       class="fixed left-0 top-0 w-screen h-screen bg-[#00000040] z-[9998]"
     ></div>
   </div>
-</template>
+</template>~/shared/database/models/Documentation~/indexedDB/models/Documentation

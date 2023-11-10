@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
-import { Status } from "~/@types/status";
 import ScrollPanel from 'primevue/scrollpanel';
 import Tailwind from "primevue/passthrough/tailwind";
 import { usePassThrough } from 'primevue/passthrough';
-import { Documentation } from "~/database/models/Documentation";
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useCustomize } from '~/shared/states/customizeState';
 
@@ -21,6 +19,7 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
     rejectLabel: t('customize.delete-customization-dialog-cancel-button-message'),
     acceptLabel: t('customize.delete-customization-dialog-confirm-button-message'),
     accept: async () => {
+      /*
       const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.doc.customizations.filter(c => c.id != customizationId)));
       const result = await Documentation.edit(customize.value.doc.id, {
         customizations: updatedCustomizations
@@ -32,6 +31,7 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
       } else {
         alert('Error on deleting customization');
       }
+      */
     }
   });
 }

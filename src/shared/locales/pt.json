@@ -12,9 +12,8 @@
   },
   "databasesync": {
     "back-to-documentations-button-label": "Voltar",
-    "title": "Documentação não sincronizada",
-    "description": "Sua estrutura de documentação não está sincronizada com a estrutura do banco de dados, clique no botão abaixo para sincronizar agora. Esta ação não afeta seus dados!",
-    "missing-data-text": "Dados faltantes"
+    "title": "Documentações não sincronizadas",
+    "description": "Suas documentações não estão no banco de dados, clique no botão abaixo para sincronizar agora. Essa ação não afeta seus dados, apenas os movem para os servidores do Pulsar!"
   },
   "navbar": {
     "links-home": "Inicio",
@@ -74,6 +73,8 @@
     "new-doc-modal-colors-area-title": "Cores",
     "new-doc-modal-cancel-button-message": "Cancelar",
     "new-doc-modal-create-button-message": "Criar",
+    "new-doc-modal-creating-loading-message": "Criando sua documentação, aguarde um momento...",
+    "new-doc-modal-editing-loading-message": "Editando sua documentação, aguarde um momento...",
     "documentations-list-title": "Suas documentações",
     "documentations-list-empty-message": "Nenhuma documentação",
     "documentations-list-item-contextmenu-edit-message": "Editar",
@@ -99,6 +100,15 @@
     "controls-menu-autosave-input-label": "Salvar Automático",
     "controls-menu-customize-input-label": "Customizar",
     "controls-menu-customize-input-text": "Abrir Editor",
+    "controls-menu-visibility-box-title": "Visibilidade",
+    "controls-menu-visibility-box-description": "Pode levar até {$time} minutos para suas ações irem globalmente, devido ao cache.",
+    "controls-menu-visibility-box-turn-button-text": "Tornar",
+    "controls-menu-confirm-visibility-dialog-title": "Deseja tornar essa documentação",
+    "controls-menu-confirm-visibility-dialog-description": "Essa ação pode levar até {$time} minutos para propagar globalmente devido ao cache.",
+    "controls-menu-confirm-visibility-dialog-accept-button-text": "Confirmar",
+    "controls-menu-confirm-visibility-dialog-reject-button-text": "Cancelar",
+    "controls-menu-visibility-box-public-word": "Público",
+    "controls-menu-visibility-box-private-word": "Privado",
     "controls-menu-exportmanifest-button-aria-label": "Exportar manifest.json",
     "controls-menu-exportdoc-button-aria-label": "Exportar Documentação",
     "controls-menu-previewmode-button-aria-label": "Modo de Prévia",

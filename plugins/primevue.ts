@@ -2,6 +2,7 @@ import { defineNuxtPlugin } from "#app";
 import Button from "primevue/button";
 import PrimeVue from "primevue/config";
 import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
 import { usePassThrough } from "primevue/passthrough";
 import Tailwind from "primevue/passthrough/tailwind";
 
@@ -67,6 +68,11 @@ const StylesWithTailwind = usePassThrough(
     contextmenu: {
       root: '!bg-secondary',
       menuitem: '!font-medium [&_span]:text-primary/80 duration-300'
+    },
+    toast: {
+      root: '!w-full !max-w-[250px] md:!max-w-[350px] xl:!max-w-[450px] z-[9999]',
+      container: '!bg-transparent !backdrop-blur-[50px] !my-0 z-[9999] !mt-2',
+      content: '!bg-[#2c2735] !text-[#f99999] !rounded-r-[10px] z-[9999]'
     }
   } as typeof Tailwind,
   {
@@ -81,6 +87,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     ripple: true,
     pt: StylesWithTailwind
   });
+  nuxtApp.vueApp.use(ToastService);
   nuxtApp.vueApp.use(ConfirmationService);
   nuxtApp.vueApp.component('Button', Button);
 });

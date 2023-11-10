@@ -7,7 +7,8 @@ type Props = {
     status: number
     redirectPath: string
   },
-  successCondition: () => Promise<boolean>
+  isLoaded: boolean,
+  isError: boolean
 };
 
 const props = defineProps<Props>();
@@ -15,23 +16,19 @@ const props = defineProps<Props>();
 const state = ref({
   isLoading: true,
   isSuccess: false,
-  isError: false,
-  conditionData: undefined
+  isError: false
 });
 
-onBeforeMount(() => {
-  // A delay to loading state
-  setTimeout(async () => {
-   const result = await props.successCondition();
-
-   if(result) {
-    state.value.isLoading = false;
-    state.value.isSuccess = true;
-   } else {
-    state.value.isLoading = false;
-    state.value.isError = true;
-   }
-  }, 500);
+watch([() => props.isLoaded, () => props.isError], ([loaded, error]) => {
+  if(loaded) {
+   state.value.isLoading = false;
+   state.value.isSuccess = true;
+  }
+  
+  if(error) {
+   state.value.isLoading = false;
+   state.value.isError = true;
+  }
 });
 </script>
 

@@ -12,9 +12,8 @@
   },
   "databasesync": {
     "back-to-documentations-button-label": "Back",
-    "title": "Documentation is not synced",
-    "description": "Your documentation structure is not synced with the database structure, click in the sync button below to sync now. This action no affect your data!",
-    "missing-data-text": "Missing data"
+    "title": "Documentations is not synced",
+    "description": "Your documentation is not in the database, click the button below to synchronize now. This action not affect your data, just move the data to Pulsar servers!"
   },
   "navbar": {
     "links-home": "Home",
@@ -74,6 +73,8 @@
     "new-doc-modal-colors-area-title": "Colors",
     "new-doc-modal-cancel-button-message": "Cancel",
     "new-doc-modal-create-button-message": "Create",
+    "new-doc-modal-creating-loading-message": "Creating your documentation, wait a moment...",
+    "new-doc-modal-editing-loading-message": "Editing your documentation, wait a moment...",
     "documentations-list-title": "Your documentations",
     "documentations-list-empty-message": "No documentations",
     "documentations-list-item-contextmenu-edit-message": "Edit",
@@ -100,6 +101,15 @@
     "controls-menu-customize-input-label": "Customize",
     "controls-menu-customize-input-text": "Open Editor",
     "controls-menu-exportdoc-button-aria-label": "Export Documentation",
+    "controls-menu-visibility-box-title": "Visibility",
+    "controls-menu-visibility-box-description": "It can take {$time} minutes to propagate globally, because the cache is active.",
+    "controls-menu-visibility-box-turn-button-text": "Turn",
+    "controls-menu-confirm-visibility-dialog-title": "Do you want to turn this documentation",
+    "controls-menu-confirm-visibility-dialog-description": "This action can take {$time} minutes to propagate globally because the system cache.",
+    "controls-menu-confirm-visibility-dialog-accept-button-text": "Confirm",
+    "controls-menu-confirm-visibility-dialog-reject-button-text": "Cancel",
+    "controls-menu-visibility-box-public-word": "Public",
+    "controls-menu-visibility-box-private-word": "Private",
     "controls-menu-exportmanifest-button-aria-label": "Export manifest.json",
     "controls-menu-previewmode-button-aria-label": "Preview Mode",
     "controls-menu-back-to-docs-button-message": "Back",

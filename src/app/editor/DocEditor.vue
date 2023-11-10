@@ -39,13 +39,13 @@ function parseTablesWrapper(unparsedContent: string, fullViewDom: string) {
 function handleEditorChange(value: string, textEditorInstance: Editor) {
   const parsedCodeBlocksDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
   const parsedTablesWrapperDom = parseTablesWrapper(parsedCodeBlocksDom, textEditorInstance.view.dom.innerHTML);
-  const updatedPages = editor.value.doc.pages.map(page => {
+  const updatedPages = editor.value.unsavedDoc.pages.map(page => {
     if(page.id === editor.value.currentSelectedPage?.id) {
       page.content = parsedTablesWrapperDom;
     }
     return page;
   });
-  editor.value.doc.pages = updatedPages;
+  editor.value.unsavedDoc.pages = updatedPages;
 }
 
 onBeforeMount(() => {
@@ -63,7 +63,7 @@ onBeforeMount(() => {
 <template>
   <div 
     class="w-full min-h-screen 2xl:max-h-screen px-12 py-7 2xl:overflow-y-scroll"
-    :style="{ backgroundColor: editor.doc.colors.background }"
+    :style="{ backgroundColor: editor.unsavedDoc.colors.background }"
   >
     <!--Doc navbar-->
     <nav class="2xl:hidden flex items-center w-full pb-6">
@@ -74,7 +74,7 @@ onBeforeMount(() => {
         ></font-awesome-icon>
       </Button>
     </nav>
-    <hr class="2xl:hidden w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.doc.colors.divider }" />
+    <hr class="2xl:hidden w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.unsavedDoc.colors.divider }" />
     <!--Doc navbar end-->
     <div class="flex pt-10 mt-2.5">
       <!--Navigation Menu-->
@@ -102,30 +102,30 @@ onBeforeMount(() => {
       >
         <!--Mobile close button-->
         <button @click="mobileNavigationIsOpen = false" class="2xl:hidden absolute right-8 top-8">
-          <font-awesome-icon icon="fa-solid fa-close" class="text-xl" :style="{ color: editor.doc.colors.text }"></font-awesome-icon>
+          <font-awesome-icon icon="fa-solid fa-close" class="text-xl" :style="{ color: editor.unsavedDoc.colors.text }"></font-awesome-icon>
         </button>
         <!--Navigation menu title and icon-->
-        <div v-if="editor.doc.navigationTitle" class="max-w-[220px] flex items-center gap-3.5">
+        <div v-if="editor.unsavedDoc.messages.navigationTitle" class="max-w-[220px] flex items-center gap-3.5">
           <div
             class="flex justify-center items-center w-12 h-12 rounded-lg"
-            :style="{ backgroundColor: editor.doc.colors.primary + '40' }"
+            :style="{ backgroundColor: editor.unsavedDoc.colors.primary + '40' }"
           >
             <font-awesome-icon 
               icon="fa-solid fa-map" 
               class="text-[19px]"
-              :style="{ color: editor.doc.colors.primary }"
+              :style="{ color: editor.unsavedDoc.colors.primary }"
             />
           </div>
           <div class="flex flex-col">
-            <p :title="editor.doc.navigationTitle" class="max-w-[150px] text-[17px] truncate" :style="{ color: editor.doc.colors.text + '99' }">
-              {{ editor.doc.navigationTitle }}
+            <p :title="editor.unsavedDoc.messages.navigationTitle" class="max-w-[150px] text-[17px] truncate" :style="{ color: editor.unsavedDoc.colors.text + '99' }">
+              {{ editor.unsavedDoc.messages.navigationTitle }}
             </p>
-            <p :title="editor.doc.navigationSubTitle" class="max-w-[150px] relative text-[15px] -mt-1 truncate" :style="{ color: editor.doc.colors.text + '80' }">
-              {{ editor.doc.navigationSubTitle }}
+            <p :title="editor.unsavedDoc.messages.navigationSubTitle" class="max-w-[150px] relative text-[15px] -mt-1 truncate" :style="{ color: editor.unsavedDoc.colors.text + '80' }">
+              {{ editor.unsavedDoc.messages.navigationSubTitle }}
             </p>
           </div>
         </div>
-        <hr v-if="editor.doc.navigationTitle" class="w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.doc.colors.divider + '40' }" />
+        <hr v-if="editor.unsavedDoc.messages.navigationTitle" class="w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.unsavedDoc.colors.divider + '40' }" />
         <EditorCategories />
       </div>
       <!--Mobile Navigation menu backdrop-->
@@ -139,10 +139,10 @@ onBeforeMount(() => {
           v-if="editor.currentSelectedPage?.id != -1"
           @update:model-value="(value, editor) => handleEditorChange(value, editor)"
           :content="editor.currentSelectedPage?.content"
-          :colors="editor.doc.colors"
+          :colors="editor.unsavedDoc.colors"
         />
         <div v-else class="w-full h-[300px] flex justify-center items-center">
-          <p :style="{ color: editor.doc.colors.text + '50' }">{{ $t('editor.non-page-selected-message') }}</p>
+          <p :style="{ color: editor.unsavedDoc.colors.text + '50' }">{{ $t('editor.non-page-selected-message') }}</p>
         </div>
       </div>
       <!--Indexes Table-->
@@ -153,7 +153,7 @@ onBeforeMount(() => {
 
 <style scoped>
   .mobile-navigationmenu-dinamic-bg {
-    background-color: v-bind('editor.doc.colors.secondary');
+    background-color: v-bind('editor.unsavedDoc.colors.secondary');
   }
 
   @media only screen and (min-width: 1180px) {

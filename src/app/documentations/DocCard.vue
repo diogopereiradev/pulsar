@@ -1,29 +1,22 @@
 <script setup lang="ts">
-import { Documentation, IDocumentation } from '~/database/models/Documentation';
-import { useDocumentations } from '~/shared/states/documentationsState';
 import { useConfirm } from "primevue/useconfirm";
-import EditDocsModal from './EditDocsModal.vue';
+import { useToast } from 'primevue/usetoast';
 import ContextMenu from 'primevue/contextmenu';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { MenuItem } from 'primevue/menuitem';
-import { Status } from '~/@types/status';
+import { IDocumentation } from '~/@types/declarations/Documentation';
+import { useDocumentations } from "~/shared/states/documentationsState";
 
 const props = defineProps<{ data: IDocumentation }>();
-const { t } = useI18n();
 const docs = useDocumentations();
+const { t } = useI18n();
+const toast = useToast();
 const confirm = useConfirm();
 
-const editMenuIsOpen = ref(false);
 const isOpening = ref(false);
 
 const contextMenuRef = ref();
 const contextMenuItems = ref<MenuItem[]>([
-  {
-    label: t('documentations.documentations-list-item-contextmenu-edit-message'),
-    command: (ev) => {
-      openEditDocModal();
-    }
-  },
   {
     label: t('documentations.documentations-list-item-contextmenu-delete-message'),
     class: '[&_span]:!text-[#d4373c] [&_div]:hover:!bg-[#f99999]/10',
@@ -31,13 +24,14 @@ const contextMenuItems = ref<MenuItem[]>([
   }
 ]);
 
-function openEditDocModal() {
-  editMenuIsOpen.value = true;
-}
-
-function closeEditModal() {
-  editMenuIsOpen.value = false;
-}
+const showError = (message: string) => {
+  toast.add({ 
+    severity: 'error', 
+    summary: 'Error', 
+    detail: message,
+    life: 6000
+  });
+};
 
 function deleteConfirmDialog() {
   confirm.require({
@@ -48,14 +42,20 @@ function deleteConfirmDialog() {
     acceptLabel: t('documentations.delete-doc-dialog-confirm-button-message'),
     rejectLabel: t('documentations.delete-doc-dialog-cancel-button-message'),
     accept: async () => {
-      const result = await Documentation.delete(props.data.id);
+      const headers = useRequestHeaders(['cookie']) as HeadersInit;
+      const result: { status: number, message?: string } = await $fetch('/api/deleteDoc', {
+        method: 'POST',
+        headers,
+        body: {
+          id: props.data.id
+        }
+      });
 
-      if(result === Status.OK) {
-        // Realtime remove from docs list
+      if(result.status === 200) {
         const updatedData = docs.value.data.filter(doc => doc.id !== props.data.id);
         docs.value.data = updatedData;
       } else {
-        alert('An error occurred on trying to delete the documentation!');
+        showError(result.message || 'Error on deleting the documentation!');
       }
     }
   });
@@ -76,7 +76,7 @@ function deleteConfirmDialog() {
       <div class="flex flex-col p-8">
         <div class="flex items-center justify-between">
           <h2 :title="data.title" class="max-w-[100px] text-xl text-primary/90 font-medium truncate">{{ data.title }}</h2>
-          <p class="relative text-[15px] text-primary/50 font-medium">{{ $d(data.createdAt, 'long') }}</p>
+          <p class="relative text-[15px] text-primary/50 font-medium">{{ $d(new Date(data.createdAt), 'long') }}</p>
         </div>
         <p 
           :title="data.description" 
@@ -98,11 +98,5 @@ function deleteConfirmDialog() {
       </Button>
       <ContextMenu ref="contextMenuRef" :model="contextMenuItems" />
     </div>
-    <!--Edit Doc Modal-->
-    <EditDocsModal 
-      :doc-id="data.id" 
-      :is-open="editMenuIsOpen"
-      @close-modal="closeEditModal"
-    />
   </div>
 </template>

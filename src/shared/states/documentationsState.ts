@@ -1,25 +1,23 @@
-import { IDocumentation } from '~/database/models/Documentation';
+import { IDocumentation } from "~/@types/declarations/Documentation";
 
 export type IDocumentationsState = {
   search: string,
   data: IDocumentation[],
+  limit: number,
   currentPageData: IDocumentation[],
-  uploadDocsModal: {
+  newDocsModal: {
     isOpen: boolean,
-    isLoading: boolean,
-    highlighted: boolean
+    isCreating: boolean
   }
-  newDocsModalIsOpen: boolean
 };
 
 export const useDocumentations = () => useState<IDocumentationsState>('documentationsState', () => ({
   search: '',
   data: [],
+  limit: 0,
   currentPageData: [],
-  uploadDocsModal: {
+  newDocsModal: {
     isOpen: false,
-    isLoading: false,
-    highlighted: false
-  },
-  newDocsModalIsOpen: false
+    isCreating: false
+  }
 }));

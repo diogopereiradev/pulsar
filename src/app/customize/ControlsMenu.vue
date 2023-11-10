@@ -6,7 +6,7 @@ import ScrollPanel from 'primevue/scrollpanel';
 import { usePassThrough } from 'primevue/passthrough';
 import { useCustomize } from '~/shared/states/customizeState';
 import { Status } from "~/@types/status";
-import { Documentation, IDocumentationCustomization } from "~/database/models/Documentation";
+import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
 import NewCustomizationModal from './NewCustomizationModal.vue';
 import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
 import CodeEditor from './CodeEditor/CodeEditor.vue';
@@ -17,6 +17,7 @@ const docId = Number(params.id) || 0;
 const customize = useCustomize();
 
 async function handleSave() {
+  /*
   if(!customize.value.controlsMenu.isSaved) {
     customize.value.controlsMenu.isSaving = true;
     const result = await Documentation.edit(docId, {
@@ -28,6 +29,7 @@ async function handleSave() {
     }
     customize.value.controlsMenu.isSaving = false;
   }
+  */
 }
 
 function startAutoSave() {
@@ -47,6 +49,7 @@ function openCustomizationInfosMenu(customization: IDocumentationCustomization) 
 
 // Check if customize.value.doc has been modified. If the data has been changed, the user can save the data
 watch(() => customize.value.doc, async (_, oldDocData) => {
+  /*
   if(!oldDocData.id) return;
   const docInfos = await Documentation.get(docId);
 
@@ -55,10 +58,12 @@ watch(() => customize.value.doc, async (_, oldDocData) => {
   } else {
     customize.value.controlsMenu.isSaved = false;
   }
+  */
 }, { deep: true });
 
 onBeforeMount(async () => {
   // Set initial doc data in editor.value.doc
+  /*
   const docInfos = await Documentation.get(docId);
   docInfos && (customize.value.doc = docInfos);
 
@@ -72,6 +77,7 @@ onBeforeMount(async () => {
 
   // Start auto save
   startAutoSave();
+  */
 });
 </script>
 
@@ -207,4 +213,4 @@ onBeforeMount(async () => {
       :class="`2xl:hidden ${!customize.controlsMenu.isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] z-[200]`"
     ></div>
   </div>
-</template>
+</template>~/shared/database/models/Documentation~/indexedDB/models/Documentation

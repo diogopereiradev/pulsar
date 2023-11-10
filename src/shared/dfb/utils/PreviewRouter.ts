@@ -12,12 +12,13 @@ export function PreviewRouter(routes: { id: number, title: string, content: stri
       return target[property] = value;
     }
 
-    window.changeRoute = (ev, page) => {
+    window.changeRoute = (ev, id) => {
       if(ev) {
         const currentPageButton = document.querySelector('.current-page');
         if(currentPageButton) currentPageButton.classList.remove('current-page');
         ev.classList.add('current-page');
       }
+      const page = routes.find(route => route.id === id);
       currentRoute.route = page;
     }
 

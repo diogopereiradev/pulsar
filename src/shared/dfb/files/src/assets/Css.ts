@@ -1,7 +1,7 @@
 import css from 'css';
 // @ts-ignore
 import hexToRgb from 'hex-to-rgb';
-import { IDocumentation, IDocumentationColorPalette } from "~/database/models/Documentation";
+import { IDocumentation, IDocumentationColorPalette } from "~/@types/declarations/Documentation";
 
 function generateGlobalVariables(colors: IDocumentationColorPalette): string {
   const colorNames = Object.keys(colors);
@@ -366,7 +366,8 @@ export function Css(doc: IDocumentation) {
       position: sticky;
       top: 50px;
       overflow-y: auto;
-      height: 100vh;
+      max-width: 230px;
+      height: 50vh;
       scrollbar-width: thin;
       margin-left: 20px;
       padding-bottom: 100px;
@@ -394,6 +395,11 @@ export function Css(doc: IDocumentation) {
     }
   
     .pulsar-indexes-table-list-button {
+      display: flex;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 230px;
       color: rgba(var(--text), 0.63);
       font-size: 15px;
     }
