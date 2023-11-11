@@ -41,6 +41,7 @@ library.add(...[
   SolidIcons.faFileArrowDown,
   SolidIcons.faRightFromBracket,
   SolidIcons.faChevronDown,
+  SolidIcons.faShareFromSquare,
   SolidIcons.faTableColumns,
   BrandsIcons.faDiscord,
   BrandsIcons.faGoogle,

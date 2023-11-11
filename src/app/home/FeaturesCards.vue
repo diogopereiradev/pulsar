@@ -17,9 +17,10 @@ const topItems = ref<Item[]>([
     description: t('homepage.features-export-description')
   },
   {
-    icon: 'fa-solid fa-upload',
-    title: t('homepage.features-import-title'),
-    description: t('homepage.features-import-description')
+    icon: 'fa-solid fa-share-from-square',
+    title: t('homepage.features-share-title'),
+    description: t('homepage.features-share-description'),
+    new: true
   },
   {
     icon: 'fa-solid fa-microchip',
