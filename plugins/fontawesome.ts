@@ -37,6 +37,7 @@ library.add(...[
   SolidIcons.faPalette,
   SolidIcons.faMicrochip,
   SolidIcons.faCode,
+  SolidIcons.faStar,
   SolidIcons.faWindowMaximize,
   SolidIcons.faFileArrowDown,
   SolidIcons.faRightFromBracket,

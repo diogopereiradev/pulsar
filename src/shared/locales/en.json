@@ -1,7 +1,8 @@
 {
   "others": {
     "public-word": "Public",
-    "private-word": "Private"
+    "private-word": "Private",
+    "sponsor-word": "Sponsors"
   },
   "metadata": {
     "title": "Pulsar - Create pages to document your project",
@@ -217,5 +218,17 @@
     "gettingstarted-title": "Pulsar: Document Everything",
     "gettingstarted-description": "Complete documentation solution with Pulsar.",
     "gettingstarted-getting-started-button": "Getting Started"
+  },
+  "footer": {
+    "resources-section-title": "Resources",
+    "resources-getting-started-text": "Getting Started",
+    "resources-documentations-text": "Documentations",
+    "resources-donate-text": "Donate",
+    "developer-section-title": "Developer",
+    "product-section-title": "Product",
+    "product-colors-text": "Colors",
+    "product-code-blocks-text": "Code Blocks",
+    "product-customizations-text": "Customizations",
+    "star-the-project": "Star Project"
   }
 }

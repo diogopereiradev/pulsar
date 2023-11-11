@@ -4,7 +4,7 @@ import StarsRain from '~/shared/components/utils/StarsRain.vue';
 </script>
 
 <template>
-  <header class="w-full min-h-[500px] flex flex-col items-center gap-3 pt-14">
+  <header class="w-full min-h-[500px] flex flex-col items-center gap-3 pt-14 px-10">
     <div class="absolute w-full max-w-[400px] h-[400px] bg-primary/10 blur-[80px] rounded-full z-[-1]"></div>
     <a
       href="#featuressection"
