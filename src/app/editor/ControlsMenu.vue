@@ -52,7 +52,7 @@ const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
 function changeVisibilityConfirm() {
   confirm.require({
     header: `${t('editor.controls-menu-confirm-visibility-dialog-title')} ${editor.value.unsavedDoc.isPublic? t('editor.controls-menu-visibility-box-private-word') : t('editor.controls-menu-visibility-box-public-word')}?`,
-    message: t('editor.controls-menu-confirm-visibility-dialog-description').replace('{$time}', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))),
+    message: t('editor.controls-menu-confirm-visibility-dialog-description').replace('>time<', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))),
     acceptClass: '!w-32 !h-11 !font-normal !bg-primary/60 hover:!bg-primary/80 ml-2.5 !border-none',
     rejectClass: '!w-32 !h-11 !font-normal',
     acceptLabel: t('editor.controls-menu-confirm-visibility-dialog-accept-button-text'),
@@ -214,7 +214,7 @@ onBeforeMount(async () => {
           <div class="flex flex-col w-full min-h-[100px] bg-[#303553]/40 rounded-[7px] shadow-sm mb-7 px-6 py-4">
             <h2 class="text-[17px] text-primary/80 font-medium">{{ $t('editor.controls-menu-visibility-box-title') }}</h2>
             <p class="text-[15px] text-primary/50 mt-0.5">
-              {{ $t('editor.controls-menu-visibility-box-description').replace('{$time}', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))) }}
+              {{ $t('editor.controls-menu-visibility-box-description').replace('>time<', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))) }}
             </p>
             <div class="flex items-center justify-between mt-3">
               <h2 class="text-[15px] text-primary/80 font-medium">Status</h2>

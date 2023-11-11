@@ -16,8 +16,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run services:up && node ./wait-for-docker-db.js && npm run db:migration:dev && prisma generate && nuxt dev && npm run services:stop",
-    "start": "prisma generate && npm run db:migration:prod && node ./.output/server/index.mjs",
-    "build": "nuxt build",
+    "build": "pnpm db:migration:prod && prisma generate && nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
