@@ -63,24 +63,29 @@ function deleteConfirmDialog() {
 </script>
 
 <template>
-  <div class="relative group grow w-[370px] bg-secondary/80 rounded-lg cursor-pointer">
+  <div class="relative group grow w-[370px] bg-secondary/60 rounded-[10px] cursor-pointer shadow-md">
     <!--Card Frame-->
     <NuxtLinkLocale @click="isOpening = true" :to="`/editor/${data.id}`" class="w-full min-h-[300px]" v-if="!isOpening">
-      <div class="relative flex justify-center pt-5 w-full h-[140px] rounded-t-lg overflow-hidden">
+      <div class="relative flex justify-center pt-5 w-full h-[140px] rounded-t-[10px] overflow-hidden">
         <div class="absolute left-0 top-0 bg-black/60 w-full h-full"></div>
         <DocPrototype
           :colors="data.colors"
           :features="data.features"
         />
       </div>
-      <div class="flex flex-col p-8">
+      <div class="flex flex-col px-8 pt-3 pb-6">
         <div class="flex items-center justify-between">
           <h2 :title="data.title" class="max-w-[100px] text-xl text-primary/90 font-medium truncate">{{ data.title }}</h2>
-          <p class="relative text-[15px] text-primary/50 font-medium">{{ $d(new Date(data.createdAt), 'long') }}</p>
+          <div class="relative flex flex-col items-end top-3">
+            <p class="relative text-[15px] text-primary/50 font-medium">{{ $d(new Date(data.createdAt), 'long') }}</p>
+            <div :class="`flex justify-center items-center relative top-1.5 w-[100px] h-[25px] ${data.isPublic? 'bg-[#4cbf3f]/30' : 'bg-[#c94f4f]/30'} rounded-[10px]`">
+              <p :class="`${data.isPublic? 'text-[#78ff69]' : 'text-[#f87070]'}`">{{ data.isPublic? $t('others.public-word') : $t('others.private-word') }}</p>
+            </div>
+          </div>
         </div>
         <p 
           :title="data.description" 
-          class="text-base text-primary/60 font-normal mt-5 break-all"
+          class="text-base text-primary/60 font-normal mt-8 break-all"
         >
           {{ data.description.length > 120? data.description.slice(0, 120) + '...' : data.description }}
         </p>

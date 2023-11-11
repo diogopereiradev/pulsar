@@ -1,4 +1,8 @@
 {
+  "others": {
+    "public-word": "Público",
+    "private-word": "Privado"
+  },
   "metadata": {
     "title": "Pulsar - Crie páginas para documentar seu projeto",
     "description": "Crie documentações modernas para a sua aplicação usando o Pulsar. Você gerará páginas estáticas de documentações customizadas pelo Pulsar e poderá usar onde quiser."
@@ -103,12 +107,12 @@
     "controls-menu-visibility-box-title": "Visibilidade",
     "controls-menu-visibility-box-description": "Pode levar até >time< minutos para suas ações irem globalmente, devido ao cache.",
     "controls-menu-visibility-box-turn-button-text": "Tornar",
+    "controls-menu-visibility-box-share-button-text": "Compartilhar",
+    "controls-menu-visibility-box-share-copied-button-text": "Link copiado",
     "controls-menu-confirm-visibility-dialog-title": "Deseja tornar essa documentação",
     "controls-menu-confirm-visibility-dialog-description": "Essa ação pode levar até >time< minutos para propagar globalmente devido ao cache.",
     "controls-menu-confirm-visibility-dialog-accept-button-text": "Confirmar",
     "controls-menu-confirm-visibility-dialog-reject-button-text": "Cancelar",
-    "controls-menu-visibility-box-public-word": "Público",
-    "controls-menu-visibility-box-private-word": "Privado",
     "controls-menu-exportmanifest-button-aria-label": "Exportar manifest.json",
     "controls-menu-exportdoc-button-aria-label": "Exportar Documentação",
     "controls-menu-previewmode-button-aria-label": "Modo de Prévia",

@@ -19,6 +19,7 @@ const isOpen = ref(false);
 const toast = useToast();
 const editor = useEditor();
 const confirm = useConfirm();
+const visibilityIsCopied = ref(false);
 
 // Array to dinamically generate "color pickers" of the menu
 type ColorName = keyof IDocumentationColorPalette;
@@ -49,9 +50,15 @@ const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
   editor.value.unsavedDoc.colors[type] = val.includes('#')? val : `#${val}`;
 }
 
+function copyShareableLink() {
+  const host = window.location.host;
+  visibilityIsCopied.value = true;
+  window.navigator.clipboard.writeText(`${host.match('localhost')? 'http://' : 'https://'}${host}/doc/${editor.value.unsavedDoc.id}`);
+}
+
 function changeVisibilityConfirm() {
   confirm.require({
-    header: `${t('editor.controls-menu-confirm-visibility-dialog-title')} ${editor.value.unsavedDoc.isPublic? t('editor.controls-menu-visibility-box-private-word') : t('editor.controls-menu-visibility-box-public-word')}?`,
+    header: `${t('editor.controls-menu-confirm-visibility-dialog-title')} ${editor.value.unsavedDoc.isPublic? t('others.private-word') : t('others.public-word')}?`,
     message: t('editor.controls-menu-confirm-visibility-dialog-description').replace('>time<', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))),
     acceptClass: '!w-32 !h-11 !font-normal !bg-primary/60 hover:!bg-primary/80 ml-2.5 !border-none',
     rejectClass: '!w-32 !h-11 !font-normal',
@@ -81,6 +88,7 @@ async function handleSave() {
     editor.value.controlsMenu.isSaving = false;
     editor.value.docDataSinceLastSave = JSON.parse(JSON.stringify(editor.value.unsavedDoc));
   } else {
+    showError('Error on saving has occurred!');
     editor.value.controlsMenu.isSaving = false;
   }
 }
@@ -104,6 +112,14 @@ watch(() => editor.value.unsavedDoc, async unsavedDocData => {
     editor.value.controlsMenu.isSaved = false;
   }
 }, { deep: true });
+
+watch(visibilityIsCopied, val => {
+  if(val) {
+    setTimeout(() => {
+      visibilityIsCopied.value = false;
+    }, 3000);
+  }
+});
 
 onBeforeMount(async () => {
   // Toggle controls menu based on window size
@@ -219,12 +235,18 @@ onBeforeMount(async () => {
             <div class="flex items-center justify-between mt-3">
               <h2 class="text-[15px] text-primary/80 font-medium">Status</h2>
               <h2 :class="`text-[15px] duration-300 ${editor.unsavedDoc.isPublic? 'text-[#4cbf3f]' : 'text-[#c94f4f]'} font-medium`">
-                {{ editor.unsavedDoc.isPublic? $t('editor.controls-menu-visibility-box-public-word') : $t('editor.controls-menu-visibility-box-private-word') }}
+                {{ editor.unsavedDoc.isPublic? $t('others.public-word') : $t('others.private-word') }}
               </h2>
             </div>
-            <Button @click="changeVisibilityConfirm" class="!w-full !h-11 !bg-primary/10 hover:!bg-primary/30 !text-primary/90 mt-4">
+            <Button @click="changeVisibilityConfirm" class="!w-full !h-10 !bg-primary/10 hover:!bg-primary/30 !text-primary/90 mt-4">
               {{ $t('editor.controls-menu-visibility-box-turn-button-text') }}
-              {{ editor.unsavedDoc.isPublic? $t('editor.controls-menu-visibility-box-private-word') : $t('editor.controls-menu-visibility-box-public-word') }}
+              {{ editor.unsavedDoc.isPublic? $t('others.private-word') : $t('others.public-word') }}
+            </Button>
+            <Button 
+              @click="copyShareableLink" 
+              class="!w-full !h-10 hover:!bg-primary/30 !text-primary/90 mt-4" v-if="editor.unsavedDoc.isPublic"
+            >
+              {{ visibilityIsCopied? $t('editor.controls-menu-visibility-box-share-copied-button-text') : $t('editor.controls-menu-visibility-box-share-button-text') }}
             </Button>
           </div>
           <hr class="w-full h-0.5 bg-divider/60 border-none mb-7" />

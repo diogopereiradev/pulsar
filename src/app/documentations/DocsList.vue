@@ -34,7 +34,7 @@ watch([() => docs.value.search, () => docs.value.data], ([search, data]) => {
 // Load all docs in memory
 onMounted(async () => {
   const headers = useRequestHeaders(['cookie']) as HeadersInit;
-  const result = await $fetch('/api/getDoc?properties=id,title,description,colors,createdAt,features,authorIdentifier', {
+  const result = await $fetch('/api/getDoc?properties=id,title,description,colors,createdAt,features,isPublic,authorIdentifier', {
     method: 'GET',
     headers
   });
