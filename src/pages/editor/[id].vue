@@ -33,7 +33,7 @@ onBeforeMount(async () => {
   if(typedResult && typedResult.docs.length > 0) {
     editor.value.unsavedDoc = typedResult.docs[0];
     editor.value.docDataSinceLastSave = JSON.parse(JSON.stringify(typedResult.docs[0]));
-    pageIsLoaded.value  =true;
+    pageIsLoaded.value = true;
   } else {
     pageIsError.value = true;
   }

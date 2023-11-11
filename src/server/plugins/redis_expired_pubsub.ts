@@ -32,10 +32,7 @@ export default defineNitroPlugin(nitroApp => {
   redisPubSubChannel.on((pattern, channel, key) => {
     if(key.match(config.REDIS_EDITOR_EXPIRED_BUFFER_KEY) && !key.match(config.REDIS_LISTENING_TO_PUBSUB_KEY)) {
       redis_client.get(`${key}${config.REDIS_LISTENING_TO_PUBSUB_KEY}`, async (err, value) => {
-        if(!value) {
-          redis_client.del(key);
-          return;
-        }
+        if(!value) return;
         const doc = JSON.parse(value || '{}');
         process.env.NODE_ENV === 'development' &&
           console.log(`${chalk.cyan('[PulsarLog]')} Buffer TTL of ${chalk.yellow(doc && doc.id? doc.id : 'undefined')} expired, saving on database...`);
