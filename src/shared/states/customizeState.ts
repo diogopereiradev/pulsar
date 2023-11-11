@@ -2,7 +2,8 @@ import { IDocumentation, IDocumentationCustomization } from "~/@types/declaratio
 import { documentationDataEmptyObj } from "~/@types/utils/documentation";
 
 type EditorStateType = {
-  doc: IDocumentation,
+  unsavedDoc: IDocumentation,
+  docDataSinceLastSave: IDocumentation,
   codeEditor: {
     isOpen: boolean,
     isMobile: boolean,
@@ -27,7 +28,8 @@ type EditorStateType = {
 };
 
 export const useCustomize = () => useState<EditorStateType>('customizeState', () => ({
-  doc: documentationDataEmptyObj,
+  unsavedDoc: documentationDataEmptyObj,
+  docDataSinceLastSave: documentationDataEmptyObj,
   codeEditor: {
     isOpen: false,
     isMobile: false,

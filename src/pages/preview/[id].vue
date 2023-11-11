@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import { IDocumentation } from '~/@types/declarations/Documentation';
 import PageStates from '~/shared/components/PageStates.vue';
 import { Html } from '~/shared/dfb/files/src/Html';
@@ -85,7 +84,6 @@ onBeforeMount(async () => {
         @load="iframeLoad($event)" 
         class="w-screen h-screen"
       ></iframe>
-      <DatabaseSync :doc-id="Number(params.id)" />
     </main>
   </PageStates>
 </template>

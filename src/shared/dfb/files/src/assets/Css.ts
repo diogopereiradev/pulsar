@@ -22,7 +22,7 @@ export function Css(doc: IDocumentation) {
     .pulsar-page-wrapper {
       max-width: 2120px;
       margin: 0 auto;
-      padding: 70px 50px 50px 50px;
+      padding: ${doc.customizations.find(c => c.region === 'top')? '0px' : '70px'} 50px 50px 50px;
     }
 
     body {
@@ -358,6 +358,7 @@ export function Css(doc: IDocumentation) {
     }
 
     .pulsar-indexes-table-container {
+      ${doc.features.indexesTable? '' : 'display: none;'}
       position: relative;
       min-width: 180px;
     }

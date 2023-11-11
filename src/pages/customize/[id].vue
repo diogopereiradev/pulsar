@@ -4,6 +4,7 @@ import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
 import PageStates from '~/shared/components/PageStates.vue';
 import { useCustomize } from '~/shared/states/customizeState';
+import { IDocumentation } from '~/@types/declarations/Documentation';
 
 definePageMeta({
   middleware: ['authentication']
@@ -13,6 +14,22 @@ const { params } = useRoute();
 const pageIsLoaded = ref(false);
 const pageIsError = ref(false);
 const customize = useCustomize();
+
+onBeforeMount(async () => {
+  // Set initial doc data in editor.value.doc
+  const result = await $fetch(`/api/getDoc?id=${params.id}`, {
+    method: 'GET'
+  });
+  const typedResult = result as { count: number, limit: number, docs: IDocumentation[] };
+
+  if(typedResult && typedResult.docs.length > 0) {
+    customize.value.unsavedDoc = typedResult.docs[0];
+    customize.value.docDataSinceLastSave = JSON.parse(JSON.stringify(typedResult.docs[0]));
+    pageIsLoaded.value = true;
+  } else {
+    pageIsError.value = true;
+  }
+});
 </script>
 
 <template>
@@ -41,7 +58,7 @@ const customize = useCustomize();
             <p class="text-primary/50">{{ $t('customize.empty-customization-preview-message') }}</p>
           </div>
         </div>
-        <DatabaseSync :doc-id="customize.doc.id" />
+        <DatabaseSync :doc-id="customize.unsavedDoc.id" />
       </main>
     </PageStates>
   </div>
@@ -49,7 +66,7 @@ const customize = useCustomize();
 
 <style>
   .wrapper {
-    background-color: v-bind('customize.doc.colors.background');
+    background-color: v-bind('customize.unsavedDoc.colors.background');
     height: 100vh;
   }
 </style>

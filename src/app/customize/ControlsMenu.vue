@@ -3,41 +3,52 @@ import lodash from 'lodash';
 import Tailwind from "primevue/passthrough/tailwind";
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import ScrollPanel from 'primevue/scrollpanel';
+import { useToast } from 'primevue/usetoast';
 import { usePassThrough } from 'primevue/passthrough';
 import { useCustomize } from '~/shared/states/customizeState';
-import { Status } from "~/@types/status";
 import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
 import NewCustomizationModal from './NewCustomizationModal.vue';
 import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
 import CodeEditor from './CodeEditor/CodeEditor.vue';
-
-const { params } = useRoute();
-const docId = Number(params.id) || 0;
+import config from '~/server/config.json';
 
 const customize = useCustomize();
+const toast = useToast();
+
+const showError = (message: string) => {
+  toast.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: message || 'An error has occurred',
+    life: 6000
+  });
+};
 
 async function handleSave() {
-  /*
-  if(!customize.value.controlsMenu.isSaved) {
-    customize.value.controlsMenu.isSaving = true;
-    const result = await Documentation.edit(docId, {
-      ...JSON.parse(JSON.stringify(customize.value.doc))
-    });
+  if(customize.value.controlsMenu.isSaved) return;
+  customize.value.controlsMenu.isSaving = true;
 
-    if(result === Status.OK) {
-      customize.value.controlsMenu.isSaved = true;
-    }
+  const result = await useFetch('/api/editorBufferSave', {
+    method: 'POST',
+    body: JSON.parse(JSON.stringify(customize.value.unsavedDoc))
+  });
+
+  if(result.status.value === 'success') {
+    customize.value.controlsMenu.isSaved = true;
+    customize.value.controlsMenu.isSaving = false;
+    customize.value.docDataSinceLastSave = JSON.parse(JSON.stringify(customize.value.unsavedDoc));
+  } else {
+    showError('An error on saving occurred');
     customize.value.controlsMenu.isSaving = false;
   }
-  */
 }
 
 function startAutoSave() {
   setInterval(() => {
-    if(!customize.value.controlsMenu.isSaved && !customize.value.controlsMenu.isSaving && customize.value.doc.features.autoSave) {
+    if(!customize.value.controlsMenu.isSaved && !customize.value.controlsMenu.isSaving && customize.value.unsavedDoc.features.autoSave) {
       handleSave();
     }
-  }, 2000);
+  }, config.EDITOR_AUTOSAVE_INTERVAL);
 }
 
 function openCustomizationInfosMenu(customization: IDocumentationCustomization) {
@@ -48,25 +59,18 @@ function openCustomizationInfosMenu(customization: IDocumentationCustomization) 
 }
 
 // Check if customize.value.doc has been modified. If the data has been changed, the user can save the data
-watch(() => customize.value.doc, async (_, oldDocData) => {
-  /*
-  if(!oldDocData.id) return;
-  const docInfos = await Documentation.get(docId);
+watch(() => customize.value.unsavedDoc, async unsavedDocData => {
+  if(!unsavedDocData.id) return;
+  const currentDocData = customize.value.docDataSinceLastSave;
 
-  if(lodash.isEqual(oldDocData, docInfos)) {
+  if(lodash.isEqual(unsavedDocData, currentDocData)) {
     customize.value.controlsMenu.isSaved = true;
   } else {
     customize.value.controlsMenu.isSaved = false;
   }
-  */
 }, { deep: true });
 
 onBeforeMount(async () => {
-  // Set initial doc data in editor.value.doc
-  /*
-  const docInfos = await Documentation.get(docId);
-  docInfos && (customize.value.doc = docInfos);
-
   // Toggle controls menu based on window size
   window.addEventListener('resize', () => {
     if(window.innerWidth >= 1180) {
@@ -77,7 +81,6 @@ onBeforeMount(async () => {
 
   // Start auto save
   startAutoSave();
-  */
 });
 </script>
 
@@ -126,7 +129,7 @@ onBeforeMount(async () => {
         <!--Back to editor button and mobile close button-->
         <div class="flex items-center justify-between pb-7">
           <NuxtLinkLocale 
-            :to="`/editor/${customize.doc.id}`"
+            :to="`/editor/${customize.unsavedDoc.id}`"
             :aria-label="$t('customize.controls-menu-back-to-editor-button-message')"
             class="flex items-center gap-3 w-32 h-10 bg-primary hover:bg-primary/80 active:bg-primary/60 duration-300 text-primary rounded-md font-medium pl-5"
           >
@@ -146,7 +149,7 @@ onBeforeMount(async () => {
           <div class="flex items-center gap-2.5">
             <!--Preview button-->
             <NuxtLinkLocale
-              :to="`/preview/${customize.doc.id}`"
+              :to="`/preview/${customize.unsavedDoc.id}`"
               class="flex justify-center items-center w-10 min-h-[40px] !bg-[#d8985d] rounded-md" 
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
@@ -184,9 +187,9 @@ onBeforeMount(async () => {
             </Button>
           </div>
           <!--Customizations-->
-          <div class="flex flex-col gap-2.5 mt-7" v-if="customize.doc.customizations.length >= 1">
+          <div class="flex flex-col gap-2.5 mt-7" v-if="customize.unsavedDoc.customizations.length >= 1">
             <Button
-              v-for="customization in customize.doc.customizations"
+              v-for="customization in customize.unsavedDoc.customizations"
               @click="openCustomizationInfosMenu(customization)"
               class="group !justify-start gap-3.5 w-full !min-h-[43px] !bg-primary/[0.15] hover:!bg-primary/50 border-none !px-5 duration-300"
             >
@@ -195,7 +198,7 @@ onBeforeMount(async () => {
             </Button>
           </div>
           <!--Empty customizations message-->
-          <div class="flex justify-center items-center h-[200px]" v-if="customize.doc.customizations.length < 1">
+          <div class="flex justify-center items-center h-[200px]" v-if="customize.unsavedDoc.customizations.length < 1">
             <p class="text-center text-base text-primary/40">{{ $t('customize.controls-menu-empty-customizations-message') }}</p>
           </div>
         </div>
@@ -213,4 +216,4 @@ onBeforeMount(async () => {
       :class="`2xl:hidden ${!customize.controlsMenu.isOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] z-[200]`"
     ></div>
   </div>
-</template>~/shared/database/models/Documentation~/indexedDB/models/Documentation
+</template>

@@ -19,19 +19,9 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
     rejectLabel: t('customize.delete-customization-dialog-cancel-button-message'),
     acceptLabel: t('customize.delete-customization-dialog-confirm-button-message'),
     accept: async () => {
-      /*
-      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.doc.customizations.filter(c => c.id != customizationId)));
-      const result = await Documentation.edit(customize.value.doc.id, {
-        customizations: updatedCustomizations
-      });
-
-      if(result === Status.OK) {
-        customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
-        customize.value.doc.customizations = updatedCustomizations;
-      } else {
-        alert('Error on deleting customization');
-      }
-      */
+      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.unsavedDoc.customizations.filter(c => c.id != customizationId)));
+      customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
+      customize.value.unsavedDoc.customizations = updatedCustomizations;
     }
   });
 }
@@ -87,8 +77,8 @@ function openCodeEditor() {
       <div class="flex justify-center items-center">
         <DocPrototype
           class="mt-5"
-          :colors="customize.doc.colors"
-          :features="customize.doc.features"
+          :colors="customize.unsavedDoc.colors"
+          :features="customize.unsavedDoc.features"
           :selected-region="customize.controlsMenu.customizationInfosMenu.data?.region"
         />
       </div>

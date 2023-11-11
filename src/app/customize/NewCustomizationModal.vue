@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import InputText from 'primevue/inputtext';
-import { Status } from '~/@types/status';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useCustomize } from '~/shared/states/customizeState';
 
@@ -8,26 +7,17 @@ const regions: ('top' | 'bottom')[] = ['top', 'bottom'];
 const customize = useCustomize();
 
 async function handleSubmit() {
-  /*
   const newCustomization = {
     id: Math.round(Math.random() * (10000 - 1) + 1),
     content: { html: '', css: '', js: '' },
     ...JSON.parse(JSON.stringify(customize.value.controlsMenu.newCustomizationModal.data))
   };
 
-  const updatedPayload = {
-    customizations: [...JSON.parse(JSON.stringify(customize.value.doc.customizations)), newCustomization]
-  };
-  const result = await Documentation.edit(customize.value.doc.id, updatedPayload);
-
-  if(result === Status.OK) {
-    customize.value.doc.customizations = updatedPayload.customizations;
-  } else {
-    alert('Error on trying to create a new customization');
-  }
+  const updatedPayload = [...JSON.parse(JSON.stringify(customize.value.unsavedDoc.customizations)), newCustomization];
+  customize.value.unsavedDoc.customizations = updatedPayload;
+  
   customize.value.controlsMenu.newCustomizationModal.isOpen = false;
   customize.value.controlsMenu.newCustomizationModal.data.title = '';
-  */
 }
 </script>
 
@@ -58,8 +48,8 @@ async function handleSubmit() {
       <!--Doc prototype-->
       <div class="flex justify-center items-center w-full xl:min-w-[350px] h-full bg-secondary_darken rounded-l-xl max-xl:py-8">
         <DocPrototype
-          :colors="customize.doc.colors"
-          :features="customize.doc.features"
+          :colors="customize.unsavedDoc.colors"
+          :features="customize.unsavedDoc.features"
           :selected-region="customize.controlsMenu.newCustomizationModal.data.region"
         />
       </div>
@@ -126,4 +116,4 @@ async function handleSubmit() {
       class="fixed left-0 top-0 w-screen h-screen bg-[#00000040] z-[9998]"
     ></div>
   </div>
-</template>~/shared/database/models/Documentation~/indexedDB/models/Documentation
+</template>

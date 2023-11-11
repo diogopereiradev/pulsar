@@ -16,6 +16,25 @@ const mobileEditors = {
   JavascriptEditor
 };
 
+async function handleSave() {
+  if(customize.value.controlsMenu.isSaved) return;
+  customize.value.controlsMenu.isSaving = true;
+
+  const result = await useFetch('/api/editorBufferSave', {
+    method: 'POST',
+    body: JSON.parse(JSON.stringify(customize.value.unsavedDoc))
+  });
+
+  if(result.status.value === 'success') {
+    customize.value.controlsMenu.isSaved = true;
+    customize.value.controlsMenu.isSaving = false;
+    customize.value.docDataSinceLastSave = JSON.parse(JSON.stringify(customize.value.unsavedDoc));
+  } else {
+    showError('An error on saving occurred');
+    customize.value.controlsMenu.isSaving = false;
+  }
+}
+
 function closeCodeEditor() {
   customize.value.codeEditor.isOpen = false;
   customize.value.controlsMenu.isOpen = true;
@@ -25,35 +44,6 @@ function closeCodeEditor() {
 function openPreview() {
   customize.value.codeEditor.onlyShowResult = true;
   customize.value.controlsMenu.isOpen = false;
-}
-
-async function handleSave() {
-  /*
-  if(!customize.value.controlsMenu.isSaved) {
-    const editingCustomization = customize.value.controlsMenu.customizationInfosMenu.data;
-    
-    if(editingCustomization) {
-      customize.value.controlsMenu.isSaving = true;
-      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.doc.customizations.filter(c => c.id != editingCustomization.id && c.id != -1)));
-      const result = await Documentation.edit(customize.value.doc.id, {
-        customizations: [...updatedCustomizations, JSON.parse(JSON.stringify(editingCustomization))]
-      });
-  
-      if(result === Status.OK) {
-        customize.value.controlsMenu.isSaved = true;
-      }
-      customize.value.controlsMenu.isSaving = false;
-    }
-  }
-  */
-}
-
-function startAutoSave() {
-  setInterval(() => {
-    if(!customize.value.controlsMenu.isSaved && !customize.value.controlsMenu.isSaving && customize.value.doc.features.autoSave) {
-      handleSave();
-    }
-  }, 2000);
 }
 
 function resizeStart() {
@@ -71,20 +61,6 @@ function resizeEnd() {
     previewFrame.style.pointerEvents = 'auto';
   }
 }
-
-// Check if data has been modified. If the data has been changed, the user can save the data
-watch(() => customize.value.controlsMenu.customizationInfosMenu.data, async (_, currentCustomizationData) => {
-  /*
-  if(!currentCustomizationData?.id || currentCustomizationData.id === -1) return;
-  const docInfos = await Documentation.get(customize.value.doc.id);
-
-  if(lodash.isEqual(currentCustomizationData, docInfos?.customizations.find(c => c.id === currentCustomizationData.id))) {
-    customize.value.controlsMenu.isSaved = true;
-  } else {
-    customize.value.controlsMenu.isSaved = false;
-  }
-  */
-}, { deep: true });
 
 // Loads preview data
 watch(() => customize.value.controlsMenu.customizationInfosMenu.data.content, (content) => {
@@ -106,11 +82,6 @@ watch(() => customize.value.controlsMenu.customizationInfosMenu.data.content, (c
     }
   }, 500);
 }, { deep: true });
-
-onBeforeMount(async () => {
-  // Start auto save
-  startAutoSave();
-});
 
 // Check if the device is small and update the key "isMobile"
 onMounted(() => {
@@ -234,7 +205,7 @@ onMounted(() => {
             >
               <font-awesome-icon icon="fa-solid fa-eye"></font-awesome-icon>
             </button>
-            <hr class="w-[85%] h-px border-none mt-5 mx-auto" :style="{ backgroundColor: customize.doc.colors.divider + 'a9' }"/>
+            <hr class="w-[85%] h-px border-none mt-5 mx-auto" :style="{ backgroundColor: customize.unsavedDoc.colors.divider + 'a9' }"/>
           </div>
         </div>
       </pane>
@@ -245,7 +216,7 @@ onMounted(() => {
         <iframe
           id="pulsar-code-preview"
           class="w-full h-full"
-          :style="{ backgroundColor: customize.doc.colors.background }"
+          :style="{ backgroundColor: customize.unsavedDoc.colors.background }"
         ></iframe>
       </pane>
     </splitpanes>
