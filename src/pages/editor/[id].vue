@@ -4,17 +4,16 @@ import ControlsMenu from '~/app/editor/ControlsMenu.vue';
 import DocEditor from '~/app/editor/DocEditor.vue';
 import ExportModal from '~/app/editor/ExportModal.vue';
 import Toast from 'primevue/toast';
-import { useEditor } from '~/shared/states/editorState';
 import PageStates from '~/shared/components/PageStates.vue';
-import { IDocumentation } from '~/@types/declarations/Documentation';
+import { useDocSave } from '~/shared/compositions/useDocSave';
+import { useEditor } from '~/shared/states/editorState';
 
 definePageMeta({
   middleware: ['authentication']
 });
 
 const { params } = useRoute();
-const pageIsLoaded = ref(false);
-const pageIsError = ref(false);
+const docSaver = useDocSave(params.id as string);
 const editor = useEditor();
 
 onBeforeMount(async () => {
@@ -23,21 +22,9 @@ onBeforeMount(async () => {
     ...JSON.parse(JSON.stringify(editor.value.currentSelectedPage)),
     id: -1
   };
-
-  // Set initial doc data in editor.value.doc
-  const result = await $fetch(`/api/getDoc?id=${params.id}`, {
-    method: 'GET'
-  });
-  const typedResult = result as { count: number, limit: number, docs: IDocumentation[] };
-
-  if(typedResult && typedResult.docs.length > 0) {
-    editor.value.unsavedDoc = typedResult.docs[0];
-    editor.value.docDataSinceLastSave = JSON.parse(JSON.stringify(typedResult.docs[0]));
-    pageIsLoaded.value = true;
-  } else {
-    pageIsError.value = true;
-  }
 });
+
+provide('docSaver', docSaver);
 </script>
 
 <template>
@@ -49,8 +36,8 @@ onBeforeMount(async () => {
       status: 404,
       redirectPath: '/documentations'
     }"
-    :is-loaded="pageIsLoaded"
-    :is-error="pageIsError"
+    :is-loaded="docSaver.data.value.status.isLoaded"
+    :is-error="docSaver.data.value.status.isError"
   >
     <main>
       <ConfirmDialog :pt="{

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import lodash from 'lodash';
 import Tailwind from "primevue/passthrough/tailwind";
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import ScrollPanel from 'primevue/scrollpanel';
@@ -7,18 +6,18 @@ import { useConfirm } from 'primevue/useconfirm';
 import InputText from 'primevue/inputtext';
 import TextArea from 'primevue/textarea';
 import InputSwitch from 'primevue/inputswitch';
-import { useToast } from 'primevue/usetoast';
 import { usePassThrough } from 'primevue/passthrough';
-import config from '~/server/config.json';
 import { IDocumentation, IDocumentationColorPalette } from '~/@types/declarations/Documentation';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
+import config from '~/server/config.json';
 import { useEditor } from '~/shared/states/editorState';
 import HexColorPicker from '~/shared/components/utils/HexColorPicker.vue';
 
 const { t } = useI18n();
 const isOpen = ref(false);
-const toast = useToast();
 const editor = useEditor();
 const confirm = useConfirm();
+const docSaver = inject('docSaver') as DocSaverReturnType;
 const visibilityIsCopied = ref(false);
 
 // Array to dinamically generate "color pickers" of the menu
@@ -37,28 +36,19 @@ const colors: ColorName[] = [
   'codeBlockVariable'
 ];
 
-const showError = (message?: string) => {
-  toast.add({
-    severity: 'error',
-    summary: 'Error',
-    detail: message || 'Error on executing this action',
-    life: 6000
-  });
-}
-
 const onColorChange = (type: keyof IDocumentation['colors'], val: string) => {
-  editor.value.unsavedDoc.colors[type] = val.includes('#')? val : `#${val}`;
+  docSaver.data.value.unsavedData.colors[type] = val.includes('#')? val : `#${val}`;
 }
 
 function copyShareableLink() {
   const host = window.location.host;
   visibilityIsCopied.value = true;
-  window.navigator.clipboard.writeText(`${host.match('localhost')? 'http://' : 'https://'}${host}/doc/${editor.value.unsavedDoc.id}`);
+  window.navigator.clipboard.writeText(`${host.match('localhost')? 'http://' : 'https://'}${host}/doc/${docSaver.data.value.unsavedData.id}`);
 }
 
 function changeVisibilityConfirm() {
   confirm.require({
-    header: `${t('editor.controls-menu-confirm-visibility-dialog-title')} ${editor.value.unsavedDoc.isPublic? t('others.private-word') : t('others.public-word')}?`,
+    header: `${t('editor.controls-menu-confirm-visibility-dialog-title')} ${docSaver.data.value.unsavedData.isPublic? t('others.private-word') : t('others.public-word')}?`,
     message: t('editor.controls-menu-confirm-visibility-dialog-description').replace('>time<', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))),
     acceptClass: '!w-32 !h-11 !font-normal !bg-primary/60 hover:!bg-primary/80 ml-2.5 !border-none',
     rejectClass: '!w-32 !h-11 !font-normal',
@@ -71,47 +61,8 @@ function changeVisibilityConfirm() {
 }
 
 async function changeDocVisibility() {
-  editor.value.unsavedDoc.isPublic = !editor.value.unsavedDoc.isPublic;
+  docSaver.data.value.unsavedData.isPublic = !docSaver.data.value.unsavedData.isPublic;
 }
-
-async function handleSave() {
-  if(editor.value.controlsMenu.isSaved) return;
-  editor.value.controlsMenu.isSaving = true;
-
-  const result = await useFetch('/api/editorBufferSave', {
-    method: 'POST',
-    body: JSON.parse(JSON.stringify(editor.value.unsavedDoc))
-  });
-
-  if(result.status.value === 'success') {
-    editor.value.controlsMenu.isSaved = true;
-    editor.value.controlsMenu.isSaving = false;
-    editor.value.docDataSinceLastSave = JSON.parse(JSON.stringify(editor.value.unsavedDoc));
-  } else {
-    showError('Error on saving has occurred!');
-    editor.value.controlsMenu.isSaving = false;
-  }
-}
-
-function startAutoSave() {
-  setInterval(() => {
-    if(!editor.value.controlsMenu.isSaved && !editor.value.controlsMenu.isSaving && editor.value.unsavedDoc.features.autoSave) {
-      handleSave();
-    }
-  }, config.EDITOR_AUTOSAVE_INTERVAL);
-}
-
-// Check if editor.value.unsavedDoc has been modified. If the data has been changed, the user can save the data
-watch(() => editor.value.unsavedDoc, async unsavedDocData => {
-  if(!unsavedDocData.id) return;
-  const currentDocData = editor.value.docDataSinceLastSave;
-
-  if(lodash.isEqual(unsavedDocData, currentDocData)) {
-    editor.value.controlsMenu.isSaved = true;
-  } else {
-    editor.value.controlsMenu.isSaved = false;
-  }
-}, { deep: true });
 
 watch(visibilityIsCopied, val => {
   if(val) {
@@ -129,8 +80,6 @@ onBeforeMount(async () => {
     }
   });
   isOpen.value = window.innerWidth >= 1180;
-
-  startAutoSave();
 });
 </script>
 
@@ -192,7 +141,7 @@ onBeforeMount(async () => {
           <div class="flex items-center gap-2.5">
             <!--Preview button-->
             <NuxtLinkLocale
-              :to="`/preview/${editor.unsavedDoc.id}`"
+              :to="`/preview/${docSaver.data.value.unsavedData.id}`"
               class="flex justify-center items-center w-10 h-10 !bg-[#d8985d] rounded-md" 
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
@@ -212,14 +161,14 @@ onBeforeMount(async () => {
             </Button>
             <!--Save button-->
             <Button
-              @click="handleSave"
+              @click="docSaver.save"
               class="w-10 !h-10 !bg-primary" 
               :title="$t('editor.controls-menu-save-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-save-button-aria-label')"
-              :disabled="editor.controlsMenu.isSaved"
+              :disabled="docSaver.data.value.status.isSaved"
             >
-              <font-awesome-icon v-if="!editor.controlsMenu.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
-              <font-awesome-icon v-if="editor.controlsMenu.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+              <font-awesome-icon v-if="!docSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
+              <font-awesome-icon v-if="docSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
             </Button>
           </div>
         </div>
@@ -234,17 +183,17 @@ onBeforeMount(async () => {
             </p>
             <div class="flex items-center justify-between mt-3">
               <h2 class="text-[15px] text-primary/80 font-medium">Status</h2>
-              <h2 :class="`text-[15px] duration-300 ${editor.unsavedDoc.isPublic? 'text-[#4cbf3f]' : 'text-[#c94f4f]'} font-medium`">
-                {{ editor.unsavedDoc.isPublic? $t('others.public-word') : $t('others.private-word') }}
+              <h2 :class="`text-[15px] duration-300 ${docSaver.data.value.unsavedData.isPublic? 'text-[#4cbf3f]' : 'text-[#c94f4f]'} font-medium`">
+                {{ docSaver.data.value.unsavedData.isPublic? $t('others.public-word') : $t('others.private-word') }}
               </h2>
             </div>
             <Button @click="changeVisibilityConfirm" class="!w-full !h-10 !bg-primary/10 hover:!bg-primary/30 !text-primary/90 mt-4">
               {{ $t('editor.controls-menu-visibility-box-turn-button-text') }}
-              {{ editor.unsavedDoc.isPublic? $t('others.private-word') : $t('others.public-word') }}
+              {{ docSaver.data.value.unsavedData.isPublic? $t('others.private-word') : $t('others.public-word') }}
             </Button>
             <Button 
               @click="copyShareableLink" 
-              class="!w-full !h-10 hover:!bg-primary/30 !text-primary/90 mt-4" v-if="editor.unsavedDoc.isPublic"
+              class="!w-full !h-10 hover:!bg-primary/30 !text-primary/90 mt-4" v-if="docSaver.data.value.unsavedData.isPublic"
             >
               {{ visibilityIsCopied? $t('editor.controls-menu-visibility-box-share-copied-button-text') : $t('editor.controls-menu-visibility-box-share-button-text') }}
             </Button>
@@ -253,13 +202,13 @@ onBeforeMount(async () => {
           <!--Auto save-->
           <div class="w-full flex justify-between gap-2 mb-10">
             <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-autosave-input-label') }}</label>
-            <InputSwitch v-model="editor.unsavedDoc.features.autoSave"/>
+            <InputSwitch v-model="docSaver.data.value.unsavedData.features.autoSave"/>
           </div>
           <!--Customize-->
           <div class="w-full flex items-center justify-between gap-2 mb-10">
             <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-customize-input-label') }}</label>
             <NuxtLinkLocale 
-              :to="`/customize/${editor.unsavedDoc.id}`" 
+              :to="`/customize/${docSaver.data.value.unsavedData.id}`" 
               class="flex items-center justify-center text-primary/80 w-32 h-10 border-solid border-[1px] border-primary/40 hover:bg-primary hover:text-primary duration-300 rounded-lg"
             >
               {{ $t('editor.controls-menu-customize-input-text') }}
@@ -270,12 +219,12 @@ onBeforeMount(async () => {
           <div class="w-full flex flex-col gap-2 mt-5">
             <div class="flex items-center justify-between">
               <label class="text-md text-primary/70 font-medium">{{ $t('documentations.new-doc-modal-title-input-label') }}</label>
-              <p :class="`text-[15px] ${editor.unsavedDoc.title.length >= config.DOC_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
-                {{ editor.unsavedDoc.title.length }}/{{ config.DOC_TITLE_LIMIT }}
+              <p :class="`text-[15px] ${docSaver.data.value.unsavedData.title.length >= config.DOC_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
+                {{ docSaver.data.value.unsavedData.title.length }}/{{ config.DOC_TITLE_LIMIT }}
               </p>
             </div>
             <InputText
-              v-model="editor.unsavedDoc.title"
+              v-model="docSaver.data.value.unsavedData.title"
               class="rounded-md contrast-200 !h-11 !border-secondary/60"
               :placeholder="$t('documentations.new-doc-modal-title-input-placeholder')"
               :minlength="3"
@@ -287,12 +236,12 @@ onBeforeMount(async () => {
           <div class="w-full flex flex-col gap-2 mt-5">
             <div class="flex items-center justify-between">
               <label class="text-md text-primary/70 font-medium">{{ $t('documentations.new-doc-modal-description-input-label') }}</label>
-              <p :class="`text-[15px] ${editor.unsavedDoc.description.length >= config.DOC_DESCRIPTION_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
-                {{ editor.unsavedDoc.description.length }}/{{ config.DOC_DESCRIPTION_LIMIT }}
+              <p :class="`text-[15px] ${docSaver.data.value.unsavedData.description.length >= config.DOC_DESCRIPTION_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
+                {{ docSaver.data.value.unsavedData.description.length }}/{{ config.DOC_DESCRIPTION_LIMIT }}
               </p>
             </div>
             <TextArea
-              v-model="editor.unsavedDoc.description"
+              v-model="docSaver.data.value.unsavedData.description"
               class="!border-secondary/60 contrast-200 max-h-[74px]"
               :placeholder="$t('documentations.new-doc-modal-description-input-placeholder')"
               :minlength="10"
@@ -303,7 +252,7 @@ onBeforeMount(async () => {
           <!--Indexes table-->
           <div class="w-full flex justify-between gap-2 mt-10">
             <label class="text-sm text-primary/40 font-medium">{{ $t('editor.controls-menu-indexestable-input-label') }}</label>
-            <InputSwitch v-model="editor.unsavedDoc.features.indexesTable"/>
+            <InputSwitch v-model="docSaver.data.value.unsavedData.features.indexesTable"/>
           </div>
           <!--Colors-->
           <div class="w-full flex flex-col gap-2 mt-7">
@@ -317,7 +266,7 @@ onBeforeMount(async () => {
                 <div class="w-full flex items-center justify-between gap-2">
                   <label class="text-sm text-primary/40 font-medium">{{ color }}</label>
                   <HexColorPicker
-                    :model-value="editor.unsavedDoc.colors[color]"
+                    :model-value="docSaver.data.value.unsavedData.colors[color]"
                     @update:model-value="(val: string) => onColorChange(color, val)"
                   />
                 </div>
@@ -329,12 +278,12 @@ onBeforeMount(async () => {
           <div class="w-full flex flex-col gap-2 mt-5">
             <div class="flex items-center justify-between">
               <label class="text-md text-primary/70 font-medium">{{ $t('editor.controls-menu-texts-navigation-title') }}</label>
-              <p :class="`text-[15px] ${editor.unsavedDoc.messages.navigationTitle.length >= config.DOC_NAVIGATION_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
-                {{ editor.unsavedDoc.messages.navigationTitle.length }}/{{ config.DOC_NAVIGATION_TITLE_LIMIT }}
+              <p :class="`text-[15px] ${docSaver.data.value.unsavedData.messages.navigationTitle.length >= config.DOC_NAVIGATION_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
+                {{ docSaver.data.value.unsavedData.messages.navigationTitle.length }}/{{ config.DOC_NAVIGATION_TITLE_LIMIT }}
               </p>
             </div>
             <InputText
-              v-model="editor.unsavedDoc.messages.navigationTitle"
+              v-model="docSaver.data.value.unsavedData.messages.navigationTitle"
               class="rounded-md contrast-200 !h-11 !border-secondary/60"
               :placeholder="$t('editor.controls-menu-texts-navigation-title')"
               :minlength="3"
@@ -346,12 +295,12 @@ onBeforeMount(async () => {
           <div class="w-full flex flex-col gap-2 mt-5">
             <div class="flex items-center justify-between">
               <label class="text-md text-primary/70 font-medium">{{ $t('editor.controls-menu-texts-navigation-sub-title') }}</label>
-              <p :class="`text-[15px] ${editor.unsavedDoc.messages.navigationSubTitle.length >= config.DOC_NAVIGATION_SUB_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
-                {{ editor.unsavedDoc.messages.navigationSubTitle.length }}/{{ config.DOC_NAVIGATION_SUB_TITLE_LIMIT }}
+              <p :class="`text-[15px] ${docSaver.data.value.unsavedData.messages.navigationSubTitle.length >= config.DOC_NAVIGATION_SUB_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
+                {{ docSaver.data.value.unsavedData.messages.navigationSubTitle.length }}/{{ config.DOC_NAVIGATION_SUB_TITLE_LIMIT }}
               </p>
             </div>
             <InputText
-              v-model="editor.unsavedDoc.messages.navigationSubTitle"
+              v-model="docSaver.data.value.unsavedData.messages.navigationSubTitle"
               class="rounded-md contrast-200 !h-11 !border-secondary/60"
               :placeholder="$t('editor.controls-menu-texts-navigation-sub-title')"
               :minlength="3"
@@ -363,12 +312,12 @@ onBeforeMount(async () => {
           <div class="w-full flex flex-col gap-2 mt-5">
             <div class="flex items-center justify-between">
               <label class="text-md text-primary/70 font-medium">{{ $t('editor.controls-menu-texts-indexestable-title') }}</label>
-              <p :class="`text-[15px] ${editor.unsavedDoc.messages.indexesTableTitle.length >= config.DOC_INDEXES_TABLE_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
-                {{ editor.unsavedDoc.messages.indexesTableTitle.length }}/{{ config.DOC_INDEXES_TABLE_TITLE_LIMIT }}
+              <p :class="`text-[15px] ${docSaver.data.value.unsavedData.messages.indexesTableTitle.length >= config.DOC_INDEXES_TABLE_TITLE_LIMIT? 'text-[#e46565]' : 'text-primary/70'}`">
+                {{ docSaver.data.value.unsavedData.messages.indexesTableTitle.length }}/{{ config.DOC_INDEXES_TABLE_TITLE_LIMIT }}
               </p>
             </div>
             <InputText
-              v-model="editor.unsavedDoc.messages.indexesTableTitle"
+              v-model="docSaver.data.value.unsavedData.messages.indexesTableTitle"
               class="rounded-md contrast-200 !h-11 !border-secondary/60"
               :placeholder="$t('editor.controls-menu-navigation-indexestable-title-input-placeholder')"
               :minlength="3"

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import InputText from 'primevue/inputtext';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { useCustomize } from '~/shared/states/customizeState';
 
 const regions: ('top' | 'bottom')[] = ['top', 'bottom'];
 const customize = useCustomize();
+const docSaver = inject('docSaver') as DocSaverReturnType;
 
 async function handleSubmit() {
   const newCustomization = {
@@ -13,8 +15,8 @@ async function handleSubmit() {
     ...JSON.parse(JSON.stringify(customize.value.controlsMenu.newCustomizationModal.data))
   };
 
-  const updatedPayload = [...JSON.parse(JSON.stringify(customize.value.unsavedDoc.customizations)), newCustomization];
-  customize.value.unsavedDoc.customizations = updatedPayload;
+  const updatedPayload = [...JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.customizations)), newCustomization];
+  docSaver.data.value.unsavedData.customizations = updatedPayload;
   
   customize.value.controlsMenu.newCustomizationModal.isOpen = false;
   customize.value.controlsMenu.newCustomizationModal.data.title = '';
@@ -48,8 +50,8 @@ async function handleSubmit() {
       <!--Doc prototype-->
       <div class="flex justify-center items-center w-full xl:min-w-[350px] h-full bg-secondary_darken rounded-l-xl max-xl:py-8">
         <DocPrototype
-          :colors="customize.unsavedDoc.colors"
-          :features="customize.unsavedDoc.features"
+          :colors="docSaver.data.value.unsavedData.colors"
+          :features="docSaver.data.value.unsavedData.features"
           :selected-region="customize.controlsMenu.newCustomizationModal.data.region"
         />
       </div>

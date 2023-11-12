@@ -1,14 +1,8 @@
-import { IDocumentation, IDocumentationPage } from "~/@types/declarations/Documentation";
-import { documentationDataEmptyObj } from "~/@types/utils/documentation";
+import { IDocumentationPage } from "~/@types/declarations/Documentation";
 
 type EditorStateType = {
-  unsavedDoc: IDocumentation,
-  docDataSinceLastSave: IDocumentation,
   controlsMenu: {
-    isOpen: boolean,
-    isSaved: boolean,
-    isSaving: boolean,
-    isExportingManifest: boolean
+    isOpen: boolean
   },
   exportDocModal: {
     isLoading: boolean,
@@ -22,13 +16,8 @@ type EditorStateType = {
 };
 
 export const useEditor = () => useState<EditorStateType>('editorState', () => ({
-  unsavedDoc: documentationDataEmptyObj,
-  docDataSinceLastSave: documentationDataEmptyObj,
   controlsMenu: {
-    isOpen: false,
-    isSaved: true,
-    isSaving: false,
-    isExportingManifest: false
+    isOpen: false
   },
   exportDocModal: {
     isLoading: false,

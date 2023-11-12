@@ -1,9 +1,6 @@
-import { IDocumentation, IDocumentationCustomization } from "~/@types/declarations/Documentation";
-import { documentationDataEmptyObj } from "~/@types/utils/documentation";
+import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
 
 type EditorStateType = {
-  unsavedDoc: IDocumentation,
-  docDataSinceLastSave: IDocumentation,
   codeEditor: {
     isOpen: boolean,
     isMobile: boolean,
@@ -11,8 +8,6 @@ type EditorStateType = {
   }
   controlsMenu: {
     isOpen: boolean,
-    isSaved: boolean,
-    isSaving: boolean,
     newCustomizationModal: {
       isOpen: boolean,
       data: {
@@ -28,8 +23,6 @@ type EditorStateType = {
 };
 
 export const useCustomize = () => useState<EditorStateType>('customizeState', () => ({
-  unsavedDoc: documentationDataEmptyObj,
-  docDataSinceLastSave: documentationDataEmptyObj,
   codeEditor: {
     isOpen: false,
     isMobile: false,
@@ -37,8 +30,6 @@ export const useCustomize = () => useState<EditorStateType>('customizeState', ()
   },
   controlsMenu: {
     isOpen: false,
-    isSaved: true,
-    isSaving: false,
     newCustomizationModal: {
       isOpen: false,
       data: {

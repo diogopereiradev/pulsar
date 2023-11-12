@@ -3,33 +3,16 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
 import PageStates from '~/shared/components/PageStates.vue';
-import { useCustomize } from '~/shared/states/customizeState';
-import { IDocumentation } from '~/@types/declarations/Documentation';
+import { useDocSave } from '~/shared/compositions/useDocSave';
 
 definePageMeta({
   middleware: ['authentication']
 });
 
 const { params } = useRoute();
-const pageIsLoaded = ref(false);
-const pageIsError = ref(false);
-const customize = useCustomize();
+const docSaver = useDocSave(params.id as string);
 
-onBeforeMount(async () => {
-  // Set initial doc data in editor.value.doc
-  const result = await $fetch(`/api/getDoc?id=${params.id}`, {
-    method: 'GET'
-  });
-  const typedResult = result as { count: number, limit: number, docs: IDocumentation[] };
-
-  if(typedResult && typedResult.docs.length > 0) {
-    customize.value.unsavedDoc = typedResult.docs[0];
-    customize.value.docDataSinceLastSave = JSON.parse(JSON.stringify(typedResult.docs[0]));
-    pageIsLoaded.value = true;
-  } else {
-    pageIsError.value = true;
-  }
-});
+provide('docSaver', docSaver);
 </script>
 
 <template>
@@ -42,8 +25,8 @@ onBeforeMount(async () => {
         status: 404,
         redirectPath: '/documentations'
       }"
-      :is-loaded="pageIsLoaded"
-      :is-error="pageIsError"
+      :is-loaded="docSaver.data.value.status.isLoaded"
+      :is-error="docSaver.data.value.status.isError"
     >
       <main class="wrapper">
         <ConfirmDialog :pt="{
@@ -58,7 +41,7 @@ onBeforeMount(async () => {
             <p class="text-primary/50">{{ $t('customize.empty-customization-preview-message') }}</p>
           </div>
         </div>
-        <DatabaseSync :doc-id="customize.unsavedDoc.id" />
+        <DatabaseSync :doc-id="docSaver.data.value.unsavedData.id" />
       </main>
     </PageStates>
   </div>
@@ -66,7 +49,7 @@ onBeforeMount(async () => {
 
 <style>
   .wrapper {
-    background-color: v-bind('customize.unsavedDoc.colors.background');
+    background-color: v-bind('docSaver.data.value.unsavedData.colors.background');
     height: 100vh;
   }
 </style>

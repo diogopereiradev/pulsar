@@ -7,33 +7,16 @@ import { Splitpanes, Pane } from 'splitpanes';
 import { useCustomize } from '~/shared/states/customizeState';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import { ResetCss } from '~/shared/dfb/files/src/assets/ResetCss';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 
 const customize = useCustomize();
+const docSaver = inject('docSaver') as DocSaverReturnType;
 const currentMobileTab = ref<'HtmlEditor' | 'CssEditor' | 'JavascriptEditor'>('HtmlEditor');
 const mobileEditors = {
   HtmlEditor,
   CssEditor,
   JavascriptEditor
 };
-
-async function handleSave() {
-  if(customize.value.controlsMenu.isSaved) return;
-  customize.value.controlsMenu.isSaving = true;
-
-  const result = await useFetch('/api/editorBufferSave', {
-    method: 'POST',
-    body: JSON.parse(JSON.stringify(customize.value.unsavedDoc))
-  });
-
-  if(result.status.value === 'success') {
-    customize.value.controlsMenu.isSaved = true;
-    customize.value.controlsMenu.isSaving = false;
-    customize.value.docDataSinceLastSave = JSON.parse(JSON.stringify(customize.value.unsavedDoc));
-  } else {
-    showError('An error on saving occurred');
-    customize.value.controlsMenu.isSaving = false;
-  }
-}
 
 function closeCodeEditor() {
   customize.value.codeEditor.isOpen = false;
@@ -123,14 +106,14 @@ onMounted(() => {
             <div class="flex items-center gap-4">
               <!--Save button-->
               <Button
-                @click="handleSave()"
+                @click="docSaver.save"
                 class="w-10 min-h-[40px] !bg-primary" 
                 :title="$t('editor.controls-menu-save-button-aria-label')" 
                 :aria-label="$t('editor.controls-menu-save-button-aria-label')"
-                :disabled="customize.controlsMenu.isSaved"
+                :disabled="docSaver.data.value.status.isSaved"
               >
-                <font-awesome-icon v-if="!customize.controlsMenu.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
-                <font-awesome-icon v-if="customize.controlsMenu.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+                <font-awesome-icon v-if="!docSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
+                <font-awesome-icon v-if="docSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
               </Button>
               <button @click="closeCodeEditor()" class="flex items-center justify-center">
                 <font-awesome-icon icon="fa-solid fa-close" class="text-xl text-primary"></font-awesome-icon>
@@ -205,7 +188,7 @@ onMounted(() => {
             >
               <font-awesome-icon icon="fa-solid fa-eye"></font-awesome-icon>
             </button>
-            <hr class="w-[85%] h-px border-none mt-5 mx-auto" :style="{ backgroundColor: customize.unsavedDoc.colors.divider + 'a9' }"/>
+            <hr class="w-[85%] h-px border-none mt-5 mx-auto" :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.divider + 'a9' }"/>
           </div>
         </div>
       </pane>
@@ -216,7 +199,7 @@ onMounted(() => {
         <iframe
           id="pulsar-code-preview"
           class="w-full h-full"
-          :style="{ backgroundColor: customize.unsavedDoc.colors.background }"
+          :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.background }"
         ></iframe>
       </pane>
     </splitpanes>

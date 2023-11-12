@@ -3,6 +3,7 @@ import { useConfirm } from "primevue/useconfirm";
 import { useToast } from 'primevue/usetoast';
 import { useEditor } from '~/shared/states/editorState';
 import { IDocumentationCategory, IDocumentationPage } from '~/@types/declarations/Documentation';
+import { DocSaverReturnType } from "~/shared/compositions/useDocSave";
 import InputableButton from './InputableButton.vue';
 import config from '~/server/config.json';
 
@@ -10,6 +11,7 @@ const { t } = useI18n();
 const confirm = useConfirm();
 const toast = useToast();
 const editor = useEditor();
+const docSaver = inject('docSaver') as DocSaverReturnType;
 
 const showError = (message?: string) => {
   toast.add({
@@ -21,7 +23,7 @@ const showError = (message?: string) => {
 }
 
 async function handlePageChange(pageId: number) {
-  const page = editor.value.unsavedDoc.pages.find(page => page.id === pageId);
+  const page = docSaver.data.value.unsavedData.pages.find(page => page.id === pageId);
     
   if(page) {
     editor.value.currentSelectedPage = page;
@@ -33,13 +35,13 @@ async function handlePageChange(pageId: number) {
 function handleNewCategory(value: string) {
   if(!value) return;
 
-  if(editor.value.unsavedDoc.categories.length < config.DOC_CATEGORY_LIMIT) {
+  if(docSaver.data.value.unsavedData.categories.length < config.DOC_CATEGORY_LIMIT) {
     const newCategory: IDocumentationCategory = {
       id: Math.round(Math.random() * (10000 - 1) + 1),
       label: value
     };
-    const categoriesCopy = JSON.parse(JSON.stringify(editor.value.unsavedDoc.categories));
-    editor.value.unsavedDoc.categories = [...categoriesCopy, newCategory];
+    const categoriesCopy = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.categories));
+    docSaver.data.value.unsavedData.categories = [...categoriesCopy, newCategory];
   } else {
     showError(`The limit of ${config.DOC_CATEGORY_LIMIT} categories was exceeded!`);
   }
@@ -48,7 +50,7 @@ function handleNewCategory(value: string) {
 function handleNewPage(value: string, categoryId: number) {
   if(!value || !categoryId) return;
 
-  if(editor.value.unsavedDoc.pages.length < config.DOC_PAGE_LIMIT) {
+  if(docSaver.data.value.unsavedData.pages.length < config.DOC_PAGE_LIMIT) {
     const newPage: IDocumentationPage = {
       id: Math.round(Math.random() * (10000 - 1) + 1),
       categoryId,
@@ -56,8 +58,8 @@ function handleNewPage(value: string, categoryId: number) {
       content: '',
       createdAt: Date.now()
     };
-    const pagesCopy = JSON.parse(JSON.stringify(editor.value.unsavedDoc.pages || '[]'));
-    editor.value.unsavedDoc.pages = [...pagesCopy, newPage];
+    const pagesCopy = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.pages || '[]'));
+    docSaver.data.value.unsavedData.pages = [...pagesCopy, newPage];
   } else {
     showError(`The limit of ${config.DOC_PAGE_LIMIT} pages was exceeded!`);
   }
@@ -72,13 +74,13 @@ function deleteCategoryConfirmDialog(categoryId: number) {
     acceptLabel: t('editor.delete-category-dialog-confirm-button-message'),
     rejectLabel: t('editor.delete-category-dialog-cancel-button-message'),
     accept: async () => {
-      const categoryPagesProxyClone = JSON.parse(JSON.stringify(editor.value.unsavedDoc.pages));
+      const categoryPagesProxyClone = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.pages));
       const pagesUpdated = categoryPagesProxyClone.filter((page: IDocumentationPage) => page.categoryId != categoryId);
-      const categoriesProxyClone = JSON.parse(JSON.stringify(editor.value.unsavedDoc.categories));
+      const categoriesProxyClone = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.categories));
       const categoriesUpdated = categoriesProxyClone.filter((category: IDocumentationCategory) => category.id != categoryId);
 
-      editor.value.unsavedDoc.categories = categoriesUpdated;
-      editor.value.unsavedDoc.pages = pagesUpdated;
+      docSaver.data.value.unsavedData.categories = categoriesUpdated;
+      docSaver.data.value.unsavedData.pages = pagesUpdated;
 
       // Clear the currentSelectedPage if the category deleted is the same of the currentSelectedPage
       if(categoryId === editor.value.currentSelectedPage?.categoryId) {
@@ -97,10 +99,10 @@ function deletePageConfirmDialog(pageId: number) {
     acceptLabel: t('editor.delete-page-dialog-confirm-button-message'),
     rejectLabel: t('editor.delete-page-dialog-cancel-button-message'),
     accept: async () => {
-      const pagesProxyClone = JSON.parse(JSON.stringify(editor.value.unsavedDoc.pages));
+      const pagesProxyClone = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.pages));
       const pagesUpdated = pagesProxyClone.filter((page: IDocumentationCategory) => page.id != pageId);
 
-      editor.value.unsavedDoc.pages = pagesUpdated;
+      docSaver.data.value.unsavedData.pages = pagesUpdated;
       if(pageId === editor.value.currentSelectedPage?.id) {
         editor.value.currentSelectedPage = {
           ...pagesUpdated[0],
@@ -114,10 +116,10 @@ function deletePageConfirmDialog(pageId: number) {
 
 <template>
   <ul class="flex flex-col gap-2.5">
-    <li v-for="category in editor.unsavedDoc.categories" :key="category.id" class="group">
+    <li v-for="category in docSaver.data.value.unsavedData.categories" :key="category.id" class="group">
       <div class="flex flex-col">
         <div class="flex items-center justify-between">
-          <h2 class="text-[15px] font-medium" :style="{ color: editor.unsavedDoc.colors.text }">{{ category.label }}</h2>
+          <h2 class="text-[15px] font-medium" :style="{ color: docSaver.data.value.unsavedData.colors.text }">{{ category.label }}</h2>
           <Button
             @click="deleteCategoryConfirmDialog(category.id)"
             class="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto hover:!bg-[#f99999]/20 !w-[30px] !h-[30px] border-none"
@@ -127,14 +129,14 @@ function deletePageConfirmDialog(pageId: number) {
         </div>
         <!--Category Pages-->
         <ul class="flex flex-col">
-          <li v-for="page in (editor.unsavedDoc.pages || []).filter(page => page.categoryId === category.id)">
+          <li v-for="page in (docSaver.data.value.unsavedData.pages || []).filter(page => page.categoryId === category.id)">
             <div class="group flex items-center justify-between">
               <!--Page Button-->
               <button
                 @click="handlePageChange(page.id)"
                 :title="page.title"
                 class="dinamic-color-page-link max-w-[160px] font-normal truncate duration-300" 
-                :style="{ color: editor.currentSelectedPage?.id === page.id? editor.unsavedDoc.colors.primary : `${editor.unsavedDoc.colors.text}70` }"
+                :style="{ color: editor.currentSelectedPage?.id === page.id? docSaver.data.value.unsavedData.colors.primary : `${docSaver.data.value.unsavedData.colors.text}70` }"
               >
                 {{ page.title }}
               </button>
@@ -153,7 +155,7 @@ function deletePageConfirmDialog(pageId: number) {
         <li>
           <InputableButton
             :data="{ categoryId: category.id }"
-            :color="editor.unsavedDoc.colors.text"
+            :color="docSaver.data.value.unsavedData.colors.text"
             @update:submit="handleNewPage"
           >
             <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
@@ -164,7 +166,7 @@ function deletePageConfirmDialog(pageId: number) {
     </li>
     <li class="mt-2.5">
       <InputableButton
-        :color="editor.unsavedDoc.colors.text"
+        :color="docSaver.data.value.unsavedData.colors.text"
         @update:submit="handleNewCategory"
       >
         <font-awesome-icon icon="fa-solid fa-plus"></font-awesome-icon>
@@ -176,6 +178,6 @@ function deletePageConfirmDialog(pageId: number) {
 
 <style scoped>
 .dinamic-color-page-link:hover {
-  color: v-bind('editor.unsavedDoc.colors.primary + 90') !important;
+  color: v-bind('docSaver.data.value.unsavedData.colors.primary + 90') !important;
 }
 </style>

@@ -1,55 +1,17 @@
 <script setup lang="ts">
-import lodash from 'lodash';
 import Tailwind from "primevue/passthrough/tailwind";
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import ScrollPanel from 'primevue/scrollpanel';
-import { useToast } from 'primevue/usetoast';
 import { usePassThrough } from 'primevue/passthrough';
 import { useCustomize } from '~/shared/states/customizeState';
 import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
 import NewCustomizationModal from './NewCustomizationModal.vue';
 import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
 import CodeEditor from './CodeEditor/CodeEditor.vue';
-import config from '~/server/config.json';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 
 const customize = useCustomize();
-const toast = useToast();
-
-const showError = (message: string) => {
-  toast.add({
-    severity: 'error',
-    summary: 'Error',
-    detail: message || 'An error has occurred',
-    life: 6000
-  });
-};
-
-async function handleSave() {
-  if(customize.value.controlsMenu.isSaved) return;
-  customize.value.controlsMenu.isSaving = true;
-
-  const result = await useFetch('/api/editorBufferSave', {
-    method: 'POST',
-    body: JSON.parse(JSON.stringify(customize.value.unsavedDoc))
-  });
-
-  if(result.status.value === 'success') {
-    customize.value.controlsMenu.isSaved = true;
-    customize.value.controlsMenu.isSaving = false;
-    customize.value.docDataSinceLastSave = JSON.parse(JSON.stringify(customize.value.unsavedDoc));
-  } else {
-    showError('An error on saving occurred');
-    customize.value.controlsMenu.isSaving = false;
-  }
-}
-
-function startAutoSave() {
-  setInterval(() => {
-    if(!customize.value.controlsMenu.isSaved && !customize.value.controlsMenu.isSaving && customize.value.unsavedDoc.features.autoSave) {
-      handleSave();
-    }
-  }, config.EDITOR_AUTOSAVE_INTERVAL);
-}
+const docSaver = inject('docSaver') as DocSaverReturnType;
 
 function openCustomizationInfosMenu(customization: IDocumentationCustomization) {
   customize.value.controlsMenu.customizationInfosMenu.data = customization;
@@ -57,18 +19,6 @@ function openCustomizationInfosMenu(customization: IDocumentationCustomization) 
     customize.value.controlsMenu.customizationInfosMenu.isOpen = true;
   }, 50);
 }
-
-// Check if customize.value.doc has been modified. If the data has been changed, the user can save the data
-watch(() => customize.value.unsavedDoc, async unsavedDocData => {
-  if(!unsavedDocData.id) return;
-  const currentDocData = customize.value.docDataSinceLastSave;
-
-  if(lodash.isEqual(unsavedDocData, currentDocData)) {
-    customize.value.controlsMenu.isSaved = true;
-  } else {
-    customize.value.controlsMenu.isSaved = false;
-  }
-}, { deep: true });
 
 onBeforeMount(async () => {
   // Toggle controls menu based on window size
@@ -78,9 +28,6 @@ onBeforeMount(async () => {
     }
   });
   customize.value.controlsMenu.isOpen = window.innerWidth >= 1180;
-
-  // Start auto save
-  startAutoSave();
 });
 </script>
 
@@ -125,11 +72,11 @@ onBeforeMount(async () => {
         { mergeProps: true, mergeSections: true }
       )"
     >
-      <form @submit.prevent="handleSave" class="p-8">
+      <form @submit.prevent="docSaver.save" class="p-8">
         <!--Back to editor button and mobile close button-->
         <div class="flex items-center justify-between pb-7">
           <NuxtLinkLocale 
-            :to="`/editor/${customize.unsavedDoc.id}`"
+            :to="`/editor/${docSaver.data.value.unsavedData.id}`"
             :aria-label="$t('customize.controls-menu-back-to-editor-button-message')"
             class="flex items-center gap-3 w-32 h-10 bg-primary hover:bg-primary/80 active:bg-primary/60 duration-300 text-primary rounded-md font-medium pl-5"
           >
@@ -149,7 +96,7 @@ onBeforeMount(async () => {
           <div class="flex items-center gap-2.5">
             <!--Preview button-->
             <NuxtLinkLocale
-              :to="`/preview/${customize.unsavedDoc.id}`"
+              :to="`/preview/${docSaver.data.value.unsavedData.id}`"
               class="flex justify-center items-center w-10 min-h-[40px] !bg-[#d8985d] rounded-md" 
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
@@ -162,10 +109,10 @@ onBeforeMount(async () => {
               class="w-10 min-h-[40px] !bg-primary" 
               :title="$t('editor.controls-menu-save-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-save-button-aria-label')"
-              :disabled="customize.controlsMenu.isSaved"
+              :disabled="docSaver.data.value.status.isSaved"
             >
-              <font-awesome-icon v-if="!customize.controlsMenu.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
-              <font-awesome-icon v-if="customize.controlsMenu.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+              <font-awesome-icon v-if="!docSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
+              <font-awesome-icon v-if="docSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
             </Button>
           </div>
         </div>
@@ -187,9 +134,9 @@ onBeforeMount(async () => {
             </Button>
           </div>
           <!--Customizations-->
-          <div class="flex flex-col gap-2.5 mt-7" v-if="customize.unsavedDoc.customizations.length >= 1">
+          <div class="flex flex-col gap-2.5 mt-7" v-if="docSaver.data.value.unsavedData.customizations.length >= 1">
             <Button
-              v-for="customization in customize.unsavedDoc.customizations"
+              v-for="customization in docSaver.data.value.unsavedData.customizations"
               @click="openCustomizationInfosMenu(customization)"
               class="group !justify-start gap-3.5 w-full !min-h-[43px] !bg-primary/[0.15] hover:!bg-primary/50 border-none !px-5 duration-300"
             >
@@ -198,7 +145,7 @@ onBeforeMount(async () => {
             </Button>
           </div>
           <!--Empty customizations message-->
-          <div class="flex justify-center items-center h-[200px]" v-if="customize.unsavedDoc.customizations.length < 1">
+          <div class="flex justify-center items-center h-[200px]" v-if="docSaver.data.value.unsavedData.customizations.length < 1">
             <p class="text-center text-base text-primary/40">{{ $t('customize.controls-menu-empty-customizations-message') }}</p>
           </div>
         </div>

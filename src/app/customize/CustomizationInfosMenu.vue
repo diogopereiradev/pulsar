@@ -5,10 +5,12 @@ import Tailwind from "primevue/passthrough/tailwind";
 import { usePassThrough } from 'primevue/passthrough';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useCustomize } from '~/shared/states/customizeState';
+import { DocSaverReturnType } from "~/shared/compositions/useDocSave";
 
 const { t } = useI18n();
 const confirm = useConfirm();
 const customize = useCustomize();
+const docSaver = inject('docSaver') as DocSaverReturnType;
 
 function deleteCustomizationConfirmDialog(customizationId: number) {
   confirm.require({
@@ -19,9 +21,9 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
     rejectLabel: t('customize.delete-customization-dialog-cancel-button-message'),
     acceptLabel: t('customize.delete-customization-dialog-confirm-button-message'),
     accept: async () => {
-      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.unsavedDoc.customizations.filter(c => c.id != customizationId)));
+      const updatedCustomizations = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.customizations.filter(c => c.id != customizationId)));
       customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
-      customize.value.unsavedDoc.customizations = updatedCustomizations;
+      docSaver.data.value.unsavedData.customizations = updatedCustomizations;
     }
   });
 }
@@ -77,8 +79,8 @@ function openCodeEditor() {
       <div class="flex justify-center items-center">
         <DocPrototype
           class="mt-5"
-          :colors="customize.unsavedDoc.colors"
-          :features="customize.unsavedDoc.features"
+          :colors="docSaver.data.value.unsavedData.colors"
+          :features="docSaver.data.value.unsavedData.features"
           :selected-region="customize.controlsMenu.customizationInfosMenu.data?.region"
         />
       </div>
