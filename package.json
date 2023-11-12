@@ -1,7 +1,7 @@
 {
   "name": "pulsar",
   "description": "Create modern documentation websites for your application using Pulsar. You will generate custom static documentation pages with Pulsar and can use them wherever you want.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/FhillSlinger/pulsar"
