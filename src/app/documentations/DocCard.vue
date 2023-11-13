@@ -67,7 +67,7 @@ function deleteConfirmDialog() {
     <!--Card Frame-->
     <NuxtLinkLocale @click="isOpening = true" :to="`/editor/${data.id}`" class="w-full min-h-[300px]" v-if="!isOpening">
       <div class="relative flex justify-center pt-5 w-full h-[140px] rounded-t-[10px] overflow-hidden">
-        <div class="absolute left-0 top-0 bg-black/60 w-full h-full"></div>
+        <div class="absolute left-0 top-0 bg-black/[0.45] w-full h-full"></div>
         <DocPrototype
           :colors="data.colors"
           :features="data.features"

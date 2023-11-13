@@ -126,7 +126,6 @@ onBeforeMount(async () => {
           <NuxtLinkLocale 
             to="/documentations" 
             class="flex items-center gap-3 w-32 h-10 bg-primary hover:bg-primary/80 active:bg-primary/60 duration-300 text-primary rounded-md font-medium pl-5"
-            aria-label=""
           >
             <font-awesome-icon icon="fa-solid fa-arrow-left-long" />
             {{ $t('editor.controls-menu-back-to-docs-button-message') }}
