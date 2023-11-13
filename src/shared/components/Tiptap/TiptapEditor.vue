@@ -254,10 +254,6 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
       class="w-full min-h-[80vh] !overflow-visible" 
       :editor="editor"
     />
-    <div
-      @click="editor?.chain().focus('end').run()"
-      class="w-full h-[20vh] mt-5 cursor-pointer"
-    ></div>
   </div>
 </template>
 
