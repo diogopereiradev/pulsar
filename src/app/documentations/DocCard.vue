@@ -6,6 +6,7 @@ import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { MenuItem } from 'primevue/menuitem';
 import { IDocumentation } from '~/@types/declarations/Documentation';
 import { useDocumentations } from "~/shared/states/documentationsState";
+import { IError } from "~/@types/error";
 
 const props = defineProps<{ data: IDocumentation }>();
 const docs = useDocumentations();
@@ -42,20 +43,20 @@ function deleteConfirmDialog() {
     acceptLabel: t('documentations.delete-doc-dialog-confirm-button-message'),
     rejectLabel: t('documentations.delete-doc-dialog-cancel-button-message'),
     accept: async () => {
-      const headers = useRequestHeaders(['cookie']) as HeadersInit;
-      const result: { status: number, message?: string } = await $fetch('/api/deleteDoc', {
-        method: 'POST',
-        headers,
-        body: {
-          id: props.data.id
-        }
-      });
+      try {
+        const headers = useRequestHeaders(['cookie']) as HeadersInit;
+        await $fetch('/api/docs/deleteDoc', {
+          method: 'POST',
+          headers,
+          body: {
+            id: props.data.id
+          }
+        });
 
-      if(result.status === 200) {
         const updatedData = docs.value.data.filter(doc => doc.id !== props.data.id);
         docs.value.data = updatedData;
-      } else {
-        showError(result.message || 'Error on deleting the documentation!');
+      } catch(err) {
+        showError((err as IError).message || 'Error on deleting the documentation!');
       }
     }
   });

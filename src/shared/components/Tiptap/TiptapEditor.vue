@@ -21,11 +21,11 @@ import SlashCommandsPopup from './SlashCommandsPopup.vue';
 import SelectionBubbleMenu from './SelectionBubbleMenu.vue';
 import TableControlsMenu from './TableControlsMenu.vue';
 import { IDocumentationColorPalette } from '~/@types/declarations/Documentation';
-import { useEditor } from '~/shared/states/editorState';
-import config from '~/server/config.json';
+import config from '~/server/config';
+import { PageSaverReturnType } from '~/shared/compositions/usePageSave';
 
 const emit = defineEmits(['update:modelValue']);
-const pageEditor = useEditor();
+const pageSaver = inject('pageSaver') as PageSaverReturnType;
 const toast = useToast();
 const props = defineProps<{
   colors: IDocumentationColorPalette,
@@ -44,7 +44,7 @@ const showError = (message?: string) => {
 }
 
 const editor = useTiptapEditor({
-  content: props.content,
+  content: pageSaver.data.value.unsavedContent,
   extensions: [
     StarterKit.configure({
       horizontalRule: {
@@ -225,10 +225,10 @@ const editor = useTiptapEditor({
   }
 });
 
-// Set editor content on props.content was changed
-watch(() => pageEditor.value.currentSelectedPage, (value) => {
-  if(!editor.value) return;
-  editor.value?.commands.setContent(value.content, true);
+watch(() => pageSaver.data.value.lastSavedContent, (content) => {
+  const { from, to } = editor.value!.state.selection;
+  editor.value?.commands.setContent(content);
+  editor.value?.commands.setTextSelection({ from, to });
 });
 </script>
 
@@ -237,6 +237,7 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
     <SelectionBubbleMenu
       :editor="editor"
       :colors="props.colors"
+      class="!overflow-visible"
     />
     <SlashCommandsPopup
       :editor="editor"
@@ -251,7 +252,7 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
       autocomplete="off"
       autocorrect="off"
       spellcheck="false"
-      class="w-full min-h-[80vh] !overflow-visible" 
+      class="w-full min-h-[74vh] !overflow-visible" 
       :editor="editor"
     />
   </div>

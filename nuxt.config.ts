@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'path';
+import { Buffer } from 'buffer';
 
 export default defineNuxtConfig({
   modules: [
@@ -26,6 +27,7 @@ export default defineNuxtConfig({
       alias: {
         fs: 'browserify-fs',
         path: 'path-browserify',
+        buffer: 'buffer',
         '~': path.resolve(__dirname, './src')
       }
     },

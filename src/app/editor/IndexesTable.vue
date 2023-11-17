@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
-import { useEditor } from '~/shared/states/editorState';
+import { PageSaverReturnType } from '~/shared/compositions/usePageSave';
 
-const editor = useEditor();
 const headings = ref<HTMLHeadingElement[]>([]);
 const docSaver = inject('docSaver') as DocSaverReturnType;
+const pageSaver = inject('pageSaver') as PageSaverReturnType;
 
 function updateHeadings() {
   const newHeadings = document.querySelectorAll<HTMLHeadingElement>('.pulsar-heading-indexed');
@@ -12,17 +12,25 @@ function updateHeadings() {
   headings.value = filteredHeadings;
 }
 
-// Monitor new headings in page and change the state to the new headings
-watch([() => docSaver.data.value.unsavedData.pages, () => editor.value.currentSelectedPage, () => docSaver.data.value.unsavedData.features.indexesTable], () => {
-  // Timeout to await for the headings to load in the document 
+// Monitor if the page was changed and check for new headings on page
+watch(() => pageSaver.data.value.unsavedContent, (content) => {
+  if(!content) return;
   setTimeout(() => {
     updateHeadings();
   }, 100);
-});
+})
+
+// Load the index headings on pagin changing
+watch(() => pageSaver.data.value.isLoadingContent, (isLoadingContent) => {
+  if(isLoadingContent) return;
+  setTimeout(() => {
+    updateHeadings();
+  }, 100);
+})
 </script>
 
 <template>
-  <div class="max-lg:hidden max-2xl:ml-[70px] min-w-[180px] max-2xl:w-[250px]" v-if="headings.length >= 1 && docSaver.data.value.unsavedData.features.indexesTable">
+  <div class="max-lg:hidden max-2xl:ml-[70px] min-w-[180px] max-2xl:w-[250px]" v-if="headings.length >= 1 && docSaver.data.value.unsavedData.features.indexesTable && pageSaver.data.value.currentSelectedPage.id !== '-1'">
     <h2
       class="font-medium text-[15px] truncate"
       :style="{ color: docSaver.data.value.unsavedData.colors.text + 'e9' }"

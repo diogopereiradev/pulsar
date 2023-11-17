@@ -29,24 +29,25 @@ export class DocumentationFileBuilder {
     this.zip = new JSZip();
   }
 
-  getHTMLPages(): HTMLPage[] {
+  async getHTMLPages(): Promise<HTMLPage[]> {
     const pages = this.documentation.pages;
-    const result: HTMLPage[] = [];
   
-    pages.forEach(page => {
+    const transformedPages = await Promise.all(pages.map(async page => {
+      const html = await Html(page, this.documentation);
       const isFirstPage = getIsFirstPage(this.documentation, page.id);
   
-      result.push({
+      return {
         title: page.title, 
-        html: Html(page, this.documentation),
+        html: html,
         isFirstPage
-      });
-    });
-    return result;
+      };
+    }));
+    return transformedPages;
   }
 
-  generatePageFiles() {
-    const htmlPages = this.getHTMLPages();
+  async generatePageFiles() {
+    const htmlPages = await this.getHTMLPages();
+
     htmlPages.forEach(htmlPage => {
       const fileName = htmlPage.title.toLowerCase().replaceAll(' ', '').trim();
       const pageFilePath = htmlPage.isFirstPage? 'src/index.html' : `src/${fileName}.html`;
@@ -91,7 +92,7 @@ export class DocumentationFileBuilder {
   }
 
   async generate() {
-    this.generatePageFiles();
+    await this.generatePageFiles();
     this.generateAssetsFiles();
     this.generateCustomizationsFiles();
     this.generateConfigurationFiles();

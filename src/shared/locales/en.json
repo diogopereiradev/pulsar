@@ -107,12 +107,12 @@
     "controls-menu-customize-input-text": "Open Editor",
     "controls-menu-exportdoc-button-aria-label": "Export Documentation",
     "controls-menu-visibility-box-title": "Visibility",
-    "controls-menu-visibility-box-description": "It can take >time< minutes to propagate globally, because the cache is active.",
+    "controls-menu-visibility-box-description": "When the documentation is set to public all peoples can see with the shared link.",
     "controls-menu-visibility-box-turn-button-text": "Turn",
     "controls-menu-visibility-box-share-button-text": "Share",
     "controls-menu-visibility-box-share-copied-button-text": "Link copied",
     "controls-menu-confirm-visibility-dialog-title": "Do you want to turn this documentation",
-    "controls-menu-confirm-visibility-dialog-description": "This action can take >time< minutes to propagate globally because the system cache.",
+    "controls-menu-confirm-visibility-dialog-description": "When the documentation is set to public all peoples can see with the shared link.",
     "controls-menu-confirm-visibility-dialog-accept-button-text": "Confirm",
     "controls-menu-confirm-visibility-dialog-reject-button-text": "Cancel",
     "controls-menu-exportmanifest-button-aria-label": "Export manifest.json",
@@ -148,7 +148,10 @@
     "export-cancel-dialog-content": "After canceling this action you will not have any implications for your data, but you will have to compile the project again.",
     "export-modal-loading-message": "Compressing your documentation data, wait a moment...",
     "export-modal-error-message": "An error occurred, click the button below to try again.",
-    "export-modal-error-try-again-message": "Try again"
+    "export-modal-error-try-again-message": "Try again",
+    "editor-saving-message": "Saving",
+    "editor-saved-message": "Saved",
+    "editor-typing-message": "Typing"
   },
   "preview": {
     "title": "Pulsar - Preview"

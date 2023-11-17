@@ -32,6 +32,8 @@ library.add(...[
   SolidIcons.faLinesLeaning,
   SolidIcons.faDownload,
   SolidIcons.faUpload,
+  SolidIcons.faCheck,
+  SolidIcons.faKeyboard,
   SolidIcons.faCloudArrowUp,
   SolidIcons.faRotate,
   SolidIcons.faPalette,

@@ -106,12 +106,12 @@
     "controls-menu-customize-input-label": "Customizar",
     "controls-menu-customize-input-text": "Abrir Editor",
     "controls-menu-visibility-box-title": "Visibilidade",
-    "controls-menu-visibility-box-description": "Pode levar até >time< minutos para suas ações irem globalmente, devido ao cache.",
+    "controls-menu-visibility-box-description": "Ao deixar a documentação como pública todos poderão visualiza-lá caso tenham o link compartilhado.",
     "controls-menu-visibility-box-turn-button-text": "Tornar",
     "controls-menu-visibility-box-share-button-text": "Compartilhar",
     "controls-menu-visibility-box-share-copied-button-text": "Link copiado",
     "controls-menu-confirm-visibility-dialog-title": "Deseja tornar essa documentação",
-    "controls-menu-confirm-visibility-dialog-description": "Essa ação pode levar até >time< minutos para propagar globalmente devido ao cache.",
+    "controls-menu-confirm-visibility-dialog-description": "Ao deixar a documentação como pública todos poderão visualiza-lá caso tenham o link compartilhado.",
     "controls-menu-confirm-visibility-dialog-accept-button-text": "Confirmar",
     "controls-menu-confirm-visibility-dialog-reject-button-text": "Cancelar",
     "controls-menu-exportmanifest-button-aria-label": "Exportar manifest.json",
@@ -148,7 +148,10 @@
     "export-cancel-dialog-content": "Após cancelar esta ação você não terá nenhuma implicação com os seus dados, mas deverá compilar o projeto novamente.",
     "export-modal-loading-message": "Comprimindo os dados da sua documentação, aguarde um momento...",
     "export-modal-error-message": "Ocorreu um erro, clique no botão abaixo para tentar novamente.",
-    "export-modal-error-try-again-message": "Tentar novamente"
+    "export-modal-error-try-again-message": "Tentar novamente",
+    "editor-saving-message": "Salvando",
+    "editor-saved-message": "Salvo",
+    "editor-typing-message": "Digitando"
   },
   "preview": {
     "title": "Pulsar - Pré-Visualização"

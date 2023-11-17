@@ -1,7 +1,8 @@
 import { getServerSession } from "#auth";
 import { db_client } from "~/database/client";
-import { redisDelPatternKeys } from "../redis/redisDelPatternKeys";
 import chalk from "chalk";
+import fs from 'fs';
+import { Streaming } from "~/server/streaming";
 
 async function deleteDoc(id: string) {
   await db_client.$connect();
@@ -21,14 +22,18 @@ export default defineEventHandler(async event => {
 
   if(session && session.user && docId) {
     try {
-      await deleteDoc(docId);
-      const userIdentifier = getAuthIdentifier(session).identifier;
-      // Remove getDoc cache to get updated data
-      redisDelPatternKeys(`cache:getdoc:${userIdentifier}*`);
-      process.env.NODE_ENV === 'development' && 
-        console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(event.path)} documentation ${chalk.yellow(docId)} ${chalk.red('[DELETED]')}`);
-      return {
-        status: 200
+      // Delete the documentation folder of hard disk
+      const paths = Streaming.streamPaths({ docId }, session);
+      fs.rmSync(paths.docPath, { recursive: true, force: true });
+      
+      const result = await deleteDoc(docId);
+      
+      if(result) {
+        process.env.NODE_ENV === 'development' && 
+          console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(event.path)} documentation ${chalk.yellow(docId)} ${chalk.red('[DELETED]')}`);
+        return {
+          status: 200
+        }
       }
     } catch(err) {
       setResponseStatus(event, 500, 'Internal server error');

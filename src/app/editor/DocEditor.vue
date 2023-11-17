@@ -3,12 +3,14 @@ import { Editor } from '@tiptap/vue-3';
 import TiptapEditor from '~/shared/components/Tiptap/TiptapEditor.vue';
 import EditorCategories from './EditorCategories.vue';
 import IndexesTable from './IndexesTable.vue';
-import { useEditor } from '~/shared/states/editorState';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
+import { usePageSave } from '~/shared/compositions/usePageSave';
 
-const editor = useEditor();
 const docSaver = inject('docSaver') as DocSaverReturnType;
+const pageSaver = usePageSave();
 const mobileNavigationIsOpen = ref(false);
+
+provide('pageSaver', pageSaver);
 
 function parseCodeBlocks(unparsedContent: string, fullViewDom: string) {
   const unparsedDom = new DOMParser().parseFromString(unparsedContent, 'text/html');
@@ -39,15 +41,10 @@ function parseTablesWrapper(unparsedContent: string, fullViewDom: string) {
 }
 
 function handleEditorChange(value: string, textEditorInstance: Editor) {
-  const parsedCodeBlocksDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
-  const parsedTablesWrapperDom = parseTablesWrapper(parsedCodeBlocksDom, textEditorInstance.view.dom.innerHTML);
-  const updatedPages = docSaver.data.value.unsavedData.pages.map(page => {
-    if(page.id === editor.value.currentSelectedPage?.id) {
-      page.content = parsedTablesWrapperDom;
-    }
-    return page;
-  });
-  docSaver.data.value.unsavedData.pages = updatedPages;
+  // const parsedCodeBlocksDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
+  // const parsedTablesWrapperDom = parseTablesWrapper(parsedCodeBlocksDom, textEditorInstance.view.dom.innerHTML);
+  const content = value;
+  pageSaver.data.value.unsavedContent = content;
 }
 
 onBeforeMount(() => {
@@ -136,13 +133,33 @@ onBeforeMount(() => {
         :class="`2xl:hidden ${!mobileNavigationIsOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] duration-300 z-[10]`"
       ></div>
       <!--Editor-->
-      <div class="overflow-hidden w-full 2xl:px-10">
+      <div class="flex flex-col overflow-hidden w-full 2xl:px-10">
+        <!--Saving or Saved messages-->
+        <div class="w-full flex items-center gap-3 justify-end mb-6" v-if="pageSaver.data.value.currentSelectedPage.id !== '-1' && !pageSaver.data.value.isLoadingContent">
+          <div class="px-5 py-1.5 rounded-[10px]" :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.secondary + '80' }">
+            <div class="flex items-center gap-3" v-if="!pageSaver.data.value.status.isSaved && !pageSaver.data.value.status.isTyping">
+              <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-lg text-secondary/70" spin></font-awesome-icon>
+              <h2 class="text-base text-primary/70">{{ $t('editor.editor-saving-message') }}</h2>
+            </div>
+            <div class="flex items-center gap-3" v-else-if="pageSaver.data.value.status.isTyping">
+              <font-awesome-icon icon="fa-solid fa-keyboard" class="text-lg text-secondary/70" beat-fade></font-awesome-icon>
+              <h2 class="text-base text-primary/70">{{ $t('editor.editor-typing-message') }}</h2>
+            </div>
+            <div class="flex items-center gap-3" v-else-if="!pageSaver.data.value.status.isTyping">
+              <font-awesome-icon icon="fa-solid fa-check" class="text-lg text-secondary/70"></font-awesome-icon>
+              <h2 class="text-base text-primary/70">{{ $t('editor.editor-saved-message') }}</h2>
+            </div>
+          </div>
+        </div>
         <TiptapEditor
-          v-if="editor.currentSelectedPage?.id != -1"
-          @update:model-value="(value, editor) => handleEditorChange(value, editor)"
-          :content="editor.currentSelectedPage?.content"
+          v-if="pageSaver.data.value.currentSelectedPage?.id !== '-1' && !pageSaver.data.value.isLoadingContent"
+          @update:model-value="handleEditorChange"
+          :content="pageSaver.data.value.unsavedContent"
           :colors="docSaver.data.value.unsavedData.colors"
         />
+        <div class="flex justify-center items-center w-full h-[76vh]" v-else-if="pageSaver.data.value.isLoadingContent">
+          <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-secondary/70 text-[40px]" spin></font-awesome-icon>
+        </div>
         <div v-else class="w-full h-[300px] flex justify-center items-center">
           <p :style="{ color: docSaver.data.value.unsavedData.colors.text + '50' }">{{ $t('editor.non-page-selected-message') }}</p>
         </div>

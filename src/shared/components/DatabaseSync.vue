@@ -33,7 +33,7 @@ async function syncDoc() {
 
   const headers = useRequestHeaders(['cookie']) as HeadersInit;
   try {
-    const result: { status: number, message: string } = await $fetch('/api/syncOldDoc', {
+    const result: { status: number, message: string } = await $fetch('/api/docs/syncOldDoc', {
       method: 'POST',
       headers,
       body: {

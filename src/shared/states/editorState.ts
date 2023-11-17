@@ -1,5 +1,3 @@
-import { IDocumentationPage } from "~/@types/declarations/Documentation";
-
 type EditorStateType = {
   controlsMenu: {
     isOpen: boolean
@@ -11,8 +9,7 @@ type EditorStateType = {
     isCancelling: boolean,
     isOpen: boolean,
     data: Blob | undefined
-  },
-  currentSelectedPage: IDocumentationPage
+  }
 };
 
 export const useEditor = () => useState<EditorStateType>('editorState', () => ({
@@ -26,13 +23,5 @@ export const useEditor = () => useState<EditorStateType>('editorState', () => ({
     isCancelling: false,
     isOpen: false,
     data: undefined
-  },
-  currentSelectedPage: {
-    id: -1,
-    categoryId: -1,
-    title: '',
-    content: '',
-    createdAt: 0,
-    lastUpdateAt: 0
   }
 }));

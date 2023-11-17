@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Editor, BubbleMenu } from '@tiptap/vue-3';
-import { IDocumentationColorPalette } from '~/database/models/Documentation';
+import { IDocumentationColorPalette } from '~/@types/declarations/Documentation';
 
 const props = defineProps<{
   editor: Editor | undefined,
@@ -38,7 +38,7 @@ function handleToolbarToggleLink() {
       @click="editor.chain().focus().toggleBold().run()"
       class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
-        color: props.colors.text,
+        color: editor.isActive('bold')? props.colors.text : props.colors.primary,
         backgroundColor: editor.isActive('bold')? props.colors.primary : 'transparent'
       }"
       :disabled="editor.isActive('link') || editor.isActive('codeBlock')"
@@ -50,7 +50,7 @@ function handleToolbarToggleLink() {
       @click="editor.chain().focus().toggleItalic().run()"
       class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
-        color: props.colors.text,
+        color: editor.isActive('italic')? props.colors.text : props.colors.primary,
         backgroundColor: editor.isActive('italic')? props.colors.primary : 'transparent'
       }"
       :disabled="editor.isActive('link') || editor.isActive('codeBlock')"
@@ -62,7 +62,7 @@ function handleToolbarToggleLink() {
       @click="editor.chain().focus().toggleStrike().run()"
       class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
-        color: props.colors.text,
+        color: editor.isActive('strike')? props.colors.text : props.colors.primary,
         backgroundColor: editor.isActive('strike')? props.colors.primary : 'transparent'
       }"
       :disabled="editor.isActive('link') || editor.isActive('codeBlock')"
@@ -76,7 +76,7 @@ function handleToolbarToggleLink() {
       @click="handleToolbarToggleLink"
       class="!w-9 !h-9 duration-300 rounded-md border-none"
       :style="{ 
-        color: props.colors.text,
+        color: editor.isActive('link')? props.colors.text : props.colors.primary,
         backgroundColor: editor.isActive('link')? props.colors.primary : 'transparent'
       }"
       :disabled="editor.isActive('codeBlock')"

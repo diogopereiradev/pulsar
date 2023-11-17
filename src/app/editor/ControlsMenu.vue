@@ -9,7 +9,7 @@ import InputSwitch from 'primevue/inputswitch';
 import { usePassThrough } from 'primevue/passthrough';
 import { IDocumentation, IDocumentationColorPalette } from '~/@types/declarations/Documentation';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
-import config from '~/server/config.json';
+import config from '~/server/config';
 import { useEditor } from '~/shared/states/editorState';
 import HexColorPicker from '~/shared/components/utils/HexColorPicker.vue';
 
@@ -49,7 +49,7 @@ function copyShareableLink() {
 function changeVisibilityConfirm() {
   confirm.require({
     header: `${t('editor.controls-menu-confirm-visibility-dialog-title')} ${docSaver.data.value.unsavedData.isPublic? t('others.private-word') : t('others.public-word')}?`,
-    message: t('editor.controls-menu-confirm-visibility-dialog-description').replace('>time<', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))),
+    message: t('editor.controls-menu-confirm-visibility-dialog-description'),
     acceptClass: '!w-32 !h-11 !font-normal !bg-primary/60 hover:!bg-primary/80 ml-2.5 !border-none',
     rejectClass: '!w-32 !h-11 !font-normal',
     acceptLabel: t('editor.controls-menu-confirm-visibility-dialog-accept-button-text'),
@@ -178,7 +178,7 @@ onBeforeMount(async () => {
           <div class="flex flex-col w-full min-h-[100px] bg-[#303553]/40 rounded-[7px] shadow-sm mb-7 px-6 py-4">
             <h2 class="text-[17px] text-primary/80 font-medium">{{ $t('editor.controls-menu-visibility-box-title') }}</h2>
             <p class="text-[15px] text-primary/50 mt-0.5">
-              {{ $t('editor.controls-menu-visibility-box-description').replace('>time<', String(Math.round((config.REDIS_EDITOR_EXPIRED_BUFFER_TTL + config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION) / 60))) }}
+              {{ $t('editor.controls-menu-visibility-box-description') }}
             </p>
             <div class="flex items-center justify-between mt-3">
               <h2 class="text-[15px] text-primary/80 font-medium">Status</h2>

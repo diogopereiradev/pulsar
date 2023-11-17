@@ -1,11 +1,10 @@
 import { db_client } from '~/database/client';
-import { getAuthIdentifier } from '../utils/getAuthIdentifier';
-import { generateId } from '../utils/generateId';
+import { getAuthIdentifier } from '../../utils/getAuthIdentifier';
+import { generateId } from '../../utils/generateId';
 import { IDocumentation } from '~/@types/declarations/Documentation';
 import { Prisma } from '@prisma/client';
 import { getServerSession } from '#auth';
-import config from '~/server/config.json';
-import { redisDelPatternKeys } from '../redis/redisDelPatternKeys';
+import config from '~/server/config';
 import chalk from 'chalk';
 
 function createDoc(accountIdentifier: string, docData: Omit<IDocumentation, 'id' | 'createdAt' | 'updatedAt'>): Promise<IDocumentation | any> {
@@ -66,11 +65,9 @@ export default defineEventHandler(async event => {
     const docData = body.documentation as Omit<IDocumentation, 'id' | 'createdAt' | 'updatedAt'>;
     
     try {
-      const result = await createDoc(accountIdentifier.identifier!, docData);
+      const result: IDocumentation = await createDoc(accountIdentifier.identifier!, docData);
 
       if(result.id) {
-        // Remove getDoc cache to get updated data
-        redisDelPatternKeys(`cache:getdoc:${accountIdentifier.identifier}*`);
         process.env.NODE_ENV === 'development' && 
           console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(event.path)} documentation ${chalk.yellow(result.id)} ${chalk.green('[CREATED]')}`);
         return result;

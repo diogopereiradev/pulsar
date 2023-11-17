@@ -27,11 +27,9 @@ export type IDocumentationCategory = {
 };
 
 export type IDocumentationPage = {
-  id: number,
+  id: string,
   categoryId: number,
-  title: string,
-  content: string,
-  createdAt: number
+  title: string
 };
 
 export type IDocumentationColorPalette = {

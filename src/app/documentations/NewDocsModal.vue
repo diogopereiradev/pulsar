@@ -13,7 +13,7 @@ import { useDocumentations } from '~/shared/states/documentationsState';
 import { usePassThrough } from 'primevue/passthrough';
 import HexColorPicker from '~/shared/components/utils/HexColorPicker.vue';
 import Loading from '~/shared/components/utils/Loading.vue';
-import config from '~/server/config.json';
+import config from '~/server/config';
 
 const docs = useDocumentations();
 const toast = useToast();
@@ -38,7 +38,7 @@ const handleDocCreate = () => {
   setTimeout(async () => {
     try {
       const headers = useRequestHeaders(['cookie']) as HeadersInit;
-      const result = await $fetch('/api/createDoc', { 
+      const result = await $fetch('/api/docs/createDoc', { 
         method: 'POST', 
         headers, 
         body: {
@@ -49,7 +49,7 @@ const handleDocCreate = () => {
       if(result) {
         docs.value.data = [
           ...docs.value.data,
-          result
+          result as IDocumentation
         ];
       } else {
         throw result;

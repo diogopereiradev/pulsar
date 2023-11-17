@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from 'primevue/usetoast';
-import { useEditor } from '~/shared/states/editorState';
 import { IDocumentationCategory, IDocumentationPage } from '~/@types/declarations/Documentation';
 import { DocSaverReturnType } from "~/shared/compositions/useDocSave";
 import InputableButton from './InputableButton.vue';
-import config from '~/server/config.json';
+import { generateId } from "~/server/utils/generateId";
+import config from '~/server/config';
+import { PageSaverReturnType } from "~/shared/compositions/usePageSave";
 
 const { t } = useI18n();
 const confirm = useConfirm();
 const toast = useToast();
-const editor = useEditor();
 const docSaver = inject('docSaver') as DocSaverReturnType;
+const pageSaver = inject('pageSaver') as PageSaverReturnType;
 
 const showError = (message?: string) => {
   toast.add({
@@ -22,11 +23,11 @@ const showError = (message?: string) => {
   });
 }
 
-async function handlePageChange(pageId: number) {
+async function handlePageChange(pageId: string) {
   const page = docSaver.data.value.unsavedData.pages.find(page => page.id === pageId);
     
   if(page) {
-    editor.value.currentSelectedPage = page;
+    pageSaver.data.value.currentSelectedPage = page;
   } else {
     console.error('Invalid page id!');
   }
@@ -47,19 +48,30 @@ function handleNewCategory(value: string) {
   }
 }
 
-function handleNewPage(value: string, categoryId: number) {
+async function handleNewPage(value: string, categoryId: number) {
   if(!value || !categoryId) return;
 
   if(docSaver.data.value.unsavedData.pages.length < config.DOC_PAGE_LIMIT) {
     const newPage: IDocumentationPage = {
-      id: Math.round(Math.random() * (10000 - 1) + 1),
+      id: generateId(10),
       categoryId,
-      title: value,
-      content: '',
-      createdAt: Date.now()
+      title: value
     };
-    const pagesCopy = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.pages || '[]'));
-    docSaver.data.value.unsavedData.pages = [...pagesCopy, newPage];
+
+    const result = await $fetch('/api/docs/createPage', {
+      method: 'POST',
+      body: {
+        id: newPage.id,
+        docId: docSaver.data.value.unsavedData.id
+      }
+    });
+
+    if(result.status === 200) {
+      const pagesCopy = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.pages));
+      docSaver.data.value.unsavedData.pages = [...pagesCopy, newPage];
+    } else {
+      showError('Error on trying to create the new page!');
+    }
   } else {
     showError(`The limit of ${config.DOC_PAGE_LIMIT} pages was exceeded!`);
   }
@@ -79,18 +91,33 @@ function deleteCategoryConfirmDialog(categoryId: number) {
       const categoriesProxyClone = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.categories));
       const categoriesUpdated = categoriesProxyClone.filter((category: IDocumentationCategory) => category.id != categoryId);
 
+      docSaver.data.value.unsavedData.pages.filter(page => page.categoryId === categoryId).forEach(async page => {
+        try {
+          await $fetch('/api/docs/deletePage', {
+            method: 'POST',
+            body: {
+              type: 'page',
+              docId: docSaver.data.value.unsavedData.id,
+              id: page.id
+            }
+          });
+        } catch {
+          showError('The page file not exists on the system, you can ignore this error, the page was deleted!');
+        }
+      });
+
       docSaver.data.value.unsavedData.categories = categoriesUpdated;
       docSaver.data.value.unsavedData.pages = pagesUpdated;
 
       // Clear the currentSelectedPage if the category deleted is the same of the currentSelectedPage
-      if(categoryId === editor.value.currentSelectedPage?.categoryId) {
-        editor.value.currentSelectedPage = { ...pagesUpdated[0], id: -1 };
+      if(categoryId === pageSaver.data.value.currentSelectedPage.categoryId) {
+        pageSaver.data.value.currentSelectedPage = { ...pagesUpdated[0], id: '-1' };
       }
     }
   });
 }
 
-function deletePageConfirmDialog(pageId: number) {
+function deletePageConfirmDialog(pageId: string) {
   confirm.require({
     header: t('editor.delete-page-dialog-title'),
     message: t('editor.delete-page-dialog-message'),
@@ -99,12 +126,25 @@ function deletePageConfirmDialog(pageId: number) {
     acceptLabel: t('editor.delete-page-dialog-confirm-button-message'),
     rejectLabel: t('editor.delete-page-dialog-cancel-button-message'),
     accept: async () => {
+      try {
+        await $fetch('/api/docs/deletePage', {
+          method: 'POST',
+          body: {
+            type: 'page',
+            docId: docSaver.data.value.unsavedData.id,
+            id: pageId
+          }
+        });
+      } catch {
+        showError('The page file not exists on the system, you can ignore this error, the page was deleted!');
+      }
+
       const pagesProxyClone = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.pages));
-      const pagesUpdated = pagesProxyClone.filter((page: IDocumentationCategory) => page.id != pageId);
+      const pagesUpdated = pagesProxyClone.filter((page: IDocumentationPage) => page.id != pageId);
 
       docSaver.data.value.unsavedData.pages = pagesUpdated;
-      if(pageId === editor.value.currentSelectedPage?.id) {
-        editor.value.currentSelectedPage = {
+      if(pageId === pageSaver.data.value.currentSelectedPage.id) {
+        pageSaver.data.value.currentSelectedPage = {
           ...pagesUpdated[0],
           id: -1
         }
@@ -136,7 +176,7 @@ function deletePageConfirmDialog(pageId: number) {
                 @click="handlePageChange(page.id)"
                 :title="page.title"
                 class="dinamic-color-page-link max-w-[160px] font-normal truncate duration-300" 
-                :style="{ color: editor.currentSelectedPage?.id === page.id? docSaver.data.value.unsavedData.colors.primary : `${docSaver.data.value.unsavedData.colors.text}70` }"
+                :style="{ color: pageSaver.data.value.currentSelectedPage.id === page.id? docSaver.data.value.unsavedData.colors.primary : `${docSaver.data.value.unsavedData.colors.text}70` }"
               >
                 {{ page.title }}
               </button>

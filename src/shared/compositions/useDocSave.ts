@@ -2,7 +2,7 @@ import lodash from "lodash";
 import { useToast } from "primevue/usetoast";
 import { IDocumentation } from "~/@types/declarations/Documentation";
 import { documentationDataEmptyObj } from "~/@types/utils/documentation";
-import config from '~/server/config.json';
+import config from '~/server/config';
 
 type DataType = {
   unsavedData: IDocumentation,
@@ -50,9 +50,12 @@ export function useDocSave(docId: string): DocSaverReturnType {
     if(data.value.status.isSaved) return;
     data.value.status.isSaving = true;
   
-    const result = await useFetch('/api/editorBufferSave', {
+    const result = await useFetch('/api/docs/docInfosSaver', {
       method: 'POST',
-      body: JSON.parse(JSON.stringify(data.value.unsavedData))
+      body: {
+        docId: data.value.unsavedData.id,
+        docInfos: JSON.parse(JSON.stringify(data.value.unsavedData))
+      }
     });
   
     if(result.status.value === 'success') {
@@ -92,7 +95,7 @@ export function useDocSave(docId: string): DocSaverReturnType {
 
   onBeforeMount(async () => {
     // Set initial doc lastSaveData and unsavedData
-    const result = await $fetch(`/api/getDoc?id=${docId}`, {
+    const result = await $fetch(`/api/docs/getDoc?id=${docId}`, {
       method: 'GET'
     });
     const typedResult = result as { count: number, limit: number, docs: IDocumentation[] };

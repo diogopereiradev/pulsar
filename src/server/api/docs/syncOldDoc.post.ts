@@ -3,10 +3,9 @@ import { IOldDocumentation } from '~/shared/indexedDB/@types/OldDocumentation';
 import { documentationDataEmptyObj } from "~/@types/utils/documentation";
 import { IDocumentation } from '~/@types/declarations/Documentation';
 import { db_client } from "~/database/client";
-import config from '~/server/config.json';
-import { redisDelPatternKeys } from "../redis/redisDelPatternKeys";
+import config from '~/server/config';
 import chalk from "chalk";
-import { formatToISO8601 } from "../utils/formatToISO8601";
+import { formatToISO8601 } from "../../utils/formatToISO8601";
 
 function parseToNewDoc(authorIdentifier: string, doc: IOldDocumentation): IDocumentation {
   const newDocId = generateId(10);
@@ -86,8 +85,6 @@ export default defineEventHandler(async event => {
       }
       const author = getAuthIdentifier(session);
       const result = await syncOldDoc(author.identifier!, oldDocs);
-      // Remove getDoc cache to get updated data
-      redisDelPatternKeys(`cache:getdoc:${author.identifier}*`);
       process.env.NODE_ENV === 'development' && 
         console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(event.path)} documentations synced count ${chalk.yellow(oldDocs.length)} ${chalk.green('[SYNCED]')}`);
       return result;

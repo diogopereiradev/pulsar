@@ -4,6 +4,8 @@ import { IDocumentation, IDocumentationPage } from "~/@types/declarations/Docume
 import { MapIcon } from "./assets/icons/MapIcon";
 import { Css } from "./assets/Css";
 import { ResetCss } from "./assets/ResetCss";
+import { Buffer } from "buffer";
+import { RefSymbol } from "@vue/reactivity";
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
   return /* html */`
@@ -49,7 +51,7 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPrevi
                       >
                         ${isToPreview? /* html */`
                           <button
-                            onclick="changeRoute(this, ${categoryPage.id})"
+                            onclick="changeRoute(this, '${categoryPage.id}')"
                             title="${categoryPage.title}"
                             data-id="${categoryPage.id}"
                             class="pulsar-navigation-link pulsar-utils-truncate ${routeName === page.title.toLowerCase().replaceAll(' ', '').trim() && 'current-page'}"
@@ -98,7 +100,35 @@ function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
   `;
 }
 
-function Content(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+async function Content(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+  const content = ref('');
+  const requestContent = await fetch('/api/readStream', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      type: 'page',
+      docId: doc.id,
+      id: page.id
+    })
+  });
+
+  const reader = requestContent.body?.getReader();
+
+  const read = async (val: string) => {
+    const { done, value } = await reader!.read();
+
+    if(done) {
+      reader?.releaseLock();
+      return val;
+    }
+    const bufferToString = Buffer.from(value).toString();
+    content.value = bufferToString;
+    read(bufferToString);
+  };
+  await read('');
+
   return /* html */`
     <div class="pulsar-doc-page-nav-doc-indexes-table-container">
       <!--Navigation Menu-->
@@ -108,7 +138,7 @@ function Content(page: IDocumentationPage, doc: IDocumentation, isToPreview: boo
         <div class="pulsar-current-page-content"></div>
       ` : /* html */`
         <div class="pulsar-current-page-content">
-          ${page.content}
+          ${content.value}
         </div>
       `}
       <!--Indexes Table-->
@@ -141,7 +171,9 @@ function BasicHeadTags(page: IDocumentationPage, doc: IDocumentation, isToPrevie
   `;
 }
 
-export function Html(page: IDocumentationPage, doc: IDocumentation, options = { isToPreview: false }) {
+export async function Html(page: IDocumentationPage, doc: IDocumentation, options = { isToPreview: false }) {
+  const content = await Content(page, doc, options.isToPreview);
+
   return beautify.html(/* html */`
     <!DOCTYPE html>
     <html>
@@ -172,7 +204,7 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, options = { 
             </nav>
             <hr class="pulsar-doc-navbar-divider pulsar-divider" />
           `}
-          ${Content(page, doc, options.isToPreview)}
+          ${content}
         </main>
         <!--Bottom customizations regions-->
         <div id="bottom-region-container">

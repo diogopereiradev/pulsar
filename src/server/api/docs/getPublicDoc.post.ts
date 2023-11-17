@@ -1,8 +1,6 @@
-import config from '~/server/config.json';
 import chalk from 'chalk';
 import { IDocumentation } from '~/@types/declarations/Documentation';
 import { db_client } from '~/database/client';
-import { redis_client } from '~/database/redis';
 import { documentationDataEmptyObj } from '~/@types/utils/documentation';
 
 const allowedProperties = {
@@ -41,36 +39,15 @@ async function getPublicDoc(docId: string): Promise<IDocumentation | undefined> 
   }
 }
 
-async function tryGetFromCache(docId: string): Promise<typeof allowedProperties | null> {
-  const result = await redis_client.get(`cache:getpublicdoc:${docId}`);
-  
-  if(result) {
-    return JSON.parse(result) as typeof allowedProperties;
-  } else {
-    return result as null;
-  }
-}
-
 async function queryResult(docId: string, pathname: string) {
-  const cacheResult = await tryGetFromCache(docId);
+  const dbResult = await getPublicDoc(docId);
 
-  if(cacheResult) {
-    // CACHE HIT
+  if(dbResult) {
     process.env.NODE_ENV === 'development' && 
-      console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(pathname)} cache status ${chalk.green('[HIT]')}`);
-    return cacheResult;
+      console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(pathname)} status ${chalk.green('[SUCESS]')}`);
+    return dbResult;
   } else {
-    // CACHE MISS
-    const dbResult = await getPublicDoc(docId);
-
-    if(dbResult) {
-      process.env.NODE_ENV === 'development' && 
-        console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(pathname)} cache status ${chalk.red('[MISS]')}`);
-      await redis_client.set(`cache:getpublicdoc:${docId}`, JSON.stringify(dbResult), 'EX', config.API_GET_PUBLIC_DOC_CACHE_EXPIRATION);
-      return dbResult;
-    } else {
-      throw dbResult;
-    }
+    throw dbResult;
   }
 }
 

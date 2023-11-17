@@ -6,7 +6,6 @@ import ExportModal from '~/app/editor/ExportModal.vue';
 import Toast from 'primevue/toast';
 import PageStates from '~/shared/components/PageStates.vue';
 import { useDocSave } from '~/shared/compositions/useDocSave';
-import { useEditor } from '~/shared/states/editorState';
 
 definePageMeta({
   middleware: ['authentication']
@@ -14,15 +13,6 @@ definePageMeta({
 
 const { params } = useRoute();
 const docSaver = useDocSave(params.id as string);
-const editor = useEditor();
-
-onBeforeMount(async () => {
-  // Reset old editor currentSelectedPage, because if you change documentation without reloading the page the SPA saves the old state
-  editor.value.currentSelectedPage = {
-    ...JSON.parse(JSON.stringify(editor.value.currentSelectedPage)),
-    id: -1
-  };
-});
 
 provide('docSaver', docSaver);
 </script>

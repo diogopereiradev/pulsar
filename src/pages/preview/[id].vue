@@ -17,24 +17,29 @@ const pageIsError = ref(false);
 const doc = ref<IDocumentation | undefined>();
 
 // Load the page when iframe is loaded
-function iframeLoad(ev: Event) {
+async function iframeLoad(ev: Event) {
   const iframe = ev.currentTarget as HTMLIFrameElement;
   
   if(iframe.contentDocument && doc.value) {
-    iframe.contentDocument.documentElement.innerHTML = Html(doc.value.pages[0], doc.value, { isToPreview: true });
+    const html = await Html(doc.value.pages[0], doc.value, { isToPreview: true });
+    iframe.contentDocument.documentElement.innerHTML = html;
 
     const fontAwesomeScript = document.createElement('script');
     fontAwesomeScript.src = 'https://kit.fontawesome.com/813705bae2.js';
     fontAwesomeScript.crossOrigin = 'anonymous';
 
+    const bufferScript = document.createElement('script');
+    bufferScript.type = 'module';
+    bufferScript.src = 'https://bundle.run/buffer@6.0.3';
+    bufferScript.crossOrigin = 'anonymous';
+
     const routes = doc.value.pages.map(route => ({
       id: route.id,
-      title: route.title, 
-      content: route.content 
+      title: route.title
     }));
     const routerScript = document.createElement('script');
     routerScript.type = 'module';
-    routerScript.innerHTML = PreviewRouter(routes);
+    routerScript.innerHTML = PreviewRouter(doc.value.id, routes);
 
     const customizationsScript = document.createElement('script');
     customizationsScript.type = 'module';
@@ -45,6 +50,7 @@ function iframeLoad(ev: Event) {
     script.innerHTML = Script(doc.value);
     
     iframe.contentDocument.head.appendChild(fontAwesomeScript);
+    iframe.contentDocument.head.appendChild(bufferScript);
     iframe.contentDocument.body.appendChild(customizationsScript);
     iframe.contentDocument.body.appendChild(script);
     iframe.contentDocument.body.appendChild(routerScript);
@@ -53,7 +59,7 @@ function iframeLoad(ev: Event) {
 
 // Load documentation
 onBeforeMount(async () => {
-  const result = await $fetch(`/api/getDoc?id=${params.id}`, {
+  const result = await $fetch(`/api/docs/getDoc?id=${params.id}`, {
     method: 'GET'
   });
   const typedResult = result as { count: number, limit: number, docs: IDocumentation[] };
