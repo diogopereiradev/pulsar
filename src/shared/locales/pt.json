@@ -151,7 +151,8 @@
     "export-modal-error-try-again-message": "Tentar novamente",
     "editor-saving-message": "Salvando",
     "editor-saved-message": "Salvo",
-    "editor-typing-message": "Digitando"
+    "editor-typing-message": "Digitando",
+    "info-page-change-on-saving": "Sua página está salvando, aguarde um momento para trocar de página."
   },
   "preview": {
     "title": "Pulsar - Pré-Visualização"

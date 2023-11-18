@@ -151,7 +151,8 @@
     "export-modal-error-try-again-message": "Try again",
     "editor-saving-message": "Saving",
     "editor-saved-message": "Saved",
-    "editor-typing-message": "Typing"
+    "editor-typing-message": "Typing",
+    "info-page-change-on-saving": "Your page is saving, wait a moment to change page."
   },
   "preview": {
     "title": "Pulsar - Preview"

@@ -14,6 +14,16 @@ const toast = useToast();
 const docSaver = inject('docSaver') as DocSaverReturnType;
 const pageSaver = inject('pageSaver') as PageSaverReturnType;
 
+const showInfo = (message?: string) => {
+  toast.add({
+    severity: 'info',
+    summary: 'Info',
+    detail: message || 'Error on executing this action',
+    life: 6000,
+    contentStyleClass: '!bg-[#263252] !text-[#bacaf7]'
+  });
+}
+
 const showError = (message?: string) => {
   toast.add({
     severity: 'error',
@@ -24,6 +34,11 @@ const showError = (message?: string) => {
 }
 
 async function handlePageChange(pageId: string) {
+  if(pageSaver.data.value.status.isSaving || !pageSaver.data.value.status.isSaved) {
+    showInfo(t('editor.info-page-change-on-saving'));
+    return;
+  }
+
   const page = docSaver.data.value.unsavedData.pages.find(page => page.id === pageId);
     
   if(page) {
