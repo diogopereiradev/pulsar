@@ -12,17 +12,25 @@ function generateGlobalVariables(colors: IDocumentationColorPalette): string {
   }, '');
 }
 
-export function Css(doc: IDocumentation) {
+export function Css(doc: IDocumentation, isToPreview: boolean) {
   return css.stringify(css.parse(/* css */`
     /* Colors are in RGB, as it is easy to control the alpha color */
     :root {
       ${generateGlobalVariables(doc.colors)}
     }
 
+    * {
+      scroll-behavior: smooth;
+    }
+
     .pulsar-page-wrapper {
       max-width: 2120px;
       margin: 0 auto;
       padding: ${doc.customizations.find(c => c.region === 'top')? '0px' : '70px'} 50px 50px 50px;
+    }
+
+    .pulsar-utils-none {
+      display: none !important;
     }
 
     body {
@@ -53,6 +61,16 @@ export function Css(doc: IDocumentation) {
 
     .bottomRegion {
       width: 100%;
+    }
+
+    .pulsar-page-loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 76vh;
+      color: ${doc.colors.primary}b8;
+      font-size: 40px;
     }
 
     .pulsar-utils-hidden {

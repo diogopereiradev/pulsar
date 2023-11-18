@@ -5,7 +5,40 @@ import { MapIcon } from "./assets/icons/MapIcon";
 import { Css } from "./assets/Css";
 import { ResetCss } from "./assets/ResetCss";
 import { Buffer } from "buffer";
-import { RefSymbol } from "@vue/reactivity";
+
+async function getPageContent(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+  const content = ref('');
+
+  if(isToPreview) return content;
+
+  const requestContent = await fetch('/api/readStream', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      type: 'page',
+      docId: doc.id,
+      id: page.id
+    })
+  });
+
+  const reader = requestContent.body?.getReader();
+
+  const read = async () => {
+    const { done, value } = await reader!.read();
+
+    if(done) {
+      reader?.releaseLock();
+      return;
+    }
+    const bufferToString = Buffer.from(value).toString();
+    content.value = bufferToString;
+    read();
+  };
+  await read();
+  return content;
+}
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
   return /* html */`
@@ -101,33 +134,7 @@ function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
 }
 
 async function Content(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
-  const content = ref('');
-  const requestContent = await fetch('/api/readStream', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      type: 'page',
-      docId: doc.id,
-      id: page.id
-    })
-  });
-
-  const reader = requestContent.body?.getReader();
-
-  const read = async (val: string) => {
-    const { done, value } = await reader!.read();
-
-    if(done) {
-      reader?.releaseLock();
-      return val;
-    }
-    const bufferToString = Buffer.from(value).toString();
-    content.value = bufferToString;
-    read(bufferToString);
-  };
-  await read('');
+  const content = await getPageContent(page, doc, isToPreview);
 
   return /* html */`
     <div class="pulsar-doc-page-nav-doc-indexes-table-container">
@@ -135,7 +142,9 @@ async function Content(page: IDocumentationPage, doc: IDocumentation, isToPrevie
       ${NavigationMenu(page, doc, isToPreview)}
       <!--Page Content-->
       ${isToPreview? /* html */`
-        <div class="pulsar-current-page-content"></div>
+        ${isToPreview? PageLoadingScreen() : ''}
+        <div class="pulsar-current-page-content">
+        </div>
       ` : /* html */`
         <div class="pulsar-current-page-content">
           ${content.value}
@@ -161,7 +170,7 @@ function BasicHeadTags(page: IDocumentationPage, doc: IDocumentation, isToPrevie
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     ${isToPreview? /* html */`
       <style>${ResetCss()}</style>
-      <style>${Css(doc)}</style>
+      <style>${Css(doc, isToPreview)}</style>
     ` : 
     /* html */`
       <script src="https://kit.fontawesome.com/813705bae2.js" crossorigin="anonymous"></script>
@@ -169,6 +178,16 @@ function BasicHeadTags(page: IDocumentationPage, doc: IDocumentation, isToPrevie
       <link rel="stylesheet" href="./assets/styles.css" />
     `}
   `;
+}
+
+function PageLoadingScreen() {
+  return beautify.html(/* html */`
+    <div class="pulsar-page-loading">
+      <i class="fa-solid fa-circle-notch fa-spin"></i>
+    </div>
+  `, {
+    indent_size: 2
+  });
 }
 
 export async function Html(page: IDocumentationPage, doc: IDocumentation, options = { isToPreview: false }) {
@@ -204,7 +223,9 @@ export async function Html(page: IDocumentationPage, doc: IDocumentation, option
             </nav>
             <hr class="pulsar-doc-navbar-divider pulsar-divider" />
           `}
-          ${content}
+          <div class="pulsar-content-wrapper">
+            ${content}
+          </div>
         </main>
         <!--Bottom customizations regions-->
         <div id="bottom-region-container">

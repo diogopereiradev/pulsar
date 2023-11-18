@@ -89,6 +89,7 @@ onBeforeMount(async () => {
       <iframe 
         @load="iframeLoad($event)" 
         class="w-screen h-screen"
+        target="_parent"
       ></iframe>
     </main>
   </PageStates>

@@ -26,9 +26,15 @@ export function Script(doc: IDocumentation) {
 
     // Indexes table loader
     window.initIndexesTable = () => {
+      const indexesTableContainer = document.querySelector('.pulsar-indexes-table-container');
       const indexesTableList = document.querySelector('.pulsar-indexes-table-list');
       const allIndexedHeadings = document.querySelectorAll('.pulsar-heading-indexed');
       const headings = [];
+
+      if(allIndexedHeadings.length < 1) {
+        indexesTableContainer.classList.add('pulsar-utils-none');
+        return;
+      };
 
       allIndexedHeadings.forEach(indexedHeading => {
         const headingUniqueId = indexedHeading.textContent.toLowerCase().replaceAll(' ', '').trim() + '-' + Math.round(Math.random() * (10000 - 1) + 1);
@@ -36,9 +42,9 @@ export function Script(doc: IDocumentation) {
   
         const item = ${`\`
           <li>
-            <a href="#\${headingUniqueId}" class="pulsar-indexes-table-list-button">
+            <button onclick="document.getElementById('\${headingUniqueId}').scrollIntoView();" class="pulsar-indexes-table-list-button">
               \${indexedHeading.textContent}
-            </a>
+            </button>
           </li>
         \``};
         headings.push(item);

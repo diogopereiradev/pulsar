@@ -2,11 +2,19 @@ export function PreviewRouter(docId: string, routes: { id: string, title: string
   return /* javascript */`
     const routes = ${JSON.stringify(routes)};
     const contentContainer = document.querySelector('.pulsar-current-page-content');
+    const pageLoadingContainer = document.querySelector('.pulsar-page-loading');
+    const indexesTableContainer = document.querySelector('.pulsar-indexes-table-container');
     const currentRoute = new Proxy({}, {
       set: handleRouteChange
     });
 
     async function handleRouteChange(target, property, value) {
+      if(currentRoute.route && value.id === currentRoute.route.id) return;
+
+      contentContainer.classList.add('pulsar-utils-none');
+      indexesTableContainer.classList.add('pulsar-utils-none');
+      pageLoadingContainer.classList.remove('pulsar-utils-none');
+      console.log(pageLoadingContainer);
       const requestContent = await fetch('/api/readStream', {
         method: 'POST',
         headers: {
@@ -36,8 +44,13 @@ export function PreviewRouter(docId: string, routes: { id: string, title: string
       };
       await read();
 
-      contentContainer.innerHTML = content;
-      window.initIndexesTable();
+      setTimeout(() => {
+        pageLoadingContainer.classList.add('pulsar-utils-none');
+        indexesTableContainer.classList.remove('pulsar-utils-none');
+        contentContainer.classList.remove('pulsar-utils-none');
+        contentContainer.innerHTML = content;
+        window.initIndexesTable();
+      }, 300);
       return target[property] = value;
     }
 
