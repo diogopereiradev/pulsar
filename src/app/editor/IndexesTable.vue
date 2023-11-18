@@ -30,7 +30,7 @@ watch(() => pageSaver.data.value.isLoadingContent, (isLoadingContent) => {
 </script>
 
 <template>
-  <div class="max-lg:hidden max-2xl:ml-[70px] min-w-[180px] max-2xl:w-[250px]" v-if="headings.length >= 1 && docSaver.data.value.unsavedData.features.indexesTable && pageSaver.data.value.currentSelectedPage.id !== '-1'">
+  <div class="max-lg:hidden max-2xl:ml-[70px] min-w-[180px] max-2xl:w-[250px]" v-if="headings.length >= 1 && docSaver.data.value.unsavedData.features.indexesTable && pageSaver.data.value.currentSelectedPage.id !== '-1' && !pageSaver.data.value.isLoadingContent">
     <h2
       class="font-medium text-[15px] truncate"
       :style="{ color: docSaver.data.value.unsavedData.colors.text + 'e9' }"
