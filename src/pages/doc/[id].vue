@@ -33,7 +33,7 @@ async function iframeLoad(ev: Event) {
     }));
     const routerScript = document.createElement('script');
     routerScript.type = 'module';
-    routerScript.innerHTML = PreviewRouter(doc.value.id, routes);
+    routerScript.innerHTML = PreviewRouter(doc.value, routes);
 
     const customizationsScript = document.createElement('script');
     customizationsScript.type = 'module';

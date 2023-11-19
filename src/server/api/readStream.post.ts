@@ -13,10 +13,9 @@ export default defineEventHandler(async event => {
   
   try {
     const body: ReadStreamBody = await readBody(event);
-    if(!session || !session.user) throw ErrorMessages.unauthorized();
 
     if(body.type && body.id && body.docId) {
-      const stream = await Streaming.readStream(event, body, session);
+      const stream = await Streaming.readStream(event, body, session? session : undefined);
       const result = stream as IError;
       
       if(!result.status) {

@@ -3,7 +3,7 @@ import { IDocumentation } from '~/@types/declarations/Documentation';
 import { db_client } from '~/database/client';
 import { documentationDataEmptyObj } from '~/@types/utils/documentation';
 
-const allowedProperties = {
+const allowedProperties: Partial<IDocumentation> = {
   id: '',
   title: '',
   messages: documentationDataEmptyObj.messages,
@@ -12,6 +12,7 @@ const allowedProperties = {
   pages: documentationDataEmptyObj.pages,
   customizations: documentationDataEmptyObj.customizations,
   features: documentationDataEmptyObj.features,
+  authorIdentifier: '',
   isPublic: true
 };
 
@@ -44,7 +45,7 @@ async function queryResult(docId: string, pathname: string) {
 
   if(dbResult) {
     process.env.NODE_ENV === 'development' && 
-      console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(pathname)} status ${chalk.green('[SUCESS]')}`);
+      console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(pathname)} status ${chalk.green('[SUCCESS]')}`);
     return dbResult;
   } else {
     throw dbResult;

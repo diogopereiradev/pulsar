@@ -41,10 +41,9 @@ function parseTablesWrapper(unparsedContent: string, fullViewDom: string) {
 }
 
 function handleEditorChange(value: string, textEditorInstance: Editor) {
-  // const parsedCodeBlocksDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
-  // const parsedTablesWrapperDom = parseTablesWrapper(parsedCodeBlocksDom, textEditorInstance.view.dom.innerHTML);
-  const content = value;
-  pageSaver.data.value.unsavedContent = content;
+  const parsedCodeBlocksDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
+  const parsedTablesWrapperDom = parseTablesWrapper(parsedCodeBlocksDom, textEditorInstance.view.dom.innerHTML);
+  pageSaver.data.value.unsavedContent = parsedTablesWrapperDom;
 }
 
 onBeforeMount(() => {

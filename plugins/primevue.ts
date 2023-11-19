@@ -72,7 +72,7 @@ const StylesWithTailwind = usePassThrough(
     toast: {
       root: '!w-full !max-w-[250px] md:!max-w-[350px] xl:!max-w-[450px] z-[9999]',
       container: '!bg-transparent !backdrop-blur-[50px] !my-0 z-[9999] !mt-2',
-      content: '!bg-[#2c2735] !text-[#f99999] !rounded-r-[10px] z-[9999]'
+      content: 'bg-[#2c2735] text-[#f99999] !rounded-r-[10px] z-[9999]'
     }
   } as typeof Tailwind,
   {

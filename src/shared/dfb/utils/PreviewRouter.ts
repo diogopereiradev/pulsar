@@ -1,4 +1,6 @@
-export function PreviewRouter(docId: string, routes: { id: string, title: string }[]) {
+import { IDocumentation } from "~/@types/declarations/Documentation";
+
+export function PreviewRouter(doc: IDocumentation, routes: { id: string, title: string }[]) {
   return /* javascript */`
     const routes = ${JSON.stringify(routes)};
     const contentContainer = document.querySelector('.pulsar-current-page-content');
@@ -14,7 +16,7 @@ export function PreviewRouter(docId: string, routes: { id: string, title: string
       contentContainer.classList.add('pulsar-utils-none');
       indexesTableContainer.classList.add('pulsar-utils-none');
       pageLoadingContainer.classList.remove('pulsar-utils-none');
-      console.log(pageLoadingContainer);
+
       const requestContent = await fetch('/api/readStream', {
         method: 'POST',
         headers: {
@@ -22,8 +24,9 @@ export function PreviewRouter(docId: string, routes: { id: string, title: string
         },
         body: JSON.stringify({
           type: 'page',
-          docId: \'${docId}\',
-          id: value.id
+          docId: \'${doc.id}\',
+          id: value.id,
+          authorIdentifier: \'${doc.authorIdentifier}\'
         })
       });
     

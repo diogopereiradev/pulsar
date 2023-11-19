@@ -9,10 +9,14 @@ import { IError } from "~/@types/error";
 import { WriteStreamBody } from "./@types/WriteStreamBody";
 
 export class Streaming {
-  static async readStream(event: H3Event<EventHandlerResponse>, data: ReadStreamBody, session: Session): Promise<ReadStream | IError> {
+  static async readStream(event: H3Event<EventHandlerResponse>, data: ReadStreamBody, session?: Session): Promise<ReadStream | IError> {
     try {
       if(data.type === 'page' || data.type === 'customization') {
-        const paths = this.streamPaths(data, session);
+        const authorIdentifier = data.authorIdentifier? data.authorIdentifier : session? session : undefined;
+
+        if(!authorIdentifier) throw ErrorMessages.unauthorized();
+
+        const paths = this.streamPaths(data, authorIdentifier);
         const path = data.type === 'page'? `${paths.pages}/${data.id}.md` : `${paths.customizations}/${data.id}.md`;
         const exists = fs.existsSync(path);
 
@@ -103,9 +107,9 @@ export class Streaming {
     }
   }
 
-  static streamPaths(data: { docId: string }, session: Session) {
-    const author = getAuthIdentifier(session);
-    const dataPath = `${os.homedir()}/.pulsar/${author.identifier}/documentations/${data.docId}`;
+  static streamPaths(data: { docId: string }, session: Session | string) {
+    const authorIdentifier = typeof session !== 'string'? getAuthIdentifier(session).identifier : session;
+    const dataPath = `${os.homedir()}/.pulsar/${authorIdentifier}/documentations/${data.docId}`;
   
     return {
       docPath: dataPath,
