@@ -38,7 +38,8 @@ export function PreviewRouter(docId: string, routes: { id: string, title: string
           return;
         }
 
-        const bufferToString = buffer.Buffer.from(r.value).toString();
+        const decoder = new TextDecoder('utf-8');
+        const bufferToString = decoder.decode(r.value);
         content = bufferToString;
         read();
       };

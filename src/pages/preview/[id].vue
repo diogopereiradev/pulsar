@@ -28,11 +28,6 @@ async function iframeLoad(ev: Event) {
     fontAwesomeScript.src = 'https://kit.fontawesome.com/813705bae2.js';
     fontAwesomeScript.crossOrigin = 'anonymous';
 
-    const bufferScript = document.createElement('script');
-    bufferScript.type = 'module';
-    bufferScript.src = 'https://bundle.run/buffer@6.0.3';
-    bufferScript.crossOrigin = 'anonymous';
-
     const routes = doc.value.pages.map(route => ({
       id: route.id,
       title: route.title
@@ -50,7 +45,6 @@ async function iframeLoad(ev: Event) {
     script.innerHTML = Script(doc.value);
     
     iframe.contentDocument.head.appendChild(fontAwesomeScript);
-    iframe.contentDocument.head.appendChild(bufferScript);
     iframe.contentDocument.body.appendChild(customizationsScript);
     iframe.contentDocument.body.appendChild(script);
     iframe.contentDocument.body.appendChild(routerScript);
