@@ -9,12 +9,15 @@ import NewCustomizationModal from './NewCustomizationModal.vue';
 import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
 import CodeEditor from './CodeEditor/CodeEditor.vue';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
+import { CustomizationSaverReturnType } from "~/shared/compositions/useCustomizationSave";
 
 const customize = useCustomize();
 const docSaver = inject('docSaver') as DocSaverReturnType;
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 
 function openCustomizationInfosMenu(customization: IDocumentationCustomization) {
   customize.value.controlsMenu.customizationInfosMenu.data = customization;
+  customizationSaver.data.value.currentSelectedCustomization = customization;
   setTimeout(() => {
     customize.value.controlsMenu.customizationInfosMenu.isOpen = true;
   }, 50);

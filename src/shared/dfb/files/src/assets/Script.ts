@@ -49,7 +49,10 @@ export function Script(doc: IDocumentation) {
         \``};
         headings.push(item);
       });
-      indexesTableList.innerHTML = headings.join('');
+      
+      if(indexesTableList) {
+        indexesTableList.innerHTML = headings.join('');
+      }
     }
 
     (() => {

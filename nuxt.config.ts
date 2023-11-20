@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'path';
-import { Buffer } from 'buffer';
 
 export default defineNuxtConfig({
   modules: [
@@ -16,7 +15,7 @@ export default defineNuxtConfig({
   srcDir: 'src',
   dir: { public: '../public' },
   devtools: { 
-    enabled: true
+    enabled: false
   },
   nitro: {
     compressPublicAssets: true,
@@ -27,12 +26,13 @@ export default defineNuxtConfig({
       alias: {
         fs: 'browserify-fs',
         path: 'path-browserify',
-        buffer: 'buffer',
         '~': path.resolve(__dirname, './src')
       }
     },
     build: {
-      chunkSizeWarningLimit: 2000
+      chunkSizeWarningLimit: 2000,
+      minify: true,
+      cssMinify: true
     }
   },
   routeRules: {
@@ -46,6 +46,7 @@ export default defineNuxtConfig({
       'primevue'
     ]
   },
+  dev: false,
   i18n: {
     vueI18n: './i18n.config.ts',
     defaultLocale: 'en',

@@ -8,9 +8,11 @@ import { useCustomize } from '~/shared/states/customizeState';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import { ResetCss } from '~/shared/dfb/files/src/assets/ResetCss';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
+import { CustomizationSaverReturnType } from '~/shared/compositions/useCustomizationSave';
 
 const customize = useCustomize();
 const docSaver = inject('docSaver') as DocSaverReturnType;
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 const currentMobileTab = ref<'HtmlEditor' | 'CssEditor' | 'JavascriptEditor'>('HtmlEditor');
 const mobileEditors = {
   HtmlEditor,
@@ -46,10 +48,8 @@ function resizeEnd() {
 }
 
 // Loads preview data
-watch(() => customize.value.controlsMenu.customizationInfosMenu.data.content, (content) => {
+watch(() => customizationSaver.data.value.unsavedContent, (content) => {
   const previewFrame = document.querySelector<HTMLIFrameElement>('#pulsar-code-preview');
-  
-  previewFrame?.contentDocument?.location.reload();
 
   setTimeout(() => {
     const style = document.createElement('style');
@@ -106,14 +106,14 @@ onMounted(() => {
             <div class="flex items-center gap-4">
               <!--Save button-->
               <Button
-                @click="docSaver.save"
+                @click="customizationSaver.save"
                 class="w-10 min-h-[40px] !bg-primary" 
                 :title="$t('editor.controls-menu-save-button-aria-label')" 
                 :aria-label="$t('editor.controls-menu-save-button-aria-label')"
-                :disabled="docSaver.data.value.status.isSaved"
+                :disabled="customizationSaver.data.value.status.isSaved"
               >
-                <font-awesome-icon v-if="!docSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
-                <font-awesome-icon v-if="docSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+                <font-awesome-icon v-if="!customizationSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
+                <font-awesome-icon v-if="customizationSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
               </Button>
               <button @click="closeCodeEditor()" class="flex items-center justify-center">
                 <font-awesome-icon icon="fa-solid fa-close" class="text-xl text-primary"></font-awesome-icon>

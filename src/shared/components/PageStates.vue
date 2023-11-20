@@ -8,7 +8,8 @@ type Props = {
     redirectPath: string
   },
   isLoaded: boolean,
-  isError: boolean
+  isError: boolean,
+  alwaysShowSlot?: boolean
 };
 
 const props = defineProps<Props>();
@@ -33,7 +34,7 @@ watch([() => props.isLoaded, () => props.isError], ([loaded, error]) => {
 </script>
 
 <template>
-  <slot v-if="state.isSuccess"/>
+  <slot v-if="state.isSuccess || alwaysShowSlot"/>
   <Loading v-if="state.isLoading"/>
   <Error
     v-if="state.isError"

@@ -6,11 +6,13 @@ import { usePassThrough } from 'primevue/passthrough';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useCustomize } from '~/shared/states/customizeState';
 import { DocSaverReturnType } from "~/shared/compositions/useDocSave";
+import { CustomizationSaverReturnType } from "~/shared/compositions/useCustomizationSave";
 
 const { t } = useI18n();
 const confirm = useConfirm();
 const customize = useCustomize();
 const docSaver = inject('docSaver') as DocSaverReturnType;
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 
 function deleteCustomizationConfirmDialog(customizationId: number) {
   confirm.require({
@@ -66,7 +68,7 @@ function openCodeEditor() {
         <Button @click="customize.controlsMenu.customizationInfosMenu.isOpen = false" class="!w-[100px] !h-10">
           {{ $t('customize.customization-infos-menu-close-button-label') }}
         </Button>
-        <Button @click="openCodeEditor()" class="!w-[100px] !h-10 !bg-primary hover:!bg-primary/70">
+        <Button @click="openCodeEditor" class="!w-[100px] !h-10 !bg-primary hover:!bg-primary/70">
           {{ $t('customize.customization-infos-menu-edit-button-label') }}
         </Button>
         <Button 

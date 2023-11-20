@@ -9,13 +9,26 @@ export function PreviewRouter(doc: IDocumentation, routes: { id: string, title: 
     const currentRoute = new Proxy({}, {
       set: handleRouteChange
     });
+    const cachedPages = [];
 
     async function handleRouteChange(target, property, value) {
       if(currentRoute.route && value.id === currentRoute.route.id) return;
+      const cachedPage = cachedPages.find(page => page.id === value.id);
 
       contentContainer.classList.add('pulsar-utils-none');
       indexesTableContainer.classList.add('pulsar-utils-none');
       pageLoadingContainer.classList.remove('pulsar-utils-none');
+
+      if(cachedPage) {
+        setTimeout(() => {
+          contentContainer.innerHTML = cachedPage.content;
+          window.initIndexesTable();
+          pageLoadingContainer.classList.add('pulsar-utils-none');
+          indexesTableContainer.classList.remove('pulsar-utils-none');
+          contentContainer.classList.remove('pulsar-utils-none');
+        }, 300);
+        return target[property] = value;
+      }
 
       const requestContent = await fetch('/api/readStream', {
         method: 'POST',
@@ -49,11 +62,17 @@ export function PreviewRouter(doc: IDocumentation, routes: { id: string, title: 
       await read();
 
       setTimeout(() => {
+        contentContainer.innerHTML = content;
+        window.initIndexesTable();
         pageLoadingContainer.classList.add('pulsar-utils-none');
         indexesTableContainer.classList.remove('pulsar-utils-none');
         contentContainer.classList.remove('pulsar-utils-none');
-        contentContainer.innerHTML = content;
-        window.initIndexesTable();
+
+        // Add page to the cached page
+        cachedPages.push({
+          ...value,
+          content
+        });
       }, 300);
       return target[property] = value;
     }

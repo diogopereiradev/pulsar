@@ -4,6 +4,7 @@ import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
 import PageStates from '~/shared/components/PageStates.vue';
 import { useDocSave } from '~/shared/compositions/useDocSave';
+import { useCustomizationSave } from '~/shared/compositions/useCustomizationSave';
 
 definePageMeta({
   middleware: ['authentication']
@@ -11,8 +12,10 @@ definePageMeta({
 
 const { params } = useRoute();
 const docSaver = useDocSave(params.id as string);
+const customizationSaver = useCustomizationSave();
 
 provide('docSaver', docSaver);
+provide('customizationSaver', customizationSaver);
 </script>
 
 <template>

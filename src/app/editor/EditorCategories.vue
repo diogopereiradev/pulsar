@@ -150,6 +150,11 @@ function deletePageConfirmDialog(pageId: string) {
             id: pageId
           }
         });
+        pageSaver.data.value.currentSelectedPage = {
+          id: '-1',
+          title: '',
+          categoryId: 0
+        }
       } catch {
         showError('The page file not exists on the system, you can ignore this error, the page was deleted!');
       }

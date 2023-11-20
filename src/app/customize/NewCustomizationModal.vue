@@ -1,25 +1,47 @@
 <script setup lang="ts">
+import { useToast } from 'primevue/usetoast';
 import InputText from 'primevue/inputtext';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { useCustomize } from '~/shared/states/customizeState';
 
+const toast = useToast();
 const regions: ('top' | 'bottom')[] = ['top', 'bottom'];
 const customize = useCustomize();
 const docSaver = inject('docSaver') as DocSaverReturnType;
 
+const showError = (message?: string) => {
+  toast.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: message || 'Error on creating the new customization',
+    life: 6000
+  });
+};
+
 async function handleSubmit() {
   const newCustomization = {
     id: Math.round(Math.random() * (10000 - 1) + 1),
-    content: { html: '', css: '', js: '' },
     ...JSON.parse(JSON.stringify(customize.value.controlsMenu.newCustomizationModal.data))
   };
 
-  const updatedPayload = [...JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.customizations)), newCustomization];
-  docSaver.data.value.unsavedData.customizations = updatedPayload;
-  
-  customize.value.controlsMenu.newCustomizationModal.isOpen = false;
-  customize.value.controlsMenu.newCustomizationModal.data.title = '';
+  const requestCustomizationFiles = await $fetch('/api/docs/createCustomization', {
+    method: 'POST',
+    body: {
+      docId: docSaver.data.value.unsavedData.id,
+      id: newCustomization.id
+    }
+  });
+
+  if(requestCustomizationFiles.status === 200) {
+    const updatedPayload = [...JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.customizations)), newCustomization];
+    docSaver.data.value.unsavedData.customizations = updatedPayload;
+    
+    customize.value.controlsMenu.newCustomizationModal.isOpen = false;
+    customize.value.controlsMenu.newCustomizationModal.data.title = '';
+  } else {
+    showError();
+  }
 }
 </script>
 

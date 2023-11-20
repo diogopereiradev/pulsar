@@ -31,10 +31,10 @@ function parseTablesWrapper(unparsedContent: string, fullViewDom: string) {
   const fullDom = new DOMParser().parseFromString(fullViewDom, 'text/html');
 
   fullDom.querySelectorAll('.tableWrapper').forEach(tablewrapper => {
-    const unparsedCodeBlocks = unparsedDom.querySelectorAll('.pulsar-table');
+    const unparsedTables = unparsedDom.querySelectorAll('.pulsar-table');
 
-    unparsedCodeBlocks.forEach(unparsedCodeBlock => {
-      unparsedCodeBlock.outerHTML = tablewrapper.outerHTML;
+    unparsedTables.forEach(unparsedTable => {
+      unparsedTable.outerHTML = tablewrapper.outerHTML.replaceAll('<br class="ProseMirror-trailingBreak">', '');
     });
   });
   return unparsedDom.body.innerHTML;

@@ -1,11 +1,11 @@
-import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
+import { IDocumentation, IDocumentationCustomization } from "~/@types/declarations/Documentation";
 
-export function PreviewCustomizations(customizations: IDocumentationCustomization[]) {
+export function PreviewCustomizations(doc: IDocumentation, customizations: IDocumentationCustomization[]) {
   return /* javascript */`
     const customizations = ${JSON.stringify(customizations)};
     const iframeResetCss = '* { padding: 0px; margin: 0px; box-sizing: border-box; scroll-behavior: smooth; }'
 
-    customizations.forEach(c => {
+    customizations.forEach(async c => {
       if(c.region === 'top') {
         const topContainer = document.querySelector('#top-region-container');
         const style = document.createElement('style');

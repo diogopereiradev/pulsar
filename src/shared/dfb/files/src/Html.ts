@@ -170,7 +170,7 @@ function BasicHeadTags(page: IDocumentationPage, doc: IDocumentation, isToPrevie
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
     ${isToPreview? /* html */`
       <style>${ResetCss()}</style>
-      <style>${Css(doc, isToPreview)}</style>
+      <style>${Css(doc)}</style>
     ` : 
     /* html */`
       <script src="https://kit.fontawesome.com/813705bae2.js" crossorigin="anonymous"></script>
@@ -206,7 +206,10 @@ export async function Html(page: IDocumentationPage, doc: IDocumentation, option
           ${options.isToPreview? 
           '' : `
             ${doc.customizations.map(c => c.region === 'top'? `
-              <iframe class="topRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"></iframe> 
+              <iframe 
+                onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px';"
+                class="topRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"
+              ></iframe> 
             ` : '').join('')}
           `}
         </div>
@@ -232,7 +235,10 @@ export async function Html(page: IDocumentationPage, doc: IDocumentation, option
           ${options.isToPreview? 
           '' : `
             ${doc.customizations.map(c => c.region === 'bottom'? `
-              <iframe class="bottomRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"></iframe> 
+              <iframe 
+                onload="this.currentTarget.style.height = this.currentTarget.contentWindow.document.documentElement.scrollHeight + 'px';"
+                class="bottomRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"
+              ></iframe> 
             ` : '').join('')}
           `}
         </div>

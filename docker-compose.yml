@@ -13,16 +13,5 @@ services:
       - 3306
     volumes:
       - pulsar_mysql_data:/var/lib/mysql
-  pulsar_redis:
-    container_name: pulsar-redis
-    image: redis:7.2.3-alpine
-    restart: always
-    ports:
-      - 6973:6973
-    expose:
-      - 6973
-    volumes:
-      - pulsar_redis_data:/var/lib/redis
 volumes:
   pulsar_mysql_data:
-  pulsar_redis_data:

@@ -12,7 +12,7 @@ function generateGlobalVariables(colors: IDocumentationColorPalette): string {
   }, '');
 }
 
-export function Css(doc: IDocumentation, isToPreview: boolean) {
+export function Css(doc: IDocumentation) {
   return css.stringify(css.parse(/* css */`
     /* Colors are in RGB, as it is easy to control the alpha color */
     :root {

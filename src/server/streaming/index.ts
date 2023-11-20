@@ -9,15 +9,15 @@ import { IError } from "~/@types/error";
 import { WriteStreamBody } from "./@types/WriteStreamBody";
 
 export class Streaming {
-  static async readStream(event: H3Event<EventHandlerResponse>, data: ReadStreamBody, session?: Session): Promise<ReadStream | IError> {
+  static async readStream(event: H3Event<EventHandlerResponse>, data: ReadStreamBody, session?: Session | string): Promise<ReadStream | IError> {
     try {
       if(data.type === 'page' || data.type === 'customization') {
-        const authorIdentifier = data.authorIdentifier? data.authorIdentifier : session? session : undefined;
+        const authorIdentifier = data.authorIdentifier? data.authorIdentifier : session? getAuthIdentifier(session as Session).identifier : session as string;
 
         if(!authorIdentifier) throw ErrorMessages.unauthorized();
 
         const paths = this.streamPaths(data, authorIdentifier);
-        const path = data.type === 'page'? `${paths.pages}/${data.id}.md` : `${paths.customizations}/${data.id}.md`;
+        const path = data.type === 'page'? `${paths.pages}/${data.id}.md` : `${paths.customizations}/${data.id}.json`;
         const exists = fs.existsSync(path);
 
         if(exists) {
@@ -39,7 +39,7 @@ export class Streaming {
     try {
       if(data.type === 'page' || data.type === 'customization') {
         const paths = this.streamPaths(data, session);
-        const path = data.type === 'page'? `${paths.pages}/${data.id}.md` : `${paths.customizations}/${data.id}.md`;
+        const path = data.type === 'page'? `${paths.pages}/${data.id}.md` : `${paths.customizations}/${data.id}.json`;
   
         const pathExists = fs.existsSync(path);
         

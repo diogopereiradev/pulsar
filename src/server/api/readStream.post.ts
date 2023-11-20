@@ -15,7 +15,7 @@ export default defineEventHandler(async event => {
     const body: ReadStreamBody = await readBody(event);
 
     if(body.type && body.id && body.docId) {
-      const stream = await Streaming.readStream(event, body, session? session : undefined);
+      const stream = await Streaming.readStream(event, body, session? session : body.authorIdentifier);
       const result = stream as IError;
       
       if(!result.status) {

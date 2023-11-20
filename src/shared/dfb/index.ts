@@ -66,11 +66,12 @@ export class DocumentationFileBuilder {
     this.zip.file('src/assets/reset.css', resetStyles);
   }
 
-  generateCustomizationsFiles() {
+  async generateCustomizationsFiles() {
     this.zip.folder('src/customizations');
-    this.documentation.customizations.forEach(c => {
-      this.zip.file(`src/customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html`, CustomizationHtml(c));
-    });
+    await Promise.all(this.documentation.customizations.map(async c => {
+      const customization = await CustomizationHtml(this.documentation, c);
+      this.zip.file(`src/customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html`, customization);
+    }));
   }
 
   generateConfigurationFiles() {
@@ -94,7 +95,8 @@ export class DocumentationFileBuilder {
   async generate() {
     await this.generatePageFiles();
     this.generateAssetsFiles();
-    this.generateCustomizationsFiles();
+    await this.generateCustomizationsFiles();
+    console.log(this.zip);
     this.generateConfigurationFiles();
     
     return await this.zip.generateAsync({ type: 'blob' });

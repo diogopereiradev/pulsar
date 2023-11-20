@@ -1,46 +1,54 @@
 import { Buffer } from "buffer";
 import { useToast } from "primevue/usetoast";
-import { IDocumentationPage } from "~/@types/declarations/Documentation";
+import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
 import config from '~/server/config';
 
+type Content = {
+  html: string,
+  css: string,
+  javascript: string
+};
+
 type DataType = {
-  unsavedContent: string,
-  lastSavedContent: string,
+  unsavedContent: Content,
+  lastSavedContent: Content,
   status: {
     isTyping: boolean,
     isSaved: boolean,
     isSaving: boolean
   },
   typingTimerToSave: NodeJS.Timeout | undefined,
-  currentSelectedPage: IDocumentationPage,
-  cachedPages: (IDocumentationPage & { content: string })[],
-  isLoadingContent: boolean
+  currentSelectedCustomization: IDocumentationCustomization
 };
 
-export type PageSaverReturnType = {
+export type CustomizationSaverReturnType = {
   data: globalThis.Ref<DataType>,
   save: () => void
 }
 
-export function usePageSave(): PageSaverReturnType {
+const emptyContent = {
+  html: '',
+  css: '',
+  javascript: ''
+};
+
+export function useCustomizationSave(): CustomizationSaverReturnType {
   const toast = useToast();
   const { params } = useRoute();
   const data = ref<DataType>({
-    unsavedContent: '',
-    lastSavedContent: '',
+    unsavedContent: emptyContent,
+    lastSavedContent: emptyContent,
     status: {
       isTyping: false,
       isSaved: true,
       isSaving: false
     },
     typingTimerToSave: undefined,
-    currentSelectedPage: {
-      id: '-1',
-      categoryId: 0,
+    currentSelectedCustomization: {
+      id: -1,
       title: '',
-    },
-    cachedPages: [],
-    isLoadingContent: false
+      region: 'top'
+    }
   });
 
   const showError = (message?: string) => {
@@ -59,10 +67,10 @@ export function usePageSave(): PageSaverReturnType {
     const result = await useFetch('/api/writeStream', {
       method: 'POST',
       body: {
-        type: 'page',
+        type: 'customization',
         docId: params.id,
-        id: data.value.currentSelectedPage.id,
-        content: JSON.parse(JSON.stringify(data.value.unsavedContent))
+        id: data.value.currentSelectedCustomization.id,
+        content: JSON.stringify(data.value.unsavedContent)
       }
     });
   
@@ -70,24 +78,8 @@ export function usePageSave(): PageSaverReturnType {
       data.value.status.isSaved = true;
       data.value.status.isSaving = false;
       data.value.lastSavedContent = JSON.parse(JSON.stringify(data.value.unsavedContent));
-
-      // Update the cached page content
-      const cachedPage = data.value.cachedPages.find(p => p.id === data.value.currentSelectedPage.id) as IDocumentationPage & { content: string };
-      if(cachedPage) {
-        const updatedPages = data.value.cachedPages.map(p => {
-          if(p.id === data.value.currentSelectedPage.id) {
-            return { 
-              ...p, 
-              content: JSON.parse(JSON.stringify(data.value.unsavedContent)) 
-            };
-          } else {
-            return p;
-          }
-        });
-        data.value.cachedPages = updatedPages;
-      }
     } else {
-      showError('Error on saving page has occurred!');
+      showError('Error on saving customization has occurred!');
       data.value.status.isSaving = false;
     }
   }
@@ -98,14 +90,14 @@ export function usePageSave(): PageSaverReturnType {
         !data.value.status.isSaved && 
         !data.value.status.isSaving &&
         !data.value.status.isTyping &&
-        data.value.currentSelectedPage.id !== '-1'
+        data.value.currentSelectedCustomization.id !== -1
       ) {
         save();
       }
     }, config.EDITOR_AUTOSAVE_INTERVAL);
   }
 
-  // Check if editor.value.unsavedDoc has been modified. If the data has been changed, the user can save the data
+  // Check if editor.value.unsavedContent has been modified. If the data has been changed, the user can save the data
   watch(() => data.value.unsavedContent, async unsavedContent => {
     const currentContent = data.value.lastSavedContent;
   
@@ -116,25 +108,12 @@ export function usePageSave(): PageSaverReturnType {
     }
   }, { deep: true });
 
-  // When currentSelectedPage was changed
-  watch(() => data.value.currentSelectedPage, async (page) => {
-    if(!page.id || page.id === '-1') return;
+  // When currentSelectedCustomization was changed
+  watch(() => data.value.currentSelectedCustomization, async (customization) => {
+    if(!customization.id || customization.id === -1) return;
 
     data.value.status.isSaved = false;
     data.value.status.isSaving = true;
-
-    // If the page is cached set the content
-    const cachedPage = data.value.cachedPages.find(p => p.id === page.id) as IDocumentationPage & { content: string };
-    if(cachedPage) {
-      data.value.unsavedContent = JSON.parse(JSON.stringify(cachedPage.content));
-      data.value.lastSavedContent = JSON.parse(JSON.stringify(cachedPage.content));
-      data.value.status.isSaved = true;
-      data.value.status.isSaving = false;
-      return;
-    }
-
-    data.value.isLoadingContent = true;
-
     // Load the page when click in navigation menu
     const result = await fetch('/api/readStream', {
       method: 'POST',
@@ -142,59 +121,33 @@ export function usePageSave(): PageSaverReturnType {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        type: 'page',
+        type: 'customization',
         docId: params.id,
-        id: page.id
+        id: customization.id
       })
     });
     const typedResult = result.body as ReadableStream;
     
     if(result.status !== 200) {
-      showError(`Error on starting the file streaming transfer to the page: ${data.value.currentSelectedPage.title}`);
-      data.value.currentSelectedPage = {
-        id: '-1',
-        title: '',
-        categoryId: 0
-      };
+      showError(`Error on starting the file streaming transfer to the customization: ${data.value.currentSelectedCustomization.title}`);
       return;
     }
 
     const reader = typedResult.getReader();
 
-    const read = async (val = '') => {
+    const read = async () => {
       const { done, value } = await reader.read();
 
       if(done) {
         data.value.status.isSaved = true;
         data.value.status.isSaving = false;
-
-        // If the page content is empty clear the last opened page content
-        if(val === '') {
-          data.value.unsavedContent = '';
-          data.value.lastSavedContent = '';
-        }
-
-        // Add the requested page content to cached pages
-        data.value.cachedPages = [
-          ...data.value.cachedPages,
-          {
-            ...page,
-            content: val
-          }
-        ];
-
-        setTimeout(() => {
-          data.value.isLoadingContent = false;
-        }, 200);
         reader.releaseLock();
         return;
       }
-      const bufferToString = Buffer.from(value).toString();
-
+      const bufferToString = JSON.parse(Buffer.from(value).toString());
       data.value.unsavedContent = bufferToString;
-      data.value.lastSavedContent = bufferToString;
-      val = bufferToString;
-      await read(val);
+      data.value.lastSavedContent = JSON.parse(JSON.stringify(bufferToString));
+      await read();
     };
     await read();
   });
@@ -215,7 +168,7 @@ export function usePageSave(): PageSaverReturnType {
 
     // Warn the user if is unsaved on window leave
     window.addEventListener('beforeunload', (e) => {
-      if(!data.value.status.isSaved && data.value.currentSelectedPage.id !== '-1') {
+      if(!data.value.status.isSaved && data.value.currentSelectedCustomization.id !== -1) {
         e.preventDefault();
         e.returnValue = true;
       }
