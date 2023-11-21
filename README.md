@@ -35,13 +35,13 @@
 
   - [x] Create the feature to the user host documentations on Pulsar
   - [ ] Implement TDD to API routes
-  - [ ] Document the API using Swagger
   - [ ] Create Pulsar own markdown editor and remove Tiptap
   - [ ] Add notes blocks to the editor
   - [ ] Upgrade the usability and customization of tables on editor
   - [ ] Remove some PrimeVue things like inputs and buttons, because is lagging on mobile devices
   - [ ] Upgrade the editor page interface
   - [ ] Upgrade the customizations page interface
+  - [ ] Add the feature flag to search for pages on navigation menu of pages preview/doc
   - [ ] Create a templates area on editor page, to agilize the documentation creation process
   - [ ] Integrate the editor with an AI
   <br />

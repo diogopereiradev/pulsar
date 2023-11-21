@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Editor } from '@tiptap/vue-3';
 import TiptapEditor from '~/shared/components/Tiptap/TiptapEditor.vue';
-import EditorCategories from './EditorCategories.vue';
+import NavigationMenu from './NavigationMenu/NavigationMenu.vue';
 import IndexesTable from './IndexesTable.vue';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { usePageSave } from '~/shared/compositions/usePageSave';
@@ -124,7 +124,7 @@ onBeforeMount(() => {
           </div>
         </div>
         <hr v-if="docSaver.data.value.unsavedData.messages.navigationTitle" class="w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.divider + '40' }" />
-        <EditorCategories />
+        <NavigationMenu />
       </div>
       <!--Mobile Navigation menu backdrop-->
       <div 
