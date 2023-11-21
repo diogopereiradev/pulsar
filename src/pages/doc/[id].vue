@@ -51,18 +51,25 @@ async function getCustomizationsContent(doc: IDocumentation, customization: IDoc
 
 // Load the page when iframe is loaded
 async function iframeLoad(ev: HTMLIFrameElement) {
-  const result = await $fetch(`/api/docs/getDoc?id=${params.id}`, {
-    method: 'GET'
-  });
-  const typedResult = result as { count: number, limit: number, docs: IDocumentation[] };
-  
-  
-  if(!typedResult || typedResult.docs.length < 1) {
+  try {
+    const result = await $fetch(`/api/docs/getPublicDoc`, {
+      method: 'POST',
+      body: {
+        id: params.id
+      }
+    });
+    const typedResult = result as IDocumentation;
+    
+    if(!typedResult.id) {
+      pageIsError.value = true;
+      return;
+    }
+    
+    doc.value = typedResult;
+  } catch {
     pageIsError.value = true;
     return;
   }
-  
-  doc.value = typedResult.docs[0];
 
   const iframe = ev as HTMLIFrameElement;
   
@@ -87,10 +94,15 @@ async function iframeLoad(ev: HTMLIFrameElement) {
 
     const customizations = await Promise.all(doc.value.customizations.map(async c => {
       const content = await getCustomizationsContent(doc.value!, c);
-      return {
-        ...c,
-        content
-      };
+      
+      if(content.html) {
+        return {
+          ...c,
+          content
+        };
+      } else {
+        return c;
+      }
     }));
     customizationsScript.innerHTML = PreviewCustomizations(doc.value, customizations);
 

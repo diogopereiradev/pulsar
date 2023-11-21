@@ -1,3 +1,4 @@
+import lodash from 'lodash';
 import { Buffer } from "buffer";
 import { useToast } from "primevue/usetoast";
 import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
@@ -18,6 +19,7 @@ type DataType = {
     isSaving: boolean
   },
   typingTimerToSave: NodeJS.Timeout | undefined,
+  cachedCustomizations: (IDocumentationCustomization & { content: Content })[],
   currentSelectedCustomization: IDocumentationCustomization
 };
 
@@ -44,6 +46,7 @@ export function useCustomizationSave(): CustomizationSaverReturnType {
       isSaving: false
     },
     typingTimerToSave: undefined,
+    cachedCustomizations: [],
     currentSelectedCustomization: {
       id: -1,
       title: '',
@@ -75,6 +78,22 @@ export function useCustomizationSave(): CustomizationSaverReturnType {
     });
   
     if(result.status.value === 'success') {
+      // Update the cached customization content
+      const cachedPage = data.value.cachedCustomizations.find(c => c.id === data.value.currentSelectedCustomization.id) as IDocumentationCustomization & { content: Content };
+      if(cachedPage) {
+        const updatedPages = data.value.cachedCustomizations.map(c => {
+          if(c.id === data.value.currentSelectedCustomization.id) {
+            return { 
+              ...c, 
+              content: JSON.parse(JSON.stringify(data.value.unsavedContent)) 
+            };
+          } else {
+            return c;
+          }
+        });
+        data.value.cachedCustomizations = updatedPages;
+      }
+
       data.value.status.isSaved = true;
       data.value.status.isSaving = false;
       data.value.lastSavedContent = JSON.parse(JSON.stringify(data.value.unsavedContent));
@@ -101,7 +120,7 @@ export function useCustomizationSave(): CustomizationSaverReturnType {
   watch(() => data.value.unsavedContent, async unsavedContent => {
     const currentContent = data.value.lastSavedContent;
   
-    if(unsavedContent === currentContent) {
+    if(lodash.isEqual(currentContent, unsavedContent)) {
       data.value.status.isSaved = true;
     } else {
       data.value.status.isSaved = false;
@@ -112,8 +131,19 @@ export function useCustomizationSave(): CustomizationSaverReturnType {
   watch(() => data.value.currentSelectedCustomization, async (customization) => {
     if(!customization.id || customization.id === -1) return;
 
+    
+    // If the customization is cached set the content
+    const cachedPage = data.value.cachedCustomizations.find(c => c.id === customization.id) as IDocumentationCustomization  & { content: Content };
+    if(cachedPage) {
+      data.value.unsavedContent = cachedPage.content;
+      console.log(cachedPage.content);
+      data.value.lastSavedContent = JSON.parse(JSON.stringify(cachedPage.content));
+      return;
+    }
+    
     data.value.status.isSaved = false;
     data.value.status.isSaving = true;
+
     // Load the page when click in navigation menu
     const result = await fetch('/api/readStream', {
       method: 'POST',
@@ -135,19 +165,29 @@ export function useCustomizationSave(): CustomizationSaverReturnType {
 
     const reader = typedResult.getReader();
 
-    const read = async () => {
+    const read = async (val?: Content) => {
       const { done, value } = await reader.read();
 
       if(done) {
         data.value.status.isSaved = true;
         data.value.status.isSaving = false;
+
+        // Add the requested page content to cached pages
+        data.value.cachedCustomizations = [
+          ...data.value.cachedCustomizations,
+          {
+            ...customization,
+            content: val || {} as Content
+          }
+        ];
+
         reader.releaseLock();
         return;
       }
-      const bufferToString = JSON.parse(Buffer.from(value).toString());
+      const bufferToString: Content = JSON.parse(Buffer.from(value).toString());
       data.value.unsavedContent = bufferToString;
       data.value.lastSavedContent = JSON.parse(JSON.stringify(bufferToString));
-      await read();
+      await read(bufferToString);
     };
     await read();
   });

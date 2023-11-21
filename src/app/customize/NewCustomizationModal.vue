@@ -4,6 +4,7 @@ import InputText from 'primevue/inputtext';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { useCustomize } from '~/shared/states/customizeState';
+import config from '~/server/config';
 
 const toast = useToast();
 const regions: ('top' | 'bottom')[] = ['top', 'bottom'];
@@ -20,6 +21,13 @@ const showError = (message?: string) => {
 };
 
 async function handleSubmit() {
+  if(docSaver.data.value.unsavedData.customizations.length >= config.DOC_CUSTOMIZATIONS_LIMIT) {
+    showError(`You exceeded the limit of ${config.DOC_CUSTOMIZATIONS_LIMIT} customizations`);
+    customize.value.controlsMenu.newCustomizationModal.isOpen = false;
+    customize.value.controlsMenu.newCustomizationModal.data.title = '';
+    return;
+  }
+
   const newCustomization = {
     id: Math.round(Math.random() * (10000 - 1) + 1),
     ...JSON.parse(JSON.stringify(customize.value.controlsMenu.newCustomizationModal.data))

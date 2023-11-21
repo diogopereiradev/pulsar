@@ -64,6 +64,7 @@ export default defineEventHandler(async event => {
         throw new Error();
       }
     } catch {
+      setResponseStatus(event, 500, 'Internal server error');
       return {
         status: 500,
         message: 'Internal server error'

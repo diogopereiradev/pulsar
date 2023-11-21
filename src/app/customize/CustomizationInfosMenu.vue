@@ -23,6 +23,23 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
     rejectLabel: t('customize.delete-customization-dialog-cancel-button-message'),
     acceptLabel: t('customize.delete-customization-dialog-confirm-button-message'),
     accept: async () => {
+      try {
+        await $fetch('/api/docs/deleteCustomization', {
+          method: 'POST',
+          body: {
+            docId: docSaver.data.value.unsavedData.id,
+            id: customizationId
+          }
+        });
+        customizationSaver.data.value.currentSelectedCustomization = {
+          id: -1,
+          title: '',
+          region: 'top'
+        }
+      } catch {
+        showError('The customization file not exists on the system, you can ignore this error, the customization was deleted!');
+      }
+
       const updatedCustomizations = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.customizations.filter(c => c.id != customizationId)));
       customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
       docSaver.data.value.unsavedData.customizations = updatedCustomizations;

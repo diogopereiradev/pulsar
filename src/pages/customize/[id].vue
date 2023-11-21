@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ConfirmDialog from 'primevue/confirmdialog';
-import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
+import Toast from 'primevue/toast';
 import PageStates from '~/shared/components/PageStates.vue';
 import { useDocSave } from '~/shared/compositions/useDocSave';
 import { useCustomizationSave } from '~/shared/compositions/useCustomizationSave';
@@ -32,6 +32,7 @@ provide('customizationSaver', customizationSaver);
       :is-error="docSaver.data.value.status.isError"
     >
       <main class="wrapper">
+        <Toast class="z-[9999]" position="bottom-right"/>
         <ConfirmDialog :pt="{
           root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-md',
           header: 'text-primary !bg-secondary rounded-t-md flex justify-between items-center py-5 px-7',
@@ -44,7 +45,6 @@ provide('customizationSaver', customizationSaver);
             <p class="text-primary/50">{{ $t('customize.empty-customization-preview-message') }}</p>
           </div>
         </div>
-        <DatabaseSync :doc-id="docSaver.data.value.unsavedData.id" />
       </main>
     </PageStates>
   </div>

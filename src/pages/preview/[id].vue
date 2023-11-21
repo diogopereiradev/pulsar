@@ -85,10 +85,15 @@ async function iframeLoad(ev: HTMLIFrameElement) {
 
     const customizations = await Promise.all(doc.customizations.map(async c => {
       const content = await getCustomizationsContent(doc, c);
-      return {
-        ...c,
-        content
-      };
+      
+      if(content.html) {
+        return {
+          ...c,
+          content
+        };
+      } else {
+        return c;
+      }
     }));
     customizationsScript.innerHTML = PreviewCustomizations(doc, customizations);
 

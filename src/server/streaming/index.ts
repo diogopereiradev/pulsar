@@ -7,6 +7,7 @@ import { ErrorMessages } from "~/server/errors";
 import { ReadStreamBody } from "./@types/ReadStreamBody";
 import { IError } from "~/@types/error";
 import { WriteStreamBody } from "./@types/WriteStreamBody";
+import config from '~/server/config';
 
 export class Streaming {
   static async readStream(event: H3Event<EventHandlerResponse>, data: ReadStreamBody, session?: Session | string): Promise<ReadStream | IError> {
@@ -36,6 +37,21 @@ export class Streaming {
   }
 
   static async writeStream(event: H3Event<EventHandlerResponse>, data: WriteStreamBody, session: Session): Promise<{ status: 200 } | IError> {
+    const parseContent = (content: string) => {
+      if(data.type === 'page') {
+        return content.slice(0, config.DOC_PAGE_TEXT_LIMIT);
+      } else if(data.type === 'customization') {
+        const result = JSON.parse(content) as { html: string, css: string, javascript: string };
+        return JSON.stringify({
+          html: result.html? result.html.slice(0, config.DOC_CUSTOMIZATION_TEXT_LIMIT) : '',
+          css: result.css? result.css.slice(0, config.DOC_CUSTOMIZATION_TEXT_LIMIT) : '',
+          javascript: result.javascript? result.javascript.slice(0, config.DOC_CUSTOMIZATION_TEXT_LIMIT) : ''
+        });
+      } else {
+        return undefined;
+      }
+    };
+
     try {
       if(data.type === 'page' || data.type === 'customization') {
         const paths = this.streamPaths(data, session);
@@ -45,7 +61,7 @@ export class Streaming {
         
         if(pathExists) {
           const stream = fs.createWriteStream(path);
-          stream.write(data.content);
+          stream.write(parseContent(data.content));
           stream.end();
   
           return {
