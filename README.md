@@ -34,6 +34,8 @@
   <h2>Project To-do-List</h2>
 
   - [x] Create the feature to the user host documentations on Pulsar
+  - [ ] Implement TDD to API routes
+  - [ ] Document the API using Swagger
   - [ ] Create Pulsar own markdown editor and remove Tiptap
   - [ ] Add notes blocks to the editor
   - [ ] Upgrade the usability and customization of tables on editor
