@@ -28,6 +28,7 @@ const colors: ColorName[] = [
   'secondary', 
   'text', 
   'divider',
+  'scrollbar',
   'codeBlockText',
   'codeBlockLiteral',
   'codeBlockKeyword',

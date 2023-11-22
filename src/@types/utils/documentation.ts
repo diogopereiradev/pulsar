@@ -6,6 +6,7 @@ const defaultColors = {
   secondary: '#18182e',
   text: '#d3d3d3',
   divider: '#2b304a',
+  scrollbar: '#7665d7',
   codeBlockText: '#d3d3d3',
   codeBlockVariable: '#F98181',
   codeBlockLiteral: '#db6f3d',

@@ -21,6 +21,19 @@ export function Css(doc: IDocumentation) {
 
     * {
       scroll-behavior: smooth;
+      scrollbar-color: ${doc.colors.scrollbar} transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 4px;
+      border-radius: 10px;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  
+    ::-webkit-scrollbar-thumb {
+      background-color: ${doc.colors.scrollbar};
     }
 
     .pulsar-page-wrapper {
@@ -37,18 +50,6 @@ export function Css(doc: IDocumentation) {
       background-color: rgb(var(--background));
       font-family: Roboto;
       font-weight: 400;
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: transparent;
-      cursor: pointer;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: rgb(var(--primary));
     }
 
     .top-region-container {

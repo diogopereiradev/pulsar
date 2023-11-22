@@ -129,7 +129,7 @@ onMounted(() => {
                   <p class="text-base text-primary font-bold">HTML</p>
                 </div>
               </div>
-              <HtmlEditor class="min-h-0 overflow-y-auto"/>
+              <HtmlEditor class="h-full overflow-y-auto"/>
             </pane>
             <pane class="min-h-[40px]">
               <div class="w-full min-h-[40px] max-h-[53px] bg-secondary_darken/80">
@@ -138,7 +138,7 @@ onMounted(() => {
                   <p class="text-base text-primary font-bold">CSS</p>
                 </div>
               </div>
-              <CssEditor class="min-h-0 overflow-y-auto"/>
+              <CssEditor class="h-full overflow-y-auto"/>
             </pane>
             <pane class="min-h-[40px]">
               <div class="w-full min-h-[40px] max-h-[53px] bg-secondary_darken/80">
@@ -147,7 +147,7 @@ onMounted(() => {
                   <p class="text-base text-primary font-bold">JavaScript</p>
                 </div>
               </div>
-              <JavascriptEditor class="min-h-0 overflow-y-auto"/>
+              <JavascriptEditor class="h-full overflow-y-auto"/>
             </pane>
           </splitpanes>
           <!--Mobile Editors-->

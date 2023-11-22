@@ -38,6 +38,7 @@ export type IDocumentationColorPalette = {
   secondary: string,
   text: string,
   divider: string,
+  scrollbar: string,
   codeBlockText: string,
   codeBlockVariable: string,
   codeBlockLiteral: string,
