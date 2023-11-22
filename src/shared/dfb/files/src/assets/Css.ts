@@ -1,22 +1,12 @@
 import css from 'css';
-// @ts-ignore
-import hexToRgb from 'hex-to-rgb';
-import { IDocumentation, IDocumentationColorPalette } from "~/@types/declarations/Documentation";
-
-function generateGlobalVariables(colors: IDocumentationColorPalette): string {
-  const colorNames = Object.keys(colors);
-  const colorValues = Object.values(colors);
-
-  return colorNames.reduce((acc, colorName, i) => {
-    return `${acc}\n--${colorName}: ${hexToRgb(colorValues[i])};`;
-  }, '');
-}
+import { IDocumentation } from "~/@types/declarations/Documentation";
+import { generateDocGlobalVariables } from '~/shared/dfb/utils/generateDocGlobalVariables';
 
 export function Css(doc: IDocumentation) {
   return css.stringify(css.parse(/* css */`
     /* Colors are in RGB, as it is easy to control the alpha color */
     :root {
-      ${generateGlobalVariables(doc.colors)}
+      ${generateDocGlobalVariables(doc.colors)}
     }
 
     * {

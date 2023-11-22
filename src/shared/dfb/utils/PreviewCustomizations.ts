@@ -1,9 +1,17 @@
 import { IDocumentation, IDocumentationCustomization } from "~/@types/declarations/Documentation";
+import { ReservedCommands } from "../files/src/customizations/ReservedCommands";
+import { generateDocGlobalVariables } from "./generateDocGlobalVariables";
 
 export function PreviewCustomizations(doc: IDocumentation, customizations: IDocumentationCustomization[]) {
   return /* javascript */`
     const customizations = ${JSON.stringify(customizations)};
-    const iframeResetCss = '* { padding: 0px; margin: 0px; box-sizing: border-box; scroll-behavior: smooth; }'
+    const iframeResetCss = '* { padding: 0px; margin: 0px; box-sizing: border-box; scroll-behavior: smooth; }';
+
+    const reservedCommandsScript = document.createElement('script');
+    reservedCommandsScript.innerHTML = ${ReservedCommands()};
+
+    const docColorsStyle = document.createElement('style');
+    docColorsStyle.innerHTML = \"${`:root { ${generateDocGlobalVariables(doc.colors, false)} } `}\";
 
     customizations.forEach(async c => {
       if(c.region === 'top') {
@@ -23,8 +31,10 @@ export function PreviewCustomizations(doc: IDocumentation, customizations: IDocu
           resetCssStyle.textContent = iframeResetCss;
 
           ev.currentTarget.contentDocument.head.appendChild(style);
+          ev.currentTarget.contentDocument.head.appendChild(docColorsStyle);
           ev.currentTarget.contentDocument.head.appendChild(resetCssStyle);
           ev.currentTarget.contentDocument.body.innerHTML = c.content.html;
+          ev.currentTarget.contentDocument.body.appendChild(reservedCommandsScript);
           ev.currentTarget.contentDocument.body.appendChild(script);
           ev.currentTarget.style.height = ev.currentTarget.contentWindow.document.documentElement.scrollHeight + 'px';
         };
@@ -46,8 +56,10 @@ export function PreviewCustomizations(doc: IDocumentation, customizations: IDocu
           resetCssStyle.textContent = iframeResetCss;
 
           ev.currentTarget.contentDocument.head.appendChild(style);
+          ev.currentTarget.contentDocument.head.appendChild(docColorsStyle);
           ev.currentTarget.contentDocument.head.appendChild(resetCssStyle);
           ev.currentTarget.contentDocument.body.innerHTML = c.content.html;
+          ev.currentTarget.contentDocument.body.appendChild(reservedCommandsScript);
           ev.currentTarget.contentDocument.body.appendChild(script);
           ev.currentTarget.style.height = ev.currentTarget.contentWindow.document.documentElement.scrollHeight + 'px';
         };

@@ -1,5 +1,8 @@
 import { Buffer } from "buffer";
 import { IDocumentation, IDocumentationCustomization } from "~/@types/declarations/Documentation";
+import { ReservedCommands } from "./ReservedCommands";
+import { generateDocGlobalVariables } from '~/shared/dfb/utils/generateDocGlobalVariables';
+import { ResetCss } from "../assets/ResetCss";
 
 export async function CustomizationHtml(doc: IDocumentation, customization: IDocumentationCustomization) {
   const content = ref<{ html?: string, css?: string, javascript?: string }>();
@@ -39,10 +42,17 @@ export async function CustomizationHtml(doc: IDocumentation, customization: IDoc
     <!DOCTYPE html>
     <html>
       <head>
+        <style>
+          :root {
+            ${generateDocGlobalVariables(doc.colors, false)}
+          }
+        </style>
+        <style>${ResetCss()}</style>
         <style>${content.value?.css}</style>
       </head>
       <body>
         ${content.value?.html}
+        <script>${ReservedCommands()}</script>
         <script>${content.value?.javascript}</script>
       </body>
     </html>

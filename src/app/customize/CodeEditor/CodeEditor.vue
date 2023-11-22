@@ -9,6 +9,7 @@ import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import { ResetCss } from '~/shared/dfb/files/src/assets/ResetCss';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { CustomizationSaverReturnType } from '~/shared/compositions/useCustomizationSave';
+import { generateDocGlobalVariables } from '~/shared/dfb/utils/generateDocGlobalVariables';
 
 const customize = useCustomize();
 const docSaver = inject('docSaver') as DocSaverReturnType;
@@ -55,11 +56,15 @@ watch(() => customizationSaver.data.value.unsavedContent, (content) => {
     const style = document.createElement('style');
     const script = document.createElement('script');
 
+    const docColorsStyle = document.createElement('style');
+    docColorsStyle.innerHTML = `:root { ${generateDocGlobalVariables(docSaver.data.value.unsavedData.colors, false)} }`;
+
     style.innerHTML = ResetCss() + ' ' + content.css ;
     script.innerHTML = content.javascript;
 
     if(previewFrame && previewFrame.contentDocument) {
       previewFrame.contentDocument.head.innerHTML = style.outerHTML;
+      previewFrame.contentDocument.head.appendChild(docColorsStyle);
       previewFrame.contentDocument.body.innerHTML = content.html;
       previewFrame.contentDocument.body.appendChild(script);
     }

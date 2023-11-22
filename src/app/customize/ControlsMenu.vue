@@ -117,6 +117,14 @@ onBeforeMount(async () => {
               <font-awesome-icon v-if="!docSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
               <font-awesome-icon v-if="docSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
             </Button>
+            <!--New customization button-->
+            <Button
+              @click="customize.controlsMenu.newCustomizationModal.isOpen = true"
+              :title="$t('customize.controls-menu-new-customization-button-label')"
+              class="w-10 !h-10 !bg-primary/80 hover:!bg-primary border-none"
+            >
+              <font-awesome-icon icon="fa-solid fa-plus" class="text-lg text-primary"></font-awesome-icon>
+            </Button>
           </div>
         </div>
         <hr class="w-full h-0.5 bg-divider/60 border-none my-7" />
@@ -127,14 +135,6 @@ onBeforeMount(async () => {
               <font-awesome-icon icon="fa-solid fa-microchip" class="text-[26px] text-primary"></font-awesome-icon>
               <h3 class="text-primary/80 text-lg font-medium">{{ $t('customize.controls-menu-customizations-title') }}</h3>
             </div>
-            <!--New customization button-->
-            <Button
-              @click="customize.controlsMenu.newCustomizationModal.isOpen = true"
-              :title="$t('customize.controls-menu-new-customization-button-label')"
-              class="w-10 !h-10 !bg-primary/80 hover:!bg-primary border-none"
-            >
-              <font-awesome-icon icon="fa-solid fa-plus" class="text-lg text-primary"></font-awesome-icon>
-            </Button>
           </div>
           <!--Customizations-->
           <div class="flex flex-col gap-2.5 mt-7" v-if="docSaver.data.value.unsavedData.customizations.length >= 1">
