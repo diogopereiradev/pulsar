@@ -37,6 +37,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@nuxt/image": "^1.0.0",
     "@nuxtjs/i18n": "8.0.0-rc.4",
+    "@nuxtjs/robots": "^3.0.0",
     "@prisma/client": "^5.5.2",
     "@sidebase/nuxt-auth": "0.6.0-rc.1",
     "@tiptap/extension-bold": "^2.1.11",
