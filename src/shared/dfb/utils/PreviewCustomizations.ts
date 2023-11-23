@@ -8,7 +8,7 @@ export function PreviewCustomizations(doc: IDocumentation, customizations: IDocu
     const iframeResetCss = '* { padding: 0px; margin: 0px; box-sizing: border-box; scroll-behavior: smooth; }';
 
     const reservedCommandsScript = document.createElement('script');
-    reservedCommandsScript.innerHTML = ${ReservedCommands()};
+    reservedCommandsScript.innerHTML = \`${ReservedCommands(doc, true)}\`;
 
     const docColorsStyle = document.createElement('style');
     docColorsStyle.innerHTML = \"${`:root { ${generateDocGlobalVariables(doc.colors, false)} } `}\";
@@ -34,8 +34,8 @@ export function PreviewCustomizations(doc: IDocumentation, customizations: IDocu
           ev.currentTarget.contentDocument.head.appendChild(docColorsStyle);
           ev.currentTarget.contentDocument.head.appendChild(resetCssStyle);
           ev.currentTarget.contentDocument.body.innerHTML = c.content.html;
-          ev.currentTarget.contentDocument.body.appendChild(reservedCommandsScript);
           ev.currentTarget.contentDocument.body.appendChild(script);
+          ev.currentTarget.contentDocument.body.appendChild(reservedCommandsScript);
           ev.currentTarget.style.height = ev.currentTarget.contentWindow.document.documentElement.scrollHeight + 'px';
         };
         topContainer.appendChild(iframe);

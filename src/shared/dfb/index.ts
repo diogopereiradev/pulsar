@@ -96,7 +96,6 @@ export class DocumentationFileBuilder {
     await this.generatePageFiles();
     this.generateAssetsFiles();
     await this.generateCustomizationsFiles();
-    console.log(this.zip);
     this.generateConfigurationFiles();
     
     return await this.zip.generateAsync({ type: 'blob' });

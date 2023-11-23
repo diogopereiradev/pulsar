@@ -26,7 +26,7 @@ const customize = useCustomize();
       <hr class="radial-separator w-full min-h-[1px]"/>
       <div class="relative flex flex-col max-h-[82vh] lg:max-h-[none] lg:flex-row overflow-y-scroll lg:overflow-visible">
         <!--About customizations-->
-        <div class="w-full lg:max-w-[47%] break-words px-9 py-8">
+        <div class="w-full lg:max-w-[40%] break-words px-9 py-8">
           <div class="flex items-center gap-2.5">
             <font-awesome-icon icon="fa-regular fa-circle-question" class="text-primary/80 text-[20px] -mt-0.5"></font-awesome-icon>
             <h3 class="text-[16px] text-primary/80 font-medium">{{ $t('customize.customization-informations-menu-what-thats-do-title') }}</h3>
@@ -35,7 +35,7 @@ const customize = useCustomize();
         </div>
         <hr class="radial-separator lg:hidden w-full min-h-[1px] -mb-3"/>
         <!--Reserved functions and style variables-->
-        <div class="flex flex-col w-full lg:w-[53%] lg:max-h-[310px] lg:overflow-y-scroll break-words px-9 lg:px-5 py-8">
+        <div class="flex flex-col w-full lg:w-[60%] lg:max-h-[310px] lg:overflow-y-scroll break-words px-9 lg:px-5 py-8">
           <div class="w-full flex items-center gap-2.5">
             <font-awesome-icon icon="fa-solid fa-microchip" class="text-primary/80 text-[20px] -mt-0.5"></font-awesome-icon>
             <h3 class="text-[16px] text-primary/80 font-medium">{{ $t('customize.customization-informations-menu-reserved-functions-title') }}</h3>
@@ -72,8 +72,8 @@ const customize = useCustomize();
             <p class="flex items-center gap-3 w-full h-10 bg-secondary_darken backdrop-contrast-225 overflow-x-scroll rounded-[10px] px-5">
               <font-awesome-icon icon="fa-solid fa-terminal" class="text-primary/70 text-[18px]"></font-awesome-icon>
               <hr class="radial-separator min-w-[1px] h-[85%]"/>
-              <span class="text-[#70c25b]">
-                pulsar_navigateTo<span class="text-primary">(<span class="text-[#d8b15c]">routeName</span>)</span>
+              <span class="flex items-center text-[#70c25b] whitespace-nowrap">
+                pulsar_navigateTo<span class="text-primary">(<span class="text-[#d8b15c]">index</span>:<span class="text-[#99d2f9]"> number</span>)</span>
                 <span class="text-primary">;</span>
               </span>
             </p>
