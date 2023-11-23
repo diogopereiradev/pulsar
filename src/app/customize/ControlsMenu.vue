@@ -10,6 +10,7 @@ import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
 import CodeEditor from './CodeEditor/CodeEditor.vue';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { CustomizationSaverReturnType } from "~/shared/compositions/useCustomizationSave";
+import InfosMenu from "./InfosMenu.vue";
 
 const customize = useCustomize();
 const docSaver = inject('docSaver') as DocSaverReturnType;
@@ -135,6 +136,16 @@ onBeforeMount(async () => {
               <font-awesome-icon icon="fa-solid fa-microchip" class="text-[26px] text-primary"></font-awesome-icon>
               <h3 class="text-primary/80 text-lg font-medium">{{ $t('customize.controls-menu-customizations-title') }}</h3>
             </div>
+            <!--Infos button-->
+            <Button
+              type="submit"
+              @click="customize.controlsMenu.infosMenu.isOpen = true"
+              class="w-10 min-h-[40px] !bg-primary " 
+              :title="$t('customize.controls-menu-info-button-title')" 
+              :aria-label="$t('customize.controls-menu-info-button-label')"
+            >
+              <font-awesome-icon icon="fa-solid fa-info" class="text-[16px]"/>
+            </Button>
           </div>
           <!--Customizations-->
           <div class="flex flex-col gap-2.5 mt-7" v-if="docSaver.data.value.unsavedData.customizations.length >= 1">
@@ -154,11 +165,9 @@ onBeforeMount(async () => {
         </div>
       </form>
     </ScrollPanel>
-    <!--Code editor menu-->
     <CodeEditor />
-    <!--Customization infos menu-->
+    <InfosMenu />
     <CustomizationInfosMenu />
-    <!--New customization modal-->
     <NewCustomizationModal />
     <!--Menu mobile backdrop-->
     <div 

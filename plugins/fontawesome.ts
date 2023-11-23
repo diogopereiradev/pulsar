@@ -1,6 +1,7 @@
 import { library, config } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import * as SolidIcons from '@fortawesome/free-solid-svg-icons';
+import * as RegularIcons from '@fortawesome/free-regular-svg-icons';
 import * as BrandsIcons from '@fortawesome/free-brands-svg-icons';
 
 config.autoAddCss = false;
@@ -32,7 +33,9 @@ library.add(...[
   SolidIcons.faLinesLeaning,
   SolidIcons.faDownload,
   SolidIcons.faUpload,
+  SolidIcons.faInfo,
   SolidIcons.faCheck,
+  SolidIcons.faTerminal,
   SolidIcons.faKeyboard,
   SolidIcons.faCloudArrowUp,
   SolidIcons.faRotate,
@@ -46,6 +49,7 @@ library.add(...[
   SolidIcons.faChevronDown,
   SolidIcons.faShareFromSquare,
   SolidIcons.faTableColumns,
+  RegularIcons.faCircleQuestion,
   BrandsIcons.faDiscord,
   BrandsIcons.faGoogle,
   BrandsIcons.faCss3,

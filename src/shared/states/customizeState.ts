@@ -15,6 +15,9 @@ type EditorStateType = {
         region: 'top' | 'bottom'
       }
     },
+    infosMenu: {
+      isOpen: boolean
+    }
     customizationInfosMenu: {
       isOpen: boolean,
       data: IDocumentationCustomization
@@ -36,6 +39,9 @@ export const useCustomize = () => useState<EditorStateType>('customizeState', ()
         title: '',
         region: 'top'
       }
+    },
+    infosMenu: {
+      isOpen: false
     },
     customizationInfosMenu: {
       isOpen: false,
