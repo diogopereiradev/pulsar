@@ -31,11 +31,6 @@ export function Script(doc: IDocumentation) {
       const allIndexedHeadings = document.querySelectorAll('.pulsar-heading-indexed');
       const headings = [];
 
-      if(allIndexedHeadings.length < 1) {
-        indexesTableContainer.classList.add('pulsar-utils-none');
-        return;
-      };
-
       allIndexedHeadings.forEach(indexedHeading => {
         const headingUniqueId = indexedHeading.textContent.toLowerCase().replaceAll(' ', '').trim() + '-' + Math.round(Math.random() * (10000 - 1) + 1);
         indexedHeading.id = headingUniqueId;
@@ -49,8 +44,15 @@ export function Script(doc: IDocumentation) {
         \``};
         headings.push(item);
       });
-      
+
+      if(headings.length < 1) {
+        indexesTableContainer.style.display = 'none';
+        indexesTableList.innerHTML = '';
+        return;
+      };
+
       if(indexesTableList) {
+        indexesTableContainer.style.display = 'initial';
         indexesTableList.innerHTML = headings.join('');
       }
     }

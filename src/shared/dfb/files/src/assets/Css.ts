@@ -59,7 +59,7 @@ export function Css(doc: IDocumentation) {
       justify-content: center;
       align-items: center;
       width: 100%;
-      min-height: 76vh;
+      min-height: 100%;
       color: ${doc.colors.primary}b8;
       font-size: 40px;
     }
@@ -416,7 +416,7 @@ export function Css(doc: IDocumentation) {
   
     @media only screen and (max-width: 768px) {
       .pulsar-indexes-table-container {
-        display: none;
+        display: none !important;
       }
     }
 
