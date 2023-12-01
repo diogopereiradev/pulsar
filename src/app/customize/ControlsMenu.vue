@@ -1,67 +1,30 @@
 <script setup lang="ts">
-import lodash from 'lodash';
 import Tailwind from "primevue/passthrough/tailwind";
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
 import ScrollPanel from 'primevue/scrollpanel';
 import { usePassThrough } from 'primevue/passthrough';
 import { useCustomize } from '~/shared/states/customizeState';
-import { Status } from "~/@types/status";
-import { Documentation, IDocumentationCustomization } from "~/database/models/Documentation";
+import { IDocumentationCustomization } from "~/@types/declarations/Documentation";
 import NewCustomizationModal from './NewCustomizationModal.vue';
 import CustomizationInfosMenu from './CustomizationInfosMenu.vue';
 import CodeEditor from './CodeEditor/CodeEditor.vue';
-
-const { params } = useRoute();
-const docId = Number(params.id) || 0;
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
+import { CustomizationSaverReturnType } from "~/shared/compositions/useCustomizationSave";
+import InfosMenu from "./InfosMenu.vue";
 
 const customize = useCustomize();
-
-async function handleSave() {
-  if(!customize.value.controlsMenu.isSaved) {
-    customize.value.controlsMenu.isSaving = true;
-    const result = await Documentation.edit(docId, {
-      ...JSON.parse(JSON.stringify(customize.value.doc))
-    });
-
-    if(result === Status.OK) {
-      customize.value.controlsMenu.isSaved = true;
-    }
-    customize.value.controlsMenu.isSaving = false;
-  }
-}
-
-function startAutoSave() {
-  setInterval(() => {
-    if(!customize.value.controlsMenu.isSaved && !customize.value.controlsMenu.isSaving && customize.value.doc.features.autoSave) {
-      handleSave();
-    }
-  }, 2000);
-}
+const docSaver = inject('docSaver') as DocSaverReturnType;
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 
 function openCustomizationInfosMenu(customization: IDocumentationCustomization) {
   customize.value.controlsMenu.customizationInfosMenu.data = customization;
+  customizationSaver.data.value.currentSelectedCustomization = customization;
   setTimeout(() => {
     customize.value.controlsMenu.customizationInfosMenu.isOpen = true;
   }, 50);
 }
 
-// Check if customize.value.doc has been modified. If the data has been changed, the user can save the data
-watch(() => customize.value.doc, async (_, oldDocData) => {
-  if(!oldDocData.id) return;
-  const docInfos = await Documentation.get(docId);
-
-  if(lodash.isEqual(oldDocData, docInfos)) {
-    customize.value.controlsMenu.isSaved = true;
-  } else {
-    customize.value.controlsMenu.isSaved = false;
-  }
-}, { deep: true });
-
 onBeforeMount(async () => {
-  // Set initial doc data in editor.value.doc
-  const docInfos = await Documentation.get(docId);
-  docInfos && (customize.value.doc = docInfos);
-
   // Toggle controls menu based on window size
   window.addEventListener('resize', () => {
     if(window.innerWidth >= 1180) {
@@ -69,9 +32,6 @@ onBeforeMount(async () => {
     }
   });
   customize.value.controlsMenu.isOpen = window.innerWidth >= 1180;
-
-  // Start auto save
-  startAutoSave();
 });
 </script>
 
@@ -116,11 +76,11 @@ onBeforeMount(async () => {
         { mergeProps: true, mergeSections: true }
       )"
     >
-      <form @submit.prevent="handleSave" class="p-8">
+      <form @submit.prevent="docSaver.save" class="p-8">
         <!--Back to editor button and mobile close button-->
         <div class="flex items-center justify-between pb-7">
           <NuxtLinkLocale 
-            :to="`/editor/${customize.doc.id}`"
+            :to="`/editor/${docSaver.data.value.unsavedData.id}`"
             :aria-label="$t('customize.controls-menu-back-to-editor-button-message')"
             class="flex items-center gap-3 w-32 h-10 bg-primary hover:bg-primary/80 active:bg-primary/60 duration-300 text-primary rounded-md font-medium pl-5"
           >
@@ -140,7 +100,7 @@ onBeforeMount(async () => {
           <div class="flex items-center gap-2.5">
             <!--Preview button-->
             <NuxtLinkLocale
-              :to="`/preview/${customize.doc.id}`"
+              :to="`/preview/${docSaver.data.value.unsavedData.id}`"
               class="flex justify-center items-center w-10 min-h-[40px] !bg-[#d8985d] rounded-md" 
               :title="$t('editor.controls-menu-previewmode-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-previewmode-button-aria-label')"
@@ -153,10 +113,18 @@ onBeforeMount(async () => {
               class="w-10 min-h-[40px] !bg-primary" 
               :title="$t('editor.controls-menu-save-button-aria-label')" 
               :aria-label="$t('editor.controls-menu-save-button-aria-label')"
-              :disabled="customize.controlsMenu.isSaved"
+              :disabled="docSaver.data.value.status.isSaved"
             >
-              <font-awesome-icon v-if="!customize.controlsMenu.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
-              <font-awesome-icon v-if="customize.controlsMenu.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+              <font-awesome-icon v-if="!docSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
+              <font-awesome-icon v-if="docSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+            </Button>
+            <!--New customization button-->
+            <Button
+              @click="customize.controlsMenu.newCustomizationModal.isOpen = true"
+              :title="$t('customize.controls-menu-new-customization-button-label')"
+              class="w-10 !h-10 !bg-primary/80 hover:!bg-primary border-none"
+            >
+              <font-awesome-icon icon="fa-solid fa-plus" class="text-lg text-primary"></font-awesome-icon>
             </Button>
           </div>
         </div>
@@ -168,19 +136,21 @@ onBeforeMount(async () => {
               <font-awesome-icon icon="fa-solid fa-microchip" class="text-[26px] text-primary"></font-awesome-icon>
               <h3 class="text-primary/80 text-lg font-medium">{{ $t('customize.controls-menu-customizations-title') }}</h3>
             </div>
-            <!--New customization button-->
+            <!--Infos button-->
             <Button
-              @click="customize.controlsMenu.newCustomizationModal.isOpen = true"
-              :title="$t('customize.controls-menu-new-customization-button-label')"
-              class="w-10 !h-10 !bg-primary/80 hover:!bg-primary border-none"
+              type="submit"
+              @click="customize.controlsMenu.infosMenu.isOpen = true"
+              class="w-10 min-h-[40px] !bg-primary " 
+              :title="$t('customize.controls-menu-info-button-title')" 
+              :aria-label="$t('customize.controls-menu-info-button-label')"
             >
-              <font-awesome-icon icon="fa-solid fa-plus" class="text-lg text-primary"></font-awesome-icon>
+              <font-awesome-icon icon="fa-solid fa-info" class="text-[16px]"/>
             </Button>
           </div>
           <!--Customizations-->
-          <div class="flex flex-col gap-2.5 mt-7" v-if="customize.doc.customizations.length >= 1">
+          <div class="flex flex-col gap-2.5 mt-7" v-if="docSaver.data.value.unsavedData.customizations.length >= 1">
             <Button
-              v-for="customization in customize.doc.customizations"
+              v-for="customization in docSaver.data.value.unsavedData.customizations"
               @click="openCustomizationInfosMenu(customization)"
               class="group !justify-start gap-3.5 w-full !min-h-[43px] !bg-primary/[0.15] hover:!bg-primary/50 border-none !px-5 duration-300"
             >
@@ -189,17 +159,15 @@ onBeforeMount(async () => {
             </Button>
           </div>
           <!--Empty customizations message-->
-          <div class="flex justify-center items-center h-[200px]" v-if="customize.doc.customizations.length < 1">
+          <div class="flex justify-center items-center h-[200px]" v-if="docSaver.data.value.unsavedData.customizations.length < 1">
             <p class="text-center text-base text-primary/40">{{ $t('customize.controls-menu-empty-customizations-message') }}</p>
           </div>
         </div>
       </form>
     </ScrollPanel>
-    <!--Code editor menu-->
     <CodeEditor />
-    <!--Customization infos menu-->
+    <InfosMenu />
     <CustomizationInfosMenu />
-    <!--New customization modal-->
     <NewCustomizationModal />
     <!--Menu mobile backdrop-->
     <div 

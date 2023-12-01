@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { IDocumentation } from '~/database/models/Documentation';
+import { IDocumentation } from '~/@types/declarations/Documentation';
 defineProps<Pick<IDocumentation, 'colors' | 'features'> & {
   navbar?: boolean,
-  selectedRegion?: 'left' | 'right' | 'top' | 'bottom'
+  selectedRegion?: 'top' | 'bottom'
 }>();
 </script>
 
@@ -21,10 +21,6 @@ defineProps<Pick<IDocumentation, 'colors' | 'features'> & {
       <hr class="w-full h-px border-none mt-3.5 duration-300" :style="{ backgroundColor: colors.divider }" />
     </div>
     <div :class="`flex w-full h-full p-2.5 ${!navbar && 'mt-2.5'}`">
-      <!--Left selected region item-->
-      <div v-if="selectedRegion === 'left'" class="pt-2.5">
-        <div class="pulse min-w-[30px] h-full rounded-lg" :style="{ backgroundColor: colors.primary + '60' }"></div>
-      </div>
       <!--Left menu-->
       <div class="flex flex-col min-w-[65px] h-full py-2.5">
         <div class="w-10 h-2.5 rounded-sm duration-300 ml-2.5" :style="{ backgroundColor: colors.text }"></div>
@@ -58,10 +54,6 @@ defineProps<Pick<IDocumentation, 'colors' | 'features'> & {
         <div class="highlight w-[25px] h-2.5 rounded-sm mt-2 duration-300 cursor-pointer" :style="{ backgroundColor: colors.text + '40' }"></div>
         <div class="highlight w-11 h-2.5 rounded-sm mt-2 duration-300 cursor-pointer" :style="{ backgroundColor: colors.text + '40' }"></div>
       </div>
-      <!--Right selected region item-->
-      <div v-if="selectedRegion === 'right'" class="pl-2.5 pt-2.5">
-        <div class="pulse min-w-[30px] h-full rounded-lg" :style="{ backgroundColor: colors.primary + '60' }"></div>
-      </div>
     </div>
     <!--Bottom selected region item-->
     <div v-if="selectedRegion === 'bottom'" class="px-4 pb-4">
@@ -90,4 +82,4 @@ defineProps<Pick<IDocumentation, 'colors' | 'features'> & {
       background-color: v-bind('colors.primary + "80"');
     }
   }
-</style>
+</style>~/shared/database/models/Documentation~/indexedDB/models/Documentation

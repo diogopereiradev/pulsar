@@ -5,6 +5,10 @@ import MainFeatures from '~/app/home/MainFeatures.vue';
 import Customizations from '~/app/home/Customizations.vue';
 import GettingStarted from '~/app/home/GettingStarted.vue';
 import Footer from '~/app/home/Footer.vue';
+
+definePageMeta({
+  layout: 'with-navbar'
+});
 </script>
 
 <template>

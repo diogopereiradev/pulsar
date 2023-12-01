@@ -1,0 +1,16 @@
+export default [
+  { UserAgent: 'Googlebot' },
+  { UserAgent: 'AdsBot-Google' },
+  { Disallow: '/auth' },
+  { Disallow: '/documentations' },
+  { Disallow: '/editor' },
+  { Disallow: '/preview' },
+  { Disallow: '/pt/auth' },
+  { Disallow: '/pt/documentations' },
+  { Disallow: '/pt/editor' },
+  { Disallow: '/pt/preview' },
+  { BlankLine: true },
+  { UserAgent: '*' },
+  { Allow: '/' },
+  { Allow: '/pt' },
+]

@@ -1,29 +1,23 @@
 <script setup lang="ts">
-import { Documentation, IDocumentation } from '~/database/models/Documentation';
-import { useDocumentations } from '~/shared/states/documentationsState';
 import { useConfirm } from "primevue/useconfirm";
-import EditDocsModal from './EditDocsModal.vue';
+import { useToast } from 'primevue/usetoast';
 import ContextMenu from 'primevue/contextmenu';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { MenuItem } from 'primevue/menuitem';
-import { Status } from '~/@types/status';
+import { IDocumentation } from '~/@types/declarations/Documentation';
+import { useDocumentations } from "~/shared/states/documentationsState";
+import { IError } from "~/@types/error";
 
 const props = defineProps<{ data: IDocumentation }>();
-const { t } = useI18n();
 const docs = useDocumentations();
+const { t } = useI18n();
+const toast = useToast();
 const confirm = useConfirm();
 
-const editMenuIsOpen = ref(false);
 const isOpening = ref(false);
 
 const contextMenuRef = ref();
 const contextMenuItems = ref<MenuItem[]>([
-  {
-    label: t('documentations.documentations-list-item-contextmenu-edit-message'),
-    command: (ev) => {
-      openEditDocModal();
-    }
-  },
   {
     label: t('documentations.documentations-list-item-contextmenu-delete-message'),
     class: '[&_span]:!text-[#d4373c] [&_div]:hover:!bg-[#f99999]/10',
@@ -31,13 +25,14 @@ const contextMenuItems = ref<MenuItem[]>([
   }
 ]);
 
-function openEditDocModal() {
-  editMenuIsOpen.value = true;
-}
-
-function closeEditModal() {
-  editMenuIsOpen.value = false;
-}
+const showError = (message: string) => {
+  toast.add({ 
+    severity: 'error', 
+    summary: 'Error', 
+    detail: message,
+    life: 6000
+  });
+};
 
 function deleteConfirmDialog() {
   confirm.require({
@@ -48,14 +43,20 @@ function deleteConfirmDialog() {
     acceptLabel: t('documentations.delete-doc-dialog-confirm-button-message'),
     rejectLabel: t('documentations.delete-doc-dialog-cancel-button-message'),
     accept: async () => {
-      const result = await Documentation.delete(props.data.id);
+      try {
+        const headers = useRequestHeaders(['cookie']) as HeadersInit;
+        await $fetch('/api/docs/deleteDoc', {
+          method: 'POST',
+          headers,
+          body: {
+            id: props.data.id
+          }
+        });
 
-      if(result === Status.OK) {
-        // Realtime remove from docs list
         const updatedData = docs.value.data.filter(doc => doc.id !== props.data.id);
         docs.value.data = updatedData;
-      } else {
-        alert('An error occurred on trying to delete the documentation!');
+      } catch(err) {
+        showError((err as IError).message || 'Error on deleting the documentation!');
       }
     }
   });
@@ -63,24 +64,29 @@ function deleteConfirmDialog() {
 </script>
 
 <template>
-  <div class="relative group grow w-[370px] bg-secondary/80 rounded-lg cursor-pointer">
+  <div class="relative group grow w-[370px] bg-secondary/60 rounded-[10px] cursor-pointer shadow-md">
     <!--Card Frame-->
     <NuxtLinkLocale @click="isOpening = true" :to="`/editor/${data.id}`" class="w-full min-h-[300px]" v-if="!isOpening">
-      <div class="relative flex justify-center pt-5 w-full h-[140px] rounded-t-lg overflow-hidden">
-        <div class="absolute left-0 top-0 bg-black/60 w-full h-full"></div>
+      <div class="relative flex justify-center pt-5 w-full h-[140px] rounded-t-[10px] overflow-hidden">
+        <div class="absolute left-0 top-0 bg-black/[0.45] w-full h-full"></div>
         <DocPrototype
           :colors="data.colors"
           :features="data.features"
         />
       </div>
-      <div class="flex flex-col p-8">
+      <div class="flex flex-col px-8 pt-3 pb-6">
         <div class="flex items-center justify-between">
           <h2 :title="data.title" class="max-w-[100px] text-xl text-primary/90 font-medium truncate">{{ data.title }}</h2>
-          <p class="relative text-[15px] text-primary/50 font-medium">{{ $d(data.createdAt, 'long') }}</p>
+          <div class="relative flex flex-col items-end top-3">
+            <p class="relative text-[15px] text-primary/50 font-medium">{{ $d(new Date(data.createdAt), 'long') }}</p>
+            <div :class="`flex justify-center items-center relative top-1.5 w-[100px] h-[25px] ${data.isPublic? 'bg-[#4cbf3f]/30' : 'bg-[#c94f4f]/30'} rounded-[10px]`">
+              <p :class="`${data.isPublic? 'text-[#78ff69]' : 'text-[#f87070]'}`">{{ data.isPublic? $t('others.public-word') : $t('others.private-word') }}</p>
+            </div>
+          </div>
         </div>
         <p 
           :title="data.description" 
-          class="text-base text-primary/60 font-normal mt-5 break-all"
+          class="text-base text-primary/60 font-normal mt-8 break-all"
         >
           {{ data.description.length > 120? data.description.slice(0, 120) + '...' : data.description }}
         </p>
@@ -98,11 +104,5 @@ function deleteConfirmDialog() {
       </Button>
       <ContextMenu ref="contextMenuRef" :model="contextMenuItems" />
     </div>
-    <!--Edit Doc Modal-->
-    <EditDocsModal 
-      :doc-id="data.id" 
-      :is-open="editMenuIsOpen"
-      @close-modal="closeEditModal"
-    />
   </div>
 </template>

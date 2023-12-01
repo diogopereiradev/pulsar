@@ -1,32 +1,55 @@
 <script setup lang="ts">
+import { useToast } from 'primevue/usetoast';
 import InputText from 'primevue/inputtext';
-import { Status } from '~/@types/status';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { useCustomize } from '~/shared/states/customizeState';
-import { Documentation } from '~/database/models/Documentation';
+import config from '~/server/config';
 
+const toast = useToast();
 const regions: ('top' | 'bottom')[] = ['top', 'bottom'];
 const customize = useCustomize();
+const docSaver = inject('docSaver') as DocSaverReturnType;
+
+const showError = (message?: string) => {
+  toast.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: message || 'Error on creating the new customization',
+    life: 6000
+  });
+};
 
 async function handleSubmit() {
+  if(docSaver.data.value.unsavedData.customizations.length >= config.DOC_CUSTOMIZATIONS_LIMIT) {
+    showError(`You exceeded the limit of ${config.DOC_CUSTOMIZATIONS_LIMIT} customizations`);
+    customize.value.controlsMenu.newCustomizationModal.isOpen = false;
+    customize.value.controlsMenu.newCustomizationModal.data.title = '';
+    return;
+  }
+
   const newCustomization = {
     id: Math.round(Math.random() * (10000 - 1) + 1),
-    content: { html: '', css: '', js: '' },
     ...JSON.parse(JSON.stringify(customize.value.controlsMenu.newCustomizationModal.data))
   };
 
-  const updatedPayload = {
-    customizations: [...JSON.parse(JSON.stringify(customize.value.doc.customizations)), newCustomization]
-  };
-  const result = await Documentation.edit(customize.value.doc.id, updatedPayload);
+  const requestCustomizationFiles = await $fetch('/api/docs/createCustomization', {
+    method: 'POST',
+    body: {
+      docId: docSaver.data.value.unsavedData.id,
+      id: newCustomization.id
+    }
+  });
 
-  if(result === Status.OK) {
-    customize.value.doc.customizations = updatedPayload.customizations;
+  if(requestCustomizationFiles.status === 200) {
+    const updatedPayload = [...JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.customizations)), newCustomization];
+    docSaver.data.value.unsavedData.customizations = updatedPayload;
+    
+    customize.value.controlsMenu.newCustomizationModal.isOpen = false;
+    customize.value.controlsMenu.newCustomizationModal.data.title = '';
   } else {
-    alert('Error on trying to create a new customization');
+    showError();
   }
-  customize.value.controlsMenu.newCustomizationModal.isOpen = false;
-  customize.value.controlsMenu.newCustomizationModal.data.title = '';
 }
 </script>
 
@@ -57,8 +80,8 @@ async function handleSubmit() {
       <!--Doc prototype-->
       <div class="flex justify-center items-center w-full xl:min-w-[350px] h-full bg-secondary_darken rounded-l-xl max-xl:py-8">
         <DocPrototype
-          :colors="customize.doc.colors"
-          :features="customize.doc.features"
+          :colors="docSaver.data.value.unsavedData.colors"
+          :features="docSaver.data.value.unsavedData.features"
           :selected-region="customize.controlsMenu.newCustomizationModal.data.region"
         />
       </div>

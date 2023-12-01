@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import 'splitpanes/dist/splitpanes.css';
-import lodash from 'lodash';
 import HtmlEditor from './HtmlEditor.vue';
 import CssEditor from './CssEditor.vue';
 import JavascriptEditor from './JavascriptEditor.vue';
 import { Splitpanes, Pane } from 'splitpanes';
 import { useCustomize } from '~/shared/states/customizeState';
 import AppIcon from '~/shared/components/icons/AppIcon.vue';
-import { Documentation } from '~/database/models/Documentation';
-import { Status } from '~/@types/status';
 import { ResetCss } from '~/shared/dfb/files/src/assets/ResetCss';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
+import { CustomizationSaverReturnType } from '~/shared/compositions/useCustomizationSave';
+import { generateDocGlobalVariables } from '~/shared/dfb/utils/generateDocGlobalVariables';
 
 const customize = useCustomize();
+const docSaver = inject('docSaver') as DocSaverReturnType;
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 const currentMobileTab = ref<'HtmlEditor' | 'CssEditor' | 'JavascriptEditor'>('HtmlEditor');
 const mobileEditors = {
   HtmlEditor,
@@ -30,33 +32,6 @@ function openPreview() {
   customize.value.controlsMenu.isOpen = false;
 }
 
-async function handleSave() {
-  if(!customize.value.controlsMenu.isSaved) {
-    const editingCustomization = customize.value.controlsMenu.customizationInfosMenu.data;
-    
-    if(editingCustomization) {
-      customize.value.controlsMenu.isSaving = true;
-      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.doc.customizations.filter(c => c.id != editingCustomization.id && c.id != -1)));
-      const result = await Documentation.edit(customize.value.doc.id, {
-        customizations: [...updatedCustomizations, JSON.parse(JSON.stringify(editingCustomization))]
-      });
-  
-      if(result === Status.OK) {
-        customize.value.controlsMenu.isSaved = true;
-      }
-      customize.value.controlsMenu.isSaving = false;
-    }
-  }
-}
-
-function startAutoSave() {
-  setInterval(() => {
-    if(!customize.value.controlsMenu.isSaved && !customize.value.controlsMenu.isSaving && customize.value.doc.features.autoSave) {
-      handleSave();
-    }
-  }, 2000);
-}
-
 function resizeStart() {
   const previewFrame = document.querySelector<HTMLIFrameElement>('#pulsar-code-preview');
 
@@ -73,43 +48,28 @@ function resizeEnd() {
   }
 }
 
-// Check if data has been modified. If the data has been changed, the user can save the data
-watch(() => customize.value.controlsMenu.customizationInfosMenu.data, async (_, currentCustomizationData) => {
-  if(!currentCustomizationData?.id || currentCustomizationData.id === -1) return;
-  const docInfos = await Documentation.get(customize.value.doc.id);
-
-  if(lodash.isEqual(currentCustomizationData, docInfos?.customizations.find(c => c.id === currentCustomizationData.id))) {
-    customize.value.controlsMenu.isSaved = true;
-  } else {
-    customize.value.controlsMenu.isSaved = false;
-  }
-}, { deep: true });
-
 // Loads preview data
-watch(() => customize.value.controlsMenu.customizationInfosMenu.data.content, (content) => {
+watch(() => customizationSaver.data.value.unsavedContent, (content) => {
   const previewFrame = document.querySelector<HTMLIFrameElement>('#pulsar-code-preview');
-  
-  previewFrame?.contentDocument?.location.reload();
 
   setTimeout(() => {
     const style = document.createElement('style');
     const script = document.createElement('script');
+
+    const docColorsStyle = document.createElement('style');
+    docColorsStyle.innerHTML = `:root { ${generateDocGlobalVariables(docSaver.data.value.unsavedData.colors, false)} }`;
 
     style.innerHTML = ResetCss() + ' ' + content.css ;
     script.innerHTML = content.javascript;
 
     if(previewFrame && previewFrame.contentDocument) {
       previewFrame.contentDocument.head.innerHTML = style.outerHTML;
+      previewFrame.contentDocument.head.appendChild(docColorsStyle);
       previewFrame.contentDocument.body.innerHTML = content.html;
       previewFrame.contentDocument.body.appendChild(script);
     }
   }, 500);
 }, { deep: true });
-
-onBeforeMount(async () => {
-  // Start auto save
-  startAutoSave();
-});
 
 // Check if the device is small and update the key "isMobile"
 onMounted(() => {
@@ -151,14 +111,14 @@ onMounted(() => {
             <div class="flex items-center gap-4">
               <!--Save button-->
               <Button
-                @click="handleSave()"
+                @click="customizationSaver.save"
                 class="w-10 min-h-[40px] !bg-primary" 
                 :title="$t('editor.controls-menu-save-button-aria-label')" 
                 :aria-label="$t('editor.controls-menu-save-button-aria-label')"
-                :disabled="customize.controlsMenu.isSaved"
+                :disabled="customizationSaver.data.value.status.isSaved"
               >
-                <font-awesome-icon v-if="!customize.controlsMenu.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
-                <font-awesome-icon v-if="customize.controlsMenu.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
+                <font-awesome-icon v-if="!customizationSaver.data.value.status.isSaving" icon="fa-solid fa-floppy-disk" class="text-[17px]"/>
+                <font-awesome-icon v-if="customizationSaver.data.value.status.isSaving" icon="fa-solid fa-circle-notch" class="text-base" spin/>
               </Button>
               <button @click="closeCodeEditor()" class="flex items-center justify-center">
                 <font-awesome-icon icon="fa-solid fa-close" class="text-xl text-primary"></font-awesome-icon>
@@ -174,7 +134,7 @@ onMounted(() => {
                   <p class="text-base text-primary font-bold">HTML</p>
                 </div>
               </div>
-              <HtmlEditor class="min-h-0 overflow-y-auto"/>
+              <HtmlEditor class="h-full overflow-y-auto"/>
             </pane>
             <pane class="min-h-[40px]">
               <div class="w-full min-h-[40px] max-h-[53px] bg-secondary_darken/80">
@@ -183,7 +143,7 @@ onMounted(() => {
                   <p class="text-base text-primary font-bold">CSS</p>
                 </div>
               </div>
-              <CssEditor class="min-h-0 overflow-y-auto"/>
+              <CssEditor class="h-full overflow-y-auto"/>
             </pane>
             <pane class="min-h-[40px]">
               <div class="w-full min-h-[40px] max-h-[53px] bg-secondary_darken/80">
@@ -192,7 +152,7 @@ onMounted(() => {
                   <p class="text-base text-primary font-bold">JavaScript</p>
                 </div>
               </div>
-              <JavascriptEditor class="min-h-0 overflow-y-auto"/>
+              <JavascriptEditor class="h-full overflow-y-auto"/>
             </pane>
           </splitpanes>
           <!--Mobile Editors-->
@@ -233,7 +193,7 @@ onMounted(() => {
             >
               <font-awesome-icon icon="fa-solid fa-eye"></font-awesome-icon>
             </button>
-            <hr class="w-[85%] h-px border-none mt-5 mx-auto" :style="{ backgroundColor: customize.doc.colors.divider + 'a9' }"/>
+            <hr class="w-[85%] h-px border-none mt-5 mx-auto" :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.divider + 'a9' }"/>
           </div>
         </div>
       </pane>
@@ -244,7 +204,7 @@ onMounted(() => {
         <iframe
           id="pulsar-code-preview"
           class="w-full h-full"
-          :style="{ backgroundColor: customize.doc.colors.background }"
+          :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.background }"
         ></iframe>
       </pane>
     </splitpanes>

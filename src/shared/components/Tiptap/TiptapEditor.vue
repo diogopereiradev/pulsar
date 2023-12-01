@@ -3,6 +3,7 @@ import { lowlight } from './hljsConfig';
 import { useEditor as useTiptapEditor, EditorContent, mergeAttributes } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
+import { useToast } from 'primevue/usetoast';
 import Placeholder from '@tiptap/extension-placeholder';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Link from '@tiptap/extension-link';
@@ -13,17 +14,19 @@ import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import Image from '@tiptap/extension-image';
 import TaskItem from '@tiptap/extension-task-item';
-import GapCursor from '@tiptap/extension-gapcursor';
 import TaskList from '@tiptap/extension-task-list';
 import Heading from '@tiptap/extension-heading';
+import CharacterCount from '@tiptap/extension-character-count';
 import SlashCommandsPopup from './SlashCommandsPopup.vue';
 import SelectionBubbleMenu from './SelectionBubbleMenu.vue';
 import TableControlsMenu from './TableControlsMenu.vue';
-import { IDocumentationColorPalette } from '~/database/models/Documentation';
-import { useEditor } from '~/shared/states/editorState';
+import { IDocumentationColorPalette } from '~/@types/declarations/Documentation';
+import config from '~/server/config';
+import { PageSaverReturnType } from '~/shared/compositions/usePageSave';
 
 const emit = defineEmits(['update:modelValue']);
-const pageEditor = useEditor();
+const pageSaver = inject('pageSaver') as PageSaverReturnType;
+const toast = useToast();
 const props = defineProps<{
   colors: IDocumentationColorPalette,
   content: string | undefined
@@ -31,8 +34,17 @@ const props = defineProps<{
 
 const { t } = useI18n();
 
+const showError = (message?: string) => {
+  toast.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: message || 'Error on executing this action',
+    life: 6000
+  });
+}
+
 const editor = useTiptapEditor({
-  content: props.content,
+  content: pageSaver.data.value.unsavedContent,
   extensions: [
     StarterKit.configure({
       horizontalRule: {
@@ -191,21 +203,32 @@ const editor = useTiptapEditor({
     }),
     TaskItem.configure({
       nested: true
+    }),
+    CharacterCount.configure({
+      limit: config.DOC_PAGE_TEXT_LIMIT
     })
   ],
   parseOptions: {
     preserveWhitespace: 'full'
   },
   onUpdate: () => {
+    const html = editor.value?.getHTML();
+    const document = new DOMParser().parseFromString(html || '', 'text/html');
+
     // Send current editor html content to external components using emit event
-    emit('update:modelValue', editor.value?.getHTML(), editor.value);
+    if(!document.body.textContent) return emit('update:modelValue', html, editor.value);
+    if(document.body.textContent.length < config.DOC_PAGE_TEXT_LIMIT) {
+      emit('update:modelValue', html, editor.value);
+    } else {
+      showError(`The limit of ${config.DOC_PAGE_TEXT_LIMIT} characters per page was exceeded!`);
+    }
   }
 });
 
-// Set editor content on props.content was changed
-watch(() => pageEditor.value.currentSelectedPage, (value) => {
-  if(!editor.value) return;
-  editor.value?.commands.setContent(value.content, true);
+watch(() => pageSaver.data.value.lastSavedContent, (content) => {
+  const { from, to } = editor.value!.state.selection;
+  editor.value?.commands.setContent(content);
+  editor.value?.commands.setTextSelection({ from, to });
 });
 </script>
 
@@ -214,6 +237,7 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
     <SelectionBubbleMenu
       :editor="editor"
       :colors="props.colors"
+      class="!overflow-visible"
     />
     <SlashCommandsPopup
       :editor="editor"
@@ -228,13 +252,9 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
       autocomplete="off"
       autocorrect="off"
       spellcheck="false"
-      class="w-full min-h-[80vh] !overflow-visible" 
+      class="w-full min-h-[74vh] !overflow-visible" 
       :editor="editor"
     />
-    <div
-      @click="editor?.chain().focus('end').run()"
-      class="w-full h-[20vh] mt-5 cursor-pointer"
-    ></div>
   </div>
 </template>
 
@@ -422,4 +442,4 @@ watch(() => pageEditor.value.currentSelectedPage, (value) => {
   cursor: ew-resize;
   cursor: col-resize;
 }
-</style>
+</style>~/shared/database/models/Documentation~/indexedDB/models/Documentation

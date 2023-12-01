@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import ConfirmDialog from 'primevue/confirmdialog';
-import DatabaseSync from '~/shared/components/DatabaseSync.vue';
 import ControlsMenu from '~/app/customize/ControlsMenu.vue';
+import Toast from 'primevue/toast';
 import PageStates from '~/shared/components/PageStates.vue';
-import { Documentation } from '~/database/models/Documentation';
-import { useCustomize } from '~/shared/states/customizeState';
+import { useDocSave } from '~/shared/compositions/useDocSave';
+import { useCustomizationSave } from '~/shared/compositions/useCustomizationSave';
 
 definePageMeta({
-  layout: 'customize'
+  middleware: ['authentication']
 });
 
 const { params } = useRoute();
-const customize = useCustomize();
+const docSaver = useDocSave(params.id as string);
+const customizationSaver = useCustomizationSave();
+
+provide('docSaver', docSaver);
+provide('customizationSaver', customizationSaver);
 </script>
 
 <template>
@@ -24,9 +28,11 @@ const customize = useCustomize();
         status: 404,
         redirectPath: '/documentations'
       }"
-      :success-condition="async () => (await Documentation.get(Number(params.id))? true : false)"
+      :is-loaded="docSaver.data.value.status.isLoaded"
+      :is-error="docSaver.data.value.status.isError"
     >
       <main class="wrapper">
+        <Toast class="z-[9999]" position="bottom-right"/>
         <ConfirmDialog :pt="{
           root: 'w-[280px] md:w-[400px] lg:w-[600px] rounded-md',
           header: 'text-primary !bg-secondary rounded-t-md flex justify-between items-center py-5 px-7',
@@ -39,7 +45,6 @@ const customize = useCustomize();
             <p class="text-primary/50">{{ $t('customize.empty-customization-preview-message') }}</p>
           </div>
         </div>
-        <DatabaseSync :doc-id="customize.doc.id" />
       </main>
     </PageStates>
   </div>
@@ -47,7 +52,7 @@ const customize = useCustomize();
 
 <style>
   .wrapper {
-    background-color: v-bind('customize.doc.colors.background');
+    background-color: v-bind('docSaver.data.value.unsavedData.colors.background');
     height: 100vh;
   }
 </style>

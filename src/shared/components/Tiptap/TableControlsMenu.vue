@@ -86,4 +86,4 @@ const props = defineProps<{
         </Button>
     </div>
   </floating-menu>
-</template>
+</template>~/shared/database/models/Documentation~/indexedDB/models/Documentation

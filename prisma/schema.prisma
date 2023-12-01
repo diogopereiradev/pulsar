@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Documentation {
+  id                   String       @id                    @db.VarChar(14)
+  title                String       @db.VarChar(26)
+  description          String       @db.VarChar(200)
+  messages             Json         @db.Json
+  colors               Json         @db.Json
+  categories           Json         @db.Json
+  pages                Json         @db.Json               @default("[]")
+  customizations       Json         @db.Json
+  features             Json         @db.Json
+  isPublic             Boolean      @default(false)
+  updatedAt            DateTime     @updatedAt
+  createdAt            DateTime     @default(now())
+  authorIdentifier     String
+}

@@ -1,4 +1,4 @@
-import { IDocumentation } from "~/database/models/Documentation";
+import { IDocumentation } from "~/@types/declarations/Documentation";
 import { getIsFirstPage } from "./utils/getIsFirstPage";
 import { Html } from "./files/src/Html";
 import JSZip from "jszip";
@@ -29,24 +29,25 @@ export class DocumentationFileBuilder {
     this.zip = new JSZip();
   }
 
-  getHTMLPages(): HTMLPage[] {
+  async getHTMLPages(): Promise<HTMLPage[]> {
     const pages = this.documentation.pages;
-    const result: HTMLPage[] = [];
   
-    pages.forEach(page => {
+    const transformedPages = await Promise.all(pages.map(async page => {
+      const html = await Html(page, this.documentation);
       const isFirstPage = getIsFirstPage(this.documentation, page.id);
   
-      result.push({
+      return {
         title: page.title, 
-        html: Html(page, this.documentation),
+        html: html,
         isFirstPage
-      });
-    });
-    return result;
+      };
+    }));
+    return transformedPages;
   }
 
-  generatePageFiles() {
-    const htmlPages = this.getHTMLPages();
+  async generatePageFiles() {
+    const htmlPages = await this.getHTMLPages();
+
     htmlPages.forEach(htmlPage => {
       const fileName = htmlPage.title.toLowerCase().replaceAll(' ', '').trim();
       const pageFilePath = htmlPage.isFirstPage? 'src/index.html' : `src/${fileName}.html`;
@@ -65,11 +66,12 @@ export class DocumentationFileBuilder {
     this.zip.file('src/assets/reset.css', resetStyles);
   }
 
-  generateCustomizationsFiles() {
+  async generateCustomizationsFiles() {
     this.zip.folder('src/customizations');
-    this.documentation.customizations.forEach(c => {
-      this.zip.file(`src/customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html`, CustomizationHtml(c));
-    });
+    await Promise.all(this.documentation.customizations.map(async c => {
+      const customization = await CustomizationHtml(this.documentation, c);
+      this.zip.file(`src/customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html`, customization);
+    }));
   }
 
   generateConfigurationFiles() {
@@ -91,9 +93,9 @@ export class DocumentationFileBuilder {
   }
 
   async generate() {
-    this.generatePageFiles();
+    await this.generatePageFiles();
     this.generateAssetsFiles();
-    this.generateCustomizationsFiles();
+    await this.generateCustomizationsFiles();
     this.generateConfigurationFiles();
     
     return await this.zip.generateAsync({ type: 'blob' });

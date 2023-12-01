@@ -2,15 +2,15 @@
 import { Codemirror } from 'vue-codemirror';
 import { css } from '@codemirror/lang-css';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { useCustomize } from '~/shared/states/customizeState';
+import { CustomizationSaverReturnType } from '~/shared/compositions/useCustomizationSave';
 
-const customize = useCustomize();
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 const extensions = [css(), oneDark];
 </script>
 <template>
   <div>
     <codemirror
-      v-model="customize.controlsMenu.customizationInfosMenu.data.content.css"
+      v-model="customizationSaver.data.value.unsavedContent.css"
       :autofocus="true"
       :indent-with-tab="true"
       :tab-size="2"

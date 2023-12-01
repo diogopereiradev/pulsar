@@ -1,5 +1,5 @@
 import beautify from 'js-beautify';
-import { IDocumentation } from '~/database/models/Documentation';
+import { IDocumentation } from '~/@types/declarations/Documentation';
 
 export function Script(doc: IDocumentation) {
   return beautify.js(/* javascript */`
@@ -26,6 +26,7 @@ export function Script(doc: IDocumentation) {
 
     // Indexes table loader
     window.initIndexesTable = () => {
+      const indexesTableContainer = document.querySelector('.pulsar-indexes-table-container');
       const indexesTableList = document.querySelector('.pulsar-indexes-table-list');
       const allIndexedHeadings = document.querySelectorAll('.pulsar-heading-indexed');
       const headings = [];
@@ -36,14 +37,24 @@ export function Script(doc: IDocumentation) {
   
         const item = ${`\`
           <li>
-            <a href="#\${headingUniqueId}" class="pulsar-indexes-table-list-button">
+            <button onclick="document.getElementById('\${headingUniqueId}').scrollIntoView();" class="pulsar-indexes-table-list-button">
               \${indexedHeading.textContent}
-            </a>
+            </button>
           </li>
         \``};
         headings.push(item);
       });
-      indexesTableList.innerHTML = headings.join('');
+
+      if(headings.length < 1) {
+        indexesTableContainer.style.display = 'none';
+        indexesTableList.innerHTML = '';
+        return;
+      };
+
+      if(indexesTableList) {
+        indexesTableContainer.style.display = 'initial';
+        indexesTableList.innerHTML = headings.join('');
+      }
     }
 
     (() => {

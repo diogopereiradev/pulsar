@@ -1,10 +1,44 @@
 import beautify from "js-beautify";
 import { getIsFirstPage } from "~/shared/dfb/utils/getIsFirstPage";
-import { IDocumentation, IDocumentationPage } from "~/database/models/Documentation";
+import { IDocumentation, IDocumentationPage } from "~/@types/declarations/Documentation";
 import { MapIcon } from "./assets/icons/MapIcon";
 import { Css } from "./assets/Css";
 import { ResetCss } from "./assets/ResetCss";
-import { PreviewCustomizations } from "../../utils/PreviewCustomizations";
+import { Buffer } from "buffer";
+
+async function getPageContent(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+  const content = ref('');
+
+  if(isToPreview) return content;
+
+  const requestContent = await fetch('/api/readStream', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      type: 'page',
+      docId: doc.id,
+      id: page.id
+    })
+  });
+
+  const reader = requestContent.body?.getReader();
+
+  const read = async () => {
+    const { done, value } = await reader!.read();
+
+    if(done) {
+      reader?.releaseLock();
+      return;
+    }
+    const bufferToString = Buffer.from(value).toString();
+    content.value = bufferToString;
+    read();
+  };
+  await read();
+  return content;
+}
 
 function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
   return /* html */`
@@ -15,17 +49,17 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPrevi
           <i class="fa-solid fa-xmark" style="color: rgba(var(--text)); font-size: 20px;"></i>
         </button>
         <!--Map icon and title-->
-        ${doc.navigationTitle && /* html */`
+        ${doc.messages.navigationTitle && /* html */`
           <div style="display: flex; gap: 15px;">
             <div class="pulsar-doc-navigation-menu-map-icon-container">
               ${MapIcon('pulsar-doc-navigation-menu-map-icon')}
             </div>
             <div style="display: flex; flex-direction: column;">
-              <p title="${doc.navigationTitle}" class="pulsar-navigation-menu-title pulsar-utils-truncate">
-                ${doc.navigationTitle}
+              <p title="${doc.messages.navigationTitle}" class="pulsar-navigation-menu-title pulsar-utils-truncate">
+                ${doc.messages.navigationTitle}
               </p>
-              <p title="${doc.navigationSubTitle}" class="pulsar-navigation-menu-subtitle pulsar-utils-truncate">
-                ${doc.navigationSubTitle}
+              <p title="${doc.messages.navigationSubTitle}" class="pulsar-navigation-menu-subtitle pulsar-utils-truncate">
+                ${doc.messages.navigationSubTitle}
               </p>
             </div>
           </div>
@@ -50,7 +84,7 @@ function NavigationMenu(page: IDocumentationPage, doc: IDocumentation, isToPrevi
                       >
                         ${isToPreview? /* html */`
                           <button
-                            onclick="changeRoute(this, ${JSON.stringify(categoryPage).replaceAll('"', '\'')})"
+                            onclick="changeRoute(this, '${categoryPage.id}')"
                             title="${categoryPage.title}"
                             data-id="${categoryPage.id}"
                             class="pulsar-navigation-link pulsar-utils-truncate ${routeName === page.title.toLowerCase().replaceAll(' ', '').trim() && 'current-page'}"
@@ -90,7 +124,7 @@ function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
       ${doc.features.indexesTable? /* html */`
         <div class="pulsar-indexes-table" >
           <h2 class="pulsar-indexes-table-title">
-            ${doc.indexesTableTitle}
+            ${doc.messages.indexesTableTitle}
           </h2>
           <ul class="pulsar-indexes-table-list"></ul>
         </div>
@@ -99,17 +133,21 @@ function IndexesTable(page: IDocumentationPage, doc: IDocumentation) {
   `;
 }
 
-function Content(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+async function Content(page: IDocumentationPage, doc: IDocumentation, isToPreview: boolean) {
+  const content = await getPageContent(page, doc, isToPreview);
+
   return /* html */`
     <div class="pulsar-doc-page-nav-doc-indexes-table-container">
       <!--Navigation Menu-->
       ${NavigationMenu(page, doc, isToPreview)}
       <!--Page Content-->
       ${isToPreview? /* html */`
-        <div class="pulsar-current-page-content"></div>
+        ${isToPreview? PageLoadingScreen() : ''}
+        <div class="pulsar-current-page-content">
+        </div>
       ` : /* html */`
         <div class="pulsar-current-page-content">
-          ${page.content}
+          ${content.value}
         </div>
       `}
       <!--Indexes Table-->
@@ -142,7 +180,19 @@ function BasicHeadTags(page: IDocumentationPage, doc: IDocumentation, isToPrevie
   `;
 }
 
-export function Html(page: IDocumentationPage, doc: IDocumentation, options = { isToPreview: false }) {
+function PageLoadingScreen() {
+  return beautify.html(/* html */`
+    <div class="pulsar-page-loading">
+      <i class="fa-solid fa-circle-notch fa-spin"></i>
+    </div>
+  `, {
+    indent_size: 2
+  });
+}
+
+export async function Html(page: IDocumentationPage, doc: IDocumentation, options = { isToPreview: false }) {
+  const content = await Content(page, doc, options.isToPreview);
+
   return beautify.html(/* html */`
     <!DOCTYPE html>
     <html>
@@ -156,7 +206,10 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, options = { 
           ${options.isToPreview? 
           '' : `
             ${doc.customizations.map(c => c.region === 'top'? `
-              <iframe class="topRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"></iframe> 
+              <iframe 
+                onload="this.style.height = this.contentWindow.document.documentElement.scrollHeight + 'px';"
+                class="topRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"
+              ></iframe> 
             ` : '').join('')}
           `}
         </div>
@@ -173,14 +226,19 @@ export function Html(page: IDocumentationPage, doc: IDocumentation, options = { 
             </nav>
             <hr class="pulsar-doc-navbar-divider pulsar-divider" />
           `}
-          ${Content(page, doc, options.isToPreview)}
+          <div class="pulsar-content-wrapper">
+            ${content}
+          </div>
         </main>
         <!--Bottom customizations regions-->
         <div id="bottom-region-container">
           ${options.isToPreview? 
           '' : `
             ${doc.customizations.map(c => c.region === 'bottom'? `
-              <iframe class="bottomRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"></iframe> 
+              <iframe 
+                onload="this.currentTarget.style.height = this.currentTarget.contentWindow.document.documentElement.scrollHeight + 'px';"
+                class="bottomRegion" src="./customizations/${c.title.toLowerCase().replaceAll(' ', '').trim()}.html"
+              ></iframe> 
             ` : '').join('')}
           `}
         </div>

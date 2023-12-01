@@ -5,8 +5,9 @@ import MobileMenu from './MobileMenu.vue';
 import DonateMenu from './DonateMenu.vue';
 import { useNavbar } from '~/shared/states/navbarState';
 
-const { localeProperties, setLocale } = useI18n();
+const { localeProperties, setLocale, locale } = useI18n();
 const navbar = useNavbar();
+const auth = useAuth();
 
 watch(() => navbar.value.selectedLocale, () => {
   if(navbar.value.selectedLocale) {
@@ -70,10 +71,89 @@ onMounted(() => {
         />
         <NuxtLinkLocale 
           to="/documentations"
-          :class="`${$route.path.match('/documentations')? 'hidden' : 'flex'} items-center justify-center w-[150px] 2xl:w-[160px] h-11 text-primary font-normal bg-primary/80 hover:bg-primary/60 hover:text-primary/90 duration-300 border-none rounded-[10px]`"
+          :class="`
+            ${$route.path.match('/documentations') || $route.path.match('/auth') || auth.status.value === 'authenticated'? 'hidden' : 'flex'} 
+            items-center 
+            justify-center 
+            w-[150px] 
+            2xl:w-[160px] 
+            h-11 
+            text-primary 
+            font-normal 
+            bg-primary/80 
+            hover:bg-primary/60 
+            hover:text-primary/90 
+            duration-300 
+            border-none 
+            rounded-[10px]
+          `"
         >
           {{ $t('navbar.getting-started-button') }}
         </NuxtLinkLocale>
+        <!--Logged profile-->
+        <div v-if="auth.status.value === 'authenticated'" class="relative">
+          <button
+            @click="navbar.profileMenuIsOpen = !navbar.profileMenuIsOpen"
+            class="relative flex items-center gap-2.5 ml-1 mr-2 z-[9999]"
+          >
+            <NuxtImg
+              class="w-[42px] rounded-[10px]"
+              v-if="auth.data.value?.user?.image"
+              :src="auth.data.value.user.image" 
+              :alt="`${auth.data.value?.user?.name?.toLowerCase().replaceAll(' ', '').trim()}-avatar`"
+            />
+            <div class="flex items-center gap-2.5">
+              <p class="text-primary">{{ auth.data.value?.user?.name }}</p>
+              <font-awesome-icon icon="fa-solid fa-chevron-down" class="text-[12px] text-primary"></font-awesome-icon>
+            </div>
+          </button>
+          <div 
+            :class="`
+              ${navbar.profileMenuIsOpen? 'flex' : 'opacity-0 scale-[0.7] pointer-events-none'}
+              absolute 
+              left-2/4
+              -translate-x-2/4
+              top-[55px] 
+              w-[200px] 
+              min-h-[140px] 
+              bg-secondary/60 
+              backdrop-blur-lg 
+              rounded-[10px] 
+              shadow
+              duration-300
+              z-[9999]
+            `"
+          >
+            <ul class="flex flex-col gap-3 w-full py-5">
+              <li class="w-full px-6">
+                <NuxtLinkLocale 
+                  @click="navbar.profileMenuIsOpen = false" 
+                  to="/documentations" 
+                  class="flex items-center gap-3 w-full h-[45px] rounded-[10px] hover:!bg-primary/90 duration-300 px-4 cursor-pointer"
+                >
+                  <font-awesome-icon icon="fa-solid fa-table-columns" class="text-xl text-primary"></font-awesome-icon>
+                  <p class="text-primary">Dashboard</p>
+                </NuxtLinkLocale>
+              </li>
+              <li class="w-full px-6">
+                <button
+                  @click="() => {
+                    navbar.profileMenuIsOpen = false;
+                    auth.signOut({ callbackUrl: `${locale === 'en'? '' : `/${locale}`}` });
+                  }" 
+                  class="flex items-center gap-3 w-full h-[45px] rounded-[10px] hover:!bg-[#b35555]/30 duration-300 px-4 text-[#c56060]"
+                >
+                  <font-awesome-icon icon="fa-solid fa-right-from-bracket" class="text-xl"></font-awesome-icon>
+                  <p class="text-md">Logout</p>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div 
+            @click="navbar.profileMenuIsOpen = false"
+            :class="`${navbar.profileMenuIsOpen? '' : 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen duration-300 z-[9998]`"
+          ></div>
+        </div>
       </div>
       <MobileMenu />
     </div>

@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+  pulsar_mysql_database:
+    container_name: pulsar-mysql-database
+    image: mysql:8.2.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: pulsar
+      MYSQL_ROOT_PASSWORD: pulsarroot
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - pulsar_mysql_data:/var/lib/mysql
+volumes:
+  pulsar_mysql_data:

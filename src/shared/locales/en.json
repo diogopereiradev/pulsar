@@ -1,4 +1,9 @@
 {
+  "others": {
+    "public-word": "Public",
+    "private-word": "Private",
+    "sponsor-word": "Sponsors"
+  },
   "metadata": {
     "title": "Pulsar - Create pages to document your project",
     "description": "Create modern documentation for your application using Pulsar. You will generate custom static documentation pages with Pulsar and can use them wherever you want."
@@ -12,9 +17,8 @@
   },
   "databasesync": {
     "back-to-documentations-button-label": "Back",
-    "title": "Documentation is not synced",
-    "description": "Your documentation structure is not synced with the database structure, click in the sync button below to sync now. This action no affect your data!",
-    "missing-data-text": "Missing data"
+    "title": "Documentations is not synced",
+    "description": "Your documentation is not in the database, click the button below to synchronize now. This action not affect your data, just move the data to Pulsar servers!"
   },
   "navbar": {
     "links-home": "Home",
@@ -58,6 +62,10 @@
   "home": {
     "title": "Pulsar - Home"
   },
+  "auth": {
+    "title": "Pulsar - Authenticate",
+    "form-title": "Authenticate"
+  },
   "documentations": {
     "title": "Pulsar - Your documentations",
     "toolbar-search-placeholder": "Search for documentations",
@@ -70,6 +78,8 @@
     "new-doc-modal-colors-area-title": "Colors",
     "new-doc-modal-cancel-button-message": "Cancel",
     "new-doc-modal-create-button-message": "Create",
+    "new-doc-modal-creating-loading-message": "Creating your documentation, wait a moment...",
+    "new-doc-modal-editing-loading-message": "Editing your documentation, wait a moment...",
     "documentations-list-title": "Your documentations",
     "documentations-list-empty-message": "No documentations",
     "documentations-list-item-contextmenu-edit-message": "Edit",
@@ -96,6 +106,15 @@
     "controls-menu-customize-input-label": "Customize",
     "controls-menu-customize-input-text": "Open Editor",
     "controls-menu-exportdoc-button-aria-label": "Export Documentation",
+    "controls-menu-visibility-box-title": "Visibility",
+    "controls-menu-visibility-box-description": "When the documentation is set to public all peoples can see with the shared link.",
+    "controls-menu-visibility-box-turn-button-text": "Turn",
+    "controls-menu-visibility-box-share-button-text": "Share",
+    "controls-menu-visibility-box-share-copied-button-text": "Link copied",
+    "controls-menu-confirm-visibility-dialog-title": "Do you want to turn this documentation",
+    "controls-menu-confirm-visibility-dialog-description": "When the documentation is set to public all peoples can see with the shared link.",
+    "controls-menu-confirm-visibility-dialog-accept-button-text": "Confirm",
+    "controls-menu-confirm-visibility-dialog-reject-button-text": "Cancel",
     "controls-menu-exportmanifest-button-aria-label": "Export manifest.json",
     "controls-menu-previewmode-button-aria-label": "Preview Mode",
     "controls-menu-back-to-docs-button-message": "Back",
@@ -129,7 +148,11 @@
     "export-cancel-dialog-content": "After canceling this action you will not have any implications for your data, but you will have to compile the project again.",
     "export-modal-loading-message": "Compressing your documentation data, wait a moment...",
     "export-modal-error-message": "An error occurred, click the button below to try again.",
-    "export-modal-error-try-again-message": "Try again"
+    "export-modal-error-try-again-message": "Try again",
+    "editor-saving-message": "Saving",
+    "editor-saved-message": "Saved",
+    "editor-typing-message": "Typing",
+    "info-page-change-on-saving": "Your page is saving, wait a moment to change page."
   },
   "preview": {
     "title": "Pulsar - Preview"
@@ -142,6 +165,8 @@
     "controls-menu-new-customization-button-label": "New Customization",
     "controls-menu-empty-customizations-message": "No customizations found, create one using the button above.",
     "controls-menu-open-button-aria-label": "Open navigation menu",
+    "controls-menu-info-button-title": "Informations",
+    "controls-menu-info-button-label": "Informations",
     "new-customization-modal-title": "New Customization",
     "new-customization-modal-title-input-label": "Title",
     "new-customization-modal-title-input-placeholder": "Title of the customization",
@@ -155,7 +180,22 @@
     "customization-infos-menu-title-label": "Title",
     "customization-infos-menu-region-label": "Region",
     "customization-infos-menu-edit-button-label": "Edit",
-    "customization-infos-menu-close-button-label": "Close"
+    "customization-infos-menu-close-button-label": "Close",
+    "customization-informations-menu-title": "About Customizations",
+    "customization-informations-menu-what-thats-do-title": "What does this do?",
+    "customization-informations-menu-what-thats-do-description": "Here you can create components like Navbars and Footers to give your documentation a more personalized touch.",
+    "customization-informations-menu-reserved-functions-title": "Reserved Functions",
+    "customization-informations-menu-command-word": "Command",
+    "customization-informations-menu-style-word": "Styling",
+    "customization-informations-menu-open-navigation-menu-title": "Open Navigation Menu",
+    "customization-informations-menu-open-navigation-menu-description": "Use this to open the default mobile navigation menu of Pulsar.",
+    "customization-informations-menu-navigate-to-title": "Navigate to a Route",
+    "customization-informations-menu-navigate-to-description": "Use this to navigate to a route and have the ability to build a navigation menu from scratch.",
+    "customization-informations-menu-colors-title": "Colors",
+    "customization-informations-menu-colors-description": "Use this to apply the colors of your doc to your component.",
+    "customization-informations-menu-use-examples-title": "Usage Examples",
+    "customization-informations-menu-command-example-title": "Command Type",
+    "customization-informations-menu-style-example-title": "Styling Type"
   },
   "homepage": {
     "header-feature-title": "New feature: Customizations",
@@ -166,8 +206,8 @@
     "features-new-text": "New",
     "features-export-title": "Export",
     "features-export-description": "Export docs easily using Vite to run the documentation.",
-    "features-import-title": "Import",
-    "features-import-description": "Import docs easily using a manifest.json.",
+    "features-share-title": "Share",
+    "features-share-description": "You can easily share your docs just by sharing a link.",
     "features-customizations-title": "Customizations",
     "features-customizations-description": "Create custom components like, navbars and footers.",
     "features-colors-title": "Colors",
@@ -199,5 +239,17 @@
     "gettingstarted-title": "Pulsar: Document Everything",
     "gettingstarted-description": "Complete documentation solution with Pulsar.",
     "gettingstarted-getting-started-button": "Getting Started"
+  },
+  "footer": {
+    "resources-section-title": "Resources",
+    "resources-getting-started-text": "Getting Started",
+    "resources-documentations-text": "Documentations",
+    "resources-donate-text": "Donate",
+    "developer-section-title": "Developer",
+    "product-section-title": "Product",
+    "product-colors-text": "Colors",
+    "product-code-blocks-text": "Code Blocks",
+    "product-customizations-text": "Customizations",
+    "star-the-project": "Star Project"
   }
 }

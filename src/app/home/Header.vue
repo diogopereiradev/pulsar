@@ -4,7 +4,7 @@ import StarsRain from '~/shared/components/utils/StarsRain.vue';
 </script>
 
 <template>
-  <header class="w-full min-h-[500px] flex flex-col items-center gap-3 pt-14">
+  <header class="w-full min-h-[500px] flex flex-col items-center gap-3 pt-14 px-10">
     <div class="absolute w-full max-w-[400px] h-[400px] bg-primary/10 blur-[80px] rounded-full z-[-1]"></div>
     <a
       href="#featuressection"
@@ -21,13 +21,14 @@ import StarsRain from '~/shared/components/utils/StarsRain.vue';
       <NuxtLinkLocale to="/documentations" class="px-5 py-3 rounded-[10px] border-none text-primary bg-primary/70 hover:bg-primary/90 mt-7 duration-300">
         {{ $t('homepage.header-getting-started-button') }}
       </NuxtLinkLocale>
-      <a
-        href="https://github.com/FhillSlinger/pulsar"
-        target="_blank"
-        rel="noreferrer"
-        class="px-5 py-3 rounded-[10px] text-primary bg-primary/20 hover:bg-primary/50 border border-solid border-primary/40 mt-7 duration-300"
+      <a 
+        href="https://github.com/FhillSlinger/pulsar" 
+        target="_blank" 
+        rel="noreferrer" 
+        class="flex justify-center items-center text-primary/80 max-md:hidden !gap-2.5 !min-w-[144px] !min-h-[48px] bg-primary/20 hover:bg-primary/50 border border-solid border-primary/40 mt-7 duration-300 px-5 py-2 rounded-[10px]"
       >
-        {{ $t('homepage.header-learn-about-button') }}
+        <font-awesome-icon icon="fa-solid fa-star" class="text-[#fadf68]"></font-awesome-icon>
+        {{ $t('footer.star-the-project') }}
       </a>
     </div>
     <StarsRain

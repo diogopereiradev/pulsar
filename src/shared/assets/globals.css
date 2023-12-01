@@ -4,8 +4,8 @@
 
 @layer base {
   * {
-    scrollbar-width: auto;
     scroll-behavior: smooth;
+    scrollbar-color: theme(colors.primary)60 transparent;
     @apply !font-default;
   }
 
@@ -14,10 +14,10 @@
   }
 
   ::-webkit-scrollbar {
-    @apply w-[4px] h-[4px] bg-transparent;
+    @apply w-[6px] h-[4px] bg-transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary/80;
+    @apply bg-primary/40 rounded-[10px];
   }
 }

@@ -253,4 +253,4 @@ function commandExecutor(command: (props: CommandProps) => boolean) {
 .dinamic-button-bg:hover {
   background-color: v-bind('colors.primary + "70"') !important;
 }
-</style>
+</style>~/shared/database/models/Documentation~/indexedDB/models/Documentation

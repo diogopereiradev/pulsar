@@ -4,17 +4,19 @@ import { DocumentationFileBuilder } from '~/shared/dfb';
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useConfirm } from 'primevue/useconfirm';
 import { useEditor } from '~/shared/states/editorState';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 
 const { t } = useI18n();
 const confirm = useConfirm();
 const editor = useEditor();
+const docSaver = inject('docSaver') as DocSaverReturnType;
 
 function startDocumentationExport() {
   editor.value.exportDocModal.isDownloading = true;
   editor.value.exportDocModal.isLoading = true;
 
   setTimeout(async () => {
-    const dfb = new DocumentationFileBuilder(editor.value.doc);
+    const dfb = new DocumentationFileBuilder(docSaver.data.value.unsavedData);
     const compressedBlob = await dfb.generate();
   
     if(compressedBlob) {
@@ -28,7 +30,7 @@ function startDocumentationExport() {
 }
 
 function downloadDocumentationFiles() {
-  const fileName = `${editor.value.doc.title.toLocaleLowerCase().replaceAll(' ', '').trim()}.zip`;
+  const fileName = `${docSaver.data.value.unsavedData.title.toLocaleLowerCase().replaceAll(' ', '').trim()}.zip`;
   const fileData = editor.value.exportDocModal.data;
   
   if(fileData) {
@@ -118,8 +120,8 @@ function cancelConfirmDialog() {
           <div class="relative w-full h-4/5 bg-secondary_darken lg:rounded-t-[10px] overflow-hidden">
             <DocPrototype
               class="absolute left-2/4 -translate-x-2/4 bottom-[-90px] max-sm:scale-100 max-md:scale-[1.2] max-lg:scale-[1.6]"
-              :colors="editor.doc.colors"
-              :features="editor.doc.features"
+              :colors="docSaver.data.value.unsavedData.colors"
+              :features="docSaver.data.value.unsavedData.features"
               navbar
             />
           </div>

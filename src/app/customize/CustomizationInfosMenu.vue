@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { useConfirm } from "primevue/useconfirm";
-import { Status } from "~/@types/status";
 import ScrollPanel from 'primevue/scrollpanel';
 import Tailwind from "primevue/passthrough/tailwind";
 import { usePassThrough } from 'primevue/passthrough';
-import { Documentation } from "~/database/models/Documentation";
 import DocPrototype from '~/shared/components/DocPrototype.vue';
 import { useCustomize } from '~/shared/states/customizeState';
+import { DocSaverReturnType } from "~/shared/compositions/useDocSave";
+import { CustomizationSaverReturnType } from "~/shared/compositions/useCustomizationSave";
 
 const { t } = useI18n();
 const confirm = useConfirm();
 const customize = useCustomize();
+const docSaver = inject('docSaver') as DocSaverReturnType;
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 
 function deleteCustomizationConfirmDialog(customizationId: number) {
   confirm.require({
@@ -21,17 +23,26 @@ function deleteCustomizationConfirmDialog(customizationId: number) {
     rejectLabel: t('customize.delete-customization-dialog-cancel-button-message'),
     acceptLabel: t('customize.delete-customization-dialog-confirm-button-message'),
     accept: async () => {
-      const updatedCustomizations = JSON.parse(JSON.stringify(customize.value.doc.customizations.filter(c => c.id != customizationId)));
-      const result = await Documentation.edit(customize.value.doc.id, {
-        customizations: updatedCustomizations
-      });
-
-      if(result === Status.OK) {
-        customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
-        customize.value.doc.customizations = updatedCustomizations;
-      } else {
-        alert('Error on deleting customization');
+      try {
+        await $fetch('/api/docs/deleteCustomization', {
+          method: 'POST',
+          body: {
+            docId: docSaver.data.value.unsavedData.id,
+            id: customizationId
+          }
+        });
+        customizationSaver.data.value.currentSelectedCustomization = {
+          id: -1,
+          title: '',
+          region: 'top'
+        }
+      } catch {
+        showError('The customization file not exists on the system, you can ignore this error, the customization was deleted!');
       }
+
+      const updatedCustomizations = JSON.parse(JSON.stringify(docSaver.data.value.unsavedData.customizations.filter(c => c.id != customizationId)));
+      customize.value.controlsMenu.customizationInfosMenu.isOpen = false;
+      docSaver.data.value.unsavedData.customizations = updatedCustomizations;
     }
   });
 }
@@ -74,7 +85,7 @@ function openCodeEditor() {
         <Button @click="customize.controlsMenu.customizationInfosMenu.isOpen = false" class="!w-[100px] !h-10">
           {{ $t('customize.customization-infos-menu-close-button-label') }}
         </Button>
-        <Button @click="openCodeEditor()" class="!w-[100px] !h-10 !bg-primary hover:!bg-primary/70">
+        <Button @click="openCodeEditor" class="!w-[100px] !h-10 !bg-primary hover:!bg-primary/70">
           {{ $t('customize.customization-infos-menu-edit-button-label') }}
         </Button>
         <Button 
@@ -87,8 +98,8 @@ function openCodeEditor() {
       <div class="flex justify-center items-center">
         <DocPrototype
           class="mt-5"
-          :colors="customize.doc.colors"
-          :features="customize.doc.features"
+          :colors="docSaver.data.value.unsavedData.colors"
+          :features="docSaver.data.value.unsavedData.features"
           :selected-region="customize.controlsMenu.customizationInfosMenu.data?.region"
         />
       </div>

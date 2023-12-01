@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { Editor } from '@tiptap/vue-3';
 import TiptapEditor from '~/shared/components/Tiptap/TiptapEditor.vue';
-import EditorCategories from './EditorCategories.vue';
+import NavigationMenu from './NavigationMenu/NavigationMenu.vue';
 import IndexesTable from './IndexesTable.vue';
-import { useEditor } from '~/shared/states/editorState';
+import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
+import { usePageSave } from '~/shared/compositions/usePageSave';
 
-const editor = useEditor();
+const docSaver = inject('docSaver') as DocSaverReturnType;
+const pageSaver = usePageSave();
 const mobileNavigationIsOpen = ref(false);
+
+provide('pageSaver', pageSaver);
 
 function parseCodeBlocks(unparsedContent: string, fullViewDom: string) {
   const unparsedDom = new DOMParser().parseFromString(unparsedContent, 'text/html');
@@ -27,10 +31,10 @@ function parseTablesWrapper(unparsedContent: string, fullViewDom: string) {
   const fullDom = new DOMParser().parseFromString(fullViewDom, 'text/html');
 
   fullDom.querySelectorAll('.tableWrapper').forEach(tablewrapper => {
-    const unparsedCodeBlocks = unparsedDom.querySelectorAll('.pulsar-table');
+    const unparsedTables = unparsedDom.querySelectorAll('.pulsar-table');
 
-    unparsedCodeBlocks.forEach(unparsedCodeBlock => {
-      unparsedCodeBlock.outerHTML = tablewrapper.outerHTML;
+    unparsedTables.forEach(unparsedTable => {
+      unparsedTable.outerHTML = tablewrapper.outerHTML.replaceAll('<br class="ProseMirror-trailingBreak">', '');
     });
   });
   return unparsedDom.body.innerHTML;
@@ -39,13 +43,7 @@ function parseTablesWrapper(unparsedContent: string, fullViewDom: string) {
 function handleEditorChange(value: string, textEditorInstance: Editor) {
   const parsedCodeBlocksDom = parseCodeBlocks(value, textEditorInstance.view.dom.innerHTML);
   const parsedTablesWrapperDom = parseTablesWrapper(parsedCodeBlocksDom, textEditorInstance.view.dom.innerHTML);
-  const updatedPages = editor.value.doc.pages.map(page => {
-    if(page.id === editor.value.currentSelectedPage?.id) {
-      page.content = parsedTablesWrapperDom;
-    }
-    return page;
-  });
-  editor.value.doc.pages = updatedPages;
+  pageSaver.data.value.unsavedContent = parsedTablesWrapperDom;
 }
 
 onBeforeMount(() => {
@@ -63,7 +61,7 @@ onBeforeMount(() => {
 <template>
   <div 
     class="w-full min-h-screen 2xl:max-h-screen px-12 py-7 2xl:overflow-y-scroll"
-    :style="{ backgroundColor: editor.doc.colors.background }"
+    :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.background }"
   >
     <!--Doc navbar-->
     <nav class="2xl:hidden flex items-center w-full pb-6">
@@ -74,7 +72,7 @@ onBeforeMount(() => {
         ></font-awesome-icon>
       </Button>
     </nav>
-    <hr class="2xl:hidden w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.doc.colors.divider }" />
+    <hr class="2xl:hidden w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.divider }" />
     <!--Doc navbar end-->
     <div class="flex pt-10 mt-2.5">
       <!--Navigation Menu-->
@@ -102,31 +100,31 @@ onBeforeMount(() => {
       >
         <!--Mobile close button-->
         <button @click="mobileNavigationIsOpen = false" class="2xl:hidden absolute right-8 top-8">
-          <font-awesome-icon icon="fa-solid fa-close" class="text-xl" :style="{ color: editor.doc.colors.text }"></font-awesome-icon>
+          <font-awesome-icon icon="fa-solid fa-close" class="text-xl" :style="{ color: docSaver.data.value.unsavedData.colors.text }"></font-awesome-icon>
         </button>
         <!--Navigation menu title and icon-->
-        <div v-if="editor.doc.navigationTitle" class="max-w-[220px] flex items-center gap-3.5">
+        <div v-if="docSaver.data.value.unsavedData.messages.navigationTitle" class="max-w-[220px] flex items-center gap-3.5">
           <div
             class="flex justify-center items-center w-12 h-12 rounded-lg"
-            :style="{ backgroundColor: editor.doc.colors.primary + '40' }"
+            :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.primary + '40' }"
           >
             <font-awesome-icon 
               icon="fa-solid fa-map" 
               class="text-[19px]"
-              :style="{ color: editor.doc.colors.primary }"
+              :style="{ color: docSaver.data.value.unsavedData.colors.primary }"
             />
           </div>
           <div class="flex flex-col">
-            <p :title="editor.doc.navigationTitle" class="max-w-[150px] text-[17px] truncate" :style="{ color: editor.doc.colors.text + '99' }">
-              {{ editor.doc.navigationTitle }}
+            <p :title="docSaver.data.value.unsavedData.messages.navigationTitle" class="max-w-[150px] text-[17px] truncate" :style="{ color: docSaver.data.value.unsavedData.colors.text + '99' }">
+              {{ docSaver.data.value.unsavedData.messages.navigationTitle }}
             </p>
-            <p :title="editor.doc.navigationSubTitle" class="max-w-[150px] relative text-[15px] -mt-1 truncate" :style="{ color: editor.doc.colors.text + '80' }">
-              {{ editor.doc.navigationSubTitle }}
+            <p :title="docSaver.data.value.unsavedData.messages.navigationSubTitle" class="max-w-[150px] relative text-[15px] -mt-1 truncate" :style="{ color: docSaver.data.value.unsavedData.colors.text + '80' }">
+              {{ docSaver.data.value.unsavedData.messages.navigationSubTitle }}
             </p>
           </div>
         </div>
-        <hr v-if="editor.doc.navigationTitle" class="w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: editor.doc.colors.divider + '40' }" />
-        <EditorCategories />
+        <hr v-if="docSaver.data.value.unsavedData.messages.navigationTitle" class="w-full mx-auto h-0.5 border-none" :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.divider + '40' }" />
+        <NavigationMenu />
       </div>
       <!--Mobile Navigation menu backdrop-->
       <div 
@@ -134,15 +132,35 @@ onBeforeMount(() => {
         :class="`2xl:hidden ${!mobileNavigationIsOpen && 'opacity-0 pointer-events-none'} fixed left-0 top-0 w-screen h-screen bg-[#00000060] duration-300 z-[10]`"
       ></div>
       <!--Editor-->
-      <div class="overflow-hidden w-full 2xl:px-10">
+      <div class="flex flex-col overflow-hidden w-full 2xl:px-10">
+        <!--Saving or Saved messages-->
+        <div class="w-full flex items-center gap-3 justify-end mb-6" v-if="pageSaver.data.value.currentSelectedPage.id !== '-1' && !pageSaver.data.value.isLoadingContent">
+          <div class="px-5 py-1.5 rounded-[10px]" :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.secondary + '80' }">
+            <div class="flex items-center gap-3" v-if="!pageSaver.data.value.status.isSaved && !pageSaver.data.value.status.isTyping">
+              <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-lg text-secondary/70" spin></font-awesome-icon>
+              <h2 class="text-base text-primary/70">{{ $t('editor.editor-saving-message') }}</h2>
+            </div>
+            <div class="flex items-center gap-3" v-else-if="pageSaver.data.value.status.isTyping">
+              <font-awesome-icon icon="fa-solid fa-keyboard" class="text-lg text-secondary/70" beat-fade></font-awesome-icon>
+              <h2 class="text-base text-primary/70">{{ $t('editor.editor-typing-message') }}</h2>
+            </div>
+            <div class="flex items-center gap-3" v-else-if="!pageSaver.data.value.status.isTyping">
+              <font-awesome-icon icon="fa-solid fa-check" class="text-lg text-secondary/70"></font-awesome-icon>
+              <h2 class="text-base text-primary/70">{{ $t('editor.editor-saved-message') }}</h2>
+            </div>
+          </div>
+        </div>
         <TiptapEditor
-          v-if="editor.currentSelectedPage?.id != -1"
-          @update:model-value="(value, editor) => handleEditorChange(value, editor)"
-          :content="editor.currentSelectedPage?.content"
-          :colors="editor.doc.colors"
+          v-if="pageSaver.data.value.currentSelectedPage?.id !== '-1' && !pageSaver.data.value.isLoadingContent"
+          @update:model-value="handleEditorChange"
+          :content="pageSaver.data.value.unsavedContent"
+          :colors="docSaver.data.value.unsavedData.colors"
         />
+        <div class="flex justify-center items-center w-full h-[76vh]" v-else-if="pageSaver.data.value.isLoadingContent">
+          <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-secondary/70 text-[40px]" spin></font-awesome-icon>
+        </div>
         <div v-else class="w-full h-[300px] flex justify-center items-center">
-          <p :style="{ color: editor.doc.colors.text + '50' }">{{ $t('editor.non-page-selected-message') }}</p>
+          <p :style="{ color: docSaver.data.value.unsavedData.colors.text + '50' }">{{ $t('editor.non-page-selected-message') }}</p>
         </div>
       </div>
       <!--Indexes Table-->
@@ -153,7 +171,7 @@ onBeforeMount(() => {
 
 <style scoped>
   .mobile-navigationmenu-dinamic-bg {
-    background-color: v-bind('editor.doc.colors.secondary');
+    background-color: v-bind('docSaver.data.value.unsavedData.colors.secondary');
   }
 
   @media only screen and (min-width: 1180px) {

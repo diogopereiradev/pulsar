@@ -2,16 +2,16 @@
 import { Codemirror } from 'vue-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { useCustomize } from '~/shared/states/customizeState';
+import { CustomizationSaverReturnType } from '~/shared/compositions/useCustomizationSave';
 
-const customize = useCustomize();
+const customizationSaver = inject('customizationSaver') as CustomizationSaverReturnType;
 const extensions = [javascript(), oneDark];
 </script>
 
 <template>
   <div>
     <codemirror
-      v-model="customize.controlsMenu.customizationInfosMenu.data.content.javascript"
+      v-model="customizationSaver.data.value.unsavedContent.javascript"
       :autofocus="true"
       :indent-with-tab="true"
       :tab-size="2"

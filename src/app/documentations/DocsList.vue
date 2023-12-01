@@ -2,7 +2,7 @@
 import Paginator, { PageState } from 'primevue/paginator';
 import DocCard from '~/app/documentations/DocCard.vue';
 import { useDocumentations } from '~/shared/states/documentationsState';
-import { Documentation } from '~/database/models/Documentation';
+import { IDocumentation } from '~/@types/declarations/Documentation';
 
 const ROWS_PER_PAGE = 6;
 const docs = useDocumentations();
@@ -33,10 +33,16 @@ watch([() => docs.value.search, () => docs.value.data], ([search, data]) => {
 
 // Load all docs in memory
 onMounted(async () => {
-  const initialDocs = await Documentation.getAll();
+  const headers = useRequestHeaders(['cookie']) as HeadersInit;
+  const result = await $fetch('/api/docs/getDoc?properties=id,title,description,colors,createdAt,features,isPublic,authorIdentifier', {
+    method: 'GET',
+    headers
+  });
   
-  if(initialDocs) {
-    docs.value.data = initialDocs;
+  if(result) {
+    const data = result as { count: number, limit: number, docs: IDocumentation[] };
+    docs.value.limit = data.limit;
+    docs.value.data = data.docs;
   }
   docsListIsLoading.value = false;
 });
@@ -44,7 +50,12 @@ onMounted(async () => {
 
 <template>
   <div class="flex flex-col gap-6 py-12">
-    <h2 class="text-[22px] text-primary/90 font-medium">{{ $t('documentations.documentations-list-title') }}</h2>
+    <div class="flex items-center justify-between pr-2">
+      <h2 class="text-[22px] text-primary/90 font-medium">{{ $t('documentations.documentations-list-title') }}</h2>
+      <p :class="`text-[17px] ${docs.data.length >= docs.limit? 'text-[#fa7a7a]' : 'text-primary/70'}`" v-if="docs.limit > 0">
+        {{ docs.data.length }}/{{ docs.limit }}
+      </p>
+    </div>
     <!--Docs Cards-->
     <div 
       v-if="docs.currentPageData.length >= 1 && !docsListIsLoading"

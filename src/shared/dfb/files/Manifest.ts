@@ -1,5 +1,5 @@
-import beautify from "beautify";
-import { IDocumentation } from "~/database/models/Documentation";
+import beautify from 'beautify';
+import { IDocumentation } from '~/@types/declarations/Documentation'; 
 
 export function Manifest(doc: IDocumentation) {
   return beautify(JSON.stringify({

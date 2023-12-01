@@ -1,46 +1,45 @@
 import css from 'css';
-// @ts-ignore
-import hexToRgb from 'hex-to-rgb';
-import { IDocumentation, IDocumentationColorPalette } from "~/database/models/Documentation";
-
-function generateGlobalVariables(colors: IDocumentationColorPalette): string {
-  const colorNames = Object.keys(colors);
-  const colorValues = Object.values(colors);
-
-  return colorNames.reduce((acc, colorName, i) => {
-    return `${acc}\n--${colorName}: ${hexToRgb(colorValues[i])};`;
-  }, '');
-}
+import { IDocumentation } from "~/@types/declarations/Documentation";
+import { generateDocGlobalVariables } from '~/shared/dfb/utils/generateDocGlobalVariables';
 
 export function Css(doc: IDocumentation) {
   return css.stringify(css.parse(/* css */`
     /* Colors are in RGB, as it is easy to control the alpha color */
     :root {
-      ${generateGlobalVariables(doc.colors)}
+      ${generateDocGlobalVariables(doc.colors)}
+    }
+
+    * {
+      scroll-behavior: smooth;
+      scrollbar-color: ${doc.colors.scrollbar} transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 4px;
+      border-radius: 10px;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  
+    ::-webkit-scrollbar-thumb {
+      background-color: ${doc.colors.scrollbar};
     }
 
     .pulsar-page-wrapper {
       max-width: 2120px;
       margin: 0 auto;
-      padding: 70px 50px 50px 50px;
+      padding: ${doc.customizations.find(c => c.region === 'top')? '0px' : '70px'} 50px 50px 50px;
+    }
+
+    .pulsar-utils-none {
+      display: none !important;
     }
 
     body {
       background-color: rgb(var(--background));
       font-family: Roboto;
       font-weight: 400;
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: transparent;
-      cursor: pointer;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background-color: rgb(var(--primary));
     }
 
     .top-region-container {
@@ -53,6 +52,16 @@ export function Css(doc: IDocumentation) {
 
     .bottomRegion {
       width: 100%;
+    }
+
+    .pulsar-page-loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 100%;
+      color: ${doc.colors.primary}b8;
+      font-size: 40px;
     }
 
     .pulsar-utils-hidden {
@@ -358,6 +367,7 @@ export function Css(doc: IDocumentation) {
     }
 
     .pulsar-indexes-table-container {
+      ${doc.features.indexesTable? '' : 'display: none;'}
       position: relative;
       min-width: 180px;
     }
@@ -366,7 +376,8 @@ export function Css(doc: IDocumentation) {
       position: sticky;
       top: 50px;
       overflow-y: auto;
-      height: 100vh;
+      max-width: 230px;
+      height: 50vh;
       scrollbar-width: thin;
       margin-left: 20px;
       padding-bottom: 100px;
@@ -394,13 +405,18 @@ export function Css(doc: IDocumentation) {
     }
   
     .pulsar-indexes-table-list-button {
+      display: flex;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 230px;
       color: rgba(var(--text), 0.63);
       font-size: 15px;
     }
   
     @media only screen and (max-width: 768px) {
       .pulsar-indexes-table-container {
-        display: none;
+        display: none !important;
       }
     }
 

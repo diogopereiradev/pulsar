@@ -1,9 +1,14 @@
 <script setup lang="ts">
+import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import DocsToolbar from '~/app/documentations/DocsToolbar.vue';
 import NewDocsModal from '~/app/documentations/NewDocsModal.vue';
 import DocsList from '~/app/documentations/DocsList.vue';
-import DocUploadModal from '~/app/documentations/DocUploadModal.vue';
+
+definePageMeta({
+  layout: 'with-navbar',
+  middleware: 'authentication'
+});
 </script>
 
 <template>
@@ -17,7 +22,7 @@ import DocUploadModal from '~/app/documentations/DocUploadModal.vue';
     footer: 'text-primary !bg-secondary rounded-b-[15px] flex justify-end p-6'
   }"/>
   <NewDocsModal />
-  <DocUploadModal />
+  <Toast class="z-[9999]" position="bottom-right"/>
   <div class="mx-auto max-w-[1250px] mt-7 3xl:mt-16 px-5 md:px-12">
     <DocsToolbar />
     <DocsList />

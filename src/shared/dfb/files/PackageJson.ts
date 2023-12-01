@@ -1,5 +1,5 @@
 import beautify from 'beautify';
-import { IDocumentation } from "~/database/models/Documentation";
+import { IDocumentation } from '~/@types/declarations/Documentation'; 
 
 export function PackageJson(doc: IDocumentation) {
   return beautify(`

@@ -1,12 +1,6 @@
-import { IDocumentation, IDocumentationPage, documentationDataEmptyObj } from "~/database/models/Documentation";
-
 type EditorStateType = {
-  doc: IDocumentation,
   controlsMenu: {
-    isOpen: boolean,
-    isSaved: boolean,
-    isSaving: boolean,
-    isExportingManifest: boolean
+    isOpen: boolean
   },
   exportDocModal: {
     isLoading: boolean,
@@ -15,17 +9,12 @@ type EditorStateType = {
     isCancelling: boolean,
     isOpen: boolean,
     data: Blob | undefined
-  },
-  currentSelectedPage: IDocumentationPage
+  }
 };
 
 export const useEditor = () => useState<EditorStateType>('editorState', () => ({
-  doc: documentationDataEmptyObj,
   controlsMenu: {
-    isOpen: false,
-    isSaved: true,
-    isSaving: false,
-    isExportingManifest: false
+    isOpen: false
   },
   exportDocModal: {
     isLoading: false,
@@ -34,14 +23,5 @@ export const useEditor = () => useState<EditorStateType>('editorState', () => ({
     isCancelling: false,
     isOpen: false,
     data: undefined
-  },
-  currentSelectedPage: {
-    id: -1,
-    categoryId: -1,
-    title: '',
-    children: [],
-    content: '',
-    createdAt: 0,
-    lastUpdateAt: 0
   }
 }));
