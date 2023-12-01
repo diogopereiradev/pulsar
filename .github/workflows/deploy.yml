@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Build the project
+        with:
+          script: |
+            npm install
+            npm run build
+
       - name: Copy repository files SCP
         uses: appleboy/scp-action@master
         env:
