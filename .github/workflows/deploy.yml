@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,9 +43,6 @@ jobs:
       - name: 🪛 Build Nuxt.js
         run: |
           pnpm build
-
-      - name: Show available files
-        run: ls -la
 
       - name: 🗄 Deploy to server
         uses: easingthemes/ssh-deploy@main
