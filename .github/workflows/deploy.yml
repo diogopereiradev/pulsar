@@ -32,6 +32,7 @@ jobs:
       - uses: actions/cache@v3
         name: 📦 Setup pnpm cache
         with:
+          path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
@@ -50,6 +51,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Show available files
+        run: ls -la
+
       - name: 🗄 Deploy to server
         uses: easingthemes/ssh-deploy@main
         with:
@@ -57,5 +61,5 @@ jobs:
           REMOTE_HOST: ${{ secrets.SERVER_SSH_HOST }}
           REMOTE_USER: ${{ secrets.SERVER_SSH_USER }}
           ARGS: "-rlgoDzvc --delete"
-          SOURCE: ".output/"
+          SOURCE: "/.output/"
           TARGET: ${{ secrets.SERVER_SSH_TARGET }}
