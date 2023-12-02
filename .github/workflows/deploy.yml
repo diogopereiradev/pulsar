@@ -53,3 +53,6 @@ jobs:
           ARGS: "-rlgoDzvc --delete"
           SOURCE: ".output/"
           TARGET: ${{ secrets.SERVER_SSH_TARGET }}
+
+      - name: 🌀 Restart PM2
+        run: pm2 restart ${{ secrets.SERVER_PM2_CONTAINER_NAME }}
