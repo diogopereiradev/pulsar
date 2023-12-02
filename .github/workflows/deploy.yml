@@ -55,8 +55,11 @@ jobs:
           TARGET: ${{ secrets.SERVER_SSH_TARGET }}
 
       - name: 🌀 Restart PM2
-        run: |
-          cd /home/runner/.ssh
-          ssh -i ${{ secrets.SERVER_SSH_USER }} ${{ secrets.SERVER_SSH_USER }}@${{ secrets.SERVER_SSH_HOST }}
-          pm2 restart ${{ secrets.SERVER_PM2_CONTAINER_NAME }}
-          exit
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_SSH_HOST }}
+          username: ${{ secrets.SERVER_SSH_USER }}
+          password: ${{ secrets.SERVER_SSH_PASS }}
+          script: |
+            pm2 restart ${{ secrets.SERVER_PM2_CONTAINER_NAME }}
+            exit
