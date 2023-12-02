@@ -1,0 +1,56 @@
+name: CI - Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: 🧪 Adding Node.js 20.10.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.10.0
+
+      - uses: pnpm/action-setup@v2
+        name: 📥 Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: 📥 Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: 🪛 Build Nuxt.js
+        run: |
+          pnpm build
+      
+      - name: 🗄 Deploy to server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.SERVER_SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_SSH_USER }}
+          ARGS: "-rlgoDzvc --delete"
+          SOURCE: ".output/public/"
+          TARGET: ${{ secrets.SERVER_SSH_TARGET }}

@@ -61,7 +61,7 @@ function handleEditSubmit() {
 
 <style scoped>
   .dinamic-color-category-edit-button {
-    color: v-bind('docSaver.data.value.unsavedData.colors.text + 'c8'') !important;
+    color: v-bind('docSaver.data.value.unsavedData.colors.text + 90') !important;
   }
   
   .dinamic-color-category-edit-button:hover {

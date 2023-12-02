@@ -5,8 +5,7 @@ export default defineNuxtConfig({
   modules: [
     '@sidebase/nuxt-auth',
     '@nuxtjs/i18n', 
-    '@nuxt/image',
-    '@nuxtjs/robots'
+    '@nuxt/image'
   ],
   plugins: [
     './plugins/fontawesome.ts',
@@ -71,9 +70,6 @@ export default defineNuxtConfig({
   },
   auth: {
     isEnabled: true
-  },
-  robots: {
-    configPath: './robots.config.ts'
   },
   postcss: {
     plugins: {
