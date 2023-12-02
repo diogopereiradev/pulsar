@@ -183,7 +183,7 @@ onBeforeMount(async () => {
             </p>
             <div class="flex items-center justify-between mt-3">
               <h2 class="text-[15px] text-primary/80 font-medium">Status</h2>
-              <h2 :class="`text-[15px] duration-300 ${docSaver.data.value.unsavedData.isPublic? 'text-[#4cbf3f]' : 'text-[#4cbf3f]'} font-medium`">
+              <h2 :class="`text-[15px] duration-300 ${docSaver.data.value.unsavedData.isPublic? 'text-[#4cbf3f]' : 'text-[#c94f4f]'} font-medium`">
                 {{ docSaver.data.value.unsavedData.isPublic? $t('others.public-word') : $t('others.private-word') }}
               </h2>
             </div>
