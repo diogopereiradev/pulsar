@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,13 +44,7 @@ jobs:
       - name: 🪛 Build Nuxt.js
         run: |
           pnpm build
-          
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
+      
       - name: 🗄 Deploy to server
         uses: easingthemes/ssh-deploy@main
         with:
@@ -58,5 +52,5 @@ jobs:
           REMOTE_HOST: ${{ secrets.SERVER_SSH_HOST }}
           REMOTE_USER: ${{ secrets.SERVER_SSH_USER }}
           ARGS: "-rlgoDzvc --delete"
-          SOURCE: ".output/"
+          SOURCE: ".output/public/"
           TARGET: ${{ secrets.SERVER_SSH_TARGET }}
