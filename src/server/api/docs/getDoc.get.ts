@@ -4,6 +4,7 @@ import { documentationDataEmptyObj } from '~/@types/utils/documentation';
 import { db_client } from "~/database/client";
 import chalk from 'chalk';
 import config from '~/server/config';
+import { IError } from "~/@types/error";
 
 type RouteSuccessResult = { 
   count: number, 
@@ -93,26 +94,26 @@ function getDbDoc(authorIdentifier: string, urlQueries: URLQueries): Promise<[nu
 }
 
 // Get the route result based on cache or database
-async function queryResult(authorIdentifier: string, urlQueries: URLQueries, pathname: string) {
+async function queryResult(authorIdentifier: string, urlQueries: URLQueries, pathname: string): Promise<RouteSuccessResult | IError> {
   try {
     const dbQueryResult = await getDbDoc(authorIdentifier, urlQueries);
   
     if(dbQueryResult) {
       const result = dbQueryResult as [number, IDocumentation[]];
-      const data = {
+      const data: RouteSuccessResult = {
         count: result[0] || 0,
         limit: config.DOC_LIMIT,
         docs: result[1] || []
       };
 
       process.env.NODE_ENV === 'development' && 
-      console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(pathname)} status ${chalk.green('[SUCCESS]')}`);
+        console.log(`${chalk.cyan('[PulsarLog]')} Request in ${chalk.yellow(pathname)} status ${chalk.green('[SUCCESS]')}`);
       return data;
     } else {
       return dbQueryResult;
     }
   } catch(err) {
-    return err;
+    return error(err);
   }
 }
 

@@ -7,7 +7,6 @@
     <img alt="GitHub" src="https://img.shields.io/github/license/FhillSlinger/pulsar?style=for-the-badge&cacheSeconds=60">
     <img alt="Website" src="https://img.shields.io/website?up_message=running&down_message=failing&url=https%3A%2F%2Fpulsar.diogopereira.tech&logo=vercel&style=for-the-badge">
     <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Production?label=production%20state&style=for-the-badge">
-    <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Preview?label=preview%20state&style=for-the-badge">
   </div>
   <div>
     <br />
