@@ -1,13 +1,11 @@
 <div align="center">
   <img width="330" src="./readme-assets/pulsar-logo.webp" alt="pulsar-icon" />
   <div>
-    <img alt="GitHub package.json version (branch)" src="https://img.shields.io/github/package-json/v/FhillSlinger/pulsar/main?style=for-the-badge">
+    <img alt="GitHub package.json version (branch)" src="https://img.shields.io/github/package-json/v/FhillSlinger/pulsar/production?style=for-the-badge">
     <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/FhillSlinger/pulsar?style=for-the-badge">
     <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/FhillSlinger/pulsar?style=for-the-badge">
     <img alt="GitHub" src="https://img.shields.io/github/license/FhillSlinger/pulsar?style=for-the-badge&cacheSeconds=60">
     <img alt="Website" src="https://img.shields.io/website?up_message=running&down_message=failing&url=https%3A%2F%2Fpulsar.diogopereira.tech&logo=vercel&style=for-the-badge">
-    <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Production?label=production%20state&style=for-the-badge">
-    <img alt="GitHub deployments" src="https://img.shields.io/github/deployments/FhillSlinger/pulsar/Preview?label=preview%20state&style=for-the-badge">
   </div>
   <div>
     <br />
@@ -30,6 +28,20 @@
   <a href="https://pulsar.diogopereira.tech">https://pulsar.diogopereira.tech</a>
   <br />
   <br />
+  <br />
+  <h2>Project To-do-List</h2>
+
+  - [x] Create the feature to the user host documentations on Pulsar - branch: v2.0.0
+  - [ ] Implement TDD to API routes
+  - [ ] Create Pulsar own markdown editor and remove Tiptap
+  - [ ] Add notes blocks to the editor
+  - [ ] Upgrade the usability and customization of tables on editor
+  - [ ] Remove some PrimeVue things like inputs and buttons, because is lagging on mobile devices
+  - [ ] Upgrade the editor page interface
+  - [ ] Upgrade the customizations page interface
+  - [ ] Add the feature flag to search for pages on navigation menu of pages preview/doc
+  - [ ] Create a templates area on editor page, to agilize the documentation creation process
+  - [ ] Integrate the editor with an AI
   <br />
   <h2>Cloning Repository</h2>
   <p>To run the project on your machine and contribute to the project, you can clone the repository and run the following commands:</p>
