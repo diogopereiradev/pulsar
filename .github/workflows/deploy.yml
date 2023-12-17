@@ -3,7 +3,7 @@ name: CI - Deploy
 on:
   push:
     branches: 
-      - main
+      - production
 
 jobs:
   build-deploy:

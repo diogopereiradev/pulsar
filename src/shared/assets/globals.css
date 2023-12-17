@@ -9,6 +9,10 @@
     @apply !font-default;
   }
 
+  *:focus-visible {
+    @apply outline outline-2 outline-primary/60;
+  }
+
   body {
     @apply bg-background;
   }

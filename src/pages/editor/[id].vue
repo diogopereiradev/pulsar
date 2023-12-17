@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ConfirmDialog from 'primevue/confirmdialog';
 import ControlsMenu from '~/app/editor/ControlsMenu.vue';
-import DocEditor from '~/app/editor/DocEditor.vue';
+import ContentArea from '~/app/editor/ContentArea/ContentArea.vue';
 import ExportModal from '~/app/editor/ExportModal.vue';
 import Toast from 'primevue/toast';
 import PageStates from '~/shared/components/PageStates.vue';
@@ -40,7 +40,7 @@ provide('docSaver', docSaver);
       <Toast class="z-[9999]" position="bottom-right"/>
       <div class="flex max-2xl:flex-col">
         <ControlsMenu />
-        <DocEditor />
+        <ContentArea />
       </div>
     </main>
   </PageStates>

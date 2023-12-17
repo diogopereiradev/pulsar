@@ -24,8 +24,6 @@ export default defineNuxtConfig({
   vite: {
     resolve: {
       alias: {
-        fs: 'browserify-fs',
-        path: 'path-browserify',
         '~': path.resolve(__dirname, './src')
       }
     },
