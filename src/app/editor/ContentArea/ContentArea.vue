@@ -6,6 +6,7 @@ import SaveStatusElement from './components/SaveStatusElement.vue';
 import IndexesTable from './components/IndexesTable.vue';
 import { DocSaverReturnType } from '~/shared/compositions/useDocSave';
 import { usePageSave } from '~/shared/compositions/usePageSave';
+import PulsarEditor from '~/shared/components/PulsarEditor/PulsarEditor.vue';
 
 const docSaver = inject('docSaver') as DocSaverReturnType;
 const pageSaver = usePageSave();
@@ -60,8 +61,15 @@ onBeforeMount(() => {
       <!--Markdown Editor-->
       <div class="w-full flex flex-col break-words overflow-hidden 2xl:px-6 pt-1.5">
         <SaveStatusElement />
-        <!--Editor ---------------------------------------------------------->
-        <!--v-if="!pageSaver.data.value.isLoadingContent && pageSaver.data.value.currentSelectedPage.id !== '-1'"-->
+        <!--Editor-->
+        <PulsarEditor
+          v-if="!pageSaver.data.value.isLoadingContent && pageSaver.data.value.currentSelectedPage.id !== '-1'"
+          :theme="{
+            text: toRef(docSaver.data.value.unsavedData.colors, 'text'),
+            primary: toRef(docSaver.data.value.unsavedData.colors, 'primary'),
+            secondary: toRef(docSaver.data.value.unsavedData.colors, 'secondary'),
+          }"
+        />
         <!--Editor page loading-->
         <div class="flex justify-center items-center w-full h-[76vh]" v-if="pageSaver.data.value.isLoadingContent">
           <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-secondary/70 text-[40px]" spin></font-awesome-icon>
