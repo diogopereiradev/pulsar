@@ -29,7 +29,7 @@ export type PluginView = {
     key: string,
     value: string
   }[],
-  childs: PluginView | PluginView[]
+  childs: string | PluginView | PluginView[]
 };
 
 export type PluginStorage = {
@@ -40,8 +40,10 @@ export type PluginShortcut = {
   [key: string]: (editor: EditorInstance, block: EditorBlock) => void
 };
 
+
 export type PluginHTMLTags = 
   'p' | 
+  'span' |
   'div' | 
   'a' | 
   'button' | 

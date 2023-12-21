@@ -13,7 +13,27 @@ export class Renderer {
   }
 
   private static render(editor: EditorInstance, block: EditorBlock) {
+    const plugin = editor.plugins.find(p => p.name === block.type);
+    const blockDOM = document.querySelector(`[data-block-id="${block.id}"]`);
+
+    if(!plugin || blockDOM || block.editorData.isDeleted) return;
+
+    const blockContainer = document.createElement('div');
+    const blockContentContainer = document.createElement('div');
+
+    blockContainer.classList.add('pulsar-editor-block');
+    blockContentContainer.classList.add('pulsar-editor-block-content')
+    blockContentContainer.appendChild(plugin.view.node);
     
+    blockContainer.appendChild(blockContentContainer);
+
+    const line = editor.output.blocks.findIndex(b => b.id === block.id);
+
+    if(line > 0) {
+      editor.dom.holder?.children[line].insertAdjacentElement('afterend', plugin.view.node);
+    } else {
+      editor.dom.holder?.appendChild(plugin.view.node);
+    }
   }
 
   private static garbageCollector(editor: EditorInstance) {
