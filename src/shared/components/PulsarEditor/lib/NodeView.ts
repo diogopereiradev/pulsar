@@ -3,7 +3,7 @@ import { PluginView } from '../@types/Plugin';
 function parseNodeSchema(schema: PluginView): HTMLElement {
   const el = document.createElement(schema.tag);
 
-  schema.attributes.forEach(attr => {
+  schema.attributes?.forEach(attr => {
     el.setAttribute(attr.key, attr.value);
   });
 
@@ -16,8 +16,11 @@ function parseNodeSchema(schema: PluginView): HTMLElement {
       el.appendChild(subEl);
     });
     return el;
+  } else if((schema.childs as HTMLElement).outerHTML) {
+    el.appendChild(schema.childs as HTMLElement);
+    return el;
   } else {
-    const subEl = parseNodeSchema(schema.childs);
+    const subEl = parseNodeSchema(schema.childs as PluginView);
     el.appendChild(subEl);
     return el;
   }

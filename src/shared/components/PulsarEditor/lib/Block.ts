@@ -1,14 +1,14 @@
 import { EditorBlock } from '../@types/Block';
 import { EditorCommandBlockOptions, EditorInstance } from '../@types/Editor';
-import { generateBlockId } from './Editor/utils/generateBlockId';
+import { generateId } from './utils/generateId';
 
 export class Block {
-  static create(blockname: string, options: EditorCommandBlockOptions): EditorBlock {
+  static create(blockname: string, options?: EditorCommandBlockOptions): EditorBlock {
     return {
-      id: generateBlockId(),
+      id: generateId(),
       type: blockname,
-      data: options.data,
-      value: options.value,
+      data: options?.data,
+      value: options?.value,
       editorData: {
         isDeleted: false
       }

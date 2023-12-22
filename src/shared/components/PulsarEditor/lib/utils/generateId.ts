@@ -1,4 +1,4 @@
-export function generateBlockId() {
+export function generateId() {
   const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const result: string[] = [];
 

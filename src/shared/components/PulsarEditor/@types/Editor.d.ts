@@ -4,7 +4,7 @@ import { PluginInstance } from "./Plugin"
 
 export interface EditorOptions {
   /**
-   * The id of editor container
+   * The id/class of editor container
   */
   holder: string,
   /**
@@ -24,12 +24,14 @@ export interface EditorInstance {
   theme: EditorThemeColors,
   editable: boolean,
   dom: {
-    holder: HTMLElement | undefined
+    editorStyles: HTMLStyleElement | undefined,
+    blocksContainer: HTMLElement | undefined
   },
   view: {
     currentSelectedBlock?: EditorBlock,
     currentSelectedBlockDOM?: HTMLElement,
-    currentLine?: number
+    currentSelectedBlockPos?: number,
+    currentSelectedInputPos?: number
   }
   plugins: PluginInstance[],
   commands: {
@@ -40,8 +42,7 @@ export interface EditorInstance {
     focusBlock(blockid: string): void,
     focusNextBlock(): void,
     focusPreviousBlock(): void,
-    focusNextInputWrappedIn(block: EditorBlock): void,
-    focusPreviousInputWrappedIn(block: EditorBlock): void,
+    focusInput(inputid: string): void,
     focusNextInput(): void,
     focusPreviousInput(): void
   }

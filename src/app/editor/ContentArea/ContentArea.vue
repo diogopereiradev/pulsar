@@ -71,7 +71,7 @@ onBeforeMount(() => {
           }"
         />
         <!--Editor page loading-->
-        <div class="flex justify-center items-center w-full h-[76vh]" v-if="pageSaver.data.value.isLoadingContent">
+        <div class="flex justify-center items-center w-full h-[76vh]" v-else-if="pageSaver.data.value.isLoadingContent">
           <font-awesome-icon icon="fa-solid fa-circle-notch" class="text-secondary/70 text-[40px]" spin></font-awesome-icon>
         </div>
         <!--Editor no page selected-->

@@ -3,33 +3,33 @@ import { EditorInstance } from './Editor';
 
 export interface PluginOptions {
   name: string,
-  addView(): PluginView,
-  addStorage(): PluginStorage,
-  addShortcuts(): PluginShortcut,
-  addOnSelected(editor: EditorInstance, block: EditorBlock): void,
-  addOnUnselected(editor: EditorInstance, block: EditorBlock): void,
-  addOnRender(editor: EditorInstance, block: EditorBlock): void
+  addView(editor: EditorInstance): PluginView,
+  addStorage?(): PluginStorage,
+  addShortcuts?(): PluginShortcut,
+  addOnSelected?(editor: EditorInstance, block: EditorBlock): void,
+  addOnUnselected?(editor: EditorInstance, block: EditorBlock): void,
+  addOnRender?(editor: EditorInstance, block: EditorBlock): void
 }
 
 export interface PluginInstance {
   name: string,
   view: {
-    schema: PluginView,
-    node: HTMLElement
+    schema: (editor: EditorInstance) => PluginView,
+    node: (editor: EditorInstance) => HTMLElement
   },
-  shortcuts: PluginShortcut,
-  onSelected(editor: EditorInstance, block: EditorBlock): void,
-  onUnselected(editor: EditorInstance, block: EditorBlock): void,
-  onRender(editor: EditorInstance, block: EditorBlock): void
+  shortcuts?: PluginShortcut,
+  onSelected?(editor: EditorInstance, block: EditorBlock): void,
+  onUnselected?(editor: EditorInstance, block: EditorBlock): void,
+  onRender?(editor: EditorInstance, block: EditorBlock): void
 }
 
 export type PluginView = {
   tag: PluginHTMLTags,
-  attributes: {
+  attributes?: {
     key: string,
     value: string
   }[],
-  childs: string | PluginView | PluginView[]
+  childs: string | PluginView | PluginView[] | HTMLElement
 };
 
 export type PluginStorage = {
