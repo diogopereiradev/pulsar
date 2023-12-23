@@ -22,8 +22,9 @@ export class Editor {
       view: {
         currentSelectedBlock: undefined,
         currentSelectedBlockDOM: undefined,
-        currentSelectedBlockLine: undefined,
-        currentSelectedInputPos: undefined
+        currentSelectedBlockPos: undefined,
+        currentSelectedInputPos: undefined,        
+        keysPressed: {}
       },
       editable: options.editable? options.editable : true,
       plugins: options.plugins,

@@ -31,8 +31,9 @@ export interface EditorInstance {
     currentSelectedBlock?: EditorBlock,
     currentSelectedBlockDOM?: HTMLElement,
     currentSelectedBlockPos?: number,
-    currentSelectedInputPos?: number
-  }
+    currentSelectedInputPos?: number,
+    keysPressed?: { [key: string]: boolean }
+  },
   plugins: PluginInstance[],
   commands: {
     addBlockAt(blockname: string, line: number, options?: EditorCommandBlockOptions): void,

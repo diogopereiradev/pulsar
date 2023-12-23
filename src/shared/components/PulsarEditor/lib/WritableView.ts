@@ -1,6 +1,7 @@
 import { EditorInstance } from '../@types/Editor';
 import { PluginHTMLTags } from '../@types/Plugin';
 import { generateId } from './utils/generateId';
+import { getBlockFromChild } from './utils/getBlockFromChild';
 
 type WritableViewOptions = {
   tag: PluginHTMLTags,
@@ -44,7 +45,7 @@ export class WritableView {
         }
       });
     };
-    view.oninput = this.addOnChange(view);
+    view.oninput = this.addOnChange(editor, view);
     view.onfocus = () => this.addOnFocus(editor, viewId);
 
     return view;
@@ -87,10 +88,17 @@ export class WritableView {
         const sel = window.getSelection();
         const viewNodes = view.childNodes;
 
-        if(viewNodes[0] !== sel?.anchorNode || sel?.anchorOffset !== 0) return;
+        if(view.textContent === '') {
+          ev.preventDefault();
+          editor.commands.focusPreviousInput();
+          return;
+        }
+
+        if(sel?.anchorOffset !== 0 || viewNodes[0] !== sel?.anchorNode) return;
         ev.preventDefault();
         editor.commands.focusPreviousInput();
       },
+      
       'ArrowDown': (editor, view, ev) => {
         const sel = window.getSelection();
         const currentSelectedTextNode = (sel?.anchorNode as HTMLElement).textContent;
@@ -102,7 +110,7 @@ export class WritableView {
     };
   }
 
-  private static addOnChange(view: HTMLElement) {
+  private static addOnChange(editor: EditorInstance, view: HTMLElement) {
     const isEmptyCheck = (target: HTMLElement) => {
       if(target.textContent?.length === 0) {
         target.classList.add('pulsar-editor-empty');
@@ -111,8 +119,20 @@ export class WritableView {
       }
     };
 
+    const updateValue = (target: HTMLElement) => {
+      const content = target.textContent;
+      const blockDom = getBlockFromChild(target);
+      const blockId = blockDom?.dataset.blockId;
+
+      if(blockId) {
+        const block = editor.output.blocks.find(b => b.id === blockId);
+        block && (block.value = content || '');
+      }
+    }
+
     return () => {
       isEmptyCheck(view);
+      updateValue(view);
     }
   }
 
