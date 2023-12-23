@@ -14,7 +14,7 @@ export class Block {
       }
     };
   }
-  
+
   static destroy(editor: EditorInstance, blockid: string) {
     editor.output.blocks = editor.output.blocks.map(b => {
       if(b.id !== blockid) return b;
@@ -27,5 +27,20 @@ export class Block {
       };
     });
     editor.output.time = Date.now();
+  }
+
+  static node(block: EditorBlock, view: HTMLElement) {
+    const blockDom = document.createElement('div');
+
+    blockDom.classList.add('pulsar-editor-block');
+    blockDom.setAttribute('data-block-id', block.id);
+    
+    const blockContent = document.createElement('div');
+
+    blockContent.classList.add('pulsar-editor-block-content');
+    blockContent.appendChild(view);
+
+    blockDom.appendChild(blockContent);
+    return blockDom;
   }
 }

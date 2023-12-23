@@ -9,11 +9,11 @@ type WritableViewOptions = {
     value: string
   }[],
   placeholder?: string,
-  value?: string
+  value?: string | string[]
 };
 
 type WritableAreaShortcut = {
-  [key: string]: (editor: EditorInstance) => void;
+  [key: string]: (editor: EditorInstance, view: HTMLElement, ev: KeyboardEvent) => void;
 };
 
 export class WritableView {
@@ -28,7 +28,7 @@ export class WritableView {
     view.setAttribute('data-wrte-area-id', viewId);
     view.setAttribute('contenteditable', 'true');
     view.setAttribute('placeholder', options.placeholder || '');
-    view.innerHTML = options.value || '';
+    view.innerHTML = options.value as string || '';
 
     if(!options.value) view.classList.add('pulsar-editor-empty');
 
@@ -40,7 +40,7 @@ export class WritableView {
       const shortcuts = this.addShortcuts();
       Object.keys(shortcuts).forEach(key => {
         if(ev.key === key) {
-          shortcuts[key]?.(editor);
+          shortcuts[key]?.(editor, view, ev);
         }
       });
     };
@@ -52,12 +52,21 @@ export class WritableView {
 
   private static addStyles(editor: EditorInstance) {
     return /* css */`
+      .pulsar-editor-writable-area br {
+        display: none;
+      }
+
+      .pulsar-editor-writable-area * {
+        display: inline;
+      }
+
       .pulsar-editor-writable-area {
         position: relative;
         font-family: Roboto;
         font-weight: 400;
         color: ${editor.theme.text};
         outline: none;
+        overflow-wrap: break-word;
       }
 
       .pulsar-editor-writable-area.pulsar-editor-empty:focus:before {
@@ -74,10 +83,20 @@ export class WritableView {
 
   private static addShortcuts(): WritableAreaShortcut {
     return {
-      'ArrowUp': (editor) => {
+      'ArrowUp': (editor, view, ev) => {
+        const sel = window.getSelection();
+        const viewNodes = view.childNodes;
+
+        if(viewNodes[0] !== sel?.anchorNode || sel?.anchorOffset !== 0) return;
+        ev.preventDefault();
         editor.commands.focusPreviousInput();
       },
-      'ArrowDown': (editor) => {
+      'ArrowDown': (editor, view, ev) => {
+        const sel = window.getSelection();
+        const currentSelectedTextNode = (sel?.anchorNode as HTMLElement).textContent;
+
+        if(sel!.anchorOffset < currentSelectedTextNode!.length) return;
+        ev.preventDefault();
         editor.commands.focusNextInput();
       }
     };

@@ -1,4 +1,3 @@
-import { EditorInstance } from '../@types/Editor';
 import { PluginInstance, PluginOptions } from '../@types/Plugin';
 import { NodeView } from './NodeView';
 
@@ -7,8 +6,8 @@ export class Plugin {
     return {
       name: options.name,
       view: {
-        schema: (editor: EditorInstance) => options.addView(editor),
-        node: (editor: EditorInstance) => NodeView(options.addView(editor))
+        schema: (editor, op) => options.addView(editor, op),
+        node: (editor, op) => NodeView(options.addView(editor, op))
       },
       shortcuts: options.addShortcuts?.(),
       onRender: options.addOnRender,

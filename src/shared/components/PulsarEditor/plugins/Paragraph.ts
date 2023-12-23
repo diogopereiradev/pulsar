@@ -3,7 +3,7 @@ import { WritableView } from '../lib/WritableView';
 
 export const Paragraph = Plugin.create({
   name: 'paragraph',
-  addView(editor) {
+  addView(editor, options) {
     return {
       tag: 'div',
       childs: WritableView.create(editor, {
@@ -15,7 +15,7 @@ export const Paragraph = Plugin.create({
           }
         ],
         placeholder: 'Type something',
-        value: ''
+        value: options.value || 'testing'
       })
     };
   },

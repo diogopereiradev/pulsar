@@ -1,6 +1,7 @@
 import { watch } from 'vue';
 import { EditorBlock } from './@types/Block';
 import { EditorInstance } from './@types/Editor';
+import { Block } from './lib/Block';
 
 export class Renderer {
   static create(editor: EditorInstance) {
@@ -19,21 +20,16 @@ export class Renderer {
 
     if(!plugin || blockDOM || block.editorData.isDeleted) return;
 
-    const blockContainer = document.createElement('div');
-    const blockContentContainer = document.createElement('div');
-
-    blockContainer.classList.add('pulsar-editor-block');
-    blockContentContainer.classList.add('pulsar-editor-block-content')
-    blockContentContainer.appendChild(plugin.view.node(editor));
-    
-    blockContainer.appendChild(blockContentContainer);
-
+    const node = Block.node(block, plugin.view.node(editor, { 
+      data: block.data, 
+      value: block.value 
+    }));
     const line = editor.output.blocks.findIndex(b => b.id === block.id);
 
-    if(line > 0) {
-      editor.dom.blocksContainer?.children[line].insertAdjacentElement('afterend', plugin.view.node(editor));
+    if(line && line > 0) {
+      editor.dom.blocksContainer?.insertBefore(node, editor.dom.blocksContainer.childNodes[line + 1]);
     } else {
-      editor.dom.blocksContainer?.appendChild(plugin.view.node(editor));
+      editor.dom.blocksContainer?.appendChild(node);
     }
   }
 

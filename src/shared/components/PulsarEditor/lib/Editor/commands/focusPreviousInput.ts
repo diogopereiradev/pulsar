@@ -9,6 +9,16 @@ export function focusPreviousInput(editor: EditorInstance) {
 
     if(previousInput) {
       previousInput.focus();
+
+      const sel = window.getSelection();
+      const range = document.createRange();
+
+      range.setStart(previousInput, previousInput.childNodes.length);
+      range.collapse(true);
+
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+
       editor.view.currentSelectedInputPos = previousInputPos;
     }
   }

@@ -9,6 +9,16 @@ export function focusNextInput(editor: EditorInstance) {
 
     if(nextInput) {
       nextInput.focus();
+      
+      const sel = window.getSelection();
+      const range = document.createRange();
+
+      range.setStart(nextInput.childNodes[0], 0);
+      range.collapse();
+
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+
       editor.view.currentSelectedInputPos = nextInputPos;
     }
   }

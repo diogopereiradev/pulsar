@@ -1,9 +1,9 @@
 import { EditorBlock } from './Block';
-import { EditorInstance } from './Editor';
+import { EditorCommandBlockOptions, EditorInstance } from './Editor';
 
 export interface PluginOptions {
   name: string,
-  addView(editor: EditorInstance): PluginView,
+  addView(editor: EditorInstance, options: EditorCommandBlockOptions): PluginView,
   addStorage?(): PluginStorage,
   addShortcuts?(): PluginShortcut,
   addOnSelected?(editor: EditorInstance, block: EditorBlock): void,
@@ -14,8 +14,8 @@ export interface PluginOptions {
 export interface PluginInstance {
   name: string,
   view: {
-    schema: (editor: EditorInstance) => PluginView,
-    node: (editor: EditorInstance) => HTMLElement
+    schema: (editor: EditorInstance, options: EditorCommandBlockOptions) => PluginView,
+    node: (editor: EditorInstance, options: EditorCommandBlockOptions) => HTMLElement
   },
   shortcuts?: PluginShortcut,
   onSelected?(editor: EditorInstance, block: EditorBlock): void,
