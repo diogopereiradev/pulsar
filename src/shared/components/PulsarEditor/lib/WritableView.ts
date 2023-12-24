@@ -38,12 +38,26 @@ export class WritableView {
     }
 
     view.onkeydown = (ev) => {
+      editor.view.keysPressed![ev.key.toLowerCase()] = true;
+
       const shortcuts = this.addShortcuts();
-      Object.keys(shortcuts).forEach(key => {
-        if(ev.key === key) {
-          shortcuts[key]?.(editor, view, ev);
+      Object.keys(shortcuts).forEach(keys => {
+        const keyMap = keys.toLowerCase().split('-');
+
+        if(keyMap.length > 2) return;
+
+        if(keyMap.length === 1 && ev.key.toLowerCase() === keyMap[0]) {
+          shortcuts[keys]?.(editor, view, ev);
+        }
+
+        if(keyMap.length === 2 && editor.view.keysPressed![keyMap[0]] && editor.view.keysPressed![keyMap[1]]) {
+          shortcuts[keys]?.(editor, view, ev);
         }
       });
+    };
+
+    view.onkeyup = (ev) => {
+      delete editor.view.keysPressed![ev.key.toLowerCase()];
     };
     view.oninput = this.addOnChange(editor, view);
     view.onfocus = () => this.addOnFocus(editor, viewId);
