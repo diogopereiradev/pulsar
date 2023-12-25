@@ -1,7 +1,7 @@
 import { watch } from 'vue';
-import { EditorBlock } from './@types/Block';
-import { EditorInstance } from './@types/Editor';
-import { Block } from './lib/Block';
+import { EditorBlock } from '../@types/Block';
+import { EditorInstance } from '../@types/Editor';
+import { Block } from '../lib/Block';
 
 export class Renderer {
   static create(editor: EditorInstance) {
@@ -18,7 +18,13 @@ export class Renderer {
     const plugin = editor.plugins.find(p => p.name === block.type);
     const blockDOM = document.querySelector(`[data-block-id="${block.id}"]`);
 
-    if(!plugin || blockDOM || block.editorData.isDeleted) return;
+    if(!plugin || blockDOM) return;
+
+    if(block.editorData.isDeleted) {
+      editor.output.blocks = editor.output.blocks.filter(b => b.id !== block.id);
+      editor.output.time = Date.now();
+      return;
+    }
 
     const node = Block.node(block, plugin.view.node(editor, { 
       data: block.data, 

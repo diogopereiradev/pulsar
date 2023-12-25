@@ -1,6 +1,6 @@
 import { EditorBlock } from '../@types/Block';
-import { EditorCommandBlockOptions, EditorInstance } from '../@types/Editor';
 import { generateId } from './utils/generateId';
+import { EditorCommandBlockOptions, EditorInstance } from '../@types/Editor';
 
 export class Block {
   static create(blockname: string, options?: EditorCommandBlockOptions): EditorBlock {
@@ -27,6 +27,30 @@ export class Block {
       };
     });
     editor.output.time = Date.now();
+  }
+
+  static select(editor: EditorInstance, blockid: string) {
+    const block = editor.output.blocks.find(b => b.id === blockid);
+    
+    if(block) {
+      const blockDom = document.querySelector(`[data-block-id="${blockid}"]`);
+      
+      if(blockDom?.classList.contains('pulsar-editor-selected')) return;
+      blockDom?.classList.add('pulsar-editor-selected');
+      editor.selection.selectedBlocks = editor.selection.selectedBlocks?.concat(block.id);
+    }
+  }
+
+  static unselect(editor: EditorInstance, blockid: string) {
+    const block = editor.output.blocks.find(b => b.id === blockid);
+    
+    if(block) {
+      const blockDom = document.querySelector(`[data-block-id="${blockid}"]`);
+
+      if(!blockDom?.classList.contains('pulsar-editor-selected')) return;
+      blockDom?.classList.remove('pulsar-editor-selected');
+      editor.selection.selectedBlocks = editor.selection.selectedBlocks?.filter(bid => bid !== blockid);
+    }
   }
 
   static node(block: EditorBlock, view: HTMLElement) {

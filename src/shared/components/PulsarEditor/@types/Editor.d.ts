@@ -23,11 +23,21 @@ export interface EditorInstance {
   getOutput(): EditorCleanOutput,
   theme: EditorThemeColors,
   editable: boolean,
+  selection: {
+    offset?: number,
+    node?: HTMLElement,
+    text?: string,
+    selectedBlocks?: string[]
+  },
   dom: {
     editorStyles: HTMLStyleElement | undefined,
     blocksContainer: HTMLElement | undefined
   },
   view: {
+    styles: {
+      time: number,
+      chunks: EditorStyles[]
+    },
     currentSelectedBlock?: EditorBlock,
     currentSelectedBlockDOM?: HTMLElement,
     currentSelectedBlockPos?: number,
@@ -54,6 +64,11 @@ export type EditorThemeColors = {
   primary: string | Ref<string>,
   secondary: string | Ref<string>
 }
+
+export type EditorStyles = {
+  id: string,
+  css(editor: EditorInstance): string
+};
 
 export type EditorCommandBlockOptions = {
   value?: string | string[],

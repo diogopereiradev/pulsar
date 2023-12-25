@@ -1,5 +1,7 @@
-import { EditorInstance } from '../@types/Editor';
+import { EditorInstance, EditorStyles } from '../@types/Editor';
 import { PluginHTMLTags } from '../@types/Plugin';
+import { StyleManager } from '../listeners/StyleManager';
+import { Block } from './Block';
 import { generateId } from './utils/generateId';
 import { getBlockFromChild } from './utils/getBlockFromChild';
 
@@ -18,6 +20,8 @@ type WritableAreaShortcut = {
 };
 
 export class WritableView {
+  private static isSelected = false;
+
   static create(editor: EditorInstance, options: WritableViewOptions): HTMLElement {
     const view = document.createElement(options.tag);
     const viewId = generateId();
@@ -33,9 +37,7 @@ export class WritableView {
 
     if(!options.value) view.classList.add('pulsar-editor-empty');
 
-    if(editor.dom.editorStyles && !editor.dom.editorStyles.innerHTML.match('.pulsar-editor-writable-area')) {
-      editor.dom.editorStyles.innerHTML += this.addStyles(editor);
-    }
+    StyleManager.append(editor, this.addStyles());
 
     view.onkeydown = (ev) => {
       editor.view.keysPressed![ev.key.toLowerCase()] = true;
@@ -59,41 +61,56 @@ export class WritableView {
     view.onkeyup = (ev) => {
       delete editor.view.keysPressed![ev.key.toLowerCase()];
     };
+    view.onclick = () => this.addOnClick(editor, viewId);
     view.oninput = this.addOnChange(editor, view);
     view.onfocus = () => this.addOnFocus(editor, viewId);
+    view.onblur = () => this.addOnBlur(editor, viewId);
 
     return view;
   }
 
-  private static addStyles(editor: EditorInstance) {
-    return /* css */`
-      .pulsar-editor-writable-area br {
-        display: none;
-      }
+  private static addStyles(): EditorStyles {
+    return {
+      id: 'writable-area-styles',
+      css: (editor) => /* css */`
+        .pulsar-editor-writable-area br {
+          display: none;
+        }
+  
+        .pulsar-editor-writable-area * {
+          display: inline;
+        }
+  
+        .pulsar-editor-writable-area {
+          position: relative;
+          font-family: Roboto;
+          font-weight: 400;
+          color: ${editor.theme.text};
+          outline: none;
+          overflow-wrap: break-word;
+        }
 
-      .pulsar-editor-writable-area * {
-        display: inline;
-      }
+        .pulsar-editor-writable-area::-moz-selection {
+          color: ${editor.theme.text};
+          background-color: ${editor.theme.primary}40;
+        }
 
-      .pulsar-editor-writable-area {
-        position: relative;
-        font-family: Roboto;
-        font-weight: 400;
-        color: ${editor.theme.text};
-        outline: none;
-        overflow-wrap: break-word;
-      }
-
-      .pulsar-editor-writable-area.pulsar-editor-empty:focus:before {
-        content: attr(placeholder);
-        position: absolute;
-        font-family: Roboto;
-        font-weight: 400;
-        color: ${editor.theme.text};
-        opacity: 0.6;
-        cursor: text;
-      }
-    `;
+        .pulsar-editor-writable-area::selection {
+          color: ${editor.theme.text};
+          background-color: ${editor.theme.primary}50;
+        }
+  
+        .pulsar-editor-writable-area.pulsar-editor-empty:focus:before {
+          content: attr(placeholder);
+          position: absolute;
+          font-family: Roboto;
+          font-weight: 400;
+          color: ${editor.theme.text};
+          opacity: 0.6;
+          cursor: text;
+        }
+      `
+    };
   }
 
   private static addShortcuts(): WritableAreaShortcut {
@@ -120,6 +137,25 @@ export class WritableView {
         if(sel!.anchorOffset < currentSelectedTextNode!.length) return;
         ev.preventDefault();
         editor.commands.focusNextInput();
+      },
+
+      'Control-A': (editor, view, ev) => {
+        if(this.isSelected && editor.selection.text === view.textContent) {
+          ev.preventDefault();
+          editor.output.blocks.forEach(b => {
+            Block.select(editor, b.id);
+          });
+          window.getSelection()?.removeAllRanges();
+        } else {
+          this.isSelected = true;
+          editor.selection.text = view.textContent || '';
+        }
+      },
+
+      'Delete': (editor, view, ev) => {
+        editor.selection.selectedBlocks?.forEach(bid => {
+          Block.destroy(editor, bid);
+        });
       }
     };
   }
@@ -150,6 +186,10 @@ export class WritableView {
     }
   }
 
+  private static addOnClick(editor: EditorInstance, viewid: string) {
+    editor.selection.selectedBlocks = [];
+  }
+
   private static addOnFocus(editor: EditorInstance, viewid: string) {
     const inputs = document.querySelectorAll('.pulsar-editor-writable-area');
 
@@ -158,5 +198,10 @@ export class WritableView {
         editor.view.currentSelectedInputPos = i;
       }
     });
+    editor.selection.selectedBlocks = [];
+  }
+
+  private static addOnBlur(editor: EditorInstance, viewId: string) {
+    editor.selection.selectedBlocks = [];
   }
 }
