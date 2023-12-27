@@ -3,11 +3,13 @@ import { WritableView } from '../lib/WritableView';
 
 export const Paragraph = Plugin.create({
   name: 'paragraph',
+  type: 'text',
   addView(editor, options) {
     return {
       tag: 'div',
       childs: WritableView.create(editor, {
         tag: 'p',
+        type: 'singleline',
         attributes: [
           {
             key: 'class',
@@ -15,8 +17,11 @@ export const Paragraph = Plugin.create({
           }
         ],
         placeholder: 'Type something',
-        value: options.value || 'testing'
+        value: options.value || ''
       })
     };
+  },
+  addOnCopy(editor, block) {
+    return block.value as string || '';
   },
 });

@@ -2,6 +2,7 @@ import { watch } from 'vue';
 import { EditorBlock } from '../@types/Block';
 import { EditorInstance } from '../@types/Editor';
 import { Block } from '../lib/Block';
+import { StyleManager } from './StyleManager';
 
 export class Renderer {
   static create(editor: EditorInstance) {
@@ -37,6 +38,7 @@ export class Renderer {
     } else {
       editor.dom.blocksContainer?.appendChild(node);
     }
+    StyleManager.append(editor, plugin.styles?.(editor, block));
   }
 
   private static garbageCollector(editor: EditorInstance) {

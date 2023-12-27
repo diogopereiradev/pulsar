@@ -7,6 +7,7 @@ import { getBlockFromChild } from './utils/getBlockFromChild';
 
 type WritableViewOptions = {
   tag: PluginHTMLTags,
+  type: 'multiline' | 'singleline',
   attributes: {
     key: string,
     value: string
@@ -30,6 +31,7 @@ export class WritableView {
       view.setAttribute(attr.key, attr.value);
     });
     view.classList.add('pulsar-editor-writable-area');
+    view.classList.add(options.type === 'multiline'? 'pulsar-editor-writable-area-multiline' : 'pulsar-editor-writable-area-singleline');
     view.setAttribute('data-wrte-area-id', viewId);
     view.setAttribute('contenteditable', 'true');
     view.setAttribute('placeholder', options.placeholder || '');
@@ -39,25 +41,7 @@ export class WritableView {
 
     StyleManager.append(editor, this.addStyles());
 
-    view.onkeydown = (ev) => {
-      editor.view.keysPressed![ev.key.toLowerCase()] = true;
-
-      const shortcuts = this.addShortcuts();
-      Object.keys(shortcuts).forEach(keys => {
-        const keyMap = keys.toLowerCase().split('-');
-
-        if(keyMap.length > 2) return;
-
-        if(keyMap.length === 1 && ev.key.toLowerCase() === keyMap[0]) {
-          shortcuts[keys]?.(editor, view, ev);
-        }
-
-        if(keyMap.length === 2 && editor.view.keysPressed![keyMap[0]] && editor.view.keysPressed![keyMap[1]]) {
-          shortcuts[keys]?.(editor, view, ev);
-        }
-      });
-    };
-
+    view.onkeydown = (ev) => this.onKeydown(editor, view, ev);
     view.onkeyup = (ev) => {
       delete editor.view.keysPressed![ev.key.toLowerCase()];
     };
@@ -69,16 +53,40 @@ export class WritableView {
     return view;
   }
 
+  private static onKeydown(editor: EditorInstance, view: HTMLElement, ev: KeyboardEvent) {
+    editor.view.keysPressed![ev.key.toLowerCase()] = true;
+
+    const shortcuts = this.addShortcuts();
+    Object.keys(shortcuts).forEach(keys => {
+      const keyMap = keys.toLowerCase().split('-');
+
+      if(keyMap.length > 2) return;
+
+      if(keyMap.length === 1 && ev.key.toLowerCase() === keyMap[0]) {
+        shortcuts[keys]?.(editor, view, ev);
+      }
+
+      if(keyMap.length === 2 && editor.view.keysPressed![keyMap[0]] && editor.view.keysPressed![keyMap[1]]) {
+        shortcuts[keys]?.(editor, view, ev);
+      }
+    });
+  }
+
   private static addStyles(): EditorStyles {
     return {
       id: 'writable-area-styles',
       css: (editor) => /* css */`
-        .pulsar-editor-writable-area br {
+        .pulsar-editor-writable-area-singleline br {
           display: none;
         }
   
-        .pulsar-editor-writable-area * {
+        .pulsar-editor-writable-area-singleline * {
           display: inline;
+        }
+
+        .pulsar-editor-writable-area-multiline {
+          display: inline-block;
+          white-space: pre-wrap;
         }
   
         .pulsar-editor-writable-area {
@@ -116,31 +124,37 @@ export class WritableView {
   private static addShortcuts(): WritableAreaShortcut {
     return {
       'ArrowUp': (editor, view, ev) => {
-        const sel = window.getSelection();
-        const viewNodes = view.childNodes;
-
-        if(view.textContent === '') {
-          ev.preventDefault();
-          editor.commands.focusPreviousInput();
-          return;
-        }
-
-        if(sel?.anchorOffset !== 0 || viewNodes[0] !== sel?.anchorNode) return;
+        if(editor.selection.offset !== 0 || typeof editor.selection.offset === 'undefined') return;
         ev.preventDefault();
         editor.commands.focusPreviousInput();
       },
       
       'ArrowDown': (editor, view, ev) => {
-        const sel = window.getSelection();
-        const currentSelectedTextNode = (sel?.anchorNode as HTMLElement).textContent;
+        const currentCaretPos = editor.selection.offset || 0;
+        const currentContentLength = view.textContent?.length || 0;
 
-        if(sel!.anchorOffset < currentSelectedTextNode!.length) return;
+        if(currentCaretPos < currentContentLength) return;
+        ev.preventDefault();
+        editor.commands.focusNextInput();
+      },
+
+      'ArrowLeft': (editor, view, ev) => {
+        if(editor.selection.offset !== 0 || typeof editor.selection.offset === 'undefined') return;
+        ev.preventDefault();
+        editor.commands.focusPreviousInput();
+      },
+
+      'ArrowRight': (editor, view, ev) => {
+        const currentCaretPos = editor.selection.offset || 0;
+        const currentContentLength = view.textContent?.length || 0;
+
+        if(currentCaretPos < currentContentLength) return;
         ev.preventDefault();
         editor.commands.focusNextInput();
       },
 
       'Control-A': (editor, view, ev) => {
-        if(this.isSelected && editor.selection.text === view.textContent) {
+        if(this.isSelected && editor.selection.text?.replaceAll('\n', '') === view.textContent?.replaceAll('\n', '')) {
           ev.preventDefault();
           editor.output.blocks.forEach(b => {
             Block.select(editor, b.id);
@@ -150,6 +164,31 @@ export class WritableView {
           this.isSelected = true;
           editor.selection.text = view.textContent || '';
         }
+      },
+      
+      'Escape': (editor, view, ev) => {
+        editor.selection.selectedBlocks = [];
+        editor.selection.text = undefined;
+        editor.selection.node = undefined;
+        editor.selection.offset = undefined;
+      },
+
+      'Control-C': (editor, view, ev) => {
+        if(editor.selection.selectedBlocks && editor.selection.selectedBlocks.length <= 0) return;
+        ev.preventDefault();
+
+        let result = '';
+
+        editor.selection.selectedBlocks?.forEach((bid, i) => {
+          const block = editor.output.blocks.find(b => b.id === bid);
+          const plugin = editor.plugins.find(p => p.name === block?.type);
+          
+          if(block) {
+            const text = plugin?.onCopy?.(editor, block);
+            result += (i === 0? '' : '\n') + text;
+          }
+        });
+        navigator.clipboard.writeText(result);
       },
 
       'Delete': (editor, view, ev) => {
@@ -199,9 +238,15 @@ export class WritableView {
       }
     });
     editor.selection.selectedBlocks = [];
+    editor.selection.text = undefined;
+    editor.selection.node = undefined;
+    editor.selection.offset = undefined;
   }
 
   private static addOnBlur(editor: EditorInstance, viewId: string) {
     editor.selection.selectedBlocks = [];
+    editor.selection.text = undefined;
+    editor.selection.node = undefined;
+    editor.selection.offset = undefined;
   }
 }

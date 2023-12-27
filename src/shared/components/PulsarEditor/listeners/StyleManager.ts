@@ -15,7 +15,8 @@ export class StyleManager {
     }, { deep: true });
   }
 
-  static append(editor: EditorInstance, style: EditorStyles) {
+  static append(editor: EditorInstance, style?: EditorStyles) {
+    if(!style) return;
     const chunks: EditorStyles[] = markRaw(editor.view.styles.chunks);
     const chunkExists = chunks.find(c => c.id === style.id);
 
