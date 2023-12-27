@@ -88,4 +88,5 @@ export type PluginHTMLTags =
   'tfoot' | 
   'th' | 
   'thead' | 
-  'tr';
+  'tr' |
+  string;
