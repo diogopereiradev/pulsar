@@ -17,7 +17,7 @@ const editor = Editor.create({
 </script>
 
 <template>
-  <div class="pulsar-editor"></div>
-  <button @click="editor.commands.setBlock('paragraph', { value: '' })">Add something 1</button>
   <button @click="editor.commands.setBlock('heading', { value: '', data: { level: 1 } })">Add something 2</button>
+  <button @click="editor.commands.setBlock('paragraph', { value: '' })">Add something 1</button>
+  <div class="pulsar-editor"></div>
 </template>

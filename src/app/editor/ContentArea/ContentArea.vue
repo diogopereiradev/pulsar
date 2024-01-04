@@ -28,11 +28,11 @@ onBeforeMount(() => {
 
 <template>
   <div 
-    class="w-full h-screen px-12 py-7 2xl:overflow-y-scroll"
+    class="w-full h-screen px-12 pt-7 2xl:overflow-y-scroll"
     :style="{ backgroundColor: docSaver.data.value.unsavedData.colors.background }"
   >
     <MobileNavbar @open="mobileNavigationIsOpen = true" />
-    <div class="flex pt-10">
+    <div class="flex h-full pt-10">
       <!--Navigation Menu-->
       <div :class="`
         mobile-navigationmenu-dinamic-bg
@@ -59,7 +59,7 @@ onBeforeMount(() => {
         <NavigationMenu />
       </div>
       <!--Markdown Editor-->
-      <div class="w-full flex flex-col break-words overflow-hidden 2xl:px-6 pt-1.5">
+      <div class="w-full h-full flex flex-col break-words 2xl:px-6 pt-1.5">
         <SaveStatusElement />
         <!--Editor-->
         <PulsarEditor

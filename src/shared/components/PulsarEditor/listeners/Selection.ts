@@ -29,6 +29,82 @@ export class Selection {
     });
   }
 
+  static createSelectionBox(editor: EditorInstance) {
+    const box = document.createElement('div');
+
+    box.classList.add('pulsar-editor-selection-box');
+
+    editor.dom.blocksContainer?.addEventListener('mousedown', (ev) => {
+      editor.selection.selectionBox.range.start = {
+        x: ev.pageX,
+        y: ev.pageY
+      };
+      editor.selection.selectionBox.isDragging = true;
+      box.style.opacity = '1';
+    });
+
+    window?.addEventListener('mouseup', (ev) => {
+      editor.selection.selectionBox.range.start = { x: 0, y: 0 };
+      editor.selection.selectionBox.range.end = { x: 0, y: 0 };
+      editor.selection.selectionBox.isDragging = false;
+      box.style.opacity = '0';
+    });
+
+    window?.addEventListener('mousemove', (ev) => {
+      if(!editor.selection.selectionBox.isDragging) return;
+      editor.selection.selectionBox.range.end = {
+        x: ev.pageX,
+        y: ev.pageY
+      };
+      window.getSelection()?.removeAllRanges();
+
+      const blocks = document.querySelectorAll('.pulsar-editor-block');
+      
+      blocks.forEach(block => {
+        const rectBlock = block.getBoundingClientRect();
+        const rectSelection = box.getBoundingClientRect();
+        const blockId = (block as HTMLDivElement).dataset.blockId;
+
+        if (
+          rectBlock.left < rectSelection.right &&
+          rectBlock.right > rectSelection.left &&
+          rectBlock.top < rectSelection.bottom &&
+          rectBlock.bottom > rectSelection.top
+        ) {
+          Block.select(editor, blockId!);
+        } else {
+          Block.unselect(editor, blockId!);
+        }
+      });
+    });
+
+    watch(() => editor.selection.selectionBox.range, range => {
+      const width = range.end.x === 0? 0 : range.start.x - range.end.x;
+      const height = range.end.y === 0? 0 : range.start.y - range.end.y;
+
+      // Bottom-Right
+      if(width < 0 && height < 0) {
+        box.style.transform = 'rotate(0deg)';
+      // Top-Left
+      } else if(width > 0 && height > 0) {
+        box.style.transform = 'rotateX(180deg) rotateY(180deg)';
+      // Top-Right
+      } else if(width < 0 && height > 0) {
+        box.style.transform = 'rotateX(180deg) rotateY(0deg)';
+      // Bottom-Left
+      } else if(width > 0 && height < 0) {
+        box.style.transform = 'rotateX(0deg) rotateY(180deg)';
+      }
+
+      box.style.left = `${range.start.x}px`;
+      box.style.top = `${range.start.y}px`;
+      box.style.width = `${Math.abs(width)}px`;
+      box.style.height = `${Math.abs(height)}px`;
+    }, { deep: true });
+
+    editor.dom.blocksContainer?.appendChild(box);
+  }
+
   private static getRealCaretPos(): number | undefined {
     const sel = window.getSelection();
 

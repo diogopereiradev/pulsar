@@ -189,12 +189,6 @@ export class WritableView {
           }
         });
         navigator.clipboard.writeText(result);
-      },
-
-      'Delete': (editor, view, ev) => {
-        editor.selection.selectedBlocks?.forEach(bid => {
-          Block.destroy(editor, bid);
-        });
       }
     };
   }

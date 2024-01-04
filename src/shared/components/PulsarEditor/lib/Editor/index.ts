@@ -1,5 +1,6 @@
 import { EditorInstance, EditorOptions } from '../../@types/Editor';
-import { DefaultStyles } from '../../EditorStyles';
+import { EditorShortcuts } from './EditorShortcuts';
+import { DefaultStyles } from './EditorStyles';
 import { Renderer } from '../../listeners/Renderer';
 import { Selection } from '../../listeners/Selection';
 import { StyleManager } from '../../listeners/StyleManager';
@@ -8,6 +9,7 @@ import { focusNextInput } from './commands/focusNextInput';
 import { focusPreviousInput } from './commands/focusPreviousInput';
 import { setBlock } from './commands/setBlock';
 import { getOutput } from './utils/getOutput';
+import { EditorEvents } from './EditorEvents';
 
 export class Editor {
   static create(options: EditorOptions): EditorInstance {
@@ -22,7 +24,14 @@ export class Editor {
         offset: undefined,
         node: undefined,
         text: undefined,
-        selectedBlocks: []
+        selectedBlocks: [],
+        selectionBox: {
+          isDragging: false,
+          range: {
+            start: { x: 0, y: 0 },
+            end: { x: 0, y: 0 }
+          }
+        }
       },
       dom: {
         editorStyles: undefined,
@@ -58,6 +67,8 @@ export class Editor {
     Renderer.create(editor);
     Selection.create(editor);
     StyleManager.create(editor);
+    EditorShortcuts.create(editor);
+    EditorEvents.create(editor);
 
     onMounted(() => {
       const holder = document.querySelector<HTMLElement>(options.holder);
@@ -76,6 +87,7 @@ export class Editor {
         holder.appendChild(blocksContainer);
 
         StyleManager.append(editor, DefaultStyles());
+        Selection.createSelectionBox(editor);
       } else {
         console.error(`[PulsarEditor] The holder ${options.holder} was not found!`);
       }

@@ -27,7 +27,14 @@ export interface EditorInstance {
     offset?: number,
     node?: HTMLElement,
     text?: string,
-    selectedBlocks?: string[]
+    selectedBlocks?: string[],
+    selectionBox: {
+      isDragging: boolean,
+      range: {
+        start: { x: number, y: number },
+        end: { x: number, y: number }
+      }
+    }
   },
   dom: {
     editorStyles: HTMLStyleElement | undefined,
