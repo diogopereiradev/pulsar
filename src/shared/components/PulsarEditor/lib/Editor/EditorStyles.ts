@@ -5,16 +5,72 @@ export function DefaultStyles(): EditorStyles {
     id: 'pulsar-editor-default-styles',
     css: (editor) => /* css */`
       .pulsar-editor {
+        display: inline-block;
+        display: flex;
+        word-break: break-all;
         height: 100%;
       }
 
       .pulsar-editor-blocks {
+        width: 100%;
         height: 100%;
         padding-bottom: 28px;
       }
 
       .pulsar-editor-block {
         transition: .3s;
+      }
+
+      .pulsar-editor-blocks-toolbar {
+        min-width: 70px;
+        height: 100%;
+        padding-right: 10px;
+      }
+
+      .pulsar-editor-blocks-toolbar-buttons {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        gap: 1px;
+      }
+
+      .pulsar-editor-toolbar-createblocks-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 25px;
+        min-height: 25px;
+        background-color: transparent;
+        border-radius: 3px;
+        color: ${editor.theme.text}90;
+        font-size: 16px;
+        transition: .3s;
+      }
+
+      .pulsar-editor-toolbar-createblocks-button:hover {
+        background-color: ${editor.theme.text}30;
+      }
+
+      .pulsar-editor-toolbar-blockoptions-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 25px;
+        min-height: 25px;
+        background-color: transparent;
+        border-radius: 3px;
+        color: ${editor.theme.text}90;
+        font-size: 16px;
+        transition: .3s;
+      }
+
+      .pulsar-editor-toolbar-blockoptions-button:hover {
+        background-color: ${editor.theme.text}30;
+      }
+
+      .pulsar-editor-toolbar-blockoptions-button div {
+        display: flex;
+        gap: 2px;
       }
 
       .pulsar-editor-block.pulsar-editor-selected {
@@ -31,6 +87,12 @@ export function DefaultStyles(): EditorStyles {
         border-width: 2px;
         pointer-events: none;
         opacity: 0;
+      }
+
+      @media screen and (max-width: 768px) {
+        .pulsar-editor-blocks-toolbar {
+          display: none;
+        }
       }
     `
   };

@@ -23,6 +23,7 @@ library.add(...[
   SolidIcons.faItalic,
   SolidIcons.faStrikethrough,
   SolidIcons.faLink,
+  SolidIcons.faEllipsisVertical,
   SolidIcons.faCode,
   SolidIcons.faTable,
   SolidIcons.faImage,

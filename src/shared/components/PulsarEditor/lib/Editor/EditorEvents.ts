@@ -1,5 +1,6 @@
 import { EditorInstance } from '../../@types/Editor';
 import { Block } from '../Block';
+import { BlockToolbar } from '../BlockToolbar';
 
 export class EditorEvents {
   static create(editor: EditorInstance) {
@@ -10,6 +11,10 @@ export class EditorEvents {
       selectedBlocks?.forEach(block => {
         Block.unselect(editor, block);
       });  
+    });
+
+    window.addEventListener('resize', () => {
+      BlockToolbar.moveToBlock(editor, editor.output.blocks[0].id);
     });
   }
 }

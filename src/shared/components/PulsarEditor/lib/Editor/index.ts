@@ -10,6 +10,7 @@ import { focusPreviousInput } from './commands/focusPreviousInput';
 import { setBlock } from './commands/setBlock';
 import { getOutput } from './utils/getOutput';
 import { EditorEvents } from './EditorEvents';
+import { BlockToolbar } from '../BlockToolbar';
 
 export class Editor {
   static create(options: EditorOptions): EditorInstance {
@@ -21,7 +22,7 @@ export class Editor {
       getOutput: () => getOutput(editor),
       theme: options.theme,
       selection: {
-        offset: undefined,
+        offset: 0,
         node: undefined,
         text: undefined,
         selectedBlocks: [],
@@ -32,6 +33,9 @@ export class Editor {
             end: { x: 0, y: 0 }
           }
         }
+      },
+      toolbar: {
+        currentBlock: ''
       },
       dom: {
         editorStyles: undefined,
@@ -84,10 +88,16 @@ export class Editor {
         editor.dom.blocksContainer = blocksContainer;
 
         holder.appendChild(editorStyles);
+        holder.appendChild(BlockToolbar.create(editor));
         holder.appendChild(blocksContainer);
 
         StyleManager.append(editor, DefaultStyles());
         Selection.createSelectionBox(editor);
+        editor.commands.setBlock('paragraph', {
+          value: ''
+        });
+
+        editor.toolbar.currentBlock = editor.output.blocks[0].id;
       } else {
         console.error(`[PulsarEditor] The holder ${options.holder} was not found!`);
       }

@@ -5,6 +5,8 @@ export const Paragraph = Plugin.create({
   name: 'paragraph',
   type: 'text',
   addView(editor, options) {
+    const plugin = editor.plugins.find(p => p.name === this.name);
+
     return {
       tag: 'div',
       childs: WritableView.create(editor, {
@@ -16,12 +18,17 @@ export const Paragraph = Plugin.create({
             value: 'pulsar-editor-paragraph'
           }
         ],
-        placeholder: 'Type something',
+        placeholder: {
+          value: plugin?.storage.placeholder as string || '',
+          alwaysShowWhenEmpty: editor.output.blocks.length === 1
+        },
         value: options.value || ''
       })
     };
   },
-  addOnCopy(editor, block) {
-    return block.value as string || '';
-  },
+  addStorage() {
+    return {
+      placeholder: ''
+    };
+  }
 });

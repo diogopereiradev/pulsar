@@ -4,7 +4,7 @@ import { Block } from '../Block';
 export class EditorShortcuts {
   static create(editor: EditorInstance) {
     window.addEventListener('keyup', (ev) => {
-      if(ev.key === 'Delete') {
+      if(ev.key === 'Delete' || ev.key === 'Backspace') {
         editor.selection.selectedBlocks?.forEach(blockId => {
           Block.destroy(editor, blockId);
         });

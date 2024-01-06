@@ -1,4 +1,5 @@
 import { EditorInstance } from '../../../@types/Editor';
+import { Selection } from '../../../listeners/Selection';
 
 export function focusPreviousInput(editor: EditorInstance) {
   const inputs = Array.from(document.querySelectorAll<HTMLElement>('.pulsar-editor-writable-area'));
@@ -20,6 +21,7 @@ export function focusPreviousInput(editor: EditorInstance) {
       sel?.addRange(range);
 
       editor.view.currentSelectedInputPos = previousInputPos;
+      editor.selection.offset = Selection.getRealCaretPos();
     }
   }
 }

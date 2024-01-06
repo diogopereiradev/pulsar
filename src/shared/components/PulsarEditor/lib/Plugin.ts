@@ -1,21 +1,29 @@
-import { PluginInstance, PluginOptions } from '../@types/Plugin';
+import { PluginConfig, PluginInstance, PluginOptions } from '../@types/Plugin';
 import { NodeView } from './NodeView';
 
 export class Plugin {
-  static create(options: PluginOptions): PluginInstance {
+  private static configure(options: PluginConfig, pluginOptions: PluginOptions): PluginInstance {
     return {
-      name: options.name,
-      type: options.type,
+      name: pluginOptions.name,
+      type: pluginOptions.type,
       view: {
-        schema: (editor, op) => options.addView(editor, op),
-        node: (editor, op) => NodeView(options.addView(editor, op))
+        schema: (editor, op) => pluginOptions.addView(editor, op),
+        node: (editor, op) => NodeView(pluginOptions.addView(editor, op))
       },
-      shortcuts: options.addShortcuts?.(),
-      styles: options.addStyles,
-      onCopy: options.addOnCopy,
-      onRender: options.addOnRender,
-      onSelected: options.addOnSelected,
-      onUnselected: options.addOnUnselected
+      shortcuts: pluginOptions.addShortcuts?.(),
+      storage: options.storage || pluginOptions.addStorage?.(),
+      styles: pluginOptions.addStyles,
+      onCopy: pluginOptions.addOnCopy,
+      onPaste: pluginOptions.addOnPaste,
+      onRender: pluginOptions.addOnRender,
+      onSelected: pluginOptions.addOnSelected,
+      onUnselected: pluginOptions.addOnUnselected
+    }
+  }
+
+  static create(options: PluginOptions): { configure: (options: PluginConfig) => PluginInstance } {
+    return {
+      configure: (config: PluginConfig) => this.configure(config, options)
     }
   }
 }

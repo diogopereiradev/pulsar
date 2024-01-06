@@ -105,16 +105,16 @@ export class Selection {
     editor.dom.blocksContainer?.appendChild(box);
   }
 
-  private static getRealCaretPos(): number | undefined {
+  static getRealCaretPos(): number {
     const sel = window.getSelection();
 
-    if(!sel || !sel.anchorNode) return undefined;
+    if(!sel || !sel.anchorNode) return 0;
 
     const textNodes = Array.from(sel.anchorNode.parentElement!.childNodes.values());
     const currentTextNode = sel.anchorNode;
     const currentTextNodeIndex = textNodes.findIndex(node => node === currentTextNode);
 
-    if(currentTextNodeIndex === -1) return undefined;
+    if(currentTextNodeIndex === -1) return 0;
 
     let caretPos = 0;
     const nodesBeforeCurrent = textNodes.filter((n, i) => i < currentTextNodeIndex && n);

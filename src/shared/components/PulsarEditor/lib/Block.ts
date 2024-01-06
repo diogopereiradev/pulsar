@@ -1,6 +1,7 @@
 import { EditorBlock } from '../@types/Block';
 import { generateId } from './utils/generateId';
 import { EditorCommandBlockOptions, EditorInstance } from '../@types/Editor';
+import { BlockToolbar } from './BlockToolbar';
 
 export class Block {
   static create(blockname: string, options?: EditorCommandBlockOptions): EditorBlock {
@@ -53,11 +54,14 @@ export class Block {
     }
   }
 
-  static node(block: EditorBlock, view: HTMLElement) {
+  static node(editor: EditorInstance, block: EditorBlock, view: HTMLElement) {
     const blockDom = document.createElement('div');
 
     blockDom.classList.add('pulsar-editor-block');
     blockDom.setAttribute('data-block-id', block.id);
+    blockDom.addEventListener('mouseenter', (ev) => {
+      BlockToolbar.moveToBlock(editor, block.id);
+    });
     
     const blockContent = document.createElement('div');
 

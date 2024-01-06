@@ -5,7 +5,8 @@ export interface PluginOptions {
   name: string,
   type: 'block' | 'text',
   addView(editor: EditorInstance, options: EditorCommandBlockOptions): PluginView,
-  addOnCopy(editor: EditorInstance, block: EditorBlock): string,
+  addOnPaste?(editor: EditorInstance, value: string): void,
+  addOnCopy?(editor: EditorInstance, block: EditorBlock): string,
   addStyles?(editor: EditorInstance, block: EditorBlock): EditorStyles,
   addStorage?(): PluginStorage,
   addShortcuts?(): PluginShortcut,
@@ -17,13 +18,15 @@ export interface PluginOptions {
 export interface PluginInstance {
   name: string,
   type: 'block' | 'text',
+  storage: PluginStorage,
   view: {
     schema: (editor: EditorInstance, options: EditorCommandBlockOptions) => PluginView,
     node: (editor: EditorInstance, options: EditorCommandBlockOptions) => HTMLElement
   },
   shortcuts?: PluginShortcut,
   styles?(editor: EditorInstance, block: EditorBlock): EditorStyles,
-  onCopy(editor: EditorInstance, block: EditorBlock): string
+  onCopy?(editor: EditorInstance, block: EditorBlock): string,
+  onPaste?(editor: EditorInstance, value: string): void,
   onSelected?(editor: EditorInstance, block: EditorBlock): void,
   onUnselected?(editor: EditorInstance, block: EditorBlock): void,
   onRender?(editor: EditorInstance, block: EditorBlock): void
@@ -46,6 +49,9 @@ export type PluginShortcut = {
   [key: string]: (editor: EditorInstance, block: EditorBlock) => void
 };
 
+export type PluginConfig = {
+  storage: PluginStorage
+};
 
 export type PluginHTMLTags = 
   'p' | 

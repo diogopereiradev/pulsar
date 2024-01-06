@@ -12,7 +12,10 @@ type WritableViewOptions = {
     key: string,
     value: string
   }[],
-  placeholder?: string,
+  placeholder?: {
+    value: string,
+    alwaysShowWhenEmpty: boolean
+  },
   value?: string | string[]
 };
 
@@ -32,9 +35,16 @@ export class WritableView {
     });
     view.classList.add('pulsar-editor-writable-area');
     view.classList.add(options.type === 'multiline'? 'pulsar-editor-writable-area-multiline' : 'pulsar-editor-writable-area-singleline');
+    
+    if(options.placeholder?.alwaysShowWhenEmpty) {
+      view.classList.add('always-placeholder-when-empty');
+    } else {
+      view.classList.add('on-focus-placeholder');
+    }
+
     view.setAttribute('data-wrte-area-id', viewId);
     view.setAttribute('contenteditable', 'true');
-    view.setAttribute('placeholder', options.placeholder || '');
+    view.setAttribute('placeholder', options.placeholder?.value || '');
     view.innerHTML = options.value as string || '';
 
     if(!options.value) view.classList.add('pulsar-editor-empty');
@@ -107,8 +117,8 @@ export class WritableView {
           color: ${editor.theme.text};
           background-color: ${editor.theme.primary}50;
         }
-  
-        .pulsar-editor-writable-area.pulsar-editor-empty:focus:before {
+
+        .pulsar-editor-writable-area.pulsar-editor-empty.always-placeholder-when-empty:before {
           content: attr(placeholder);
           position: absolute;
           font-family: Roboto;
@@ -116,6 +126,18 @@ export class WritableView {
           color: ${editor.theme.text};
           opacity: 0.6;
           cursor: text;
+          pointer-events: none;
+        }
+  
+        .pulsar-editor-writable-area.pulsar-editor-empty.on-focus-placeholder:focus:before {
+          content: attr(placeholder);
+          position: absolute;
+          font-family: Roboto;
+          font-weight: 400;
+          color: ${editor.theme.text};
+          opacity: 0.6;
+          cursor: text;
+          pointer-events: none;
         }
       `
     };
@@ -139,7 +161,11 @@ export class WritableView {
       },
 
       'ArrowLeft': (editor, view, ev) => {
-        if(editor.selection.offset !== 0 || typeof editor.selection.offset === 'undefined') return;
+        const blockDom = getBlockFromChild(view);
+        const blockId = blockDom?.dataset.blockId;
+        const blockPos = editor.output.blocks.findIndex(b => b.id === blockId);
+
+        if(blockPos === 0 || editor.selection.offset !== 0 || typeof editor.selection.offset === 'undefined') return;
         ev.preventDefault();
         editor.commands.focusPreviousInput();
       },
@@ -170,7 +196,7 @@ export class WritableView {
         editor.selection.selectedBlocks = [];
         editor.selection.text = undefined;
         editor.selection.node = undefined;
-        editor.selection.offset = undefined;
+        editor.selection.offset = 0;
       },
 
       'Control-C': (editor, view, ev) => {
@@ -234,13 +260,13 @@ export class WritableView {
     editor.selection.selectedBlocks = [];
     editor.selection.text = undefined;
     editor.selection.node = undefined;
-    editor.selection.offset = undefined;
+    editor.selection.offset = 0;
   }
 
   private static addOnBlur(editor: EditorInstance, viewId: string) {
     editor.selection.selectedBlocks = [];
     editor.selection.text = undefined;
     editor.selection.node = undefined;
-    editor.selection.offset = undefined;
+    editor.selection.offset = 0;
   }
 }

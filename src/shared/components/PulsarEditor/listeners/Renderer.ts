@@ -9,6 +9,10 @@ export class Renderer {
     watch(() => editor.output, out => {
       this.garbageCollector(editor);
 
+      if(out.blocks.length === 0) {
+        editor.commands.setBlock('paragraph', { value: '' });
+      }
+
       out.blocks.forEach(block => {
         this.render(editor, block);
       });
@@ -27,7 +31,7 @@ export class Renderer {
       return;
     }
 
-    const node = Block.node(block, plugin.view.node(editor, { 
+    const node = Block.node(editor, block, plugin.view.node(editor, { 
       data: block.data, 
       value: block.value 
     }));

@@ -24,7 +24,7 @@ export interface EditorInstance {
   theme: EditorThemeColors,
   editable: boolean,
   selection: {
-    offset?: number,
+    offset: number,
     node?: HTMLElement,
     text?: string,
     selectedBlocks?: string[],
@@ -36,6 +36,9 @@ export interface EditorInstance {
       }
     }
   },
+  toolbar: {
+    currentBlock: string
+  }
   dom: {
     editorStyles: HTMLStyleElement | undefined,
     blocksContainer: HTMLElement | undefined
