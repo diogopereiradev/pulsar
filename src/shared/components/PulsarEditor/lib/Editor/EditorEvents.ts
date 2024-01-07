@@ -6,7 +6,7 @@ export class EditorEvents {
   static create(editor: EditorInstance) {
     document.addEventListener('mousedown', (ev) => {
       // Unselect all blocks
-      if(editor.selection.selectionBox.isDragging) return;
+      if(editor.selection.selectionBox.isMoving) return;
       const selectedBlocks = editor.selection.selectedBlocks;
       selectedBlocks?.forEach(block => {
         Block.unselect(editor, block);

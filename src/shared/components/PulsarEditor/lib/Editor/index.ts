@@ -11,6 +11,7 @@ import { setBlock } from './commands/setBlock';
 import { getOutput } from './utils/getOutput';
 import { EditorEvents } from './EditorEvents';
 import { BlockToolbar } from '../BlockToolbar';
+import { BlockToolbarStyles } from '../BlockToolbar/styles';
 
 export class Editor {
   static create(options: EditorOptions): EditorInstance {
@@ -21,6 +22,7 @@ export class Editor {
       },
       getOutput: () => getOutput(editor),
       theme: options.theme,
+      messages: options.messages,
       selection: {
         offset: 0,
         node: undefined,
@@ -28,6 +30,7 @@ export class Editor {
         selectedBlocks: [],
         selectionBox: {
           isDragging: false,
+          isMoving: false,
           range: {
             start: { x: 0, y: 0 },
             end: { x: 0, y: 0 }
@@ -92,6 +95,8 @@ export class Editor {
         holder.appendChild(blocksContainer);
 
         StyleManager.append(editor, DefaultStyles());
+        StyleManager.append(editor, BlockToolbarStyles());
+
         Selection.createSelectionBox(editor);
         editor.commands.setBlock('paragraph', {
           value: ''

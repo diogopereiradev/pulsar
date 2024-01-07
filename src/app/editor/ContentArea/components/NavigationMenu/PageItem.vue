@@ -43,7 +43,7 @@ function handleEditSubmit() {
       @click="$emit('update:pageChange', page.id)"
       :title="page.title"
       class="dinamic-color-page-link max-w-[160px] font-normal truncate duration-300" 
-      :style="{ color: pageSaver.data.value.currentSelectedPage.id === page.id? docSaver.data.value.unsavedData.colors.primary : `${docSaver.data.value.unsavedData.colors.text}70` }"
+      :style="{ color: pageSaver.data.value.currentSelectedPage.id === page.id? docSaver.data.value.unsavedData.colors.primary : `${docSaver.data.value.unsavedData.colors.text}90` }"
     >
       {{ page.title }}
     </button>

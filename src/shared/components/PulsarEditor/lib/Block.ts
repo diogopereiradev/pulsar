@@ -62,6 +62,9 @@ export class Block {
     blockDom.addEventListener('mouseenter', (ev) => {
       BlockToolbar.moveToBlock(editor, block.id);
     });
+    blockDom.addEventListener('click', (ev) => {
+      BlockToolbar.moveToBlock(editor, block.id);
+    });
     
     const blockContent = document.createElement('div');
 

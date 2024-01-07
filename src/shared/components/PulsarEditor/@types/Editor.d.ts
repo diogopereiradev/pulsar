@@ -3,18 +3,12 @@ import { EditorCleanOutput, EditorOutput } from "./Output"
 import { PluginInstance } from "./Plugin"
 
 export interface EditorOptions {
-  /**
-   * The id/class of editor container
-  */
   holder: string,
-  /**
-   * The editor default colors theme
-   */
   theme: EditorThemeColors,
-  /**
-   * default: true
-   */
   editable?: boolean,
+  messages: {
+    [key: string]: string
+  },
   plugins: PluginInstance[]
 }
 
@@ -23,6 +17,9 @@ export interface EditorInstance {
   getOutput(): EditorCleanOutput,
   theme: EditorThemeColors,
   editable: boolean,
+  messages: {
+    [key: string]: string
+  },
   selection: {
     offset: number,
     node?: HTMLElement,
@@ -30,6 +27,7 @@ export interface EditorInstance {
     selectedBlocks?: string[],
     selectionBox: {
       isDragging: boolean,
+      isMoving: boolean,
       range: {
         start: { x: number, y: number },
         end: { x: number, y: number }

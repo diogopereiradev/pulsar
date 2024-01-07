@@ -19,7 +19,7 @@ export const Paragraph = Plugin.create({
           }
         ],
         placeholder: {
-          value: plugin?.storage.placeholder as string || '',
+          value: plugin?.storage?.placeholder as string || '',
           alwaysShowWhenEmpty: editor.output.blocks.length === 1
         },
         value: options.value || ''

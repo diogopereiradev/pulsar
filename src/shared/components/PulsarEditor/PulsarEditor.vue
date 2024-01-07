@@ -3,11 +3,17 @@ import { EditorThemeColors } from './@types/Editor';
 import { Editor } from './lib/Editor';
 import { Paragraph } from './plugins/Paragraph';
 
+const { t } = useI18n();
 const props = defineProps<{ theme: EditorThemeColors }>();
 const editor = Editor.create({
   holder: '.pulsar-editor',
+  messages: {
+    notfound: t('pulsareditor.notfound')
+  },
   plugins: [
     Paragraph.configure({
+      menuName: t('pulsareditor.plugin-paragraph'),
+      menuIcon: 'fa-solid fa-t',
       storage: {
         placeholder: 'Type \"/\" to see the options',
       }
@@ -19,7 +25,5 @@ const editor = Editor.create({
 </script>
 
 <template>
-  <div class="text-white">{{ editor }}</div>
-  <button @click="editor.commands.setBlock('paragraph', { value: '' })">Add paragraph</button>
   <div class="pulsar-editor"></div>
 </template>

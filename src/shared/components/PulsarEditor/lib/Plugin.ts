@@ -5,6 +5,8 @@ export class Plugin {
   private static configure(options: PluginConfig, pluginOptions: PluginOptions): PluginInstance {
     return {
       name: pluginOptions.name,
+      menuName: options.menuName,
+      menuIcon: options.menuIcon,
       type: pluginOptions.type,
       view: {
         schema: (editor, op) => pluginOptions.addView(editor, op),

@@ -17,8 +17,10 @@ export interface PluginOptions {
 
 export interface PluginInstance {
   name: string,
+  menuName: string,
+  menuIcon: string,
   type: 'block' | 'text',
-  storage: PluginStorage,
+  storage?: PluginStorage,
   view: {
     schema: (editor: EditorInstance, options: EditorCommandBlockOptions) => PluginView,
     node: (editor: EditorInstance, options: EditorCommandBlockOptions) => HTMLElement
@@ -50,7 +52,9 @@ export type PluginShortcut = {
 };
 
 export type PluginConfig = {
-  storage: PluginStorage
+  menuName: string,
+  menuIcon: string,
+  storage?: PluginStorage
 };
 
 export type PluginHTMLTags = 

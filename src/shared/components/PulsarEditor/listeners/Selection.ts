@@ -2,6 +2,8 @@ import { EditorInstance } from '../@types/Editor';
 import { Block } from '../lib/Block';
 
 export class Selection {
+  private static selectionBoxIsMovingTimer: NodeJS.Timeout;
+
   static create(editor: EditorInstance) {
     watch(() => editor.selection.selectedBlocks, selectedblocks => {
       const DOMBlocks = document.querySelectorAll<HTMLElement>('.pulsar-editor-block');
@@ -56,6 +58,11 @@ export class Selection {
         x: ev.pageX,
         y: ev.pageY
       };
+
+      if(this.selectionBoxIsMovingTimer) clearTimeout(this.selectionBoxIsMovingTimer);
+      this.selectionBoxIsMovingTimer = setTimeout(() => {
+        editor.selection.selectionBox.isMoving = false;
+      }, 100);
       window.getSelection()?.removeAllRanges();
 
       const blocks = document.querySelectorAll('.pulsar-editor-block');

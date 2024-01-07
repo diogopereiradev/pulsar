@@ -29,35 +29,9 @@
     "donate-buy-me-a-coffe-description": "Ajude o desenvolvedor desse projeto com uma doação no Buy me a coffe.",
     "donate-pix-description": "Ajude o desenvolvedor desse projeto com uma doação no Pix."
   },
-  "markdowneditor": {
-    "is-empty-message": "está vazio",
-    "line-is-empty-placeholder": "Digite \"/\" para ver as opções",
-    "slashcommands-popup-title": "Comandos",
-    "slashcommands-popup-search-bar-placeholder": "Pesquisar comandos",
-    "slashcommands-popup-table-title": "Tabela",
-    "slashcommands-popup-table-description": "Crie tabelas facilmente ajustáveis",
-    "slashcommands-popup-table-floatingmenu-line": "Linha",
-    "slashcommands-popup-table-floatingmenu-column": "Coluna",
-    "slashcommands-popup-table-floatingmenu-removetable": "Remover tabela",
-    "slashcommands-popup-image-title": "Imagem",
-    "slashcommands-popup-image-description": "Adicione imagens à página",
-    "slashcommands-popup-bulletlist-title": "Lista",
-    "slashcommands-popup-bulletlist-description": "Adiciona listas à página",
-    "slashcommands-popup-codeblocks-title": "Blocos de Código",
-    "slashcommands-popup-codeblocks-description": "Adiciona blocos de códigos à página",
-    "slashcommands-popup-numberedlist-title": "Lista Númerada",
-    "slashcommands-popup-numberedlist-description": "Adiciona listas númeradas à página",
-    "slashcommands-popup-heading-1-title": "Cabeçalho 1",
-    "slashcommands-popup-heading-1-description": "Adiciona cabeçalho 1 à página",
-    "slashcommands-popup-heading-2-title": "Cabeçalho 2",
-    "slashcommands-popup-heading-2-description": "Adiciona cabeçalho 2 à página",
-    "slashcommands-popup-heading-3-title": "Cabeçalho 3",
-    "slashcommands-popup-heading-3-description": "Adiciona cabeçalho 3 à página",
-    "slashcommands-popup-heading-4-title": "Cabeçalho 4",
-    "slashcommands-popup-heading-4-description": "Adiciona cabeçalho 4 à página",
-    "slashcommands-popup-divider-title": "Separador",
-    "slashcommands-popup-divider-description": "Adiciona um separador à página",
-    "slashcommands-popup-no-commands-found-message": "Nenhum comando encontrado"
+  "pulsareditor": {
+    "notfound": "Nada encontrado",
+    "plugin-paragraph": "Parágrafo"
   },
   "home": {
     "title": "Pulsar - Inicio"

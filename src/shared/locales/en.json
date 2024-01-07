@@ -29,35 +29,9 @@
     "donate-buy-me-a-coffe-description": "Help the developer of this project donating in Buy me a coffe.",
     "donate-pix-description": "Help the developer of this project donating in Pix."
   },
-  "markdowneditor": {
-    "is-empty-message": "is empty",
-    "line-is-empty-placeholder": "Type \"/\" to see the options",
-    "slashcommands-popup-title": "Commands",
-    "slashcommands-popup-search-bar-placeholder": "Search for commands",
-    "slashcommands-popup-table-title": "Table",
-    "slashcommands-popup-table-description": "Create easily adjustable tables",
-    "slashcommands-popup-table-floatingmenu-line": "Line",
-    "slashcommands-popup-table-floatingmenu-column": "Column",
-    "slashcommands-popup-table-floatingmenu-removetable": "Remove table",
-    "slashcommands-popup-image-title": "Image",
-    "slashcommands-popup-image-description": "Add images to the page",
-    "slashcommands-popup-bulletlist-title": "Bullet List",
-    "slashcommands-popup-bulletlist-description": "Add bullet lists to the page",
-    "slashcommands-popup-codeblocks-title": "Code Block",
-    "slashcommands-popup-codeblocks-description": "Add highlighted code blocks to the page",
-    "slashcommands-popup-numberedlist-title": "Numbered List",
-    "slashcommands-popup-numberedlist-description": "Add numbered lists to the page",
-    "slashcommands-popup-heading-1-title": "Heading 1",
-    "slashcommands-popup-heading-1-description": "Add heading 1 to the page",
-    "slashcommands-popup-heading-2-title": "Heading 2",
-    "slashcommands-popup-heading-2-description": "Add heading 2 to the page",
-    "slashcommands-popup-heading-3-title": "Heading 3",
-    "slashcommands-popup-heading-3-description": "Add heading 3 to the page",
-    "slashcommands-popup-heading-4-title": "Heading 4",
-    "slashcommands-popup-heading-4-description": "Add heading 4 to the page",
-    "slashcommands-popup-divider-title": "Divider",
-    "slashcommands-popup-divider-description": "Add a divider to the page",
-    "slashcommands-popup-no-commands-found-message": "No commands found"
+  "pulsareditor": {
+    "notfound": "Not found",
+    "plugin-paragraph": "Paragraph"
   },
   "home": {
     "title": "Pulsar - Home"

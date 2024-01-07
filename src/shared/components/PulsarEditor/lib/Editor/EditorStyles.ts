@@ -90,8 +90,33 @@ export function DefaultStyles(): EditorStyles {
       }
 
       @media screen and (max-width: 768px) {
-        .pulsar-editor-blocks-toolbar {
-          display: none;
+        .pulsar-editor {
+          flex-direction: column-reverse;
+        }
+
+        .pulsar-editor-blocks-toolbar-buttons {
+          gap: 10px;
+          margin-top: 35px;
+        }
+
+        .pulsar-editor-toolbar-createblocks-button {
+          width: 35px;
+          height: 35px;
+          background-color: ${editor.theme.primary};
+        }
+
+        .pulsar-editor-toolbar-createblocks-button:hover {
+          background-color: ${editor.theme.primary}60;
+        }
+
+        .pulsar-editor-toolbar-blockoptions-button {
+          width: 35px;
+          height: 35px;
+          background-color: ${editor.theme.primary};
+        }
+  
+        .pulsar-editor-toolbar-blockoptions-button:hover {
+          background-color: ${editor.theme.primary}60;
         }
       }
     `
