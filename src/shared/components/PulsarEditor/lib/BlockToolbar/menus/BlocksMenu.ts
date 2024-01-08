@@ -23,7 +23,7 @@ export class BlocksMenu {
 
     menu.classList.add('pe--tb--blocksmenu');
     menu.appendChild(searchbar);
-    itemsContainer.append(...editor.plugins.map(p => this.menuItem(p)));
+    itemsContainer.append(...editor.plugins.map(p => this.menuItem(editor, p)));
 
     menu.appendChild(itemsContainer);
 
@@ -43,9 +43,9 @@ export class BlocksMenu {
     watch(() => this._state.value.search, (search) => {
       if(search === '') {
         itemsContainer.innerHTML = '';
-        itemsContainer.append(...editor.plugins.map(p => this.menuItem(p)));
+        itemsContainer.append(...editor.plugins.map(p => this.menuItem(editor, p)));
       } else {
-        const filteredItems = editor.plugins.map(p => this.menuItem(p)).filter(item => {
+        const filteredItems = editor.plugins.map(p => this.menuItem(editor, p)).filter(item => {
           const name = item.querySelector('.pe--tb--blocksmenu--item--text')?.textContent || '';
           if(name.match(search)) return item;
         });
@@ -107,13 +107,21 @@ export class BlocksMenu {
     return container;
   }
 
-  private menuItem(plugin: PluginInstance): HTMLButtonElement {
+  private menuItem(editor: EditorInstance, plugin: PluginInstance): HTMLButtonElement {
     const item = document.createElement('button');
     const text = document.createElement('span');
     const icon = document.createElement('div');
     const iconNode = createVNode(h(FontAwesomeIcon, { icon: plugin.menuIcon }));
 
     item.classList.add('pe--tb--blocksmenu--item');
+    item.onclick = () => {
+      const line = editor.output.blocks.findIndex(b => b.id === editor.toolbar.currentBlock);
+      
+      if(line !== -1) {
+        editor.commands.addBlockAt(plugin.name, { line: line + 1, value: undefined });
+      }
+      this.close();
+    };
 
     icon.classList.add('pe--tb--blocksmenu--item--icon');
     render(iconNode, icon);

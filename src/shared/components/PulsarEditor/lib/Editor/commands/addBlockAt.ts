@@ -2,7 +2,7 @@ import { EditorBlock } from '../../../@types/Block';
 import { EditorCommandBlockOptions, EditorInstance } from '../../../@types/Editor';
 import { Block } from '../../Block';
 
-export function setBlock(editor: EditorInstance, blockname: string, options?: EditorCommandBlockOptions) {
+export function addBlockAt(editor: EditorInstance, blockname: string, options: Partial<EditorCommandBlockOptions> & { line: number }) {
   const plugin = editor.plugins.find(p => p.name === blockname);
 
   if(!plugin) return;
@@ -10,8 +10,8 @@ export function setBlock(editor: EditorInstance, blockname: string, options?: Ed
   const block = Block.create(blockname, options);
   const blocks: EditorBlock[] = JSON.parse(JSON.stringify(editor.output.blocks));
 
-  editor.output.blocks = blocks.map(b => b.id === editor.toolbar.currentBlock? block : b);
+  blocks.splice(options.line, 0, block);
+  
+  editor.output.blocks = blocks;
   editor.output.time = Date.now();
-  editor.view.currentSelectedBlock = block.id;
-  editor.toolbar.currentBlock = block.id;
 }

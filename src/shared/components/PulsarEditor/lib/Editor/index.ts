@@ -12,6 +12,7 @@ import { getOutput } from './utils/getOutput';
 import { EditorEvents } from './EditorEvents';
 import { BlockToolbar } from '../BlockToolbar';
 import { BlockToolbarStyles } from '../BlockToolbar/styles';
+import { addBlockAt } from './commands/addBlockAt';
 
 export class Editor {
   static create(options: EditorOptions): EditorInstance {
@@ -47,7 +48,7 @@ export class Editor {
       view: {
         currentSelectedBlock: undefined,
         currentSelectedBlockDOM: undefined,
-        currentSelectedBlockPos: undefined,
+        currentLine: undefined,
         currentSelectedInputPos: undefined,        
         keysPressed: {},
         styles: {
@@ -58,7 +59,7 @@ export class Editor {
       editable: options.editable? options.editable : true,
       plugins: options.plugins,
       commands: {
-        addBlockAt: (blockname, line, options) => {},
+        addBlockAt: (blockname, options) => addBlockAt(editor, blockname, options),
         setBlock: (blockname, options) => setBlock(editor, blockname, options),
         focusBlock: (blockid) => {},
         focusNextBlock: () => {},
@@ -98,7 +99,8 @@ export class Editor {
         StyleManager.append(editor, BlockToolbarStyles());
 
         Selection.createSelectionBox(editor);
-        editor.commands.setBlock('paragraph', {
+        editor.commands.addBlockAt('paragraph', {
+          line: 0,
           value: ''
         });
 

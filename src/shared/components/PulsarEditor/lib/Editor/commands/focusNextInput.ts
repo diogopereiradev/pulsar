@@ -1,4 +1,6 @@
 import { EditorInstance } from '../../../@types/Editor';
+import { BlockToolbar } from '../../BlockToolbar';
+import { getBlockFromChild } from '../../utils/getBlockFromChild';
 
 export function focusNextInput(editor: EditorInstance) {
   const inputs = Array.from(document.querySelectorAll<HTMLElement>('.pulsar-editor-writable-area'));
@@ -20,6 +22,15 @@ export function focusNextInput(editor: EditorInstance) {
       sel?.addRange(range);
 
       editor.view.currentSelectedInputPos = nextInputPos;
+
+      const block = getBlockFromChild(nextInput);
+
+      if(!block) return;
+
+      BlockToolbar.moveToBlock(editor, block.dataset.blockId || '');
+      editor.view.currentSelectedBlock = block.dataset.blockId || undefined;
+      editor.view.currentSelectedBlockDOM = block;
+      editor.view.currentLine = editor.output.blocks.findIndex(b => b.id === block.dataset.blockId);
     }
   }
 }

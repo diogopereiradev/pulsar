@@ -15,7 +15,7 @@ const editor = Editor.create({
       menuName: t('pulsareditor.plugin-paragraph'),
       menuIcon: 'fa-solid fa-t',
       storage: {
-        placeholder: 'Type \"/\" to see the options',
+        placeholder: 'Type \"/\" to see the options'
       }
     })
   ],

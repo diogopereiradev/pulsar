@@ -59,11 +59,16 @@ export class Block {
 
     blockDom.classList.add('pulsar-editor-block');
     blockDom.setAttribute('data-block-id', block.id);
-    blockDom.addEventListener('mouseenter', (ev) => {
+
+    blockDom.addEventListener('mouseenter', () => {
       BlockToolbar.moveToBlock(editor, block.id);
     });
-    blockDom.addEventListener('click', (ev) => {
+
+    blockDom.addEventListener('click', () => {
       BlockToolbar.moveToBlock(editor, block.id);
+      editor.view.currentSelectedBlock = block.id;
+      editor.view.currentSelectedBlockDOM = blockDom;
+      editor.view.currentLine = editor.output.blocks.findIndex(b => b.id === block.id);
     });
     
     const blockContent = document.createElement('div');

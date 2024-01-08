@@ -46,15 +46,15 @@ export interface EditorInstance {
       time: number,
       chunks: EditorStyles[]
     },
-    currentSelectedBlock?: EditorBlock,
+    currentSelectedBlock?: string,
     currentSelectedBlockDOM?: HTMLElement,
-    currentSelectedBlockPos?: number,
+    currentLine?: number,
     currentSelectedInputPos?: number,
     keysPressed?: { [key: string]: boolean }
   },
   plugins: PluginInstance[],
   commands: {
-    addBlockAt(blockname: string, line: number, options?: EditorCommandBlockOptions): void,
+    addBlockAt(blockname: string, options: Partial<EditorCommandBlockOptions> & { line: number }): void,
     setBlock(blockname: string, options?: EditorCommandBlockOptions): void,
     moveBlockUp(blockid: string): void,
     moveBlockDown(blockid: string): void,
