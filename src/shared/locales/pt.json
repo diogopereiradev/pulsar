@@ -33,10 +33,10 @@
     "notfound": "Nada encontrado",
     "searchbar-blocksmenu-placeholder": "Procurar por blocos",
     "searchbar-actionsmenu-placeholder": "Procurar por ações",
-    "plugin-paragraph": "Parágrafo",
-    "plugin-paragraph-action-moveup": "Subir",
-    "plugin-paragraph-action-delete": "Deletar",
-    "plugin-paragraph-action-movedown": "Descer"
+    "actionsmenu-action-moveup": "Subir",
+    "actionsmenu-action-delete": "Deletar",
+    "actionsmenu-action-movedown": "Descer",
+    "plugin-paragraph": "Parágrafo"
   },
   "home": {
     "title": "Pulsar - Inicio"

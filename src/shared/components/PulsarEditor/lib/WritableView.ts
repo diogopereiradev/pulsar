@@ -2,7 +2,6 @@ import { EditorInstance, EditorStyles } from '../@types/Editor';
 import { PluginHTMLTags } from '../@types/Plugin';
 import { StyleManager } from '../listeners/StyleManager';
 import { Block } from './Block';
-import { createRange } from './utils/createRange';
 import { generateId } from './utils/generateId';
 import { getBlockFromChild } from './utils/getBlockFromChild';
 

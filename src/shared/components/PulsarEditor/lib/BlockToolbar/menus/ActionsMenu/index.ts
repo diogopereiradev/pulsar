@@ -1,8 +1,9 @@
-import { EditorInstance } from '../../../@types/Editor';
+import { EditorInstance } from '../../../../@types/Editor';
 import { createVNode, render } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { PluginInstance, PluginMenuAction } from '../../../@types/Plugin';
-import { EditorBlock } from '../../../@types/Block';
+import { PluginInstance, PluginMenuAction } from '../../../../@types/Plugin';
+import { EditorBlock } from '../../../../@types/Block';
+import { defaultActions } from './defaultActions';
 
 type State = {
   isOpen: boolean,
@@ -48,18 +49,20 @@ export class ActionsMenu {
         return;
       }
 
-      const items = plugin?.menuActions?.map(action => this.menuItem(editor, action, block));
+      const dfltActions = defaultActions(editor).map(action => this.menuItem(editor, action, this._state.value.currentBlock!));
+      const actions = plugin?.menuActions?.map(action => this.menuItem(editor, action, block)).concat(dfltActions);
 
-      items && (itemsContainer.innerHTML = '');
-      items && itemsContainer.append(...items);
+      actions && (itemsContainer.innerHTML = '');
+      actions && itemsContainer.append(...actions);
       this._state.value.currentPlugin = plugin;
       this._state.value.currentBlock = block;
     });
 
     watch(() => this._state.value.search, (search) => {
+      const dfltActions = defaultActions(editor).map(action => this.menuItem(editor, action, this._state.value.currentBlock!));
       const actions = this._state.value.currentPlugin?.menuActions?.map(action => {
         return this.menuItem(editor, action, this._state.value.currentBlock!);
-      });
+      }).concat(dfltActions);
 
       if(!actions) return;
 

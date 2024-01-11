@@ -53,7 +53,7 @@ export type PluginShortcut = {
 export type PluginConfig = {
   menuName: string,
   menuIcon: string,
-  menuActions?: PluginMenuAction[],
+  menuActions: PluginMenuAction[],
   storage?: PluginStorage
 };
 

@@ -33,10 +33,10 @@
     "notfound": "Not found",
     "searchbar-blocksmenu-placeholder": "Search for blocks",
     "searchbar-actionsmenu-placeholder": "Search for actions",
-    "plugin-paragraph": "Paragraph",
-    "plugin-paragraph-action-moveup": "Move Up",
-    "plugin-paragraph-action-delete": "Delete",
-    "plugin-paragraph-action-movedown": "Move Down"
+    "actionsmenu-action-moveup": "Move Up",
+    "actionsmenu-action-delete": "Delete",
+    "actionsmenu-action-movedown": "Move Down",
+    "plugin-paragraph": "Paragraph"
   },
   "home": {
     "title": "Pulsar - Home"
