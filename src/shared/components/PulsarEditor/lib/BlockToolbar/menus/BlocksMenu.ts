@@ -5,21 +5,19 @@ import { PluginInstance } from '../../../@types/Plugin';
 
 type State = {
   isOpen: boolean,
-  search: string,
-  blocksMenuItems: HTMLButtonElement[]
+  search: string
 };
 
 export class BlocksMenu {
   private _state = ref<State>({
     isOpen: false,
-    search: '',
-    blocksMenuItems: []
+    search: ''
   });
 
   create(editor: EditorInstance) {
     const menu = document.createElement('div');
     const itemsContainer = document.createElement('div');
-    const searchbar = this.searchBar();
+    const searchbar = this.searchBar(editor);
 
     menu.classList.add('pe--tb--blocksmenu');
     menu.appendChild(searchbar);
@@ -46,8 +44,8 @@ export class BlocksMenu {
         itemsContainer.append(...editor.plugins.map(p => this.menuItem(editor, p)));
       } else {
         const filteredItems = editor.plugins.map(p => this.menuItem(editor, p)).filter(item => {
-          const name = item.querySelector('.pe--tb--blocksmenu--item--text')?.textContent || '';
-          if(name.match(search)) return item;
+          const name = item.querySelector('.pe--tb--blocksmenu--item--text')?.textContent?.toLowerCase() || '';
+          if(name.match(search.toLowerCase())) return item;
         });
         itemsContainer.innerHTML = '';
         itemsContainer.append(...filteredItems);
@@ -83,7 +81,7 @@ export class BlocksMenu {
     this._state.value.isOpen = !this._state.value.isOpen;
   }
 
-  private searchBar(): HTMLElement {
+  private searchBar(editor: EditorInstance): HTMLElement {
     const container = document.createElement('div');
     const input = document.createElement('input');
     const icon = document.createElement('div');
@@ -95,7 +93,7 @@ export class BlocksMenu {
     icon.classList.add('pe--tb--blocksmenu--search--icon');
     
     input.classList.add('pe--tb--blocksmenu--search--input');
-    input.setAttribute('placeholder', 'Search for blocks');
+    input.setAttribute('placeholder', editor.messages.searchbar_blocksmenu_placeholder);
     input.oninput = (ev) => {
       const val = (ev.target as HTMLInputElement).value;
       this._state.value.search = val;

@@ -37,7 +37,7 @@ export class Renderer {
       value: block.value 
     }));
 
-    const line = editor.output.blocks.findIndex(b => b.id === block.id);
+    const line = editor.output.blocks.findIndex(b => b? b.id === block.id : undefined);
 
     if(typeof line !== 'undefined') {
       editor.dom.blocksContainer?.insertBefore(node, editor.dom.blocksContainer.childNodes[line]);

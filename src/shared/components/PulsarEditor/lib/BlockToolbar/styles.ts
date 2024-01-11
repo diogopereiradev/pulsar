@@ -134,6 +134,37 @@ export function BlockToolbarStyles(): EditorStyles {
         transform: scale(1);
       }
 
+      .pe--tb--actionsmenu--search {
+        display: flex;
+        align-items: center;
+      }
+
+      .pe--tb--actionsmenu--search--input {
+        width: 100%;
+        min-height: 35px;
+        border-radius: 6px;
+        font-size: 14px;
+        background-color: ${editor.theme.text}10;
+        padding-left: 40px;
+        padding-right: 10px;
+        color: ${editor.theme.text};
+      }
+
+      .pe--tb--actionsmenu--search--input:focus-visible {
+        outline: 2px solid ${editor.theme.primary};
+      }
+
+      .pe--tb--actionsmenu--search--input::placeholder {
+        color: ${editor.theme.text}60;
+      }
+
+      .pe--tb--actionsmenu--search--icon {
+        position: absolute;
+        left: 18px;
+        font-size: 14px;
+        color: ${editor.theme.text}80;
+      }
+
       .pe--tb--actionsmenu--item {
         display: flex;
         align-items: center;
@@ -165,6 +196,19 @@ export function BlockToolbarStyles(): EditorStyles {
 
       .pe--tb--actionsmenu--item--text {
         color: ${editor.theme.text};
+        font-size: 14px;
+      }
+
+      .pe--tb--actionsmenu--notfound--container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        min-height: 32px;
+      }
+
+      .pe--tb--actionsmenu-notfound-message {
+        color: ${editor.theme.text}80;
         font-size: 14px;
       }
     `

@@ -31,6 +31,8 @@
   },
   "pulsareditor": {
     "notfound": "Nada encontrado",
+    "searchbar-blocksmenu-placeholder": "Procurar por blocos",
+    "searchbar-actionsmenu-placeholder": "Procurar por ações",
     "plugin-paragraph": "Parágrafo",
     "plugin-paragraph-action-moveup": "Subir",
     "plugin-paragraph-action-delete": "Deletar",

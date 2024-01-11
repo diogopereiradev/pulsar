@@ -8,7 +8,9 @@ const props = defineProps<{ theme: EditorThemeColors }>();
 const editor = Editor.create({
   holder: '.pulsar-editor',
   messages: {
-    notfound: t('pulsareditor.notfound')
+    notfound: t('pulsareditor.notfound'),
+    searchbar_blocksmenu_placeholder: t('pulsareditor.searchbar-blocksmenu-placeholder'),
+    searchbar_actionsmenu_placeholder: t('pulsareditor.searchbar-actionsmenu-placeholder'),
   },
   plugins: [
     Paragraph.configure({
