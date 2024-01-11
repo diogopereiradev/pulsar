@@ -2,6 +2,7 @@ import { EditorInstance, EditorStyles } from '../@types/Editor';
 import { PluginHTMLTags } from '../@types/Plugin';
 import { StyleManager } from '../listeners/StyleManager';
 import { Block } from './Block';
+import { createRange } from './utils/createRange';
 import { generateId } from './utils/generateId';
 import { getBlockFromChild } from './utils/getBlockFromChild';
 
@@ -51,7 +52,7 @@ export class WritableView {
 
     StyleManager.append(editor, this.addStyles());
 
-    view.onkeydown = (ev) => this.onKeydown(editor, view, ev);
+    view.onkeydown = (ev) => this.onKeydown(editor, view, ev, options);
     view.onkeyup = (ev) => {
       delete editor.view.keysPressed![ev.key.toLowerCase()];
     };
@@ -63,10 +64,10 @@ export class WritableView {
     return view;
   }
 
-  private static onKeydown(editor: EditorInstance, view: HTMLElement, ev: KeyboardEvent) {
+  private static onKeydown(editor: EditorInstance, view: HTMLElement, ev: KeyboardEvent, options: WritableViewOptions) {
     editor.view.keysPressed![ev.key.toLowerCase()] = true;
     
-    const shortcuts = this.addShortcuts();
+    const shortcuts = this.addShortcuts(options);
 
     Object.keys(shortcuts).forEach(keys => {
       const keyMap = keys.toLowerCase().split('-');
@@ -150,8 +151,14 @@ export class WritableView {
     };
   }
 
-  private static addShortcuts(): WritableAreaShortcut {
+  private static addShortcuts(options: WritableViewOptions): WritableAreaShortcut {
     return {
+      'Enter': (editor, view, ev) => {
+        if(options.type === 'singleline') {
+          ev.preventDefault();
+        }
+      },
+
       'ArrowUp': (editor, view, ev) => {
         if(view.textContent === '') {
           ev.preventDefault();
@@ -198,6 +205,7 @@ export class WritableView {
         if(blockDom && content === '') {
           ev.preventDefault();
           const blockId = blockDom.dataset.blockId;
+          blockId && editor.commands.focusPreviousBlock();
           blockId && editor.commands.deleteBlock(blockId);
           blockId && editor.commands.cursorToEnd();
         }
