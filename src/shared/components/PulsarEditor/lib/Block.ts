@@ -32,7 +32,7 @@ export class Block {
 
   static focus(editor: EditorInstance, blockid: string | undefined) {
     if(!blockid) return;
-    const block = editor.output.blocks.find(b => b.id === blockid);
+    const block = editor.output.blocks.find(b => b? b.id === blockid : undefined);
     const blockDom = editor.dom.blocksContainer?.querySelector(`[data-block-id="${blockid}"]`);
 
     if(!blockDom || !block) return;
@@ -48,8 +48,8 @@ export class Block {
   }
 
   static select(editor: EditorInstance, blockid: string) {
-    const block = editor.output.blocks.find(b => b.id === blockid);
-    const plugin = editor.plugins.find(p => p.name === block?.type);
+    const block = editor.output.blocks.find(b => b? b.id === blockid : undefined);
+    const plugin = editor.plugins.find(p => p? p.name === block?.type : undefined);
 
     if(!block || !plugin) return;
 
@@ -63,7 +63,7 @@ export class Block {
 
   static unselect(editor: EditorInstance, blockid: string) {
     const block = editor.output.blocks.find(b => b? b.id === blockid : undefined);
-    const plugin = editor.plugins.find(p => p.name === block?.type);
+    const plugin = editor.plugins.find(p => p? p.name === block?.type : undefined);
 
     if(!block || !plugin) return;
 
@@ -93,7 +93,7 @@ export class Block {
       BlockToolbar.moveToBlock(editor, block.id);
       editor.view.currentSelectedBlock = block.id;
       editor.view.currentSelectedBlockDOM = blockDom;
-      editor.view.currentLine = editor.output.blocks.findIndex(b => b.id === block.id);
+      editor.view.currentLine = editor.output.blocks.findIndex(b => b? b.id === block.id : undefined);
     });
     
     const blockContent = document.createElement('div');
@@ -106,7 +106,7 @@ export class Block {
   }
 
   private static shortcuts(editor: EditorInstance, block: EditorBlock, ev: KeyboardEvent) {
-    const plugin = editor.plugins.find(p => p.name === block.type);
+    const plugin = editor.plugins.find(p => p? p.name === block.type : undefined);
     const shortcuts = plugin?.shortcuts;
 
     if(!shortcuts) return;

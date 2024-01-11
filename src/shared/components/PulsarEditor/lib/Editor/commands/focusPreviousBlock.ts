@@ -3,7 +3,7 @@ import { Block } from '../../Block';
 
 export function focusPreviousBlock(editor: EditorInstance) {
   const currentBlockId = editor.toolbar.currentBlock;
-  const currentBlock = editor.output.blocks.find(b => b.id === currentBlockId);
+  const currentBlock = editor.output.blocks.find(b => b? b.id === currentBlockId : undefined);
 
   if(!currentBlock) return;
   
