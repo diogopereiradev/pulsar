@@ -19,6 +19,7 @@ import { focusNextBlock } from './commands/focusNextBlock';
 import { moveBlockUp } from './commands/moveBlockUp';
 import { moveBlockDown } from './commands/moveBlockDown';
 import { addBlock } from './commands/addBlock';
+import { cursorToEnd } from './commands/cursorToEnd';
 
 export class Editor {
   static create(options: EditorOptions): EditorInstance {
@@ -76,7 +77,8 @@ export class Editor {
         moveBlockDown: (blockid) => moveBlockDown(editor, blockid),
         focusInput: (inputid) => focusInput(editor, inputid),
         focusNextInput: () => focusNextInput(editor),
-        focusPreviousInput: () => focusPreviousInput(editor)
+        focusPreviousInput: () => focusPreviousInput(editor),
+        cursorToEnd: cursorToEnd,
       }
     });
 

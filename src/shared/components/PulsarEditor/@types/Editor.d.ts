@@ -65,7 +65,8 @@ export interface EditorInstance {
     focusPreviousBlock(): void,
     focusInput(inputid: string): void,
     focusNextInput(): void,
-    focusPreviousInput(): void
+    focusPreviousInput(): void,
+    cursorToEnd(): void
   }
 }
 

@@ -191,6 +191,18 @@ export class WritableView {
         editor.commands.focusNextInput();
       },
 
+      'Backspace': (editor, view, ev) => {
+        const content = view.textContent;
+        const blockDom = getBlockFromChild(view);
+        
+        if(blockDom && content === '') {
+          ev.preventDefault();
+          const blockId = blockDom.dataset.blockId;
+          blockId && editor.commands.deleteBlock(blockId);
+          blockId && editor.commands.cursorToEnd();
+        }
+      },
+
       'Control-A': (editor, view, ev) => {
         if(this.isSelected && editor.selection.text?.replaceAll('\n', '') === view.textContent?.replaceAll('\n', '')) {
           ev.preventDefault();
