@@ -31,7 +31,10 @@
   },
   "pulsareditor": {
     "notfound": "Not found",
-    "plugin-paragraph": "Paragraph"
+    "plugin-paragraph": "Paragraph",
+    "plugin-paragraph-action-moveup": "Move Up",
+    "plugin-paragraph-action-delete": "Delete",
+    "plugin-paragraph-action-movedown": "Move Down"
   },
   "home": {
     "title": "Pulsar - Home"

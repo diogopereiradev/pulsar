@@ -2,13 +2,14 @@ import { EditorInstance } from '../../@types/Editor';
 import { createVNode, render } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { BlocksMenu } from './menus/BlocksMenu';
+import { ActionsMenu } from './menus/ActionsMenu';
 
 export class BlockToolbar {
   static create(editor: EditorInstance): HTMLElement {
     const toolbar = document.createElement('div');
     const buttonsContainer = document.createElement('div');
     const createBlocksButton = this.createBlocksButton(editor);
-    const blockOptionsButton = this.blockOptionsButton();
+    const blockOptionsButton = this.blockOptionsButton(editor);
 
     toolbar.classList.add('pulsar-editor-blocks-toolbar');
 
@@ -56,14 +57,25 @@ export class BlockToolbar {
     return container;
   }
 
-  private static blockOptionsButton() {
+  private static blockOptionsButton(editor: EditorInstance) {
+    const container = document.createElement('div');
     const button = document.createElement('button');
     const node = createVNode(h('div', [
       Array.from({ length: 2 }).map(() => h(FontAwesomeIcon, { icon: 'fa-solid fa-ellipsis-vertical' }))
     ]));
 
+    const actionsMenu = new ActionsMenu();
+    const actionsMenuNode = actionsMenu.create(editor);
+
     render(node, button);
     button.classList.add('pulsar-editor-toolbar-blockoptions-button');
-    return button;
+    button.onclick = () => {
+      actionsMenu.toggle();
+    }
+
+    container.appendChild(button);
+    container.appendChild(actionsMenuNode);
+
+    return container;
   }
 }

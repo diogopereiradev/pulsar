@@ -26,6 +26,16 @@ export const Paragraph = Plugin.create({
       })
     };
   },
+  addShortcuts() {
+    return {
+      'Enter': (editor, block) => {
+        editor.commands.addBlockAt('paragraph', { 
+          line: editor.view.currentLine? editor.view.currentLine + 1 : undefined, 
+          value: undefined 
+        });
+      }
+    }
+  },
   addStorage() {
     return {
       placeholder: ''

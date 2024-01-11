@@ -7,6 +7,7 @@ export class Plugin {
       name: pluginOptions.name,
       menuName: options.menuName,
       menuIcon: options.menuIcon,
+      menuActions: options.menuActions,
       type: pluginOptions.type,
       view: {
         schema: (editor, op) => pluginOptions.addView(editor, op),
@@ -16,7 +17,6 @@ export class Plugin {
       storage: options.storage || pluginOptions.addStorage?.(),
       styles: pluginOptions.addStyles,
       onCopy: pluginOptions.addOnCopy,
-      onPaste: pluginOptions.addOnPaste,
       onRender: pluginOptions.addOnRender,
       onSelected: pluginOptions.addOnSelected,
       onUnselected: pluginOptions.addOnUnselected

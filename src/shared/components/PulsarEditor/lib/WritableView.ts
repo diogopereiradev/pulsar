@@ -57,7 +57,7 @@ export class WritableView {
     };
     view.onclick = () => this.addOnClick(editor, viewId);
     view.oninput = this.addOnChange(editor, view);
-    view.onfocus = () => this.addOnFocus(editor, viewId);
+    view.onfocus = () => this.addOnFocus(editor, view, viewId);
     view.onblur = () => this.addOnBlur(editor, viewId);
 
     return view;
@@ -65,14 +65,21 @@ export class WritableView {
 
   private static onKeydown(editor: EditorInstance, view: HTMLElement, ev: KeyboardEvent) {
     editor.view.keysPressed![ev.key.toLowerCase()] = true;
-
+    
     const shortcuts = this.addShortcuts();
+
     Object.keys(shortcuts).forEach(keys => {
       const keyMap = keys.toLowerCase().split('-');
 
       if(keyMap.length > 2) return;
 
-      if(keyMap.length === 1 && ev.key.toLowerCase() === keyMap[0]) {
+      if(
+        keyMap.length === 1 && 
+        !editor.view.keysPressed!['control'] && 
+        !editor.view.keysPressed!['alt'] && 
+        !editor.view.keysPressed!['shift'] && 
+        ev.key.toLowerCase() === keyMap[0]
+      ) {
         shortcuts[keys]?.(editor, view, ev);
       }
 
@@ -146,6 +153,11 @@ export class WritableView {
   private static addShortcuts(): WritableAreaShortcut {
     return {
       'ArrowUp': (editor, view, ev) => {
+        if(view.textContent === '') {
+          ev.preventDefault();
+          editor.commands.focusPreviousInput();
+        }
+
         if(editor.selection.offset !== 0 || typeof editor.selection.offset === 'undefined') return;
         ev.preventDefault();
         editor.commands.focusPreviousInput();
@@ -215,6 +227,14 @@ export class WritableView {
           }
         });
         navigator.clipboard.writeText(result);
+      },
+
+      'Alt-ArrowUp': (editor, view, ev) => {
+        editor.commands.moveBlockUp(editor.view.currentSelectedBlock || '');
+      },
+
+      'Alt-ArrowDown': (editor, view, ev) => {
+        editor.commands.moveBlockDown(editor.view.currentSelectedBlock || '');
       }
     };
   }
@@ -249,7 +269,7 @@ export class WritableView {
     editor.selection.selectedBlocks = [];
   }
 
-  private static addOnFocus(editor: EditorInstance, viewid: string) {
+  private static addOnFocus(editor: EditorInstance, view: HTMLElement, viewid: string) {
     const inputs = document.querySelectorAll('.pulsar-editor-writable-area');
 
     inputs.forEach((inp, i) => {
@@ -261,6 +281,9 @@ export class WritableView {
     editor.selection.text = undefined;
     editor.selection.node = undefined;
     editor.selection.offset = 0;
+
+    const block = getBlockFromChild(view);
+    Block.focus(editor, block?.dataset.blockId);
   }
 
   private static addOnBlur(editor: EditorInstance, viewId: string) {

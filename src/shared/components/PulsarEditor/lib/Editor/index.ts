@@ -13,6 +13,12 @@ import { EditorEvents } from './EditorEvents';
 import { BlockToolbar } from '../BlockToolbar';
 import { BlockToolbarStyles } from '../BlockToolbar/styles';
 import { addBlockAt } from './commands/addBlockAt';
+import { deleteBlock } from './commands/deleteBlock';
+import { focusPreviousBlock } from './commands/focusPreviousBlock';
+import { focusNextBlock } from './commands/focusNextBlock';
+import { moveBlockUp } from './commands/moveBlockUp';
+import { moveBlockDown } from './commands/moveBlockDown';
+import { addBlock } from './commands/addBlock';
 
 export class Editor {
   static create(options: EditorOptions): EditorInstance {
@@ -59,13 +65,15 @@ export class Editor {
       editable: options.editable? options.editable : true,
       plugins: options.plugins,
       commands: {
+        addBlock: (blockname, options) => addBlock(editor, blockname, options),
         addBlockAt: (blockname, options) => addBlockAt(editor, blockname, options),
         setBlock: (blockname, options) => setBlock(editor, blockname, options),
+        deleteBlock: (blockid) => deleteBlock(editor, blockid),
         focusBlock: (blockid) => {},
-        focusNextBlock: () => {},
-        focusPreviousBlock: () => {},
-        moveBlockUp: (blockid) => {},
-        moveBlockDown: (blockid) => {},
+        focusNextBlock: () => focusNextBlock(editor),
+        focusPreviousBlock: () => focusPreviousBlock(editor),
+        moveBlockUp: (blockid) => moveBlockUp(editor, blockid),
+        moveBlockDown: (blockid) => moveBlockDown(editor, blockid),
         focusInput: (inputid) => focusInput(editor, inputid),
         focusNextInput: () => focusNextInput(editor),
         focusPreviousInput: () => focusPreviousInput(editor)
@@ -100,7 +108,6 @@ export class Editor {
 
         Selection.createSelectionBox(editor);
         editor.commands.addBlockAt('paragraph', {
-          line: 0,
           value: ''
         });
 

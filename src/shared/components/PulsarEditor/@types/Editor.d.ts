@@ -54,8 +54,10 @@ export interface EditorInstance {
   },
   plugins: PluginInstance[],
   commands: {
-    addBlockAt(blockname: string, options: Partial<EditorCommandBlockOptions> & { line: number }): void,
+    addBlock(blockname: string, options: EditorCommandBlockOptions): void,
+    addBlockAt(blockname: string, options: Partial<EditorCommandBlockOptions & { line: number }>): void,
     setBlock(blockname: string, options?: EditorCommandBlockOptions): void,
+    deleteBlock(blockid: string): void,
     moveBlockUp(blockid: string): void,
     moveBlockDown(blockid: string): void,
     focusBlock(blockid: string): void,

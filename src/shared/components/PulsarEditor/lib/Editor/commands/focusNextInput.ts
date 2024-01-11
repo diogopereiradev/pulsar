@@ -1,5 +1,5 @@
 import { EditorInstance } from '../../../@types/Editor';
-import { BlockToolbar } from '../../BlockToolbar';
+import { Block } from '../../Block';
 import { getBlockFromChild } from '../../utils/getBlockFromChild';
 
 export function focusNextInput(editor: EditorInstance) {
@@ -10,7 +10,8 @@ export function focusNextInput(editor: EditorInstance) {
     const nextInput = inputs[nextInputPos];
 
     if(nextInput) {
-      nextInput.focus();
+      const block = getBlockFromChild(nextInput);
+      Block.focus(editor, block?.dataset.blockId);
       
       const sel = window.getSelection();
       const range = document.createRange();
@@ -22,15 +23,6 @@ export function focusNextInput(editor: EditorInstance) {
       sel?.addRange(range);
 
       editor.view.currentSelectedInputPos = nextInputPos;
-
-      const block = getBlockFromChild(nextInput);
-
-      if(!block) return;
-
-      BlockToolbar.moveToBlock(editor, block.dataset.blockId || '');
-      editor.view.currentSelectedBlock = block.dataset.blockId || undefined;
-      editor.view.currentSelectedBlockDOM = block;
-      editor.view.currentLine = editor.output.blocks.findIndex(b => b.id === block.dataset.blockId);
     }
   }
 }

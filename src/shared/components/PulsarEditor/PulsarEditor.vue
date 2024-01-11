@@ -14,6 +14,29 @@ const editor = Editor.create({
     Paragraph.configure({
       menuName: t('pulsareditor.plugin-paragraph'),
       menuIcon: 'fa-solid fa-t',
+      menuActions: [
+        {
+          name: t('pulsareditor.plugin-paragraph-action-moveup'),
+          icon: 'fa-solid fa-chevron-up',
+          run(editor, block) {
+            editor.commands.moveBlockUp(block.id);
+          }
+        },
+        {
+          name: t('pulsareditor.plugin-paragraph-action-delete'),
+          icon: 'fa-solid fa-xmark',
+          run(editor, block) {
+            editor.commands.deleteBlock(block.id);
+          }
+        },
+        {
+          name: t('pulsareditor.plugin-paragraph-action-movedown'),
+          icon: 'fa-solid fa-chevron-down',
+          run(editor, block) {
+            editor.commands.moveBlockDown(block.id);
+          }
+        }
+      ],
       storage: {
         placeholder: 'Type \"/\" to see the options'
       }
@@ -26,4 +49,5 @@ const editor = Editor.create({
 
 <template>
   <div class="pulsar-editor"></div>
+  <div class="text-white">{{ editor.view.currentLine }}</div>
 </template>

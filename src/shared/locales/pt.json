@@ -31,7 +31,10 @@
   },
   "pulsareditor": {
     "notfound": "Nada encontrado",
-    "plugin-paragraph": "Parágrafo"
+    "plugin-paragraph": "Parágrafo",
+    "plugin-paragraph-action-moveup": "Subir",
+    "plugin-paragraph-action-delete": "Deletar",
+    "plugin-paragraph-action-movedown": "Descer"
   },
   "home": {
     "title": "Pulsar - Inicio"

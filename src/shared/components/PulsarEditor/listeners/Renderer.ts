@@ -10,7 +10,7 @@ export class Renderer {
       this.garbageCollector(out.blocks);
 
       if(out.blocks.length === 0) {
-        editor.commands.setBlock('paragraph', { value: '' });
+        editor.commands.addBlock('paragraph', { value: '' });
       }
 
       out.blocks.forEach(block => {
@@ -19,7 +19,8 @@ export class Renderer {
     }, { deep: true });
   }
 
-  private static render(editor: EditorInstance, block: EditorBlock) {
+  private static render(editor: EditorInstance, block?: EditorBlock) {
+    if(!block) return;
     const plugin = editor.plugins.find(p => p.name === block.type);
     const blockDOM = document.querySelector(`[data-block-id="${block.id}"]`);
     
@@ -43,7 +44,10 @@ export class Renderer {
     } else {
       editor.dom.blocksContainer?.appendChild(node);
     }
+
     StyleManager.append(editor, plugin.styles?.(editor, block));
+    Block.focus(editor, block.id);
+    plugin.onRender?.(editor, block);
   }
 
   private static garbageCollector(blocks: EditorBlock[]) {
@@ -54,7 +58,7 @@ export class Renderer {
       
       if(!blockid) return;
       
-      const block = blocks.find(b => b.id === blockid);
+      const block = blocks.find(b => b? b.id === blockid : undefined);
       if(!block || block.editorData.isDeleted) {
         domblock.remove();
       }

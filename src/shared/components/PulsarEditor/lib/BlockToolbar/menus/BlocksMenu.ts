@@ -118,7 +118,7 @@ export class BlocksMenu {
       const line = editor.output.blocks.findIndex(b => b.id === editor.toolbar.currentBlock);
       
       if(line !== -1) {
-        editor.commands.addBlockAt(plugin.name, { line: line + 1, value: undefined });
+        editor.commands.addBlockAt(plugin.name, { line: line + 1, value: String(Math.random()) });
       }
       this.close();
     };

@@ -94,6 +94,10 @@ export function DefaultStyles(): EditorStyles {
           flex-direction: column-reverse;
         }
 
+        .pulsar-editor-blocks-toolbar {
+          z-index: 2;
+        }
+
         .pulsar-editor-blocks-toolbar-buttons {
           gap: 10px;
           margin-top: 35px;
