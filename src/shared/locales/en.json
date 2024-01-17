@@ -36,7 +36,18 @@
     "actionsmenu-action-moveup": "Move Up",
     "actionsmenu-action-delete": "Delete",
     "actionsmenu-action-movedown": "Move Down",
-    "plugin-paragraph": "Paragraph"
+    "plugin-paragraph": "Paragraph",
+    "plugin-paragraph-placeholder": "Press \"Tab\" to see the options",
+    "plugin-codeblock": "CodeBlock",
+    "plugin-codeblock-placeholder": "Type your code",
+    "plugin-heading-1": "Heading 1",
+    "plugin-heading-1-placeholder": "Type in the H1",
+    "plugin-heading-2": "Heading 2",
+    "plugin-heading-2-placeholder": "Type in the H2",
+    "plugin-heading-3": "Heading 3",
+    "plugin-heading-3-placeholder": "Type in the H3",
+    "plugin-heading-4": "Heading 4",
+    "plugin-heading-4-placeholder": "Type in the H4"
   },
   "home": {
     "title": "Pulsar - Home"

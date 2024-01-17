@@ -40,6 +40,7 @@ library.add(...[
   SolidIcons.faCheck,
   SolidIcons.faTerminal,
   SolidIcons.faKeyboard,
+  SolidIcons.faHeading,
   SolidIcons.faCloudArrowUp,
   SolidIcons.faRotate,
   SolidIcons.faPalette,

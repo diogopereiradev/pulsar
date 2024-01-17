@@ -36,7 +36,18 @@
     "actionsmenu-action-moveup": "Subir",
     "actionsmenu-action-delete": "Deletar",
     "actionsmenu-action-movedown": "Descer",
-    "plugin-paragraph": "Parágrafo"
+    "plugin-paragraph": "Parágrafo",
+    "plugin-paragraph-placeholder": "Pressione \"Tab\" para ver a opções",
+    "plugin-codeblock": "Bloco de Código",
+    "plugin-codeblock-placeholder": "Digite seu código",
+    "plugin-heading-1": "Cabeçalho 1",
+    "Plugin-heading-1-placeholder": "Digite no H1",
+    "plugin-heading-2": "Cabeçalho 2",
+    "Plugin-heading-2-placeholder": "Digite no H2",
+    "plugin-heading-3": "Cabeçalho 3",
+    "Plugin-heading-3-placeholder": "Digite no H3",
+    "plugin-heading-4": "Cabeçalho 4",
+    "Plugin-heading-4-placeholder": "Digite no H4"
   },
   "home": {
     "title": "Pulsar - Inicio"

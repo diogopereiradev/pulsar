@@ -12,6 +12,7 @@ export function BlockToolbarStyles(): EditorStyles {
         top: 35px;
         left: 5px;
         width: 200px;
+        max-height: 265px;
         background-color: ${editor.theme.secondary};
         border-radius: 6px;
         padding: 6px;
@@ -22,6 +23,11 @@ export function BlockToolbarStyles(): EditorStyles {
         transform-origin: left top;
         transition: .3s;
         z-index: 999;
+      }
+
+      .pe--tb--blocksmenu--items--container {
+        height: 100%;
+        overflow-y: auto;
       }
 
       .pe--tb--blocksmenu--open {
@@ -47,7 +53,7 @@ export function BlockToolbarStyles(): EditorStyles {
       }
 
       .pe--tb--blocksmenu--search--input:focus-visible {
-        outline: 2px solid ${editor.theme.primary};
+        outline: 2px solid ${editor.theme.primary}60;
       }
 
       .pe--tb--blocksmenu--search--input::placeholder {
@@ -151,7 +157,7 @@ export function BlockToolbarStyles(): EditorStyles {
       }
 
       .pe--tb--actionsmenu--search--input:focus-visible {
-        outline: 2px solid ${editor.theme.primary};
+        outline: 2px solid ${editor.theme.primary}60;
       }
 
       .pe--tb--actionsmenu--search--input::placeholder {

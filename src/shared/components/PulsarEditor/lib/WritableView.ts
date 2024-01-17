@@ -2,6 +2,7 @@ import { EditorInstance, EditorStyles } from '../@types/Editor';
 import { PluginHTMLTags } from '../@types/Plugin';
 import { StyleManager } from '../listeners/StyleManager';
 import { Block } from './Block';
+import { BlockToolbar } from './BlockToolbar';
 import { generateId } from './utils/generateId';
 import { getBlockFromChild } from './utils/getBlockFromChild';
 
@@ -254,6 +255,11 @@ export class WritableView {
 
       'Alt-ArrowDown': (editor, view, ev) => {
         editor.commands.moveBlockDown(editor.view.currentSelectedBlock || '');
+      },
+
+      'Tab': (editor, view, ev) => {
+        ev.preventDefault();
+        BlockToolbar.blocksMenu.open();
       }
     };
   }

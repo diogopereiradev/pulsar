@@ -5,6 +5,9 @@ import { BlocksMenu } from './menus/BlocksMenu';
 import { ActionsMenu } from './menus/ActionsMenu';
 
 export class BlockToolbar {
+  static blocksMenu: BlocksMenu;
+  static actionsMenu: ActionsMenu;
+
   static create(editor: EditorInstance): HTMLElement {
     const toolbar = document.createElement('div');
     const buttonsContainer = document.createElement('div');
@@ -23,6 +26,8 @@ export class BlockToolbar {
   }
 
   static moveToBlock(editor: EditorInstance, blockid: string) {
+    if(this.actionsMenu.isOpen() || this.blocksMenu.isOpen()) return;
+
     const buttonsContainer = document.querySelector<HTMLDivElement>('.pulsar-editor-blocks-toolbar-buttons');
     const blockDom = editor.dom.blocksContainer?.querySelector(`[data-block-id="${blockid}"]`);
     const blockRect = blockDom?.getBoundingClientRect();
@@ -44,6 +49,7 @@ export class BlockToolbar {
 
     const blocksMenu = new BlocksMenu();
     const blocksMenuNode = blocksMenu.create(editor);
+    this.blocksMenu = blocksMenu;
 
     render(node, button);
     button.classList.add('pulsar-editor-toolbar-createblocks-button');
@@ -66,6 +72,7 @@ export class BlockToolbar {
 
     const actionsMenu = new ActionsMenu();
     const actionsMenuNode = actionsMenu.create(editor);
+    this.actionsMenu = actionsMenu;
 
     render(node, button);
     button.classList.add('pulsar-editor-toolbar-blockoptions-button');

@@ -1,8 +1,8 @@
 import { Plugin } from '../lib/Plugin';
 import { WritableView } from '../lib/WritableView';
 
-export const Paragraph = Plugin.create({
-  name: 'paragraph',
+export const Heading4 = Plugin.create({
+  name: 'heading-4',
   type: 'text',
   addView(editor, options) {
     const plugin = editor.plugins.find(p => p.name === this.name);
@@ -10,12 +10,12 @@ export const Paragraph = Plugin.create({
     return {
       tag: 'div',
       childs: WritableView.create(editor, {
-        tag: 'p',
+        tag: 'h4',
         type: 'singleline',
         attributes: [
           {
             key: 'class',
-            value: 'pulsar-editor-paragraph'
+            value: 'pulsar-editor-heading-4'
           }
         ],
         placeholder: {
@@ -45,6 +45,18 @@ export const Paragraph = Plugin.create({
           value: textAfterCaret
         });
       }
+    }
+  },
+  addStyles(editor, block) {
+    return {
+      id: 'plugin-heading-4',
+      css: () => /* css */`
+        .pulsar-editor-heading-4 {
+          font-size: 1.6rem;
+          font-weight: 700;
+          color: ${editor.theme.text};
+        }
+      `
     }
   },
   addStorage() {

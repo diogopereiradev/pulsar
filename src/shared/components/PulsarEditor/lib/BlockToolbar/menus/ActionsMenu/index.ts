@@ -1,11 +1,14 @@
+import { ref } from 'vue';
 import { EditorInstance } from '../../../../@types/Editor';
 import { createVNode, render } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { PluginInstance, PluginMenuAction } from '../../../../@types/Plugin';
 import { EditorBlock } from '../../../../@types/Block';
 import { defaultActions } from './defaultActions';
+import { Block } from '../../../Block';
 
 type State = {
+  editor: EditorInstance | undefined,
   isOpen: boolean,
   currentPlugin?: PluginInstance,
   currentBlock?: EditorBlock,
@@ -14,6 +17,7 @@ type State = {
 
 export class ActionsMenu {
   private _state = ref<State>({
+    editor: undefined,
     isOpen: false,
     currentPlugin: undefined,
     currentBlock: undefined,
@@ -21,6 +25,9 @@ export class ActionsMenu {
   });
 
   create(editor: EditorInstance) {
+    // @ts-expect-error
+    this._state.value.editor = editor;
+
     const menu = document.createElement('div');
     const itemsContainer = document.createElement('div');
     const searchbar = this.searchBar(editor);
@@ -101,7 +108,14 @@ export class ActionsMenu {
   }
 
   open() {
-    this._state.value.isOpen = true;
+    nextTick(() => {
+      this._state.value.isOpen = true;
+      Block.select(this._state.value.editor!, this._state.value.currentBlock?.id || '');
+    }).then(() => {
+      const input = document.querySelector<HTMLInputElement>('.pe--tb--actionsmenu--search--input');
+      if(!input) return;
+      input.focus();
+    });
   }
 
   close() {
@@ -109,7 +123,18 @@ export class ActionsMenu {
   }
 
   toggle() {
-    this._state.value.isOpen = !this._state.value.isOpen;
+    nextTick(() => {
+      this._state.value.isOpen = !this._state.value.isOpen;
+      Block.select(this._state.value.editor!, this._state.value.currentBlock?.id || '');
+    }).then(() => {
+      const input = document.querySelector<HTMLInputElement>('.pe--tb--actionsmenu--search--input');
+      if(!input) return;
+      input.focus();
+    });
+  }
+
+  isOpen() {
+    return this._state.value.isOpen;
   }
 
   private searchBar(editor: EditorInstance): HTMLElement {

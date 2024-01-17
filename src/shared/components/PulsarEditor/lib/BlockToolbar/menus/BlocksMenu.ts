@@ -21,6 +21,8 @@ export class BlocksMenu {
 
     menu.classList.add('pe--tb--blocksmenu');
     menu.appendChild(searchbar);
+
+    itemsContainer.classList.add('pe--tb--blocksmenu--items--container');
     itemsContainer.append(...editor.plugins.map(p => this.menuItem(editor, p)));
 
     menu.appendChild(itemsContainer);
@@ -70,7 +72,14 @@ export class BlocksMenu {
   }
 
   open() {
-    this._state.value.isOpen = true;
+    nextTick(() => {
+      this._state.value.isOpen = true;
+    }).then(() => {
+      const input = document.querySelector<HTMLInputElement>('.pe--tb--blocksmenu--search--input');
+      
+      if(!input) return;
+      input.focus();
+    });
   }
 
   close() {
@@ -78,7 +87,19 @@ export class BlocksMenu {
   }
 
   toggle() {
-    this._state.value.isOpen = !this._state.value.isOpen;
+    nextTick(() => {
+      this._state.value.isOpen = !this._state.value.isOpen;
+    }).then(() => {
+      if(!this._state.value.isOpen) return;
+      const input = document.querySelector<HTMLInputElement>('.pe--tb--blocksmenu--search--input');
+      
+      if(!input) return;
+      input.focus();
+    });
+  }
+
+  isOpen() {
+    return this._state.value.isOpen;
   }
 
   private searchBar(editor: EditorInstance): HTMLElement {
@@ -116,7 +137,7 @@ export class BlocksMenu {
       const line = editor.output.blocks.findIndex(b => b.id === editor.toolbar.currentBlock);
       
       if(line !== -1) {
-        editor.commands.addBlockAt(plugin.name, { line: line + 1, value: String(Math.random()) });
+        editor.commands.addBlockAt(plugin.name, { line: line + 1, value: '' });
       }
       this.close();
     };
