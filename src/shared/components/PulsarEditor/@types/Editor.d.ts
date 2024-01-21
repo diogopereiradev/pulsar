@@ -74,6 +74,13 @@ export type EditorThemeColors = {
   text: string | Ref<string>,
   primary: string | Ref<string>,
   secondary: string | Ref<string>
+  codeBlockText: string | Ref<string>,
+  codeBlockLiteral: string | Ref<string>,
+  codeBlockKeyword: string | Ref<string>,
+  codeBlockSection: string | Ref<string>,
+  codeBlockString: string | Ref<string>,
+  codeBlockVariable: string | Ref<string>,
+  codeBlockComments: string | Ref<string>
 }
 
 export type EditorStyles = {

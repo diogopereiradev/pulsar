@@ -72,7 +72,7 @@ export const CodeBlock = Plugin.create({
           border-radius: 10px;
         }
 
-        .hljs-comment, .hljs-quote { color: #606060; }
+        .hljs-comment, .hljs-quote { color: ${editor.theme.codeBlockComments}; }
 
         .hljs-variable,
         .hljs-template-variable,
@@ -84,7 +84,7 @@ export const CodeBlock = Plugin.create({
         .hljs-name,
         .hljs-selector-id,
         .hljs-selector-class {
-          color: #fff999;
+          color: ${editor.theme.codeBlockVariable};
         }
     
         .hljs-number,
@@ -94,16 +94,16 @@ export const CodeBlock = Plugin.create({
         .hljs-literal,
         .hljs-type,
         .hljs-params {
-          color: #ffff;
+          color: ${editor.theme.codeBlockLiteral};
         }
     
-        .hljs-string, .hljs-symbol, .hljs-bullet { color: #1f1f; }
+        .hljs-string, .hljs-symbol, .hljs-bullet { color: ${editor.theme.codeBlockString}; }
     
-        .hljs-title, .hljs-section { color: #fff999; }
+        .hljs-title, .hljs-section { color: ${editor.theme.codeBlockSection}; }
     
-        .hljs-keyword, .hljs-selector-tag { color: #1f1f; }
+        .hljs-keyword, .hljs-selector-tag { color: ${editor.theme.codeBlockKeyword}; }
     
-        .hljs-emphasis { font-style: italic;}
+        .hljs-emphasis { font-style: italic; }
     
         .hljs-strong { font-weight: 700; }
       `

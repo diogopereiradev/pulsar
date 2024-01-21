@@ -68,6 +68,13 @@ onBeforeMount(() => {
             text: toRef(docSaver.data.value.unsavedData.colors, 'text'),
             primary: toRef(docSaver.data.value.unsavedData.colors, 'primary'),
             secondary: toRef(docSaver.data.value.unsavedData.colors, 'secondary'),
+            codeBlockText: toRef(docSaver.data.value.unsavedData.colors, 'codeBlockText'),
+            codeBlockLiteral: toRef(docSaver.data.value.unsavedData.colors, 'codeBlockLiteral'),
+            codeBlockKeyword: toRef(docSaver.data.value.unsavedData.colors, 'codeBlockKeyword'),
+            codeBlockSection: toRef(docSaver.data.value.unsavedData.colors, 'codeBlockSection'),
+            codeBlockString: toRef(docSaver.data.value.unsavedData.colors, 'codeBlockString'),
+            codeBlockVariable: toRef(docSaver.data.value.unsavedData.colors, 'codeBlockVariable'),
+            codeBlockComments: toRef(docSaver.data.value.unsavedData.colors, 'codeBlockComments'),
           }"
         />
         <!--Editor page loading-->
