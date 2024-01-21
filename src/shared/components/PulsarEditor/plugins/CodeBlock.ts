@@ -55,7 +55,15 @@ export const CodeBlock = Plugin.create({
   addShortcuts() {
     return {
       'Enter': (editor, block) => {
+        const blockDom = editor.dom.blocksContainer?.querySelector(`[data-block-id="${block.id}"]`);
+        const input = blockDom?.querySelector('.pulsar-editor-writable-area');
+        const text = input?.childNodes[0].textContent;
         
+        if(text?.slice(text.length - 4).match('\n\n\n')) {
+          editor.commands.addBlock('paragraph', {
+            value: ''
+          });
+        }
       }
     }
   },
