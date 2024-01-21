@@ -1,11 +1,10 @@
 import { Plugin } from '../lib/Plugin';
 import { WritableView } from '../lib/WritableView';
 import { common, createLowlight } from 'lowlight';
-import javascript from 'highlight.js/lib/languages/javascript';
 import { toHtml } from 'hast-util-to-html';
+import { plainTextPaste } from '../lib/utils/plainTextPaste';
 
 const lowlight = createLowlight(common);
-lowlight.register({ javascript })
 
 export const CodeBlock = Plugin.create({
   name: 'codeblock',
@@ -14,28 +13,43 @@ export const CodeBlock = Plugin.create({
     const plugin = editor.plugins.find(p => p.name === this.name);
 
     return {
-      tag: 'pre',
+      tag: 'div',
       attributes: [
         {
           key: 'class',
           value: 'pulsar-editor-codeblock-container'
         }
       ],
-      childs: WritableView.create(editor, {
-        tag: 'div',
-        type: 'multiline',
-        attributes: [
-          {
-            key: 'class',
-            value: 'pulsar-editor-codeblock'
-          }
-        ],
-        placeholder: {
-          value: plugin?.storage?.placeholder as string || '',
-          alwaysShowWhenEmpty: editor.output.blocks.length === 1
+      childs: [
+        {
+          tag: 'p',
+          attributes: [
+            {
+              key: 'class',
+              value: 'pulsar-editor-codeblock-language-text'
+            }
+          ],
+          childs: 'Waiting for input'
         },
-        value: options.value || ''
-      })
+        {
+          tag: 'div',
+          childs: WritableView.create(editor, {
+            tag: 'div',
+            type: 'multiline',
+            attributes: [
+              {
+                key: 'class',
+                value: 'pulsar-editor-codeblock'
+              }
+            ],
+            placeholder: {
+              value: plugin?.storage?.placeholder as string || '',
+              alwaysShowWhenEmpty: editor.output.blocks.length === 1
+            },
+            value: options.value || ''
+          })
+        }
+      ]
     };
   },
   addShortcuts() {
@@ -48,6 +62,7 @@ export const CodeBlock = Plugin.create({
   addOnUnfocus(editor, block) {
     const blockDom = editor.dom.blocksContainer?.querySelector(`[data-block-id="${block.id}"]`);
     const input = blockDom?.querySelector('.pulsar-editor-writable-area');
+    const langText = blockDom?.querySelector('.pulsar-editor-codeblock-language-text');
 
     if(!input) return;
 
@@ -55,6 +70,9 @@ export const CodeBlock = Plugin.create({
     const highlightedHtml = toHtml(highlight);
 
     if(!highlightedHtml) return;
+    const languageNameLetters = highlight.data!.language!.split('');
+    languageNameLetters[0] = languageNameLetters[0].toUpperCase();
+    langText!.textContent = languageNameLetters.join('') || 'Waiting for input';
     input.innerHTML = highlightedHtml;
   },
   addStyles(editor, block) {
@@ -62,14 +80,32 @@ export const CodeBlock = Plugin.create({
       id: 'plugin-codeblock',
       css: () => /* css */`
         .pulsar-editor-codeblock-container {
+          position: relative;
           padding: 10px 0px;
         }
 
         .pulsar-editor-codeblock {
           width: 100%;
           padding: 15px 25px;
+          padding-top: 50px;
           background-color: ${editor.theme.secondary};
           border-radius: 10px;
+        }
+
+        .pulsar-editor-codeblock-language-text {
+          position: absolute;
+          left: 0px;
+          top: 10px;
+          height: 35px;
+          background-color: ${editor.theme.primary}60;
+          color: ${editor.theme.text};
+          margin-bottom: 20px;
+          padding: 0px 30px;
+          border-top-left-radius: 10px;
+          border-bottom-right-radius: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
         .hljs-comment, .hljs-quote { color: ${editor.theme.codeBlockComments}; }
@@ -108,6 +144,10 @@ export const CodeBlock = Plugin.create({
         .hljs-strong { font-weight: 700; }
       `
     }
+  },
+  addOnPaste(editor, block, ev) {
+    ev.preventDefault();
+    plainTextPaste(ev);
   },
   addStorage() {
     return {

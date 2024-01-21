@@ -60,6 +60,13 @@ export class WritableView {
     view.oninput = this.addOnChange(editor, view);
     view.onfocus = () => this.addOnFocus(editor, view, viewId);
     view.onblur = () => this.addOnBlur(editor, view);
+    view.onpaste = (ev) => {
+      const text = ev.clipboardData?.getData('text/plain') || '';
+
+      if(text !== '' && text) {
+        view.classList.remove('pulsar-editor-empty');
+      }
+    }
 
     return view;
   }

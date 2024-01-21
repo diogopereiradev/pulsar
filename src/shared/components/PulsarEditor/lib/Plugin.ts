@@ -17,6 +17,7 @@ export class Plugin {
       storage: options.storage || pluginOptions.addStorage?.(),
       styles: pluginOptions.addStyles,
       onCopy: pluginOptions.addOnCopy,
+      onPaste: pluginOptions.addOnPaste,
       onRender: pluginOptions.addOnRender,
       onChange: pluginOptions.addOnChange,
       onUnfocus: pluginOptions.addOnUnfocus,

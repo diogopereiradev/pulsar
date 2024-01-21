@@ -76,6 +76,7 @@ export class Block {
   }
 
   static node(editor: EditorInstance, block: EditorBlock, view: HTMLElement) {
+    const plugin = editor.plugins.find(p => p? p.name === block?.type : undefined);
     const blockDom = document.createElement('div');
 
     blockDom.classList.add('pulsar-editor-block');
@@ -95,6 +96,10 @@ export class Block {
       editor.view.currentSelectedBlockDOM = blockDom;
       editor.view.currentLine = editor.output.blocks.findIndex(b => b? b.id === block.id : undefined);
     });
+
+    blockDom.addEventListener('paste', (ev) => {
+      plugin?.onPaste?.(editor, block, ev);
+    })
     
     const blockContent = document.createElement('div');
 
