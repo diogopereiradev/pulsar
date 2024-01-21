@@ -59,7 +59,7 @@ export class WritableView {
     view.onclick = () => this.addOnClick(editor, viewId);
     view.oninput = this.addOnChange(editor, view);
     view.onfocus = () => this.addOnFocus(editor, view, viewId);
-    view.onblur = () => this.addOnBlur(editor, viewId);
+    view.onblur = () => this.addOnBlur(editor, view);
 
     return view;
   }
@@ -67,7 +67,15 @@ export class WritableView {
   private static onKeydown(editor: EditorInstance, view: HTMLElement, ev: KeyboardEvent, options: WritableViewOptions) {
     editor.view.keysPressed![ev.key.toLowerCase()] = true;
     
+    const blockDom = getBlockFromChild(view);
+    const blockId = blockDom?.dataset.blockId;
     const shortcuts = this.addShortcuts(options);
+
+    if(blockId) {
+      const block = editor.output.blocks.find(b => b.id === blockId);
+      const plugin = editor.plugins.find(p => p.name === block?.type);
+      plugin?.onChange?.(editor, block!);
+    }
 
     Object.keys(shortcuts).forEach(keys => {
       const keyMap = keys.toLowerCase().split('-');
@@ -102,18 +110,22 @@ export class WritableView {
           display: inline;
         }
 
+        .pulsar-editor-writable-area-singleline {
+          overflow-wrap: break-word;
+        }
+
         .pulsar-editor-writable-area-multiline {
+          width: 100%;
           display: inline-block;
           white-space: pre-wrap;
+          text-align: left;
         }
   
         .pulsar-editor-writable-area {
-          position: relative;
           font-family: Roboto;
           font-weight: 400;
           color: ${editor.theme.text};
           outline: none;
-          overflow-wrap: break-word;
         }
 
         .pulsar-editor-writable-area::-moz-selection {
@@ -311,7 +323,16 @@ export class WritableView {
     Block.focus(editor, block?.dataset.blockId);
   }
 
-  private static addOnBlur(editor: EditorInstance, viewId: string) {
+  private static addOnBlur(editor: EditorInstance, view: HTMLElement) {
+    const blockDom = getBlockFromChild(view);
+    const blockId = blockDom?.dataset.blockId;
+
+    if(blockId) {
+      const block = editor.output.blocks.find(b => b.id === blockId);
+      const plugin = editor.plugins.find(p => p.name === block?.type);
+      plugin?.onUnfocus?.(editor, block!);
+    }
+
     editor.selection.selectedBlocks = [];
     editor.selection.text = undefined;
     editor.selection.node = undefined;

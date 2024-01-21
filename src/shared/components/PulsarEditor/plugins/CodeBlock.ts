@@ -1,5 +1,11 @@
 import { Plugin } from '../lib/Plugin';
 import { WritableView } from '../lib/WritableView';
+import { common, createLowlight } from 'lowlight';
+import javascript from 'highlight.js/lib/languages/javascript';
+import { toHtml } from 'hast-util-to-html';
+
+const lowlight = createLowlight(common);
+lowlight.register({ javascript })
 
 export const CodeBlock = Plugin.create({
   name: 'codeblock',
@@ -16,7 +22,7 @@ export const CodeBlock = Plugin.create({
         }
       ],
       childs: WritableView.create(editor, {
-        tag: 'code',
+        tag: 'div',
         type: 'multiline',
         attributes: [
           {
@@ -39,6 +45,18 @@ export const CodeBlock = Plugin.create({
       }
     }
   },
+  addOnUnfocus(editor, block) {
+    const blockDom = editor.dom.blocksContainer?.querySelector(`[data-block-id="${block.id}"]`);
+    const input = blockDom?.querySelector('.pulsar-editor-writable-area');
+
+    if(!input) return;
+
+    const highlight = lowlight.highlightAuto(block.value as string);
+    const highlightedHtml = toHtml(highlight);
+
+    if(!highlightedHtml) return;
+    input.innerHTML = highlightedHtml;
+  },
   addStyles(editor, block) {
     return {
       id: 'plugin-codeblock',
@@ -53,6 +71,41 @@ export const CodeBlock = Plugin.create({
           background-color: ${editor.theme.secondary};
           border-radius: 10px;
         }
+
+        .hljs-comment, .hljs-quote { color: #606060; }
+
+        .hljs-variable,
+        .hljs-template-variable,
+        .hljs-attribute,
+        .hljs-tag,
+        .hljs-name,
+        .hljs-regexp,
+        .hljs-link,
+        .hljs-name,
+        .hljs-selector-id,
+        .hljs-selector-class {
+          color: #fff999;
+        }
+    
+        .hljs-number,
+        .hljs-meta,
+        .hljs-built_in,
+        .hljs-builtin-name,
+        .hljs-literal,
+        .hljs-type,
+        .hljs-params {
+          color: #ffff;
+        }
+    
+        .hljs-string, .hljs-symbol, .hljs-bullet { color: #1f1f; }
+    
+        .hljs-title, .hljs-section { color: #fff999; }
+    
+        .hljs-keyword, .hljs-selector-tag { color: #1f1f; }
+    
+        .hljs-emphasis { font-style: italic;}
+    
+        .hljs-strong { font-weight: 700; }
       `
     }
   },

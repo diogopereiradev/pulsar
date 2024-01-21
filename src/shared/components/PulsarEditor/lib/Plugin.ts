@@ -18,6 +18,8 @@ export class Plugin {
       styles: pluginOptions.addStyles,
       onCopy: pluginOptions.addOnCopy,
       onRender: pluginOptions.addOnRender,
+      onChange: pluginOptions.addOnChange,
+      onUnfocus: pluginOptions.addOnUnfocus,
       onSelected: pluginOptions.addOnSelected,
       onUnselected: pluginOptions.addOnUnselected
     }

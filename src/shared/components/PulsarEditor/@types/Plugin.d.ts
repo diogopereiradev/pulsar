@@ -9,8 +9,10 @@ export interface PluginOptions {
   addStyles?(editor: EditorInstance, block: EditorBlock): EditorStyles,
   addStorage?(): PluginStorage,
   addShortcuts?(): PluginShortcut,
+  addOnChange?(editor: EditorInstance, block: EditorBlock): void,
   addOnSelected?(editor: EditorInstance, block: EditorBlock): void,
   addOnUnselected?(editor: EditorInstance, block: EditorBlock): void,
+  addOnUnfocus?(editor: EditorInstance, block: EditorBlock): void,
   addOnRender?(editor: EditorInstance, block: EditorBlock): void
 }
 
@@ -30,7 +32,9 @@ export interface PluginInstance {
   onCopy?(editor: EditorInstance, block: EditorBlock): string,
   onSelected?(editor: EditorInstance, block: EditorBlock): void,
   onUnselected?(editor: EditorInstance, block: EditorBlock): void,
-  onRender?(editor: EditorInstance, block: EditorBlock): void
+  onUnfocus?(editor: EditorInstance, block: EditorBlock): void,
+  onRender?(editor: EditorInstance, block: EditorBlock): void,
+  onChange?(editor: EditorInstance, block: EditorBlock): void
 }
 
 export type PluginView = {
