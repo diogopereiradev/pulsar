@@ -25,7 +25,7 @@
   <hr />
   <h2>Getting Started</h2>
   <p>Getting Started with Pulsar, your gateway to efficient online documentation editing. If you're ready to embark on a journey of creating impeccable documentation pages, you've come to the right place. You can access the project on this url</p>
-  <a href="https://pulsar.diogopereira.tech">https://pulsar.diogopereira.tech</a>
+  <a href="https://pulsar.diogopereira.site">https://pulsar.diogopereira.site</a>
   <br />
   <br />
   <br />
