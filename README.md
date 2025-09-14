@@ -1,11 +1,11 @@
 <div align="center">
   <img width="330" src="./readme-assets/pulsar-logo.webp" alt="pulsar-icon" />
   <div>
-    <img alt="GitHub package.json version (branch)" src="https://img.shields.io/github/package-json/v/FhillSlinger/pulsar/production?style=for-the-badge">
-    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/FhillSlinger/pulsar?style=for-the-badge">
-    <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/FhillSlinger/pulsar?style=for-the-badge">
-    <img alt="GitHub" src="https://img.shields.io/github/license/FhillSlinger/pulsar?style=for-the-badge&cacheSeconds=60">
-    <img alt="Website" src="https://img.shields.io/website?up_message=running&down_message=failing&url=https%3A%2F%2Fpulsar.diogopereira.site&logo=vercel&style=for-the-badge">
+    <img alt="GitHub package.json version (branch)" src="https://img.shields.io/github/package-json/v/diogopereiradev/pulsar/production?style=for-the-badge">
+    <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/diogopereiradev/pulsar?style=for-the-badge">
+    <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed-raw/diogopereiradev/pulsar?style=for-the-badge">
+    <img alt="GitHub" src="https://img.shields.io/github/license/diogopereiradev/pulsar?style=for-the-badge&cacheSeconds=60">
+    <img alt="Website" src="https://img.shields.io/website?up_message=running&down_message=failing&url=https%3A%2F%2Fpulsar.diogopereira.dev&logo=vercel&style=for-the-badge">
   </div>
   <div>
     <br />
@@ -25,7 +25,7 @@
   <hr />
   <h2>Getting Started</h2>
   <p>Getting Started with Pulsar, your gateway to efficient online documentation editing. If you're ready to embark on a journey of creating impeccable documentation pages, you've come to the right place. You can access the project on this url</p>
-  <a href="https://pulsar.diogopereira.site">https://pulsar.diogopereira.site</a>
+  <a href="https://pulsar.diogopereira.dev">https://pulsar.diogopereira.dev</a>
   <br />
   <br />
   <br />
